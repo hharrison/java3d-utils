@@ -115,6 +115,14 @@ public abstract class Controller extends java.lang.Object {
      */
     protected int outputFileVersion = 2;
 
+    /**
+     * When running the application within webstart this may not be the 
+     * correct ClassLoader. If Java 3D is not installed in the local vm and
+     * is instead installed by webstart then this definitely is NOT the correct
+     * classloader, in this case Thread.getCurrent().getClass().getClassLoader()
+     * would probably be a good default. The user can also set their preferred
+     * classloader by calling setClassLoader in SceneGraph[Stream|File]Reader.
+     */
     protected ClassLoader classLoader = ClassLoader.getSystemClassLoader();
     
     /**
