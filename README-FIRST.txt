@@ -4,9 +4,9 @@ access the code.
 
 The copyright notice for this project is in COPYRIGHT.txt
 
-The source code license for this project is in LICENSE.txt
+The source code license information for this project is in LICENSE.txt
 
 Additional information and license restrictions for third party source
-code are found in the LICENSE-*.txt files.
+code are found in the THIRDPARTY-LICENSE-*.txt files.
 
 Instructions for building this project are in README-build.html
