@@ -50,6 +50,8 @@
 
 #include "com_sun_j3d_utils_timer_J3DTimer.h"
 
+#define NSEC_PER_SEC ((jlong)1000000000)
+
 #ifdef __linux__
 #include <sys/time.h>
 #include <time.h>
@@ -57,18 +59,18 @@
 #endif
 
 #ifdef SOLARIS
-    #include <time.h>
-    #include <sys/systeminfo.h>
-    #include <string.h>
+#include <time.h>
+#include <sys/systeminfo.h>
+#include <string.h>
 #ifndef CLOCK_HIGHRES
 #define CLOCK_HIGHRES 4			/* Solaris 7 does not define this */
 #endif					/* constant. When run on Solaris 7 */
 #endif					/* CLOCK_HIGHRES is not used. */
 
 #ifdef WIN32
-    #include <Windows.h>
-    #include <math.h>
-    jlong pcRes = -1;
+#include <Windows.h>
+#include <math.h>
+static double timerScale = -1.0;
 #endif
 
 /*
@@ -76,78 +78,98 @@
  * Method:    getNativeTimer
  * Signature: ()J
  */
-JNIEXPORT jlong JNICALL Java_com_sun_j3d_utils_timer_J3DTimer_getNativeTimer
-  (JNIEnv *env, jclass clazz) {
+JNIEXPORT jlong JNICALL
+Java_com_sun_j3d_utils_timer_J3DTimer_getNativeTimer(JNIEnv *env,
+						     jclass clazz)
+{
+    jlong timerNsec;
 
 #ifdef SOLARIS
-  /*struct timespec tp;*/
-  /*clock_gettime( CLOCK_HIGHRES, &tp );*/
+    /*
+    struct timespec tp;
+    clock_gettime( CLOCK_HIGHRES, &tp );
 
-  /*return (jlong)tp.tv_nsec + (jlong)tp.tv_sec*1000000000;*/
+    return (jlong)tp.tv_nsec + (jlong)tp.tv_sec * NSEC_PER_SEC;
+    */
 
-  return (jlong)gethrtime();
-#endif
+    timerNsec = (jlong)gethrtime();
+#endif /* SOLARIS */
 
 #ifdef WIN32
-  LARGE_INTEGER time;
+    LARGE_INTEGER time;
+    LARGE_INTEGER freq;
 
-  QueryPerformanceCounter( &time );
+    if (timerScale < 0.0) {
+	QueryPerformanceFrequency( &freq );
+	if (freq.QuadPart <= 0) {
+	    timerScale = 0.0;
+	}
+	else {
+	    timerScale = (double) NSEC_PER_SEC / (double)freq.QuadPart;
+	}
+    }
 
-  if (pcRes==-1)
-      pcRes = Java_com_sun_j3d_utils_timer_J3DTimer_getNativeTimerResolution(NULL, NULL );
+    QueryPerformanceCounter(&time);
+    timerNsec = (jlong)((double)time.QuadPart * timerScale);
 
-  return (jlong)time.QuadPart*pcRes;
-#endif
+#endif /* WIN32 */
+
 #ifdef __linux__
+    struct timeval t;
 
-  struct timeval t;
-  gettimeofday(&t, 0);
-  return ((jlong)t.tv_sec) * 1000000000LL + ((jlong)t.tv_usec) * 1000;
+    gettimeofday(&t, 0);
+    timerNsec = ((jlong)t.tv_sec) * NSEC_PER_SEC + ((jlong)t.tv_usec) * ((jlong)1000);
+#endif /* __linux__ */
 
-#endif
-
+    return timerNsec;
 }
+
 
 /*
  * Class:     com_sun_j3d_utils_timer_J3DTimer
  * Method:    getNativeTimerResolution
  * Signature: ()J
  */
-JNIEXPORT jlong JNICALL Java_com_sun_j3d_utils_timer_J3DTimer_getNativeTimerResolution
-  (JNIEnv *env, jclass clazz) {
+JNIEXPORT jlong JNICALL
+Java_com_sun_j3d_utils_timer_J3DTimer_getNativeTimerResolution(JNIEnv *env,
+							       jclass clazz)
+{
+    jlong res;
 
 #ifdef SOLARIS
+    char buf[4];
 
-  char buf[4];
-  jlong res=0;
+    sysinfo( SI_RELEASE, &buf[0], 4 );
 
-  sysinfo( SI_RELEASE, &buf[0], 4 );
-
-  if (strcmp( "5.7", &buf[0] )==0) {
-      res = (jlong)3;
-  } else {
-      struct timespec tp;
-      clock_getres( CLOCK_HIGHRES, &tp );
-      res = (jlong)tp.tv_nsec;
-  }
-
-  return res;
-#endif
+    if (strcmp( "5.7", &buf[0] )==0) {
+	/* Hard-coded for Solaris 7, since clock_getres isn't available */
+	res = (jlong)3;
+    } else {
+	struct timespec tp;
+	clock_getres( CLOCK_HIGHRES, &tp );
+	res = (jlong)tp.tv_nsec;
+    }
+#endif /* SOLARIS */
 
 #ifdef WIN32
-  LARGE_INTEGER freq;
-  QueryPerformanceFrequency( &freq );
+    LARGE_INTEGER freq;
+    QueryPerformanceFrequency( &freq );
 
-  if ( (jlong)freq.QuadPart==0 )
-    return 1;
+    if ((jlong)freq.QuadPart <= 0)
+	res = 0;
+    else {
+	res = (NSEC_PER_SEC + (jlong)freq.QuadPart - 1) / ((jlong)freq.QuadPart);
 
-  return (jlong) ceil(1000000000/((jlong)freq.QuadPart));
+	if (res < 1) {
+	    res = 1;
+	}
+    }
 #endif
 
 #ifdef __linux__
+    /* Hard-coded at 1 microsecond -- the resolution of gettimeofday */
+    res = 1000;
+#endif /* __linux__ */
 
-  return ((jlong)1000000000) /sysconf (_SC_CLK_TCK);
-
- #endif
-
+    return res;
 }
