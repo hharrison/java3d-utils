@@ -1,0 +1,1973 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+
+<!--
+/*
+ * $RCSfile$
+ *
+ * Copyright (c) 2004 Sun Microsystems, Inc. All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ *
+ * - Redistribution of source code must retain the above copyright
+ *   notice, this list of conditions and the following disclaimer.
+ *
+ * - Redistribution in binary form must reproduce the above copyright
+ *   notice, this list of conditions and the following disclaimer in
+ *   the documentation and/or other materials provided with the
+ *   distribution.
+ *
+ * Neither the name of Sun Microsystems, Inc. or the names of
+ * contributors may be used to endorse or promote products derived
+ * from this software without specific prior written permission.
+ *
+ * This software is provided "AS IS," without a warranty of any
+ * kind. ALL EXPRESS OR IMPLIED CONDITIONS, REPRESENTATIONS AND
+ * WARRANTIES, INCLUDING ANY IMPLIED WARRANTY OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE OR NON-INFRINGEMENT, ARE HEREBY
+ * EXCLUDED. SUN MICROSYSTEMS, INC. ("SUN") AND ITS LICENSORS SHALL
+ * NOT BE LIABLE FOR ANY DAMAGES SUFFERED BY LICENSEE AS A RESULT OF
+ * USING, MODIFYING OR DISTRIBUTING THIS SOFTWARE OR ITS
+ * DERIVATIVES. IN NO EVENT WILL SUN OR ITS LICENSORS BE LIABLE FOR
+ * ANY LOST REVENUE, PROFIT OR DATA, OR FOR DIRECT, INDIRECT, SPECIAL,
+ * CONSEQUENTIAL, INCIDENTAL OR PUNITIVE DAMAGES, HOWEVER CAUSED AND
+ * REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF OR
+ * INABILITY TO USE THIS SOFTWARE, EVEN IF SUN HAS BEEN ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGES.
+ *
+ * You acknowledge that this software is not designed, licensed or
+ * intended for use in the design, construction, operation or
+ * maintenance of any nuclear facility.
+ *
+ * $Revision$
+ * $Date$
+ * $State$
+ */
+ -->
+
+<html>
+<head>
+   <title>The Java 3D Configuration File</title>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="Author" content="Mark Hood">
+</head>
+
+<body bgcolor="#FFFFFF">
+
+<table border="1" cellpadding="3" cellspacing="0" width="100%">
+<tr bgcolor="#ccccff">
+<td><font size="+2">
+<b>The Java 3D Configuration File</b></font></td>
+</tr>
+</table>
+<br>
+
+<a href="#SyntaxDescription">Syntax Description</a><br>
+<a href="#CommandOverview">Command Overview</a><br>
+<a href="#OverviewOfRelevantViewModelParameters">
+   Overview of Relevant View Model Parameters</a><br>
+<a href="#TopLevelCommandDetails">Top-Level Command Details</a><br>
+<a href="#BuiltInCommandDetails">Built-In Command Details</a><br>
+<a href="#Command_Index">Command Index</a><br>
+<a href="#Property Index">Property Index</a><br>
+
+<p>
+This document is an informal description of the syntax of the Java 3D
+configuration file and a tutorial of the semantics of its various commands.
+Such a file is written by a user or site administrator to describe the physical
+configuration of a local interactive viewing environment.  Configuration
+properties that can be described in the file include the sizes, positions, and
+orientations of displays in either fixed screen environments or head mounted
+displays (<i>HMD</i> devices), as well as the input devices and sensors
+available for user interaction apart from the keyboard and mouse abstractions
+provided by the AWT.</p>
+<p>
+A configuration file is used by passing its URL to either a ConfigContainer or
+a ConfiguredUniverse constructor.  The method by which a user specifies the
+file is up to the application, but the universe utilities do provide a few
+means to easily enable an application to perform this task.  These depend upon
+a Java 3D property, <i>j3d.configURL</i>, that the user can set on the java
+command line with the <i>-D</i> option.  Its value should be a URL string
+indicating the location of the desired file.  The application can then either
+call the static ConfigContainer methods 
+<a href="../ConfigContainer.html#getConfigURL()">getConfigURL</a> 
+to retrieve the value of the property, or
+<a href="../ConfigContainer.html#getConfigURL(java.lang.String)">
+getConfigURL(String)</a> to specify a default file to be used in case the
+property is not set.  Applications are encouraged to devise their own
+user-friendly mechanisms to retrieve the configuration file, although the
+setting of the <i>j3d.configURL</i> property should be honored if at all
+possible.</p>
+<p>
+If the attempt to open the resource indicated by the URL is successful, then a
+parser will be invoked to read and evaluate the commands it contains and
+deposit the results in the ConfigContainer.  The parser will detect syntax
+errors, invalid commands, and bad references, printing descriptive messages to
+System.out, including the line number and text of the offending command.  In
+general the parser attempts to continue processing as much of the file as it
+can when encountering an error.  Some errors can only be detected after the
+entire file has been evaluated; in those cases an exception will be thrown.</p>
+<p>
+An application may choose to override the settings of the configuration file by
+accessing view-side scenegraph components directly from the ConfigContainer
+once the file is evaluated.  Applications should avoid this in general, as most
+settings are physical calibration constants specific to the local interactive
+viewing environment.  Nonetheless, application overrides are still sometimes
+appropriate; for example, the application may have knowledge of the contents of
+the scenegraph that enables it to make a better judgement of where the view's
+clipping planes should be.</p>
+<br>
+
+<a name="SyntaxDescription"></a>
+<table border="1" cellpadding="3" cellspacing="0" width="100%">
+<tr bgcolor="#ccccff">
+<td><font size="+2">
+<b>Syntax Description</b></font></td>
+</tr>
+</table>
+<p>
+The configuration file syntax is very simple; scanning any of the 
+<a href="config-examples.html">sample configuration files</a> should provide
+the general idea.  At the broadest level there are two main types of
+constructs: <i>comments</i> and <i>commands.</i></p>
+<p>
+Comments can be either <i>C </i>or <i>C++ style.  </i>In a C-style
+comment all text between successive occurances of /* and */ is ignored.
+A C++ comment begins with // and continues to the end of the line.</p>
+<p>
+A command begins with an opening parenthesis and ends with a closing
+parenthesis.  The elements between the parentheses can be of four types:
+alphanumeric strings, numbers, quoted strings, or other commands.  During the
+evaluation of a command, any nested command encountered is itself evaluated,
+and the result of that evaluation replaces the nested command within the
+original outer command.</p>
+<p>
+Strings that contain embedded white space, forward slashes, or invalid
+tokens must be enclosed in quotes (either single or double).  Common cases are
+URL strings and Unix path names.  Numbers are any non-quoted strings that can
+be parsed as double-precision floating point numbers.  The strings <i>true,
+True, false,</i> and <i>False</i> are converted to their corresponding boolean
+values.  Strings, quoted strings, and numbers are delimited from each other by
+white space.</p>
+<p>
+Commands in the configuration file have four special forms: <i>point,
+matrix, top-level</i>, and <i>built-in</i> commands.</p>
+
+<blockquote>
+<h4>
+Points</h4>
+
+A command that consists entirely of two, three, or four numbers is a 2D point,
+a 3D point, or a 4D point respectively.  Any other command that starts with a
+number is a syntax error.
+<p>
+Don't pass 2D, 3D, or 4D points to commands that expect two, three, or four
+numbers instead.  This will generate a syntax error indicating an invalid
+number of arguments.</p>
+
+<h4>
+Matrices</h4>
+
+A 3D matrix is a command that consists entirely of three 3D points.  A 4D
+matrix consists entirely of either three or four 4D points; if there are only
+three 4D points then the fourth is implicitly considered to be (0.0 0.0 0.0
+1.0).  The points define the row elements of each type of matrix.  Any other
+command that starts with a point is a syntax error.
+
+<h4>
+Top-level and built-in commands</h4>
+
+All other commands start with an alphanumeric string, the <i>command name</i>
+which identifies it.  The remaining elements of the command are its arguments.
+<p>
+Command names can either specify top-level or built-in commands.  Top-level
+commands generally configure Java 3D core and utility classes and can only
+appear at the outermost level of parentheses.  Built-in commands are provided
+by the parser itself to help construct the arguments to top-level commands.
+Points, matrices, and built-in commands can only be nested within other
+commands.</p>
+<p>
+An error will result if points, matrices, or built-in commands are invoked at
+the outermost level of nesting.  Sometimes this error is caused by prematurely
+closing the opening parenthesis of the current top-level command.  Such an
+error is usually preceded by an error from the command indicating an invalid
+number of arguments.</p>
+<p>
+Similarly, errors will be generated if top-level commands are nested.  Errors
+to this effect are sometimes caused by failing to close all the open
+parentheses of the preceding top-level command.</p>
+</blockquote>
+
+<h4>
+Java property substitution syntax</h4>
+
+All strings are additionally scanned for text enclosed by a starting ${ and a
+matching }.  Such text is looked up as a Java system property name and the
+result is substituted back into the string after eliding the starting and
+ending delimiters.  For example, the command:
+<p>
+(Include "file:${user.home}/myBody.cfg")</p>
+<p>
+would evaluate the contents of the file "myBody.cfg" in the user's home
+directory on Unix systems.  An error is issued if no Java property exists with
+the specified name.</p>
+<p>
+Java property substitution happens early, after tokenization but before command
+evaluation.  Substitution can occur any number of times anywhere within any
+quoted or non-quoted string, including command names, property names, and
+property values, as long as the property substitution syntax is not nested.</p>
+<br>
+
+<a name="CommandOverview"></a>
+<table border="1" cellpadding="3" cellspacing="0" width="100%">
+<tr bgcolor="#ccccff">
+<td><font size="+2">
+<b>Command Overview</b></font></td>
+</tr>
+</table>
+<p>
+Most top-level commands configure concrete Java 3D core and utility classes.
+These include PhysicalBody, PhysicalEnvironment, Screen, Sensor, View, and
+ViewPlatform.  The Screen, View, and ViewPlatform commands also implicitly
+configure the Canvas3D core class and the Viewer and ViewingPlatform utility
+classes respectively.</p>
+<p>
+These commands come in two forms: the <i>New&lt;class name&gt;</i> and
+<i>&lt;class name&gt;Property</i> commands.  All <i>New</i> commands except 
+<a href="#NewSensor">NewSensor</a> create new class instances and bind names to
+them, while the <i>Property</i> commands refer to these names and configure
+their corresponding class instances with the parameters specified by the
+command arguments.  All references must be to objects previously instantiated
+in the file; forward referencing is not supported.  Names must be unique within
+each class.</p>
+<p>
+Implementations of the Java 3D InputDevice interface and concrete subclasses of
+the abstract ViewPlatformBehavior utility class can also be instantiated and
+configured with the same command forms.  The <i>New</i> commands for these
+objects accept class names as command arguments and instantiate the objects
+through introspection.  Since the details of the implementations are not known,
+configuration parameters are passed through methods which are invoked through
+introspection of the method names specified in the <i>Property</i> command
+arguments.</p>
+<p>
+A method invoked through introspection with a <i>Property</i> command gets its
+arguments as a single array of Objects.  Boolean strings get wrapped into
+Boolean objects, and number strings get wrapped into Double.  2D, 3D, and 4D
+points get wrapped into Point2d, Point3d, and Point4d objects respectively,
+while 3D and 4D matrices get wrapped into Matrix3d and Matrix4d
+respectively.</p>
+<br>
+
+<a name="OverviewOfRelevantViewModelParameters"></a>
+<table border="1" cellpadding="3" cellspacing="0" width="100%">
+<tr bgcolor="#ccccff">
+<td><font size="+2">
+<b>Overview of Relevant View Model Parameters</b></font></td>
+</tr>
+</table>
+<p>
+The sample configuration files are annotated to assist users in modifying them
+to suit their particular viewing environments, but it can be helpful to know
+some of the basics of the Java 3D view model that are relevant to writing a
+configuration file.  This overview should only be considered an informal
+adjunct to the detailed description in the Java 3D Specification.  Reading the
+source code to the <a href="../ViewInfo.html">ViewInfo</a> utility (a public
+implementation of the Java 3D view model) may also be helpful in understanding
+the details of the view model.</p>
+
+<table border="1" cellpadding="3" cellspacing="0" width="100%">
+<tr bgcolor="#eeeeff">
+<td>
+<b>The Camera View Model</b></font></td>
+</tr>
+</table>
+<p>
+In the traditional camera model the camera or eyepoint is positioned and
+oriented with respect to the virtual world via a view transform.  Objects
+contained within the field of view are projected onto an image plane, which is
+then mapped onto a display surface, usually a window on a desktop display
+system.  While the view direction and camera position can be freely oriented
+and placed anywhere in the virtual world, the projection is accomplished using
+a static frustum defined by the field of view and a flat image plane centered
+about and normal to the view direction.</p>
+<p>
+This model emulates a typical physical camera quite well, but there are many
+viewing configurations that cannot be implemented using image planes that are
+fixed with respect to the view direction.  In a multiple screen environment the
+projection frustum for each screen is skewed with respect to the image plane,
+based on the user's nominal viewing position.  Realistic stereo views on fixed
+displays use skewed projection frustums derived from the offsets of the two
+eyes from the center of the image plane, while head tracking with fixed
+displays involves dynamically adjusting projection frustums in response to
+varying eye positions relative to the image plane.</p>
+<p>
+In a low-level API such as OpenGL these situations are handled by concatenating
+all defined model and viewing transforms into a single <i>modelview matrix</i>,
+and for a fixed-screen environment explicitly computing the <i>projection
+matrix</i> for each eye, each display surface, and each new head
+position.  Every application handling such viewing configurations typically
+reimplements the framework for computing those matrices itself.  In these cases
+it would be useful to be able to separate the projection components out of the
+view transform in some representation based on display and eye locations.</p>
+
+<table border="1" cellpadding="3" cellspacing="0" width="100%">
+<tr bgcolor="#eeeeff">
+<td>
+<b>The Java 3D View Model</b></font></td>
+</tr>
+</table>
+<p>
+Based on these requirements, a high-level view model should provide standard
+mechanisms to 1) define a screen's position and orientation in relation to
+other screens in the viewing environment; 2) specify the position of the user's
+eyes or an HMD relative to the physical space in which the screens or nominal
+user position are defined, and to have them updated automatically if tracking
+hardware exists; and 3) describe where the whole physical space is placed and
+oriented in the virtual world.  In such a model the appropriate images could
+then be rendered without further computation in application code.</p>
+<p>
+In the Java 3D view model, screen <i>(image plate)</i> positions and
+orientations are defined relative to a fixed frame of reference in the physical
+world, the <i>tracker base</i>, through the
+<a href="#TrackerBaseToImagePlate">TrackerBaseToImagePlate</a> property.  The
+tracker base is somewhat abstract in that it is always used to define that
+fixed frame of reference, even if no physical tracking hardware is being
+used.  If the <a href="#ViewPolicy">ViewPolicy</a> is HMD_VIEW, then the left
+and right image plates for head mounted displays are defined relative to the
+head tracking sensor, which reports head orientation and position relative to
+the tracker base.</p>
+<p>
+<i>Coexistence coordinates</i> are defined with the 
+<a href="#CoexistenceToTrackerBase">CoexistenceToTrackerBase</a> property.  It
+provides a frame of reference in the physical world which can be set up by the
+user or application in whatever way is most convenient for positioning and
+orienting screens, physical body attributes, and sensing devices in the virtual
+world.  If tracking is enabled, then the eye positions in coexistence are
+computed from the position and orientation of the head tracking sensor and the
+<a href="#HeadToHeadTracker">HeadToHeadTracker</a> matrix; otherwise the eye
+positions in coexistence are set according to the 
+<a href="#CenterEyeInCoexistence">CenterEyeInCoexistence</a> property.  In HMD
+mode the eye positions are fixed with respect to the image plates.</p>
+<p>
+The mapping of coexistence coordinates into the virtual world is accomplished
+through the <a href="#ViewAttachPolicy">ViewAttachPolicy</a>, which specifies
+the point in coexistence coordinates to which the origin of the <i>view
+platform</i> should be mapped.  The view platform is positioned in the virtual
+world by manipulating its <i>view transform</i>, the composite of all the
+transforms from the view platform up to its Locale.  The basis vectors (X, Y,
+and Z directions) of the view platform are always aligned with coexistence
+coordinates, and the scaling between view platform coordinates and physical
+coordinates is specified by the 
+<a href="#ScreenScalePolicy">ScreenScalePolicy</a>, so this
+establishes the complete mapping of the physical world into the virtual world.
+The projection of the virtual world onto the physical display surfaces is then
+performed automatically by the Java 3D renderer.</p>
+<p>
+By default Java 3D tries to emulate the familiar camera model as much as
+possible to make it easy to run in a conventional windowed desktop display
+environment.  It accomplishes this through the following default settings:</p>
+<ul>
+<li>
+<a href="#WindowEyepointPolicy">WindowEyepointPolicy</a> is set to
+<code>RELATIVE_TO_FIELD_OF_VIEW</code>.</li>
+<li>
+<a href="#WindowMovementPolicy">WindowMovementPolicy</a> is set to
+<code>PHYSICAL_WORLD</code>.</li>
+<li>
+<a href="#WindowResizePolicy">WindowResizePolicy</a> is set to
+<code>PHYSICAL_WORLD</code>.</li>
+<li>
+<a href="#ViewAttachPolicy">ViewAttachPolicy</a> is set to 
+<code>NOMINAL_HEAD</code>.</li>
+<li>
+<a href="#CoexistenceCenteringEnable">CoexistenceCenteringEnable</a> is set to
+true.</li>
+</ul>
+
+When a configuration file is being used the defaults are oriented towards
+making the setup of multiple screen environments as easy as possible.  If the
+coexistence centering enable has not been explicitly set, and either the
+CoexistenceToTrackerBase transform for the view has been set or
+TrackerBaseToImagePlate has been set for any screen, then the following
+defaults are used instead:</p>
+<ul>
+<li>
+<a href="#WindowEyepointPolicy">WindowEyepointPolicy</a> is set to
+<code>RELATIVE_TO_COEXISTENCE</code>.</li>
+<li>
+<a href="#WindowMovementPolicy">WindowMovementPolicy</a> is set to
+<code>VIRTUAL_WORLD</code>.</li>
+<li>
+<a href="#WindowResizePolicy">WindowResizePolicy</a> is set to
+<code>VIRTUAL_WORLD</code>.</li>
+<li>
+<a href="#ViewAttachPolicy">ViewAttachPolicy</a> is set to
+<code>NOMINAL_SCREEN</code>.</li>
+<li>
+<a href="#CoexistenceCenteringEnable">CoexistenceCenteringEnable</a> is set to
+false.</li>
+</ul>
+
+The avove defaults are also used if coexistence centering enable has been
+explictly set false.
+<br><br><br>
+
+<a name="TopLevelCommandDetails"></a>
+<table border="1" cellpadding="3" cellspacing="0" width="100%">
+<tr bgcolor="#ccccff">
+<td><font size="+2">
+<b>Top-Level Command Details</b></font></td>
+</tr>
+</table>
+<p>
+Top-level commands can only appear at the outermost command nesting level.</p>
+<hr>
+
+<h2>
+<a NAME="NewDevice"></a>NewDevice</h2>
+<b>Syntax:</b>
+<br>(NewDevice <i>&lt;instance name&gt; &lt;class name&gt;</i>
+[Alias <i>&lt;alias name&gt;</i>])
+<p>
+This command instantiates the InputDevice implementation specified by the fully
+qualified <i>class name</i> and binds it to <i>instance name</i>.  The
+InputDevice is instantiated through introspection of the class name.  The
+implementation must provide a parameterless constructor; this can usually be
+done by extending or wrapping available InputDevice implementations.</p>
+<p>
+The last two arguments are optional and define an alias for <i>instance
+name</i>.  This is useful in providing a longer descriptive name for the
+application to recognize, or conversely, to provide a shorter alias for a
+longer instance name.  Either name may be used to identify the instance.</p>
+<p>
+At the conclusion of configuration file processing all InputDevice
+implementations so defined will be initialized and registered with any
+PhysicalEnvironments that reference them.<p>
+<hr>
+
+<h2>
+<a NAME="DeviceProperty"></a>DeviceProperty</h2>
+<b>Syntax:</b>
+<br>(DeviceProperty <i>&lt;instance name&gt; &lt;method name&gt; &lt;arg0&gt; 
+... &lt;argn&gt;</i>)
+<p>
+The details of the InputDevice implementation specified by <i>instance name</i>
+are not known to ConfigContainer, so any parameters to be set through the
+configuration file are passed to the InputDevice instance by invoking <i>method
+name</i> through introspection.  The arguments following the method name are
+evaluated and the results passed to the method as an array of Objects.</p>
+<p>
+The required methods can usually be provided by extending or wrapping existing
+InputDevice implementations.</p>
+<hr>
+
+<h2>
+<a NAME="NewSensor"></a>NewSensor</h2>
+<b>Syntax:</b>
+<br>(NewSensor <i>&lt;instance name&gt; &lt;device name&gt; 
+&lt;sensor index&gt;</i> [Alias <i>&lt;alias name&gt;</i>])
+<p>
+Retrieves the Sensor at index <i>sensor index</i> in the InputDevice <i>device
+name</i> and binds it to the name specified by <i>instance name</i>.  The
+sensor index is a number truncated to its integer value.  The InputDevice
+implementation is responsible for creating its own Sensor objects, so this
+command does not create any new instances.</p>
+<p>
+<i>Instance name</i> is used by other commands to reference the indicated
+Sensor.  In addition, the name and its associated Sensor instance is made
+available to applications through a Map returned by the ConfigContainer
+method 
+<a href="../ConfigContainer.html#getNamedSensors()">getNamedSensors</a>.
+</p>
+<p>
+The last two arguments are optional and define an alias for <i>instance
+name</i>.  This is useful in providing a longer descriptive name for the
+application to recognize, or conversely, to provide a shorter alias for a
+longer instance name.  Either name may be used to identify the instance.</p>
+<p>
+If the Sensor is to be used for head tracking, or tracking the position and
+orientation of other objects in the physical world, then it must generate 6
+degree of freedom data relative to the tracker base.</p>
+<hr>
+
+<h2>
+<a NAME="SensorProperty"></a>SensorProperty</h2>
+<b>Syntax:</b>
+<br>(SensorProperty <i>&lt;instance name&gt; &lt;property name&gt; 
+&lt;property value&gt;</i>)
+<p>
+Sets a Sensor property.  The sensor instance is specified by <i>instance
+name</i>, the property to be set by <i>property name</i>, and the value to be
+set by <i>property value</i>.  The following sole property may be
+configured:</p>
+
+<blockquote>
+<h4>
+<a NAME="Hotspot"></a>Hotspot</h4>
+A 3D point in the sensor's local coordinate system.  The hotspot specifies the
+"active" point which should interact with the virtual world, such as a point
+used for picking or grabbing an object.  Its actual interpretation is up to the
+sensor behavior which uses it.  Its value is ignored for head tracking sensors.
+</blockquote>
+<hr>
+
+<h2>
+<a NAME="NewScreen"></a>NewScreen<br>
+<a NAME="NewWindow"></a>NewWindow</h2>
+<b>Syntax:</b>
+<br>(NewScreen <i>&lt;instance name&gt; &lt;device index&gt;</i>
+[Alias <i>&lt;alias name&gt;</i>])
+<br>(NewWindow <i>&lt;instance name&gt; &lt;device index&gt;</i>
+[Alias <i>&lt;alias name&gt;</i>])
+<p>
+The above two commands are equivalent.  Both create new window resources and
+associate them with the name specified by <i>instance name</i>.  The <i>device
+index</i> is a number truncated to its integer value.  This integer is the
+index at which the desired AWT GraphicsDevice appears in the array returned by
+the static getScreenDevices() method of GraphicsEnvironment, and specifies the
+physical screen upon which the window should be created.  The GraphicsDevice
+order in the array is specific to the local viewing site and display
+system.</p>
+<p>
+The last two arguments are optional and define an alias for <i>instance
+name</i>.  This is useful in providing a longer descriptive name for the
+application to recognize, or conversely, to provide a shorter alias for a
+longer instance name.  Either name may be used to identify the instance.</p>
+<hr>
+
+<h2>
+<a NAME="ScreenProperty"></a>ScreenProperty<br>
+<a NAME="WindowProperty"></a>WindowProperty</h2>
+<b>Syntax:</b>
+<br>(ScreenProperty <i>&lt;instance name&gt; &lt;property name&gt; 
+&lt;property value></i>)
+<br>(WindowProperty <i>&lt;instance name&gt; &lt;property name&gt; 
+&lt;property value></i>)
+<p>
+The above two commands are equivalent.  The screen or window instance is
+specified by <i>instance name</i>, the property to be set by <i>property
+name</i>, and the value to be set by <i>property value</i>.  The following
+properties are configurable:</p>
+
+<blockquote>
+<h4>
+<a NAME="PhysicalScreenWidth"></a>PhysicalScreenWidth</h4> 
+A number specifying the screen's image area width in meters.  When using a
+configuration file the default is 0.365.  For head mounted displays this should
+be the <i>apparent</i> width of the display at the focal plane.
+
+<h4>
+<a NAME="PhysicalScreenHeight"></a>PhysicalScreenHeight</h4>
+A number specifying the screen's image area height in meters.  When using a
+configuration file the default is 0.292.  For head mounted displays this should
+be the <i>apparent</i> height of the display at the focal plane.
+
+<h4>
+<a NAME="WindowSize"></a>WindowSize</h4> 
+This property's value can be a 2D point to create a window with the specified
+X width and Y height in pixels, or it can be either of the strings FullScreen
+or NoBorderFullScreen to specify a full screen canvas with visible frame
+borders or one with no frame borders.  A NoBorderFullScreen canvas uses the
+entire physical display surface for its image.  The default value is 512 x 512
+pixels.  For multiple screen virtual reality installations or head mounted
+displays NoBorderFullScreen should be used.
+
+<h4>
+<a NAME="WindowPosition"></a>WindowPosition</h4> 
+This property's value is a 2D point used to create a window with the specified
+X and Y position.  These are offsets of the window's upper left corner from the
+screen's upper left corner.
+
+<h4>
+<a NAME="TrackerBaseToImagePlate"></a>TrackerBaseToImagePlate</h4>
+A 4D matrix which transforms points from tracker base coordinates to the image
+plate coordinates for the specified screen.  This is only used when a
+ViewPolicy of <code>SCREEN_VIEW</code> is in effect.  The matrix value is
+identity by default.
+<p>
+Image plate dimensions are expressed in meters.  The origin of the image plate
+is the lower left corner of the screen's image area, with X increasing to the
+right, Y increasing to the top, and Z increasing away from the screen.</p>
+<p>
+The tracker base is somewhat abstract.  It is used as a local fixed frame of
+reference for specifying the orientation and position of a screen <i>even when
+tracking hardware is not being used</i>.  It is also the frame of reference for
+defining coexistence coordinates with the 
+<a href="#CoexistenceToTrackerBase">CoexistenceToTrackerBase</a> matrix.</p>
+<p>
+The <a href="#BuiltInCommandDetails">built-in commands</a> Translate,
+Rotate, RotateTranslate, and TranslateRotate are available to make it easier
+to create transforms of this type.
+
+<h4>
+<a NAME="HeadTrackerToLeftImagePlate"></a>HeadTrackerToLeftImagePlate<br>
+<a NAME="HeadTrackerToRightImagePlate"></a>HeadTrackerToRightImagePlate</h4>
+4D matrices which transform points in the head tracking sensor's local
+coordinate system to a head mounted display's left and right image plates
+respectively. The default value for each is the identity matrix.</p>
+<p>
+These are only used when a ViewPolicy of <code>HMD_VIEW</code> is in effect.
+As with physical screen dimensions, these matrices should indicate the
+<i>apparent</i> location and orientation of the screen images as viewed through
+the head mounted display's optics.</p>
+<p>
+The HMD manufacturer's specifications in terms of angle of view, distance to
+the focal plane, aspect ratio, and percentage of image overlap between the left
+and right views can be used to derive the apparent screen positions with
+respect to the head, and from there the positions with respect to the head
+tracker mounted on the head.  In most cases there is 100% overlap between the
+two stereo images, so the matrices for both the left and right screens should
+be identical.</p>
+<p>
+Some HMD devices support field-sequential stereo and are driven as if they were
+a single screen.  In that case, only a single screen should be defined, but
+<i>both</i> the left and right head tracker to image plate transforms need to
+be specified for that same screen.</p>
+
+<h4>
+<a NAME="MonoscopicViewPolicy"></a>MonoscopicViewPolicy</h4>
+This property may have the following string values: <code>CYCLOPEAN_EYE_VIEW,
+LEFT_EYE_VIEW</code>, or <code>RIGHT_EYE_VIEW</code>.  The default value is
+<code>CYCLOPEAN_EYE_VIEW</code>.  This default works for non-stereo displays
+and field-sequential stereo displays where the two stereo images are generated
+on the same canvas.</p>
+<p>
+Some HMD devices can be driven as a single screen if the HMD supports
+field-sequential stereo, so the default policy will work for them as well if a
+stereo view is enabled. If stereo is not enabled, an IllegalStateException will
+be thrown when the ViewPolicy is set to <code>HMD_VIEW</code> with the default
+<code>CYCLOPEAN_EYE_VIEW</code> policy in effect.</p>
+<p>
+The <code>LEFT_EYE_VIEW</code> and <code>RIGHT_EYE_VIEW</code> monoscopic view
+policies are used for generating stereo pairs on separate monoscopic canvases,
+including the left and right canvases needed by HMD devices that are driven by
+two video channels.  When using these policies, stereo should <i>not</i> be
+enabled.</p>
+</blockquote>
+<hr>
+
+<h2>
+<a NAME="NewPhysicalEnvironment"></a>NewPhysicalEnvironment</h2>
+<b>Syntax:</b>
+<br>(NewPhysicalEnvironment <i>&lt;instance name&gt;</i>
+[Alias <i>&lt;alias name&gt;</i>])
+<p>
+Creates a new PhysicalEnvironment and binds it to the name given by <i>instance
+name.</i> This specifies the available input devices, which Sensor to use as
+the head tracker, and defines the coexistence coordinate system.  Note that
+aside from the head tracker, the configuration file does not provide a way to
+place Sensors into the array maintained by the PhysicalEnvironment.  See the 
+<a href="../ConfigContainer.html#getNamedSensors()">getNamedSensors</a>
+method of ConfigContainer.</p>
+<p>
+The last two arguments are optional and define an alias for <i>instance
+name</i>.  This is useful in providing a longer descriptive name for the
+application to recognize, or conversely, to provide a shorter alias for a
+longer instance name.  Either name may be used to identify the instance.</p>
+<hr>
+
+<h2>
+<a NAME="PhysicalEnvironmentProperty"></a>PhysicalEnvironmentProperty</h2>
+<b>Syntax:</b>
+<br>(PhysicalEnvironmentProperty <i>&lt;instance name&gt;
+&lt;property name&gt; &lt;property value&gt;</i>)
+<p>
+Sets a PhysicalEnvironment property.  The instance is specified by <i>instance
+name</i>, the property to be set by <i>property name</i>, and the value to be
+set by <i>property value</i>.  The following properties are configurable:</p>
+
+<blockquote>
+<h4>
+<a NAME="InputDevice"></a>InputDevice</h4>
+Register an InputDevice implementation instantiated by 
+<a href="#NewDevice">NewDevice.</a> The InputDevice instance name is specified
+by the <i>property value</i> string.  If an InputDevice is not registered then
+it will not be scheduled to run.
+
+<h4>
+<a NAME="HeadTracker"></a>HeadTracker</h4>
+Register the Sensor which will be used for head tracking.  It must provide 6
+degree of freedom position and orientation reads relative to the tracker base.
+The Sensor instance name is specified by the <i>property value</i> string.
+Its corresponding input device must be registered with the InputDevice
+property.
+<p>
+There is no actual method in the core PhysicalEnvironment class to set the head
+tracker.  This property is a simplified interface for setting the
+PhysicalEnvironment head index and assigning the head tracking sensor to that
+index.  Direct access to the PhysicalEnvironment Sensor array is not supported
+by the configuration file.</p>
+
+<h4>
+<a NAME="CoexistenceToTrackerBase"></a>CoexistenceToTrackerBase</h4>
+A 4D matrix which transforms points in coexistence coordinates to tracker base
+coordinates.  This defines the position and orientation of coexistence
+coordinates relative to the tracker base.  Its default value is the identity
+matrix, so if it is not set then coexistence coordinates will be the same as
+tracker base coordinates.  See 
+<a href="#TrackerBaseToImagePlate">TrackerBaseToImagePlate.</a>
+<p>
+The coexistence origin (<i>center of coexistence</i>) positions the physical
+world with respect to the origin of the ViewPlatform in the virtual world.
+This is established through the 
+<a href="#ViewAttachPolicy">ViewAttachPolicy</a>, which attaches the view
+platform to either the center of coexistence, the nominal head, or the nominal
+feet.  Coexistence coordinates can essentially be thought of as physical
+coordinates, but the real purpose is to define the space in which coordinates
+systems in the physical world - such as tracker base, image plate, and physical
+body - coexist and interact with the virtual world coordinate systems.</p>
+<p>
+The basis vectors (X, Y, and Z directions) of coexistence coordinates are
+always aligned with the basis vectors of the ViewPlatform in the virtual world,
+and the scale factor going from ViewPlatform coordinates to coexistence
+coordinates is set by the <a href="#ScreenScalePolicy">ScreenScalePolicy</a>.
+Together with the ViewPlatform's view attach policy and view transform this
+establishes the complete mapping of the physical world into the virtual
+world.</p>
+<p>
+The positioning and orientation of coexistence coordinates with respect to the
+physical environment is up to the user or application.  In a fixed screen
+environment it usually makes most sense to define it in a convenient
+relationship to the primary screen or some intersection of the available
+screens, such that the coexistence origin is in front of and aligned with the
+user's nominal forward gaze direction.  This is because the -Z axis of
+coexistence coordinates always points along the view direction defined by the
+view platform's -Z axis.</p>
+<p>
+For example, when using a single screen, the most common mapping puts the
+center of coexistence in the middle of the screen with its basis vectors
+aligned with the screen's image plate coordinate system.  With a dual-screen
+system it is usually most convenient to place the center of coexistence in the
+middle of the edge shared by both screens, with its Z axis extending
+perpendicular to the shared edge and maintaining an equal angle to both
+screens.  For a 2x2 array of four screens putting the center of coexistence at
+the center of the array is usually a good choice.  In a cave configuration
+having the center of coexistence in the middle of the viewing environment can
+facilitate the sense of immersion.</p>
+<p>
+In HMD mode the view attach policy is ignored and is always effectively
+<code>NOMINAL_SCREEN</code>.  Coexistence coordinates and view platform
+coordinates are then equivalent except for scale.  For HMD configurations
+placing the coexistence coordinate system aligned with some nominal
+front-facing user position works well.</p>
+<p>
+<b>Note:</b> the normal Java 3D default is to place the center of coexistence
+in the middle of the screen or canvas by setting 
+<a href="#CoexistenceCenteringEnable">CoexistenceCenteringEnable</a> true by
+default.  This only works for a single screen and if both the
+TrackerBaseToImagePlate and CoexistenceToTrackerBase matrices are identity.  If
+either of these matrices are set from their default identity values in the
+configuration file, and CoexistenceCenteringEnable has not been set, then the
+centering property will be set false by default.<p>
+</blockquote>
+<hr>
+
+<h2>
+<a NAME="NewPhysicalBody"></a>NewPhysicalBody</h2>
+<b>Syntax:</b>
+<br>(NewPhysicalBody <i>&lt;instance name&gt;</i>
+[Alias <i>&lt;alias name&gt;</i>])
+<p>
+Creates a new PhysicalBody and binds it to the name given by <i>instance
+name</i>.  The PhysicalBody is essentiallly the users's head, with the origin
+halfway between the eyes in the plane of the face.  Positive X extends to the
+right eye, positive Y up, and positive Z extends into the skull opposite to the
+forward gaze direction.  Dimensions are expressed in meters.</p> 
+<p>
+The last two arguments are optional and define an alias for <i>instance
+name</i>.  This is useful in providing a longer descriptive name for the
+application to recognize, or conversely, to provide a shorter alias for a
+longer instance name.  Either name may be used to identify the instance.</p>
+<hr>
+
+<h2>
+<a NAME="PhysicalBodyProperty"></a>PhysicalBodyProperty</h2>
+<b>Syntax:</b>
+<br>(PhysicalBodyProperty <i>&lt;instance name&gt; &lt;property name&gt;
+&lt;property value&gt;</i>)
+<p>
+Sets a PhysicalBody property.  The instance is specified by <i>instance
+name</i>, the property to be set by <i>property name</i>, and the value to be
+set by <i>property value</i>.  The following properties are configurable:</p>
+
+<blockquote>
+<h4>
+<a NAME="StereoEyeSeparation"></a>StereoEyeSeparation</h4>
+A number indicating the interpupilary distance in meters.  This will set the
+left and right eye positions to offsets of half this distance from the head
+origin along its X axis.  The default is 0.066 meters.
+<p>
+This property is a simplified interface to setting the PhysicalBody's separate
+left and right eye positions; there is no actual method in PhysicalBody to set
+stereo eye separation, but the results are exactly equivalent.</p>
+
+<h4>
+<a NAME="LeftEarPosition"></a>LeftEarPosition</h4>
+A 3D point which sets the left ear position relative to head coordinates.
+The default is (-0.08, -0.03, 0.09).
+
+<h4>
+<a NAME="RightEarPosition"></a>RightEarPosition</h4>
+A 3D point which sets the right ear position relative to head coordinates.
+The default is (0.08, -0.03, 0.09).
+
+<h4>
+<a NAME="HeadToHeadTracker"></a><b>HeadToHeadTracker</b></h4>
+A 4D matrix which transforms points from head coordinates to the local
+coordinate system of the head tracking sensor.  This allows the positions
+of the eyes and ears to be determined from the position and orientation
+of the head tracker.  The default is the identity matrix.
+
+<h4>
+<a NAME="NominalEyeOffsetFromNominalScreen"></a>
+NominalEyeOffsetFromNominalScreen</h4>
+A distance in meters used as a calibration parameter for 
+<a href="#ViewAttachPolicy">ViewAttachPolicy</a>.  <i>It does not actually set
+the position of the eyes</i>.  The property is ignored if ViewAttachPolicy is
+NOMINAL_SCREEN.  The default value is 0.4572 meters.
+
+<h4>
+<a NAME="NominalEyeHeightFromGround"></a>NominalEyeHeightFromGround</h4>
+A distance in meters used as a calibration parameter for 
+<a href="#ViewAttachPolicy">ViewAttachPolicy</a>.
+<i>It does not actually set the position of the eyes</i>.  This property is
+ignored if ViewAttachPolicy is not NOMINAL_FEET.  The default value is 1.68
+meters.
+</blockquote>
+<hr>
+
+<h2>
+<a NAME="NewView"></a>NewView</h2>
+<b>Syntax:</b>
+<br>(NewView <i>&lt;instance name&gt;</i>
+[Alias <i>&lt;alias name&gt;</i>])
+<p>
+Creates a new view and binds it to the name given by <i>instance name.</i>
+In the configuration file the term <i>view</i> refers to an instance of the
+<a href="../Viewer.html">Viewer</a> utility class, which contains both an
+instance of a core Java 3D View class and an array of Canvas3D instances into
+which to render.</p>
+<p>
+The last two arguments are optional and define an alias for <i>instance
+name</i>.  This is useful in providing a longer descriptive name for the
+application to recognize, or conversely, to provide a shorter alias for a
+longer instance name.  Either name may be used to identify the instance.</p>
+<p>
+ConfiguredUniverse requires that at least one view be defined.  If a view
+platform is not provided, then ConfiguredUniverse will create a default one and
+attach the view to that.  If multiple views are defined, then at least one view
+platform must be explicitly provided by the configuration, and the 
+ViewPlatform property must be used to attach each view to a view platform.</p>
+<hr>
+
+<h2>
+<a NAME="ViewProperty"></a>ViewProperty</h2>
+Syntax: <br>
+(NewView <i>&lt;instance name&gt; &lt;property name&gt; 
+&lt;property value&gt;</i>)
+<p>
+Sets a View property.  The view instance is specified by <i>instance name</i>,
+the property to be set by <i>property name</i>, and the value to be set by
+<i>property value</i>.  The following properties are configurable:</p>
+
+<blockquote>
+<h4>
+<a NAME="Screen"></a>Screen<br>
+<a NAME="Window"></a>Window</h4>
+These two properties are equivalent.  They include a screen created by
+<a href="#NewScreen">NewScreen</a> or a window created by 
+<a href="#NewWindow">NewWindow</a> into
+this view.  The screen or window name is specified by the <i>property value</i>
+string.  Multiple-screen or multiple-window views are created by calling this
+command with each window or screen to be used.  If no windows or screens are
+defined for this view then an IllegalArgumentException will be thrown after the
+configuration file has been processed.
+
+<h4>
+<a NAME="PhysicalEnvironment"></a>PhysicalEnvironment</h4>
+Sets the PhysicalEnvironment to be used for this view.  The <i>property
+value</i> string specifies the name of a PhysicalEnvironment instance created
+by the <a href="#NewPhysicalEnvironment">NewPhysicalEnvironment</a> command.
+If no PhysicalEnvironment is specified for this view then one with default
+values will be created.
+
+<h4>
+<a NAME="PhysicalBody"></a>PhysicalBody</h4>
+Sets the PhysicalBody to be used for this view.  The <i>property
+value</i> string specifies the name of a PhysicalBody instance created
+by the <a href="#NewPhysicalBody">NewPhysicalBody</a> command.  If
+no PhysicalBody is specified for this view then one with default values
+will be created.
+
+<h4>
+<a NAME="ViewPlatform"></a>ViewPlatform</h4>
+The <i>property value</i> string is the name of a view platform defined by a
+previous <a href="#NewViewPlatform">NewViewPlatform</a> command.  This
+specifies that the view should be attached to the given view platform.
+ConfiguredUniverse requires that a view platform be specified for every defined
+view unless only a single view without a view platform is provided; in that
+case a view platform is created by default and the view is attached to that.
+If one or more view platforms are defined then the view attachments must be
+made explicitly.
+
+<h4>
+<a NAME="ViewPolicy"></a>ViewPolicy</h4>
+The <i>property value</i> string may be either <code>SCREEN_VIEW</code> or
+<code>HMD_VIEW</code> to indicate whether fixed room-mounted screens are being
+used or a head mounted display.  The default value is <code>SCREEN_VIEW</code>.
+
+<h4>
+<a NAME="CoexistenceCenteringEnable"></a>CoexistenceCenteringEnable</h4>
+The <i>property value</i> is a boolean string.  If true, then the origin of the
+coexistence coordinate system is set to either the middle of the canvas or the
+middle of the screen depending upon whether the WindowMovementPolicy is
+<code>PHYSICAL_WORLD</code> or <code>VIRTUAL_WORLD</code> respectively.  The X,
+Y, and Z directions of coexistence coordinates will point in the same
+directions as those of the screen's image plate.
+<p>
+This only works if a single screen is being used and if both the 
+<a href="#TrackerBaseToImagePlate">TrackerBaseToImagePlate</a> and
+<a href="#CoexistenceToTrackerBase">CoexistenceToTrackerBase</a> matrices are
+identity.  If CoexistenceCenteringEnable is not explicitly set, and either the
+CoexistenceToTrackerBase transform for the view has been set or
+TrackerBaseToImagePlate has been set for any screen, then the centering enable
+will be set to false by default; otherwise, the normal default is true.  This
+property is also effectively false whenever the ViewPolicy is set to
+<code>HMD_VIEW</code>.</p>
+
+<h4>
+<a NAME="WindowEyepointPolicy"></a>WindowEyepointPolicy</h4>
+The string value for this property may be either <code>RELATIVE_TO_SCREEN,
+RELATIVE_TO_COEXISTENCE, RELATIVE_TO_WINDOW</code>, or
+<code>RELATIVE_TO_FIELD_OF_VIEW</code>.  The normal Java 3D default is
+<code>RELATIVE_TO_FIELD_OF_VIEW</code>.  When using a configuration file the
+default is <code>RELATIVE_TO_COEXISTENCE</code> if 
+<a href="#CoexistenceCenteringEnable">CoexistenceCenteringEnable</a> is false,
+otherwise the normal default applies.  See the
+<a href="../../../../../../javax/media/j3d/View.html#setWindowEyepointPolicy(int)">setWindowEyepointPolicy</a> View method.
+<p>
+For the <code>RELATIVE_TO_SCREEN</code> and <code>RELATIVE_TO_WINDOW</code>
+policies, the eyepoint is set by using the setLeftManualEyeInImagePlate() and
+setRightManualEyeInImagePlate() methods of Canvas3D.  The configuration file
+currently does not provide any mechanism for altering these properties from
+their default values.  These default values are (0.142, 0.135, 0.4572) for the
+left eye and (0.208, 0.135, 0.4572) for the right eye.</p>
+<p>
+These polices are ignored if head tracking is enabled.</p>
+
+<h4>
+<a NAME="WindowMovementPolicy"></a>WindowMovementPolicy<br>
+<a NAME="WindowResizePolicy"></a>WindowResizePolicy</h4>
+
+The string values for these properties may be either <code>VIRTUAL_WORLD</code>
+or <code>PHYSICAL_WORLD</code>.  The normal Java 3D default value for both is
+<code>PHYSICAL_WORLD</code>.  When using a configuration file the default
+values are <code>VIRTUAL_WORLD</code> if 
+<a href="#CoexistenceCenteringEnable">CoexistenceCenteringEnable</a> is false,
+otherwise the normal defaults apply.  See the
+<a href="../../../../../../javax/media/j3d/View.html#setWindowMovementPolicy(int)">setWindowMovementPolicy</a> and 
+<a href="../../../../../../javax/media/j3d/View.html#setWindowResizePolicy(int)">setWindowResizePolicy</a> View methods.</p>
+
+<h4>
+<a NAME="CenterEyeInCoexistence"></a>CenterEyeInCoexistence</h4>
+A 3D point which specifies the location of the center eye relative to
+coexistence coordinates.  See 
+<a href="#CoexistenceToTrackerBase">CoexistenceToTrackerBase</a>.  If stereo
+viewing is enabled, then the left and right eye positions are set to offsets
+from this position using the values specified by the PhysicalBody.  This
+property is ignored if head tracking is enabled or if WindowEyepointPolicy is
+not <code>RELATIVE_TO_COEXISTENCE</code>.  The default value is (0.0, 0.0,
+0.4572).
+<p>
+This property is a simplified interface to setting the View's left
+and right manual eyes in coexistence; there is no actual method in View
+to set a center eye position.</p>
+
+<h4>
+<a NAME="ScreenScalePolicy"></a>ScreenScalePolicy</h4>
+The <i>property value</i> string may be either <code>SCALE_SCREEN_SIZE</code>
+or <code>SCALE_EXPLICIT</code> and determines the source of the <i>screen
+scale</i>, a factor in the scaling of view platform coordinates to physical
+world coordinates.
+<p>
+If the value is <code>SCALE_SCREEN_SIZE</code>, then the screen scale is half
+the physical screen width in meters.  If WindowResizePolicy is
+<code>PHYSICAL_WORLD</code>, then this scale is further multiplied by the ratio
+of the window width to the width of the screen (the <i>window scale</i>) to
+produce the scale from view platform coordinates to physical coordinates.  This
+allows a virtual world which spans a normalized width of [-1.0 .. 1.0] in view
+platform coordinates to map directly to the physical width of the window or
+screen, depending upon the resize policy.</p>
+<p>
+<code>SCALE_EXPLICIT</code> uses the value of the ScreenScale property as the
+screen scale.  It is also further multiplied by the window scale when using the
+<code>PHYSICAL_WORLD</code> window resize policy to produce the scale from view
+platform coordinates to physical coordinates.  Viewing configurations
+incorporating multiple screens should generally set the policy to
+<code>SCALE_EXPLICIT</code> and choose a screen scale based on the aggregate
+display size, but the default value of <code>SCALE_SCREEN_SIZE</code> will
+usually work if all the screens are the same size and arranged in a linear
+array.</p>
+<p>
+The view platform is positioned in the virtual world through a chain of
+transforms to the root of the scene graph; this composite transform is its
+localToVWorld transform and must be congruent.  If we take the the inverse of
+the scale factor in this transform and call it the <i>view platform scale</i>,
+then the scale from virtual world units to physical world units can be computed
+as the product of this view platform scale, the screen scale, and, when using a
+resize policy of <code>PHYSICAL_WORLD</code>, the window scale.  In the usual
+case the view platform scale is 1.0.</p>
+
+<h4>
+<a NAME="ScreenScale"></a>ScreenScale</h4>
+The <i>property value </i>is a number specifying the explicit screen scale
+factor.  It is only used if ScreenScalePolicy is <code>SCALE_EXPLICIT</code>;
+otherwise, the screen scale is half the physical width of the screen in meters.
+The default value for this property is 1.0.
+
+<h4>
+<a NAME="BackClipPolicy"></a>BackClipPolicy<br>
+<a NAME="FrontClipPolicy"></a>FrontClipPolicy</h4>
+The string values of these properties may be either <code>PHYSICAL_EYE,
+PHYSICAL_SCREEN, VIRTUAL_EYE</code>, or <code>VIRTUAL_SCREEN</code>.  The
+default policies are <code>PHYSICAL_EYE</code>.  See the
+<a href="../../../../../../javax/media/j3d/View.html#setFrontClipPolicy(int)">setFrontClipPolicy</a> and 
+<a href="../../../../../../javax/media/j3d/View.html#setBackClipPolicy(int)">setBackClipPolicy</a> View methods.
+
+<h4>
+<a NAME="FrontClipDistance"></a>FrontClipDistance<br>
+<a NAME="BackClipDistance"></a>BackClipDistance</h4>
+These property values are numbers.  The defaults are 0.1 and 10.0 
+respectively. See the 
+<a href="../../../../../../javax/media/j3d/View.html#setFrontClipDistance(double)">setFrontClipDistance</a> and 
+<a href="../../../../../../javax/media/j3d/View.html#setBackClipDistance(double)">setBackClipDistance</a> View methods.</p>
+<p>
+With the default clip policies of <code>PHYSICAL_EYE</code> the clip distances
+are measured relative to the eye in physical units, so the clip distances
+specified must be scaled to virtual world units in order to determine the
+distances in the virtual world where they would effectively be applied.  As
+described in the discussion of 
+<a href="#ScreenScalePolicy">ScreenScalePolicy</a> above, the scale from
+virtual units to physical units is the product of the view platform scale
+(usually 1.0), the screen scale, and the window scale (if the window resize
+policy is <code>PHYSICAL_WORLD</code>), so normally the scale from physical
+units to virtual units would be the inverse of that product.</p>
+<p>
+There is a quirk, however, with physical clip plane scaling when the
+<code>PHYSICAL_EYE</code> or <code>PHYSICAL_SCREEN</code> clip policies are
+used with the <code>PHYSICAL_WORLD</code> window resize policy.  The locations
+of the clip planes in physical units are not actually set to the physical
+distances as specified, but are in fact <i>scaled by the window scale</i>.
+This means that when determining where the specified physical clip distances
+are in virtual units the scaling to be used is the inverse of the product of
+the screen scale and view platform scale only.</p>
+<p>
+This quirk applies only to scaling physical clip plane distances, and only with
+the <code>PHYSICAL_WORLD</code> resize policy.  It was implemented in this
+manner to prevent objects in the virtual world from getting clipped
+unexpectedly when the virtual world scaling changed as the result of a window
+resize.  The quirk can be avoided by using the <code>VIRTUAL_EYE</code> or
+<code>VIRTUAL_SCREEN</code> clip policies or by using the
+<code>VIRTUAL_WORLD</code> resize policy, but in most cases the effect is
+benign and doesn't lead to unexpected results.</p>
+
+<h4>
+<a NAME="FieldOfView"></a>FieldOfView</h4>
+This number is the view's horizontal field of view in radians.  The default
+value is PI/4.  This value is ignored if WindowEyepointPolicy is not
+<code>RELATIVE_TO_FIELD_OF_VIEW</code> or if head tracking is enabled.  The
+eyepoint for each canvas associated with the view is set such that it is
+centered in X and Y, with the Z value at the appropriate distance to match the
+specified field of view across the width of the canvas.
+
+<h4>
+<a NAME="StereoEnable"></a>StereoEnable</h4>
+Enable or disable stereo viewing for this view according to the boolean value
+specified by the <i>property value</i> string.  The default value is false.
+<p>
+There is no actual method in the core Java 3D View or utility Viewer class to
+enable stereo.  A true value for this property causes ConfigContainer to
+attempt to create stereo-capable canvases for all the screens associated with
+this view.  Stereo will then be enabled for each canvas successfully created
+with stereo capability.</p>
+
+<h4>
+<a NAME="TrackingEnable"></a>TrackingEnable</h4>
+Enable or disable head tracking for this view according to the boolean value
+specified by the <i>property value</i> string.  The default value is false.
+<p>
+Setting this property true causes WindowEyepointPolicy to be ignored; it will
+effectively be <code>RELATIVE_TO_COEXISTENCE</code> with the eyepoint in
+coexistence coordinates computed from reading the head tracking sensor.
+Tracking must be made available by registering an input device and a head
+tracking sensor in PhysicalEnvironment.</p>
+
+<h4>
+<a NAME="AntialiasingEnable"></a>AntialiasingEnable</h4>
+Enable or disable scene antialiasing for this view according to the boolean
+value specified by the <i>property value</i> string.  The default value is
+false.
+<p>
+A true value for this property causes ConfigContainer to attempt to create
+a canvas capable of scene antialiasing on each screen associated with this
+view.  The scene will then be antialiased on each canvas successfully created
+with that capability.</p>
+<p>
+Line and point antialiasing are independent of scene antialiasing and are
+controlled by the LineAttribute and PointAttribute components of an Appearance.
+If line and point antialiasing is enabled, then they will be antialiased prior
+to scene antialiasing; if scene antialiasing is turned off, then antialiased
+lines and points will still be antialiased.</p>
+</blockquote>
+<hr>
+
+<h2>
+<a NAME="NewViewPlatform"></a>NewViewPlatform</h2>
+<b>Syntax:</b>
+<br>(NewViewPlatform <i>&lt;instance name&gt;</i>
+[Alias <i>&lt;alias name&gt;</i>])
+<p>
+Creates a new view platform and binds it to the name given by <i>instance
+name</i>.  In the configuration file the term <i>view platform</i> refers to an
+instance of the <a href="../ViewingPlatform.html">ViewingPlatform</a> utility
+class, which is an extension of BranchGroup containing an instance of a core
+Java 3D ViewPlatform class.</p>
+<p>
+The last two arguments are optional and define an alias for <i>instance
+name</i>.  This is useful in providing a longer descriptive name for the
+application to recognize, or conversely, to provide a shorter alias for a
+longer instance name.  Either name may be used to identify the instance.</p>
+<hr>
+
+<h2>
+<a NAME="ViewPlatformProperty"></a>ViewPlatformProperty</h2>
+<b>Syntax:</b>
+<br>(ViewPlatformProperty <i>&lt;instance name&gt; &lt;property name&gt;
+&lt;property value&gt;</i>)
+<p>
+Sets a ViewPlatform property.  The instance is specified by <i>instance
+name</i>, the property to be set by <i>property name</i>, and the value to be
+set by <i>property value</i>.  The following properties are configurable:</p>
+
+<blockquote>
+<h4>
+<a NAME="NominalViewingTransform"></a>NominalViewingTransform</h4>
+The <i>property value</i> is a boolean string indicating whether or not
+the view platform should be backed up in Z to allow objects at the origin to be
+viewed.  This only has effect if the ViewAttachPolicy is
+<code>NOMINAL_HEAD</code>.  The default value is false.  See the
+<a href="../ViewingPlatform.html#setNominalViewingTransform()">setNominalViewingTransform</a>
+method of ViewingPlatform.
+
+<h4>
+<a NAME="InitialViewingTransform"></a>InitialViewingTransform</h4>
+Sets the initial transform of the view platform to the 4D matrix
+specified by <i>property value</i>.  The default value is identity.
+
+<h4>
+<a NAME="AllowPolicyRead"></a>AllowPolicyRead</h4>
+The <i>property value</i> is a boolean string indicating whether or not reading
+the ViewAttachPolicy is allowed.  The default value is false.
+
+<h4>
+<a NAME="AllowLocalToVworldRead"></a>AllowLocalToVworldRead</h4>
+The <i>property value</i> is a boolean string indicating whether or not reading
+the view platform's localToVworld transform is allowed.  The default value is
+false. 
+
+<h4>
+<a NAME="ViewPlatformBehavior"></a>ViewPlatformBehavior</h4>
+Attaches a ViewPlatformBehavior instantiated by 
+<a href="#NewViewPlatformBehavior">NewViewPlatformBehavior</a>.
+The <i>property value</i> string is the name bound to that instance.
+
+<h4>
+<a NAME="ViewAttachPolicy"></a>ViewAttachPolicy</h4>
+The <i>property value</i> string can be one of <code>NOMINAL_SCREEN,
+NOMINAL_HEAD,</code> or <code>NOMINAL_FEET</code>.  This establishes the point
+in coexistence coordinates where the origin of view platform coordinates is
+attached.  The basis vectors of view platform coordinates are always aligned
+with those of coexistence coordinates.
+<p>
+For a ViewAttachPolicy of <code>NOMINAL_SCREEN</code>, the ViewPlatform origin
+is set directly to the origin of coexistence, so that ViewPlatform coordinates
+and coexistence coordinates are identical except for scale.</p>
+<p>
+For a ViewAttachPolicy of <code>NOMINAL_HEAD</code>, the ViewPlatform origin is
+set to the origin of the nominal head, the center eye halfway between the left
+and right eyes.  The nominal head origin is on the Z axis of coexistence
+coordinates at some offset from the coexistence origin.  If the
+WindowEyepointPolicy is <code>RELATIVE_TO_FIELD_OF_VIEW</code>, then this is
+the positive Z offset producing the required field of view relative to the
+width of the canvas at the coexistence origin, tracking the Z offset of the
+eyepoint defined by that policy; otherwise, the Z offset is the
+NominalEyeOffsetFromNominalScreen property of PhysicalBody and is decoupled
+from the actual eyepoint offset.</p>
+<p>
+For a ViewAttachPolicy of <code>NOMINAL_FEET</code>, the ViewPlatform origin is
+at the ground plane, which is NominalEyeHeightFromGround meters along -Y from
+the origin of the nominal head.  NominalEyeHeightFromGround is a property of
+PhysicalBody.</p>
+<p>
+<b>Note:</b> The normal Java 3D default is <code>NOMINAL_HEAD</code>.  When
+using a configuration file, the default is <code>NOMINAL_HEAD</code> only if
+every view attached to the view platform has a WindowEyepointPolicy of
+<code>RELATIVE_TO_FIELD_OF_VIEW</code>; otherwise, the default is
+<code>NOMINAL_SCREEN</code>.  If the view policy is <code>HMD_VIEW</code>, then
+the ViewAttachPolicy is ignored and is always effectively
+<code>NOMINAL_SCREEN</code>.</p>
+</blockquote>
+<hr>
+
+<h2>
+<a NAME="NewViewPlatformBehavior"></a>NewViewPlatformBehavior</h2>
+<b>Syntax:</b>
+<br>(NewViewPlatformBehavior <i>&lt;instance name&gt; &lt;class name&gt;</i>
+[Alias <i>&lt;alias name&gt;</i>])
+<p>
+This command instantiates the concrete subclass of ViewPlatformBehavior
+specified by the fully qualified <i>class name</i> and binds it to <i>instance
+name</i>.  The ViewPlatformBehavior is instantiated through introspection of
+the class name.  The subclass must provide a parameterless constructor.  If no
+such constructor is available, then the behavior must be extended or wrapped to
+provide one and the derived class used instead.</p>
+<p>
+The last two arguments are optional and define an alias for <i>instance
+name</i>.  This is useful in providing a longer descriptive name for the
+application to recognize, or conversely, to provide a shorter alias for a
+longer instance name.  Either name may be used to identify the instance.</p>
+<p>
+View platform behaviors often need sensors or canvases as event sources to
+drive the behavior action.  A subclass of ViewPlatformBehavior always gets the
+current ViewingPlatform through its 
+<a href="../../behaviors/vp/ViewPlatformBehavior.html#setViewingPlatform(com.sun.j3d.utils.universe.ViewingPlatform)">setViewingPlatform</a>
+method.  When the behavior is initialized, the canvases used by the
+ViewingPlatform can be retrieved by calling its 
+<a href="../ViewingPlatform.html#getViewers()">getViewers</a> method and
+then calling each Viewer's 
+<a href="../Viewer.html#getCanvas3Ds()">getCanvas3Ds</a> method.  Sensors 
+can be retrieved by calling the ViewingPlatform method 
+<a href="../ViewingPlatform.html#getUniverse()">getUniverse</a>, checking 
+to see if the returned SimpleUniverse is a ConfiguredUniverse, and then calling
+its 
+<a href="../ConfiguredUniverse.html#getNamedSensors()">getNamedSensors</a>
+method.</p> 
+<p>
+Alternatively, the behavior implementation can define its own properties 
+and receive canvas and sensor instances directly through the
+<a href="#Canvas3D">Canvas3D</a> and <a href="#Sensor">Sensor</a> built-in
+commands.</p>
+<hr>
+
+<h2>
+<a NAME="ViewPlatformBehaviorProperty"></a>ViewPlatformBehaviorProperty</h2>
+<b>Syntax:</b>
+<br>(ViewPlatformBehaviorProperty <i>&lt;instance name&gt;
+&lt;property name&gt; &lt;property value&gt;</i>)
+<p>
+Sets a property of a ViewPlatformBehavior.  The instance is specified by
+<i>instance name</i>, the property to be set by <i>property name</i>, and the
+value to be set by <i>property value</i>.  The following properties are
+pre-defined by the abstract ViewPlatformBehavior superclass and may be
+configured directly:<p>
+
+<blockquote>
+<h4>
+<a NAME="SchedulingBounds"></a>SchedulingBounds</h4>
+The scheduling bounds for this behavior.  Use the 
+<a href="#BoundingSphere">BoundingSphere</a> built-in command to set this
+property.  The default is whatever the application or the concrete subclass
+sets.
+
+<h4>
+<a NAME="SchedulingInterval"></a>SchedulingInterval</h4>
+A number indicating the scheduling interval for this behavior. See the 
+<a href="../../../../../../javax/media/j3d/Behavior.html#setSchedulingInterval(int)">setSchedulingInterval</a>
+method of Behavior.
+
+<h4>
+<a NAME="HomeTransform"></a>HomeTransform</h4>
+See the ViewPlatformBehavior method 
+<a href="../../behaviors/vp/ViewPlatformBehavior.html#setHomeTransform(javax.media.j3d.Transform3D)">setHomeTransform</a>.
+The property value must be a 4D matrix.
+</blockquote>
+<p>
+The details of a concrete subclass of ViewPlatformBehavior are not known to
+ConfigContainer, so any properties specific to the subclass are set by
+using introspection to invoke <i>property name</i> as a method accepting an
+array of Objects as its single parameter.  The arguments following the property
+name are evaluated and the results passed to the method through that array of
+Objects.  Such methods can usually be provided by extending or wrapping
+existing ViewPlatformBehavior implementations.</p>
+<hr>
+
+<h2>
+<a NAME="NewObject"></a>NewObject</h2>
+<b>Syntax:</b>
+<br>(NewObject <i>&lt;instance name&gt; &lt;class name&gt;</i>
+[Alias <i>&lt;alias name&gt;</i>])
+<p>
+This command instantiates a generic object specified by <i>class
+name</i> and binds it to <i>instance name</i>.  The object is instantiated
+through introspection of the class name.  The object must provide a
+parameterless constructor; this can usually be done by extending or
+wrapping existing objects.</p> 
+<p>
+The last two arguments are optional and define an alias for <i>instance
+name</i>.  This is useful in providing a longer descriptive name for the
+application to recognize, or conversely, to provide a shorter alias for a
+longer instance name.  Either name may be used to identify the instance.</p>
+<p>
+Objects so defined may be accessed from ConfigContainer through the
+<a href="../ConfigContainer.html#getNamedGenericObjects()">getNamedGenericObjects</a> method.</p>
+<hr>
+
+<h2>
+<a NAME="ObjectProperty"></a>ObjectProperty</h2>
+<b>Syntax:</b>
+<br>(ObjectProperty <i>&lt;instance name&gt; &lt;method name&gt; &lt;arg0&gt; 
+... &lt;argn&gt;</i>)
+<p>
+Sets a property of a generic object.  The details of the object specified by
+<i>instance name</i> are not known to ConfigContainer, so any parameters to be
+set through the configuration file are passed to the object instance by
+invoking <i>method name</i> through introspection.  The arguments following the
+method name are evaluated and the results passed to the method as an array of
+Objects.  The required methods can usually be provided by extending or wrapping
+existing objects.</p>
+<hr>
+
+<h2>
+<a NAME="JavaProperty"></a>JavaProperty</h2>
+<b>Syntax:</b>
+<br>(JavaProperty <i>&lt;propertyName&gt;</i> [Default] 
+<i>&lt;propertyValue&gt;</i>)
+<p>
+Sets the Java system property <i>propertyName</i> to the string
+<i>propertyValue</i>.  If the optional Default keyword is supplied, then the
+property is set only if it doesn't currently have a value.</p>
+<p>
+Java system properties which affect Java 3D are evaluated at the first
+reference to a VirtualUniverse.  Setting such properties in the configuration
+file is therefore ineffective if a ConfiguredUniverse constructor which accepts
+a URL directly is used; ConfigContainer must be used instead.  Even then, care
+must be taken to avoid static references to VirtualUniverse from objects such
+as Transform3D.</p>
+<p>
+The special Java property substitution syntax ${<i>&lt;propertyName&gt;</i>}
+may be used to access the value of a Java system property anywhere within a
+configuration file.</p>
+<hr>
+
+<h2>
+<a NAME="Include"></a>Include</h2>
+<b>Syntax:</b>
+<br>(Include <i>&lt;URL string&gt;</i>)
+<p>
+Retrieves the configuration file specified by <i>URL string</i> and includes it
+into the current configuration file at the current line.  The content of the
+included file is evaluated exactly as if it were pasted into the current file
+at that line.  Included files may be arbitrarily nested.</p>
+<p>
+URL strings must be quoted.<p>
+<hr>
+
+<h2>
+<a NAME="Alias"></a>Alias</h2>
+<b>Syntax:</b>
+<br>(<i>&lt;baseName&gt;</i>Alias <i>&lt;aliasName&gt; 
+&lt;originalName&gt;</i>)
+<p>
+Creates an alias for the object specified by <i>originalName</i> (which itself
+may be an alias).  <i>baseName</i> may be Device, Object, PhysicalBody,
+PhysicalEnvironment, Screen, Window, Sensor, View, ViewPlatform, or
+ViewPlatformBehavior; it specifies the type of the object being aliased.
+Original names and aliases must be unique within a type.  Note that there is no
+white space between <i>baseName</i> and Alias.</p>
+<p>
+Aliases are useful for providing shorter or longer descriptive names for an
+original name.  This function is also provided by the optional Alias keyword
+available for all <i>New</i> top-level commands.  This separate command can be
+used to substitute new names for objects created by generic include files in
+order to conform to the names expected by specific applications.</p>
+<br>
+
+<a name="BuiltInCommandDetails"></a>
+<table border="1" cellpadding="3" cellspacing="0" width="100%">
+<tr bgcolor="#ccccff">
+<td><font size="+2">
+<b>Built-In Command Details</b></font></td>
+</tr>
+</table>
+<p>
+Built-in commands are provided by the parser itself to help construct the
+arguments to top-level commands.   They cannot appear at the top level of
+command nesting.</p>
+<p>
+Translate, Rotate, TranslateRotate, and RotateTranslate are useful for
+computing simple affine transforms of the form <i>Source</i>To<i>Target</i>
+(e.g., <i>TrackerBase</i>To<i>ImagePlate</i>).  These transform points from the
+<i>Source</i> coordinate system to the <i>Target</i> coordinate system by
+concatenating translation and rotation matrices.  Here is a general rule for
+creating such transforms:</p>
+
+<blockquote>
+Subtract (translate) the target origin first if it can be conveniently measured
+or computed relative to the source origin along the source X, Y, and Z basis
+vectors.  Then rotate with Euler angles that move the target basis vectors to
+their corresponding source basis vectors.
+<p>
+If instead it is easier to measure or compute the source origin relative to the
+target origin along the target basis vectors, rotate first with Euler angles
+that move the target basis vectors to their corresponding source basis vectors,
+and then add (translate) the source origin.</p>
+</blockquote>
+<p>
+The Canvas3D, Sensor, Device, PhysicalBody, PhysicalEnvironment, View,
+ViewPlatform, ViewPlatformBehavior, and Object built-in commands return
+references to the objects named by their arguments.  These are mostly useful
+for InputDevice and ViewPlatformBehavior implementations that define their own
+properties.  The return values of these built-in commands should not be passed
+to commands that expect strings.</p>
+<hr>
+
+<h2>
+<a NAME="Translate"></a>Translate</h2>
+<b>Syntax:</b>
+<br>(Translate <i>&lt;x offset&gt; &lt;y offset&gt; &lt;z offset&gt;</i>)
+<p>
+Returns a 4D matrix that translates by the given X, Y, and Z values.</p>
+<hr>
+
+<h2>
+<a NAME="Rotate"></a>Rotate</h2>
+<b>Syntax:</b>
+<br>(Rotate <i>&lt;x degrees&gt; &lt;y degrees&gt; &lt;z degrees&gt;</i>)
+<p>
+Returns a 4D matrix that rotates by the given Euler angles around static X, Y,
+and Z basis vectors: first about X, then Y, and then Z.  See the 
+<a href="../../../../../../javax/media/j3d/Transform3D.html#setEuler(javax.vecmath.Vector3d)">setEuler</a>
+method of Transform3D.</p>
+<hr>
+
+<h2>
+<a NAME="Concatenate"></a>Concatenate</h2>
+<b>Syntax:</b>
+<br>(Concatenate <i>&lt;m1&gt; &lt;m2&gt;</i>)
+<p>
+Returns a 4D matrix that concatenates 4D matrices <i>m1</i> and <i>m2</i> in
+that order.  If a point is transformed by the resulting matrix, then in effect
+the points are first transformed by <i>m1</i> and then <i>m2</i>.</p>
+<hr>
+
+<h2>
+<a NAME="RotateTranslate"></a>RotateTranslate</h2>
+<b>Syntax:</b>
+<br>(RotateTranslate <i>&lt;m1&gt; &lt;m2&gt;</i>)
+<p>
+An alias for the Concatenate command.  This is useful to make the
+result of the concatenation explicit.</p>
+<hr>
+
+<h2>
+<a NAME="TranslateRotate"></a>TranslateRotate</h2>
+<b>Syntax:</b>
+<br>(TranslateRotate <i>&lt;m1&gt; &lt;m2&gt;</i>)
+<p>
+An alias for the Concatenate command.  This is useful to make the
+result of the concatenation explicit.</p>
+<hr>
+
+<h2>
+<a NAME="BoundingSphere"></a>BoundingSphere</h2>
+<b>Syntax:</b>
+<br>(BoundingSphere <i>&lt;center&gt; &lt;radius&gt;</i>)
+<p>
+Returns a BoundingSphere object using the 3D point <i>center</i> and the given
+<i>radius</i> in meters.  <i>radius</i> may be either a number or the string
+Infinite.</p>
+<hr>
+
+<h2>
+<a NAME="Canvas3D"></a>Canvas3D</h2>
+<b>Syntax:</b>
+<br>(Canvas3D <i>&lt;screen or window name&gt;</i>)
+<p>
+Returns the Canvas3D instance specified by the given name.  A named Canvas3D is
+created whenever any of the following configuration commands are used:
+
+<blockquote>
+(ViewProperty <i>&lt;view&gt;</i> Screen <i>&lt;screenName&gt;</i>)<br>
+(ViewProperty <i>&lt;view&gt;</i> Window <i>&lt;windowName&gt;</i>)
+</blockquote>
+
+<i>view</i> is the name of a view created with the NewView command.  The
+argument to the Canvas3D built-in must be a <i>screenName</i> or
+<i>windowName</i> parameter from one of the above commands.</p>
+<p>
+<b>Note:</b> the NewScreen and NewWindow commands do <i>not</i> create Canvas3D
+instances themselves; they are created only by the above configuration
+commands.</p>
+<hr>
+
+<h2>
+<a NAME="Sensor">Sensor</h2>
+<b>Syntax:</b>
+<br>(Sensor <i>&lt;sensor name&gt;</i>)
+<p>
+Returns the Sensor instance specified by the given name.</p>
+<hr>
+
+<h2>
+<a NAME="Device">Device</h2>
+<b>Syntax:</b>
+<br>(Device <i>&lt;device name&gt;</i>)
+<p>
+Returns the InputDevice instance specified by the given name.</p>
+<hr>
+
+<h2>
+<a NAME="PhysicalBody">PhysicalBody</h2>
+<b>Syntax:</b>
+<br>(PhysicalBody <i>&lt;body name&gt;</i>)
+<p>
+Returns the PhysicalBody instance specified by the given name.</p>
+<hr>
+
+<h2>
+<a NAME="PhysicalEnvironment">PhysicalEnvironment</h2>
+<b>Syntax:</b>
+<br>(PhysicalEnvironment <i>&lt;environment name&gt;</i>)
+<p>
+Returns the PhysicalEnvironment instance specified by the given name.</p>
+<hr>
+
+<h2>
+<a NAME="View">View</h2>
+<b>Syntax:</b>
+<br>(View <i>&lt;view name&gt;</i>)
+<p>
+Returns the Viewer instance specified by the given name.</p>
+<hr>
+
+<h2>
+<a NAME="ViewPlatform">ViewPlatform</h2>
+<b>Syntax:</b>
+<br>(ViewPlatform <i>&lt;view platform name&gt;</i>)
+<p>
+Returns the ViewingPlatform instance specified by the given name.</p>
+<hr>
+
+<h2>
+<a NAME="ViewPlatformBehavior">ViewPlatformBehavior</h2>
+<b>Syntax:</b>
+<br>(ViewPlatformBehavior <i>&lt;behavior name&gt;</i>)
+<p>
+Returns the ViewPlatformBehavior instance specified by the given name.</p>
+<hr>
+
+<h2>
+<a NAME="Object">Object</h2>
+<b>Syntax:</b>
+<br>(Object <i>&lt;generic object name&gt;</i>)
+<p>
+Returns the generic object instance specified by the given name.  A generic
+named object is created by the following configuration command:
+
+<blockquote>
+(NewObject <i>&lt;instance name&gt; &lt;class name&gt;</i>
+[Alias <i>&lt;alias name&gt;</i>])
+</blockquote>
+<hr>
+
+<h2>
+<a NAME="ConfigContainer">ConfigContainer</h2>
+<b>Syntax:</b>
+<br>(ConfigContainer)
+<p>
+Returns a reference to the current ConfigContainer.</p>
+<br>
+
+<a name="Command_Index"></a>
+<table border="1" cellpadding="3" cellspacing="0" width="100%">
+<tr bgcolor="#ccccff">
+<td><font size="+2">
+<b>Command Index</b></font></td>
+</tr>
+</table>
+<br>
+
+<table border="1" cellpadding="3" cellspacing="0">
+<tr bgcolor="#eeeeff">
+<th>Command</th>
+<th>Type</th>
+</tr>
+<tr>
+<td><a href="#Alias">Alias</a></td>
+<td>top-level</td>
+</tr>
+<tr>
+<td><a href="#BoundingSphere">BoundingSphere</a></td>
+<td>built-in</td>
+</tr>
+<tr>
+<td><a href="#Canvas3D">Canvas3D</a></td>
+<td>built-in</td>
+</tr>
+<tr>
+<td><a href="#Concatenate">Concatenate</a></td>
+<td>built-in</td>
+</tr>
+<tr>
+<td><a href="#ConfigContainer">ConfigContainer</a></td>
+<td>built-in</td>
+</tr>
+<tr>
+<td><a href="#Device">Device</a></td>
+<td>built-in</td>
+</tr>
+<tr>
+<td><a href="#DeviceProperty">DeviceProperty</a></td>
+<td>top-level</td>
+</tr>
+<tr>
+<td><a href="#Include">Include</a></td>
+<td>top-level</td>
+</tr>
+<tr>
+<td><a href="#JavaProperty">JavaProperty</a></td>
+<td>top-level</td>
+</tr>
+<tr>
+<td><a href="#NewDevice">NewDevice</a></td>
+<td>top-level</td>
+</tr>
+<tr>
+<td><a href="#NewObject">NewObject</a></td>
+<td>top-level</td>
+</tr>
+<tr>
+<td><a href="#NewPhysicalBody">NewPhysicalBody</a></td>
+<td>top-level</td>
+</tr>
+<tr>
+<td><a href="#NewPhysicalEnvironment">NewPhysicalEnvironment</a></td>
+<td>top-level</td>
+</tr>
+<tr>
+<td><a href="#NewScreen">NewScreen</a></td>
+<td>top-level</td>
+</tr>
+<tr>
+<td><a href="#NewSensor">NewSensor</a></td>
+<td>top-level</td>
+</tr>
+<tr>
+<td><a href="#NewView">NewView</a></td>
+<td>top-level</td>
+</tr>
+<tr>
+<td><a href="#NewViewPlatform">NewViewPlatform</a></td>
+<td>top-level</td>
+</tr>
+<tr>
+<td><a href="#NewViewPlatformBehavior">NewViewPlatformBehavior</a></td>
+<td>top-level</td>
+</tr>
+<tr>
+<td><a href="#NewWindow">NewWindow</a></td>
+<td>top-level</td>
+</tr>
+<tr>
+<td><a href="#Object">Object</a></td>
+<td>built-in</td>
+</tr>
+<tr>
+<td><a href="#ObjectProperty">ObjectProperty</a></td>
+<td>top-level</td>
+</tr>
+<tr>
+<td><a href="#PhysicalBody">PhysicalBody</a></td>
+<td>built-in</td>
+</tr>
+<tr>
+<td><a href="#PhysicalBodyProperty">PhysicalBodyProperty</a></td>
+<td>top-level</td>
+</tr>
+<tr>
+<td><a href="#PhysicalEnvironment">PhysicalEnvironment</a></td>
+<td>built-in</td>
+</tr>
+<tr>
+<td><a href="#PhysicalEnvironmentProperty">PhysicalEnvironmentProperty</a></td>
+<td>top-level</td>
+</tr>
+<tr>
+<td><a href="#Rotate">Rotate</a></td>
+<td>built-in</td>
+</tr>
+<tr>
+<td><a href="#RotateTranslate">RotateTranslate</a></td>
+<td>built-in</td>
+</tr>
+<tr>
+<td><a href="#ScreenProperty">ScreenProperty</a></td>
+<td>top-level</td>
+</tr>
+<tr>
+<td><a href="#Sensor">Sensor</a></td>
+<td>built-in</td>
+</tr>
+<tr>
+<td><a href="#SensorProperty">SensorProperty</a></td>
+<td>top-level</td>
+</tr>
+<tr>
+<td><a href="#Translate">Translate</a></td>
+<td>built-in</td>
+</tr>
+<tr>
+<td><a href="#TranslateRotate">TranslateRotate</a></td>
+<td>built-in</td>
+</tr>
+<tr>
+<td><a href="#View">View</a></td>
+<td>built-in</td>
+</tr>
+<tr>
+<td><a href="#ViewPlatform">ViewPlatform</a></td>
+<td>built-in</td>
+</tr>
+<tr>
+<td><a href="#ViewPlatformBehavior">ViewPlatformBehavior</a></td>
+<td>built-in</td>
+</tr>
+<tr>
+<td><a href="#ViewProperty">ViewProperty</a></td>
+<td>top-level</td>
+</tr>
+<tr>
+<td><a href="#ViewPlatformProperty">ViewPlatformProperty</a></td>
+<td>top-level</td>
+</tr>
+<tr>
+<td><a href="#ViewPlatformBehaviorProperty">ViewPlatformBehaviorProperty</a></td>
+<td>top-level</td>
+</tr>
+<tr>
+<td><a href="#WindowProperty">WindowProperty</a></td>
+<td>top-level</td>
+</tr>
+</table>
+<br><br>
+
+<a name="Property Index"></a>
+<table border="1" cellpadding="3" cellspacing="0" width="100%">
+<tr bgcolor="#ccccff">
+<td><font size="+2">
+<b>Property Index</b></font></td>
+</tr>
+</table>
+<br>
+
+<table border="1" cellpadding="3" cellspacing="0">
+<tr bgcolor="#eeeeff">
+<th>Property</th>
+<th>Command</th>
+</tr>
+<tr>
+<td><a href="#AllowLocalToVworldRead">AllowLocalToVworldRead</a></td>
+<td><a href="#ViewPlatformProperty">ViewPlatformProperty</a></td>
+</tr>
+<tr>
+<td><a href="#AllowPolicyRead">AllowPolicyRead</a></td>
+<td><a href="#ViewPlatformProperty">ViewPlatformProperty</a></td>
+</tr>
+<tr>
+<td><a href="#AntialiasingEnable">AntialiasingEnable</a></td>
+<td><a href="#ViewProperty">ViewProperty</a></td>
+</tr>
+<tr>
+<td><a href="#BackClipDistance">BackClipDistance</a></td>
+<td><a href="#ViewProperty">ViewProperty</a></td>
+</tr>
+<tr>
+<td><a href="#BackClipPolicy">BackClipPolicy</a></td>
+<td><a href="#ViewProperty">ViewProperty</a></td>
+</tr>
+<tr>
+<td><a href="#CenterEyeInCoexistence">CenterEyeInCoexistence</a></td>
+<td><a href="#ViewProperty">ViewProperty</a></td>
+</tr>
+<tr>
+<td><a href="#CoexistenceCenteringEnable">CoexistenceCenteringEnable</a></td>
+<td><a href="#ViewProperty">ViewProperty</a></td>
+</tr>
+<tr>
+<td><a href="#CoexistenceToTrackerBase">CoexistenceToTrackerBase</a></td>
+<td><a href="#PhysicalEnvironmentProperty">PhysicalEnvironmentProperty</a></td>
+</tr>
+<tr>
+<td><a href="#FieldOfView">FieldOfView</a></td>
+<td><a href="#ViewProperty">ViewProperty</a></td>
+</tr>
+<tr>
+<td><a href="#FrontClipDistance">FrontClipDistance</a></td>
+<td><a href="#ViewProperty">ViewProperty</a></td>
+</tr>
+<tr>
+<td><a href="#FrontClipPolicy">FrontClipPolicy</a></td>
+<td><a href="#ViewProperty">ViewProperty</a></td>
+</tr>
+<tr>
+<td><a href="#HeadToHeadTracker">HeadToHeadTracker</a></td>
+<td><a href="#PhysicalBodyProperty">PhysicalBodyProperty</a></td>
+</tr>
+<tr>
+<td><a href="#HeadTracker">HeadTracker</a></td>
+<td><a href="#PhysicalEnvironmentProperty">PhysicalEnvironmentProperty</a></td>
+</tr>
+<tr>
+<td><a href="#HeadTrackerToLeftImagePlate">HeadTrackerToLeftImagePlate</a></td>
+<td><a href="#ScreenProperty">ScreenProperty</a></td>
+</tr>
+<tr>
+<td><a href="#HeadTrackerToRightImagePlate">HeadTrackerToRightImagePlate</a></td>
+<td><a href="#ScreenProperty">ScreenProperty</a></td>
+</tr>
+<tr>
+<td><a href="#HomeTransform">HomeTransform</a></td>
+<td><a href="#ViewPlatformBehaviorProperty">ViewPlatformBehaviorProperty</a></td>
+</tr>
+<tr>
+<td><a href="#Hotspot">Hotspot</a></td>
+<td><a href="#SensorProperty">SensorProperty</a></td>
+</tr>
+<tr>
+<td><a href="#InitialViewingTransform">InitialViewingTransform</a></td>
+<td><a href="#ViewPlatformProperty">ViewPlatformProperty</a></td>
+</tr>
+<tr>
+<td><a href="#InputDevice">InputDevice</a></td>
+<td><a href="#PhysicalEnvironmentProperty">PhysicalEnvironmentProperty</a></td>
+</tr>
+<tr>
+<td><a href="#LeftEarPosition">LeftEarPosition</a></td>
+<td><a href="#PhysicalBodyProperty">PhysicalBodyProperty</a></td>
+</tr>
+<tr>
+<td><a href="#MonoscopicViewPolicy">MonoscopicViewPolicy</a></td>
+<td><a href="#ScreenProperty">ScreenProperty</a></td>
+</tr>
+<tr>
+<td><a href="#NominalEyeHeightFromGround">NominalEyeHeightFromGround</a></td>
+<td><a href="#PhysicalBodyProperty">PhysicalBodyProperty</a></td>
+</tr>
+<tr>
+<td><a href="#NominalEyeOffsetFromNominalScreen">NominalEyeOffsetFromNominalScreen</a></td>
+<td><a href="#PhysicalBodyProperty">PhysicalBodyProperty</a></td>
+</tr>
+<tr>
+<td><a href="#NominalViewingTransform">NominalViewingTransform</a></td>
+<td><a href="#ViewPlatformProperty">ViewPlatformProperty</a></td>
+</tr>
+<tr>
+<td><a href="#PhysicalBody">PhysicalBody</a></td>
+<td><a href="#ViewProperty">ViewProperty</a></td>
+</tr>
+<tr>
+<td><a href="#PhysicalEnvironment">PhysicalEnvironment</a></td>
+<td><a href="#ViewProperty">ViewProperty</a></td>
+</tr>
+<tr>
+<td><a href="#PhysicalScreenHeight">PhysicalScreenHeight</a></td>
+<td><a href="#ScreenProperty">ScreenProperty</a></td>
+</tr>
+<tr>
+<td><a href="#PhysicalScreenWidth">PhysicalScreenWidth</a></td>
+<td><a href="#ScreenProperty">ScreenProperty</a></td>
+</tr>
+<tr>
+<td><a href="#RightEarPosition">RightEarPosition</a></td>
+<td><a href="#PhysicalBodyProperty">PhysicalBodyProperty</a></td>
+</tr>
+<tr>
+<td><a href="#SchedulingBounds">SchedulingBounds</a></td>
+<td><a href="#ViewPlatformBehaviorProperty">ViewPlatformBehaviorProperty</a></td>
+</tr>
+<tr>
+<td><a href="#SchedulingInterval">SchedulingInterval</a></td>
+<td><a href="#ViewPlatformBehaviorProperty">ViewPlatformBehaviorProperty</a></td>
+</tr>
+<tr>
+<td><a href="#Screen">Screen</a></td>
+<td><a href="#ViewProperty">ViewProperty</a></td>
+</tr>
+<tr>
+<td><a href="#ScreenScale">ScreenScale</a></td>
+<td><a href="#ViewProperty">ViewProperty</a></td>
+</tr>
+<tr>
+<td><a href="#ScreenScalePolicy">ScreenScalePolicy</a></td>
+<td><a href="#ViewProperty">ViewProperty</a></td>
+</tr>
+<tr>
+<td><a href="#StereoEnable">StereoEnable</a></td>
+<td><a href="#ViewProperty">ViewProperty</a></td>
+</tr>
+<tr>
+<td><a href="#StereoEyeSeparation">StereoEyeSeparation</a></td>
+<td><a href="#PhysicalBodyProperty">PhysicalBodyProperty</a></td>
+</tr>
+<tr>
+<td><a href="#TrackerBaseToImagePlate">TrackerBaseToImagePlate</a></td>
+<td><a href="#ScreenProperty">ScreenProperty</a></td>
+</tr>
+<tr>
+<td><a href="#TrackingEnable">TrackingEnable</a></td>
+<td><a href="#ViewProperty">ViewProperty</a></td>
+</tr>
+<tr>
+<td><a href="#ViewAttachPolicy">ViewAttachPolicy</a></td>
+<td><a href="#ViewPlatformProperty">ViewPlatformProperty</a></td>
+</tr>
+<tr>
+<td><a href="#ViewPlatform">ViewPlatform</a></td>
+<td><a href="#ViewProperty">ViewProperty</a></td>
+</tr>
+<tr>
+<td><a href="#ViewPlatformBehavior">ViewPlatformBehavior</a></td>
+<td><a href="#ViewPlatformProperty">ViewPlatformProperty</a></td>
+</tr>
+<tr>
+<td><a href="#ViewPolicy">ViewPolicy</a></td>
+<td><a href="#ViewProperty">ViewProperty</a></td>
+</tr>
+<tr>
+<td><a href="#Window">Window</a></td>
+<td><a href="#ViewProperty">ViewProperty</a></td>
+</tr>
+<tr>
+<td><a href="#WindowEyepointPolicy">WindowEyepointPolicy</a></td>
+<td><a href="#ViewProperty">ViewProperty</a></td>
+</tr>
+<tr>
+<td><a href="#WindowMovementPolicy">WindowMovementPolicy</a></td>
+<td><a href="#ViewProperty">ViewProperty</a></td>
+</tr>
+<tr>
+<td><a href="#WindowPosition">WindowPosition</a></td>
+<td><a href="#WindowProperty">WindowProperty</a></td>
+</tr>
+<tr>
+<td><a href="#WindowResizePolicy">WindowResizePolicy</a></td>
+<td><a href="#ViewProperty">ViewProperty</a></td>
+</tr>
+<tr>
+<td><a href="#WindowSize">WindowSize</a></td>
+<td><a href="#WindowProperty">WindowProperty</a></td>
+</tr>
+</table>
+</body>
+</html>

@@ -1,0 +1,152 @@
+<!--
+/*
+ * $RCSfile$
+ *
+ * Copyright (c) 2004 Sun Microsystems, Inc. All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ *
+ * - Redistribution of source code must retain the above copyright
+ *   notice, this list of conditions and the following disclaimer.
+ *
+ * - Redistribution in binary form must reproduce the above copyright
+ *   notice, this list of conditions and the following disclaimer in
+ *   the documentation and/or other materials provided with the
+ *   distribution.
+ *
+ * Neither the name of Sun Microsystems, Inc. or the names of
+ * contributors may be used to endorse or promote products derived
+ * from this software without specific prior written permission.
+ *
+ * This software is provided "AS IS," without a warranty of any
+ * kind. ALL EXPRESS OR IMPLIED CONDITIONS, REPRESENTATIONS AND
+ * WARRANTIES, INCLUDING ANY IMPLIED WARRANTY OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE OR NON-INFRINGEMENT, ARE HEREBY
+ * EXCLUDED. SUN MICROSYSTEMS, INC. ("SUN") AND ITS LICENSORS SHALL
+ * NOT BE LIABLE FOR ANY DAMAGES SUFFERED BY LICENSEE AS A RESULT OF
+ * USING, MODIFYING OR DISTRIBUTING THIS SOFTWARE OR ITS
+ * DERIVATIVES. IN NO EVENT WILL SUN OR ITS LICENSORS BE LIABLE FOR
+ * ANY LOST REVENUE, PROFIT OR DATA, OR FOR DIRECT, INDIRECT, SPECIAL,
+ * CONSEQUENTIAL, INCIDENTAL OR PUNITIVE DAMAGES, HOWEVER CAUSED AND
+ * REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF OR
+ * INABILITY TO USE THIS SOFTWARE, EVEN IF SUN HAS BEEN ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGES.
+ *
+ * You acknowledge that this software is not designed, licensed or
+ * intended for use in the design, construction, operation or
+ * maintenance of any nuclear facility.
+ *
+ * $Revision$
+ * $Date$
+ * $State$
+ */
+ -->
+
+<html>
+<head>
+   <title>j3d1x2-flat config file</title>
+</head>
+
+<body text="#000000" bgcolor="#FFFFFF" link="#0000EE" vlink="#551A8B" alink="#FF0000">
+<pre>
+/*
+ ************************************************************************
+ *  
+ * Java 3D configuration file for dual-screen (flat) desktop configuration
+ * with no head tracking.
+ *  
+ ************************************************************************
+ */
+
+// Create new screen objects and associate them with logical names and numbers.
+// These numbers are used as indices to retrieve the AWT GraphicsDevice from
+// the array that GraphicsEnvironment.getScreenDevices() returns.
+// 
+// NOTE: The GraphicsDevice order in the array is specific to the local
+// site and display system.
+// 
+(NewScreen left  0)
+(NewScreen right 1)
+
+// Set the screen dimensions.
+// 
+(ScreenProperty left  PhysicalScreenWidth  0.360)
+(ScreenProperty left  PhysicalScreenHeight 0.288)
+
+(ScreenProperty right PhysicalScreenWidth  0.360)
+(ScreenProperty right PhysicalScreenHeight 0.288)
+
+// Specify full screen windows.
+// 
+(ScreenProperty left  WindowSize NoBorderFullScreen)
+(ScreenProperty right WindowSize NoBorderFullScreen)
+
+// Set the TrackerBaseToImagePlate transforms for these screens.  This
+// transforms points in tracker base coordinates to each screen's image plate
+// coordinates, where the origin of the image plate is defined to be the lower
+// left corner of the screen with X increasing to the right, Y increasing to
+// the top, and Z increasing away from the screen.
+//
+// Without head or sensor tracking the tracker base is still needed as a fixed
+// frame of reference for describing the orientation and position of each
+// screen to the others.  The coexistence to tracker base transform is set to
+// identity by default, so the tracker base origin and orientation will also
+// set the origin and orientation of coexistence coordinates in the physical
+// world.
+//
+// The tracker base and center of coexistence is set here to the middle of the
+// edge shared by the two screens.
+//
+(ScreenProperty left  TrackerBaseToImagePlate
+                       (Translate 0.360 0.144 0.0))
+(ScreenProperty right TrackerBaseToImagePlate
+                       (Translate 0.000 0.144 0.0))
+
+// Sometimes it is desirable to include the bevels in between the monitors in
+// the TrackerBaseToImagePlate transforms, so that the abutting bevels obscure
+// the view of the virtual world instead of stretching it out between the
+// monitors.  For a bevel width of 4.5 cm on each monitor, the above commands
+// would become the following:
+// 
+// (ScreenProperty left  TrackerBaseToImagePlate
+//                        (Translate  0.405 0.144 0.0))
+// (ScreenProperty right TrackerBaseToImagePlate
+//                        (Translate -0.045 0.144 0.0))
+//
+// Conversely, a similar technique may be used to include overlap between the
+// screens.  This is useful for projection systems which use edge blending
+// to provide seamless integration between screens.
+
+
+// Create a view using the defined screens.
+// 
+(NewView view0)
+(ViewProperty view0 Screen left)
+(ViewProperty view0 Screen right)
+
+// Set the eyepoint relative to coexistence coordinates.  Here it is set 45cm
+// toward the user along Z, extending out from the midpoint of the edge shared
+// by the two screens.  This will create the appropriate skewed projection
+// frustums for each image plate.
+// 
+// If a planar display surface is all that is required, the same effect could
+// be achieved in a virtual screen enviroment such as Xinerama by simply
+// creating a canvas that spans both screens.  In some display environments the
+// use of a canvas that spans multiple physical screens may cause significant
+// performance degradation, however.
+// 
+// See j3d1x2-rot30 for an example of a non-planar configuration that cannot be
+// achieved through a single canvas spanning both screens.
+// 
+(ViewProperty view0 CenterEyeInCoexistence (0.0 0.0 0.45))
+
+(NewViewPlatform vp)
+(ViewPlatformProperty vp AllowPolicyRead true)
+(ViewPlatformProperty vp AllowLocalToVworldRead true)
+
+(ViewProperty view0 ViewPlatform vp)
+</pre>
+</body>
+</html>

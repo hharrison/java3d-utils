@@ -1,0 +1,122 @@
+<!--
+/*
+ * $RCSfile$
+ *
+ * Copyright (c) 2004 Sun Microsystems, Inc. All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ *
+ * - Redistribution of source code must retain the above copyright
+ *   notice, this list of conditions and the following disclaimer.
+ *
+ * - Redistribution in binary form must reproduce the above copyright
+ *   notice, this list of conditions and the following disclaimer in
+ *   the documentation and/or other materials provided with the
+ *   distribution.
+ *
+ * Neither the name of Sun Microsystems, Inc. or the names of
+ * contributors may be used to endorse or promote products derived
+ * from this software without specific prior written permission.
+ *
+ * This software is provided "AS IS," without a warranty of any
+ * kind. ALL EXPRESS OR IMPLIED CONDITIONS, REPRESENTATIONS AND
+ * WARRANTIES, INCLUDING ANY IMPLIED WARRANTY OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE OR NON-INFRINGEMENT, ARE HEREBY
+ * EXCLUDED. SUN MICROSYSTEMS, INC. ("SUN") AND ITS LICENSORS SHALL
+ * NOT BE LIABLE FOR ANY DAMAGES SUFFERED BY LICENSEE AS A RESULT OF
+ * USING, MODIFYING OR DISTRIBUTING THIS SOFTWARE OR ITS
+ * DERIVATIVES. IN NO EVENT WILL SUN OR ITS LICENSORS BE LIABLE FOR
+ * ANY LOST REVENUE, PROFIT OR DATA, OR FOR DIRECT, INDIRECT, SPECIAL,
+ * CONSEQUENTIAL, INCIDENTAL OR PUNITIVE DAMAGES, HOWEVER CAUSED AND
+ * REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF OR
+ * INABILITY TO USE THIS SOFTWARE, EVEN IF SUN HAS BEEN ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGES.
+ *
+ * You acknowledge that this software is not designed, licensed or
+ * intended for use in the design, construction, operation or
+ * maintenance of any nuclear facility.
+ *
+ * $Revision$
+ * $Date$
+ * $State$
+ */
+ -->
+
+<html>
+<head>
+   <title>j3d1x3-rot45 config file</title>
+</head>
+
+<body text="#000000" bgcolor="#FFFFFF" link="#0000EE" vlink="#551A8B" alink="#FF0000">
+<pre>
+/*
+ ************************************************************************
+ *  
+ * Java 3D configuration file for 3 screens.  Left and right screens are
+ * rotated 45 degrees from the center screen.
+ *  
+ ************************************************************************
+ */
+
+// Create new screen objects and associate them with logical names and numbers.
+// These numbers are used as indices to retrieve the AWT GraphicsDevice from
+// the array that GraphicsEnvironment.getScreenDevices() returns.
+// 
+// NOTE: The GraphicsDevice order in the array is specific to the local
+// site and display system.
+// 
+(NewScreen left   0)
+(NewScreen center 1)
+(NewScreen right  2)
+
+// Set the available image areas for full screens.  
+// 
+(ScreenProperty left   PhysicalScreenWidth  0.360)
+(ScreenProperty left   PhysicalScreenHeight 0.288)
+
+(ScreenProperty center PhysicalScreenWidth  0.360)
+(ScreenProperty center PhysicalScreenHeight 0.288)
+
+(ScreenProperty right  PhysicalScreenWidth  0.360)
+(ScreenProperty right  PhysicalScreenHeight 0.288)
+
+// Specify full screen windows.
+// 
+(ScreenProperty left   WindowSize NoBorderFullScreen)
+(ScreenProperty center WindowSize NoBorderFullScreen)
+(ScreenProperty right  WindowSize NoBorderFullScreen)
+
+// Set the TrackerBaseToImagePlate transforms for these screens.
+// 
+// The tracker base and center of coexistence are set here to the middle of the
+// center screen. The basis vectors are aligned with the center screen image
+// plate.  The left and right screens are rotated 45 degrees toward each other
+// about their shared edges with the center screen.
+//
+(ScreenProperty center TrackerBaseToImagePlate
+                        (Translate 0.180000    0.144000 0.000000))
+
+// cos(45) * 0.360 * 0.5 = 0.127279; 0.360 + 0.127279 = 0.487279
+(ScreenProperty left  TrackerBaseToImagePlate
+                       (RotateTranslate
+		        (Rotate     0.000000 -45.000000 0.000000)
+                        (Translate  0.487279   0.144000 0.127279)))
+
+// cos(45) * 0.360 * 0.5 = 0.127279
+(ScreenProperty right TrackerBaseToImagePlate
+                       (RotateTranslate
+		        (Rotate     0.000000  45.000000 0.000000)
+                        (Translate -0.127279   0.144000 0.127279)))
+
+// Create a view using the defined screens.
+// 
+(NewView      view0)
+(ViewProperty view0 Screen left)
+(ViewProperty view0 Screen center)
+(ViewProperty view0 Screen right)
+(ViewProperty view0 CenterEyeInCoexistence (0.0 0.0 0.5))
+</pre>
+</body>
+</html>

@@ -1,0 +1,109 @@
+<!--
+/*
+ * $RCSfile$
+ *
+ * Copyright (c) 2004 Sun Microsystems, Inc. All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ *
+ * - Redistribution of source code must retain the above copyright
+ *   notice, this list of conditions and the following disclaimer.
+ *
+ * - Redistribution in binary form must reproduce the above copyright
+ *   notice, this list of conditions and the following disclaimer in
+ *   the documentation and/or other materials provided with the
+ *   distribution.
+ *
+ * Neither the name of Sun Microsystems, Inc. or the names of
+ * contributors may be used to endorse or promote products derived
+ * from this software without specific prior written permission.
+ *
+ * This software is provided "AS IS," without a warranty of any
+ * kind. ALL EXPRESS OR IMPLIED CONDITIONS, REPRESENTATIONS AND
+ * WARRANTIES, INCLUDING ANY IMPLIED WARRANTY OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE OR NON-INFRINGEMENT, ARE HEREBY
+ * EXCLUDED. SUN MICROSYSTEMS, INC. ("SUN") AND ITS LICENSORS SHALL
+ * NOT BE LIABLE FOR ANY DAMAGES SUFFERED BY LICENSEE AS A RESULT OF
+ * USING, MODIFYING OR DISTRIBUTING THIS SOFTWARE OR ITS
+ * DERIVATIVES. IN NO EVENT WILL SUN OR ITS LICENSORS BE LIABLE FOR
+ * ANY LOST REVENUE, PROFIT OR DATA, OR FOR DIRECT, INDIRECT, SPECIAL,
+ * CONSEQUENTIAL, INCIDENTAL OR PUNITIVE DAMAGES, HOWEVER CAUSED AND
+ * REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF OR
+ * INABILITY TO USE THIS SOFTWARE, EVEN IF SUN HAS BEEN ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGES.
+ *
+ * You acknowledge that this software is not designed, licensed or
+ * intended for use in the design, construction, operation or
+ * maintenance of any nuclear facility.
+ *
+ * $Revision$
+ * $Date$
+ * $State$
+ */
+ -->
+
+<html>
+<head>
+   <title>j3d1x1-behavior config file</title>
+</head>
+
+<body text="#000000" bgcolor="#FFFFFF" link="#0000EE" vlink="#551A8B" alink="#FF0000">
+<pre>
+/*
+ ************************************************************************
+ *  
+ * Java 3D configuration file for single fullscreen desktop configuration.
+ * A view platform behavior is created and configured here as well.
+ *  
+ ************************************************************************
+ */
+
+(NewScreen center 0)
+(ScreenProperty center WindowSize NoBorderFullScreen)
+
+(NewView view0)
+(ViewProperty view0 Screen center)
+
+// Create a view platform behavior.  Here we use OrbitBehavior, although any
+// concrete subclass of the abstract ViewPlatformBehavior with a parameterless
+// constructor could be used.  The logical name to assign to this behavior is
+// specified by the 2nd argument to the NewViewPlatformBehavior command, while
+// the 3rd argument is the name of the ViewPlatformBehavior subclass.  It is
+// instantiated through introspection.
+// 
+(NewViewPlatformBehavior vpb com.sun.j3d.utils.behaviors.vp.OrbitBehavior)
+
+// Set the scheduling bounds to be a BoundingSphere with its center at 
+// (0.0 0.0 0.0) and an infinite radius.
+// 
+(ViewPlatformBehaviorProperty vpb SchedulingBounds
+                                  (BoundingSphere (0.0 0.0 0.0) infinite))
+
+// Set properties specific to OrbitBehavior.  All arguments following the
+// method name are wrapped and passed to the specified method as an array of
+// Objects.  Strings "true" and "false" get turned into Boolean, and number
+// strings get turned into Double.  Constructs such as (0.0 1.0 2.0) and
+// ((0.0 1.0 2.0 0.5) (3.0 4.0 5.0 1.0) (6.0 7.0 8.0 0.0)) get converted to
+// Point3d and Matrix4d respectively. Note that last row of a Matrix4d doesn't
+// need to be specified; it is implicitly (0.0 0.0 0.0 1.0).
+// 
+// The REVERSE_ALL flags are usually passed to the OrbitBehavior constructor.
+// Since it is being instantiated with its parameterless constructor the
+// reverse flags are set here explicitly.
+// 
+(ViewPlatformBehaviorProperty vpb ReverseTranslate true)
+(ViewPlatformBehaviorProperty vpb ReverseRotate    true)
+(ViewPlatformBehaviorProperty vpb ReverseZoom      true)
+
+// Create a new view platform and set the view platform behavior.
+// 
+(NewViewPlatform vp)
+(ViewPlatformProperty vp ViewPlatformBehavior vpb)
+
+// Attach the view to the view platform.
+(ViewProperty view0 ViewPlatform vp)
+</pre>
+</body>
+</html>

@@ -1,0 +1,156 @@
+<!--
+/*
+ * $RCSfile$
+ *
+ * Copyright (c) 2004 Sun Microsystems, Inc. All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ *
+ * - Redistribution of source code must retain the above copyright
+ *   notice, this list of conditions and the following disclaimer.
+ *
+ * - Redistribution in binary form must reproduce the above copyright
+ *   notice, this list of conditions and the following disclaimer in
+ *   the documentation and/or other materials provided with the
+ *   distribution.
+ *
+ * Neither the name of Sun Microsystems, Inc. or the names of
+ * contributors may be used to endorse or promote products derived
+ * from this software without specific prior written permission.
+ *
+ * This software is provided "AS IS," without a warranty of any
+ * kind. ALL EXPRESS OR IMPLIED CONDITIONS, REPRESENTATIONS AND
+ * WARRANTIES, INCLUDING ANY IMPLIED WARRANTY OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE OR NON-INFRINGEMENT, ARE HEREBY
+ * EXCLUDED. SUN MICROSYSTEMS, INC. ("SUN") AND ITS LICENSORS SHALL
+ * NOT BE LIABLE FOR ANY DAMAGES SUFFERED BY LICENSEE AS A RESULT OF
+ * USING, MODIFYING OR DISTRIBUTING THIS SOFTWARE OR ITS
+ * DERIVATIVES. IN NO EVENT WILL SUN OR ITS LICENSORS BE LIABLE FOR
+ * ANY LOST REVENUE, PROFIT OR DATA, OR FOR DIRECT, INDIRECT, SPECIAL,
+ * CONSEQUENTIAL, INCIDENTAL OR PUNITIVE DAMAGES, HOWEVER CAUSED AND
+ * REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF OR
+ * INABILITY TO USE THIS SOFTWARE, EVEN IF SUN HAS BEEN ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGES.
+ *
+ * You acknowledge that this software is not designed, licensed or
+ * intended for use in the design, construction, operation or
+ * maintenance of any nuclear facility.
+ *
+ * $Revision$
+ * $Date$
+ * $State$
+ */
+ -->
+
+<html>
+<head>
+   <title>j3d1x3-cave config file</title>
+</head>
+
+<body text="#000000" bgcolor="#FFFFFF" link="#0000EE" vlink="#551A8B" alink="#FF0000">
+<pre>
+/*
+ ************************************************************************
+ *  
+ * Java 3D configuration file for a cave environment.  This cave
+ * consists of 3 projectors with 3 screens to the left, front, and right
+ * of the user, all at 90 degrees to each other.
+ * 
+ * The projectors in the VirtualPortal sample site are actually turned
+ * on their sides to get more height.  Screen 0 is rotated 90 degrees
+ * counter-clockwise, while screens 1 and 2 are rotated 90 degrees
+ * clockwise.
+ * 
+ ************************************************************************
+ */
+
+// Create new screen objects and associate them with logical names and numbers.
+// These numbers are used as indices to retrieve the AWT GraphicsDevice from
+// the array that GraphicsEnvironment.getScreenDevices() returns.
+// 
+// NOTE: The GraphicsDevice order in the array is specific to the local
+// site and display system.
+// 
+(NewScreen              left    0)
+(NewScreen              center  1)
+(NewScreen              right   2)
+
+
+// Set the available image areas as well as their positition and orientation
+// relative to the tracker base.   Although this config file doesn't enable
+// head tracking, the tracker base is still needed as a point of reference to
+// describe the position and orientation of the screens relative to the
+// environment. 
+// 
+// From the orientation of a user standing within this VirtualPortal site and
+// facing the center screen, the tracker base is along the vertical midline of
+// the screen, 0.248 meters down from the top edge, and 1.340 meters in front
+// of it.  The tracker base is oriented so that its +X axis points to the left,
+// its +Y axis points toward the screen, and its +Z axis points toward the
+// floor.
+// 
+(ScreenProperty        left    PhysicalScreenWidth     2.480)
+(ScreenProperty        left    PhysicalScreenHeight    1.705)
+(ScreenProperty        left    WindowSize              NoBorderFullScreen)
+(ScreenProperty        left    TrackerBaseToImagePlate
+                                (( 0.0  0.0 -1.0  2.230)
+                                 ( 0.0 -1.0  0.0  1.340)
+                                 (-1.0  0.0  0.0  0.885)))
+
+(ScreenProperty        center  PhysicalScreenWidth     2.485)
+(ScreenProperty        center  PhysicalScreenHeight    1.745)
+(ScreenProperty        center  WindowSize              NoBorderFullScreen)
+(ScreenProperty        center  TrackerBaseToImagePlate
+                                (( 0.0  0.0  1.0  0.248)
+                                 (-1.0  0.0  0.0  0.885)
+                                 ( 0.0 -1.0  0.0  1.340)))
+
+(ScreenProperty        right   PhysicalScreenWidth     2.480)
+(ScreenProperty        right   PhysicalScreenHeight    1.775)
+(ScreenProperty        right   WindowSize              NoBorderFullScreen)
+(ScreenProperty        right   TrackerBaseToImagePlate
+                                (( 0.0  0.0  1.0  0.2488)
+                                 ( 0.0 -1.0  0.0  1.340)
+                                 ( 1.0  0.0  0.0  0.860)))
+
+// Set the location of the center of coexistence relative to the tracker base.
+// Here it set to the center of the center screen.  This config file will set
+// the location of the user's eyes relative to this point.  The default view
+// attach policy of NOMINAL_SCREEN used by ConfiguredUniverse will place the
+// origin of the view platform in coexistence coordinates at the center of
+// coexistence. 
+// 
+(NewPhysicalEnvironment      VirtualPortal)
+(PhysicalEnvironmentProperty VirtualPortal
+                             CoexistenceToTrackerBase
+                                ((-1.0  0.0  0.0  0.000)
+                                 ( 0.0  0.0 -1.0  1.340)
+                                 ( 0.0 -1.0  0.0  0.994)))
+
+// Now define the view.
+// 
+(NewView       view0)
+(ViewProperty  view0   Screen                  left)
+(ViewProperty  view0   Screen                  center)
+(ViewProperty  view0   Screen                  right)
+(ViewProperty  view0   PhysicalEnvironment     VirtualPortal)
+
+// Set the user eye position in the display environment.  It is set here to
+// 1.340 meters back from the center screen (directly under the tracker), and
+// 1.737 meters from the floor (about 5 ft 8.4 inches).
+//
+(ViewProperty  view0   CenterEyeInCoexistence  (0.0 0.494 1.340))
+
+// Explict scaling.
+// 
+(ViewProperty  view0   ScreenScalePolicy       SCALE_EXPLICIT)
+(ViewProperty  view0   ScreenScale             0.30)
+
+// No stereo viewing for this configuration.
+// 
+(ViewProperty  view0   StereoEnable            False)
+</pre>
+</body>
+</html>

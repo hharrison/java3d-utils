@@ -1,0 +1,147 @@
+<!--
+/*
+ * $RCSfile$
+ *
+ * Copyright (c) 2004 Sun Microsystems, Inc. All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ *
+ * - Redistribution of source code must retain the above copyright
+ *   notice, this list of conditions and the following disclaimer.
+ *
+ * - Redistribution in binary form must reproduce the above copyright
+ *   notice, this list of conditions and the following disclaimer in
+ *   the documentation and/or other materials provided with the
+ *   distribution.
+ *
+ * Neither the name of Sun Microsystems, Inc. or the names of
+ * contributors may be used to endorse or promote products derived
+ * from this software without specific prior written permission.
+ *
+ * This software is provided "AS IS," without a warranty of any
+ * kind. ALL EXPRESS OR IMPLIED CONDITIONS, REPRESENTATIONS AND
+ * WARRANTIES, INCLUDING ANY IMPLIED WARRANTY OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE OR NON-INFRINGEMENT, ARE HEREBY
+ * EXCLUDED. SUN MICROSYSTEMS, INC. ("SUN") AND ITS LICENSORS SHALL
+ * NOT BE LIABLE FOR ANY DAMAGES SUFFERED BY LICENSEE AS A RESULT OF
+ * USING, MODIFYING OR DISTRIBUTING THIS SOFTWARE OR ITS
+ * DERIVATIVES. IN NO EVENT WILL SUN OR ITS LICENSORS BE LIABLE FOR
+ * ANY LOST REVENUE, PROFIT OR DATA, OR FOR DIRECT, INDIRECT, SPECIAL,
+ * CONSEQUENTIAL, INCIDENTAL OR PUNITIVE DAMAGES, HOWEVER CAUSED AND
+ * REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF OR
+ * INABILITY TO USE THIS SOFTWARE, EVEN IF SUN HAS BEEN ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGES.
+ *
+ * You acknowledge that this software is not designed, licensed or
+ * intended for use in the design, construction, operation or
+ * maintenance of any nuclear facility.
+ *
+ * $Revision$
+ * $Date$
+ * $State$
+ */
+ -->
+
+<html>
+<head>
+   <title>j3d2x2-flat config file</title>
+</head>
+
+<body text="#000000" bgcolor="#FFFFFF" link="#0000EE" vlink="#551A8B" alink="#FF0000">
+<pre>
+/*
+ ************************************************************************
+ *  
+ * Java 3D configuration file for 4 screen projection configuration
+ * arranged in a 2x2 power wall.
+ *  
+ ************************************************************************
+ */
+
+// Create new screen objects and associate them with logical names and numbers.
+// These numbers are used as indices to retrieve the AWT GraphicsDevice from
+// the array that GraphicsEnvironment.getScreenDevices() returns.
+// 
+// NOTE: The GraphicsDevice order in the array is specific to the local
+// site and display system.
+// 
+(NewScreen topleft     0)
+(NewScreen topright    1)
+(NewScreen bottomleft  3)
+(NewScreen bottomright 2)
+
+// Set the available image areas for full screens.  This is important when
+// precise scaling between objects in the virtual world and their projections
+// into the physical world is desired through use of explicit ScreenScale view
+// attributes.  The defaults are 0.365 meters for width and 0.292 meters for
+// height.
+// 
+(ScreenProperty topleft     PhysicalScreenWidth  0.912)
+(ScreenProperty topleft     PhysicalScreenHeight 0.680)
+
+(ScreenProperty topright    PhysicalScreenWidth  0.912)
+(ScreenProperty topright    PhysicalScreenHeight 0.680)
+
+(ScreenProperty bottomleft  PhysicalScreenWidth  0.912)
+(ScreenProperty bottomleft  PhysicalScreenHeight 0.685)
+
+(ScreenProperty bottomright PhysicalScreenWidth  0.912)
+(ScreenProperty bottomright PhysicalScreenHeight 0.685)
+
+
+// Specify full screen windows.
+//
+(ScreenProperty topleft     WindowSize NoBorderFullScreen)
+(ScreenProperty topright    WindowSize NoBorderFullScreen)
+(ScreenProperty bottomleft  WindowSize NoBorderFullScreen)
+(ScreenProperty bottomright WindowSize NoBorderFullScreen)
+
+// Set the TrackerBaseToImagePlate transforms for these screens.  This
+// transforms points in tracker base coordinates to each screen's image plate
+// coordinates, where the origin of the image plate is defined to be the lower
+// left corner of the screen with X increasing to the right, Y increasing to
+// the top, and Z increasing away from the screen.
+//
+// Without head or sensor tracking the tracker base is still needed as a point
+// of reference for describing the orientation and position of each screen to
+// the others.  The coexistence to tracker base transform is set to identity by
+// default, so the tracker base origin and orientation will also set the origin
+// and orientation of coexistence coordinates in the physical world.
+//
+// The tracker base and center of coexistence are set here to the center of the
+// 2x2 array with its basis vectors aligned to image plate coordinates.
+//
+(ScreenProperty topleft     TrackerBaseToImagePlate
+                             (Translate 0.912 0.000 0.0))
+(ScreenProperty topright    TrackerBaseToImagePlate
+                             (Translate 0.000 0.000 0.0))
+(ScreenProperty bottomleft  TrackerBaseToImagePlate
+                             (Translate 0.912 0.685 0.0))
+(ScreenProperty bottomright TrackerBaseToImagePlate
+                             (Translate 0.000 0.685 0.0))
+
+// Create a view using the defined screens.
+// 
+(NewView      view0)
+(ViewProperty view0 Screen  topleft)
+(ViewProperty view0 Screen  topright)
+(ViewProperty view0 Screen  bottomleft)
+(ViewProperty view0 Screen  bottomright)
+
+// Set the screen scale.  This is scale factor from virtual to physical
+// coordinates.  The default policy of SCALE_SCREEN_SIZE doesn't work well here
+// since in the 2x2 arrangement the individual screens are too small.  The
+// explicit scale factor below assumes a normalized range of object coordinates
+// of [-1.0 .. +1.0].
+// 
+(ViewProperty view0 ScreenScalePolicy       SCALE_EXPLICIT)
+(ViewProperty view0 ScreenScale             0.912)
+
+// Set the user eye position in the display environment.
+//
+(ViewProperty view0 CenterEyeInCoexistence  (0.0 0.0 1.0))
+</pre>
+</body>
+</html>

@@ -1,0 +1,189 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+
+<!--
+/*
+ * $RCSfile$
+ *
+ * Copyright (c) 2004 Sun Microsystems, Inc. All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ *
+ * - Redistribution of source code must retain the above copyright
+ *   notice, this list of conditions and the following disclaimer.
+ *
+ * - Redistribution in binary form must reproduce the above copyright
+ *   notice, this list of conditions and the following disclaimer in
+ *   the documentation and/or other materials provided with the
+ *   distribution.
+ *
+ * Neither the name of Sun Microsystems, Inc. or the names of
+ * contributors may be used to endorse or promote products derived
+ * from this software without specific prior written permission.
+ *
+ * This software is provided "AS IS," without a warranty of any
+ * kind. ALL EXPRESS OR IMPLIED CONDITIONS, REPRESENTATIONS AND
+ * WARRANTIES, INCLUDING ANY IMPLIED WARRANTY OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE OR NON-INFRINGEMENT, ARE HEREBY
+ * EXCLUDED. SUN MICROSYSTEMS, INC. ("SUN") AND ITS LICENSORS SHALL
+ * NOT BE LIABLE FOR ANY DAMAGES SUFFERED BY LICENSEE AS A RESULT OF
+ * USING, MODIFYING OR DISTRIBUTING THIS SOFTWARE OR ITS
+ * DERIVATIVES. IN NO EVENT WILL SUN OR ITS LICENSORS BE LIABLE FOR
+ * ANY LOST REVENUE, PROFIT OR DATA, OR FOR DIRECT, INDIRECT, SPECIAL,
+ * CONSEQUENTIAL, INCIDENTAL OR PUNITIVE DAMAGES, HOWEVER CAUSED AND
+ * REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF OR
+ * INABILITY TO USE THIS SOFTWARE, EVEN IF SUN HAS BEEN ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGES.
+ *
+ * You acknowledge that this software is not designed, licensed or
+ * intended for use in the design, construction, operation or
+ * maintenance of any nuclear facility.
+ *
+ * $Revision$
+ * $Date$
+ * $State$
+ */
+ -->
+
+<HTML>
+<HEAD>
+	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=iso-8859-1">
+	<TITLE>Java 3D scenegraph.io Extensibility</TITLE>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+<h1>
+Using your own Classes with scenegraph.io
+</h1>
+<P>The scenegraph.io APIs will handle the IO for all the core Java3D
+SceneGraphObjects. However, if you create a subclass of one of these
+objects and add it to your Scene Graph, the IO system, by default,
+will not store any state information specific to your class.</P>
+<P>The default behavior when an unrecognized SceneGraphObject class
+is encountered is to traverse up the superclasses of the object until
+a recognized Java3D class is located. The data structures for this
+class are then used for IO. The system does store the class name of
+the original object.
+<P>For example:
+<pre><font size=-1>
+public class MyBranchGroup extends javax.media.j3d.BranchGroup {
+    private int myData;
+    ....
+}
+</font></pre>
+<P>When the Scene Graph is written to a file and this node is
+encountered, the superclass javax.media.j3d.BranchGroup will be used
+to store all the state for the object so any children of
+MyBranchGroup, the capabilities, etc. will be stored, but myData will
+be lost. When the scene graph is loaded, MyBranchGroup will be
+instantiated and will be populated with all the state from
+BranchGroup but myData will have been lost.</P>
+<P>To overcome this, the scenegraph.io API provides an interface for
+you to implement in your own classes that provides the opportunity
+for you to save the state of your classes during the IO processes.
+This is the SceneGraphIO interface.</P>
+<P>When the scenegraph is saved, the methods of SceneGraphIO are
+called in this order 
+</P>
+<OL>
+	<LI><P>createSceneGraphObjectReferences</P>
+	<LI><P>saveChildren</P>
+	<LI><P>writeSceneGraphObject</P>
+</OL>
+<P>During the load cycle the method call order is</P>
+<OL>
+	<LI><P>Instantiate Object using default constructor</P>
+	<LI><P>Populate object with state from superclasses</P>
+	<LI><P>readSceneGraphObject</P>
+	<LI><P>restoreSceneGraphObjectReferences</P>
+</OL>
+<P>Within each method you need to perform the following actions:
+<UL>
+	<LI><P><b>createSceneGraphObjectReferences</b> If your object has
+	references to other SceneGraphObjects then you need to obtain an
+	object reference (int) for each reference using the
+	SceneGraphReferenceControl object passed as a parameter to this
+	method. If you don't have references to other SceneGraphObjects then
+	no action is required.</P>
+	<LI><P><b>saveChildren</b> If your object is a subclass of Group and you
+	want the scenegraph.io package to save the children then this must
+	return true. If it returns false, the object will be saved but not
+	its children.</P>
+	<LI><P><b>writeSceneGraphObject</b> In this method you must write all the
+	state information for your class, including the object references
+	obtained in createSceneGraphObjectReferences, to the DataOutput
+	stream passed into this method.</P>
+	<LI><P><b>readSceneGraphObject</b> By the time this method is called your
+	class has been instantiated and the state information in the Java3D
+	superclass will have been loaded. You should load all the state
+	information you saved for your class.</P>
+	<LI><P><b>restoreSceneGraphObjectReferences</b> is called once all the
+	SceneGraph objects have been loaded and allows you to restore the
+	references to the other SceneGraph objects.</P>
+</UL>
+<P>Here are some examples.  Only the parts of the source pertaining to
+IO are show....</P>
+<h2>Behavior Example</h2>
+<pre><blockquote><font size=-1>
+public class BehaviorIO extends javax.media.j3d.Behavior implements SceneGraphIO
+    private TransformGroup target;   // The TG on which this behavior acts
+    private int targetRef;  // Object Reference for target
+
+    public void createSceneGraphObjectReferences( SceneGraphObjectReferenceControl ref ) {
+        targetRef = ref.addReference( target );
+    }
+
+    public void restoreSceneGraphObjectReferences( SceneGraphObjectReferenceControl ref ) {
+        target = (TransformGroup)ref.resolveReference( targetRef );
+    }
+
+    public void writeSceneGraphObject( java.io.DataOutput out ) throws IOException {
+        out.writeInt( targetRef );
+    }
+
+    public void readSceneGraphObject( java.io.DataInput in ) throws IOException {
+	targetRef = in.readInt();
+    }
+
+    // This has no effect as this is not a subclass of Group
+    public boolean saveChildren() {
+        return true;
+    }
+</font></blockquote></pre>
+<h2>
+`BlackBox' Group Example
+</h2>
+This example is a Group node that creates its subgraph during
+its instantiation.  An example where you might use this is to
+represent some geometry that is loaded from an external file format
+such a OpenFLT.
+<blockquote><pre><font size=-1>
+public class House extends Group implements SceneGraphIO {
+    public House() {
+        super();
+        this.addChild( OpenFlightLoader.load( &quot;/dir/house.flt&quot; );
+    }
+
+    public void createSceneGraphObjectReferences( SceneGraphObjectReferenceControl ref ) {
+        // No references
+    }
+
+    public void restoreSceneGraphObjectReferences( SceneGraphObjectReferenceControl ref ) {
+        // No references
+    }
+
+    public void writeSceneGraphObject( java.io.DataOutput out ) throws IOException {
+        // No local state
+    }
+
+    public void readSceneGraphObject( java.io.DataInput in ) throws IOException {
+        // No local state
+    }
+
+    public boolean saveChildren() {
+        // Don't save the children as they will be restored by the openflightloader
+        return false;
+    }
+</font></blockquote></pre>
+</BODY>
+</HTML>

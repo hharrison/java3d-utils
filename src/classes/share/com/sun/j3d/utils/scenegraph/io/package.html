@@ -1,0 +1,105 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+
+<!--
+/*
+ * $RCSfile$
+ *
+ * Copyright (c) 2004 Sun Microsystems, Inc. All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ *
+ * - Redistribution of source code must retain the above copyright
+ *   notice, this list of conditions and the following disclaimer.
+ *
+ * - Redistribution in binary form must reproduce the above copyright
+ *   notice, this list of conditions and the following disclaimer in
+ *   the documentation and/or other materials provided with the
+ *   distribution.
+ *
+ * Neither the name of Sun Microsystems, Inc. or the names of
+ * contributors may be used to endorse or promote products derived
+ * from this software without specific prior written permission.
+ *
+ * This software is provided "AS IS," without a warranty of any
+ * kind. ALL EXPRESS OR IMPLIED CONDITIONS, REPRESENTATIONS AND
+ * WARRANTIES, INCLUDING ANY IMPLIED WARRANTY OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE OR NON-INFRINGEMENT, ARE HEREBY
+ * EXCLUDED. SUN MICROSYSTEMS, INC. ("SUN") AND ITS LICENSORS SHALL
+ * NOT BE LIABLE FOR ANY DAMAGES SUFFERED BY LICENSEE AS A RESULT OF
+ * USING, MODIFYING OR DISTRIBUTING THIS SOFTWARE OR ITS
+ * DERIVATIVES. IN NO EVENT WILL SUN OR ITS LICENSORS BE LIABLE FOR
+ * ANY LOST REVENUE, PROFIT OR DATA, OR FOR DIRECT, INDIRECT, SPECIAL,
+ * CONSEQUENTIAL, INCIDENTAL OR PUNITIVE DAMAGES, HOWEVER CAUSED AND
+ * REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF OR
+ * INABILITY TO USE THIS SOFTWARE, EVEN IF SUN HAS BEEN ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGES.
+ *
+ * You acknowledge that this software is not designed, licensed or
+ * intended for use in the design, construction, operation or
+ * maintenance of any nuclear facility.
+ *
+ * $Revision$
+ * $Date$
+ * $State$
+ */
+ -->
+
+<HTML>
+<HEAD>
+	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=iso-8859-1">
+	<TITLE></TITLE>
+</HEAD>
+<BODY>
+<P>This package provides a Java3D SceneGraph IO capability.
+The API supports IO of a scenegraph to and from a Java Stream and/or
+RandomAccessFile. The features offered for these two io systems are
+somewhat different.</P>
+<P>The SceneGraphFileReader and SceneGraphFileWriter classes provide
+IO to and from a RandomAccessFile. They allow a universe and/or
+multiple BranchGraphs to be written to the file with Node's and
+NodeComponent's shared between the separate graphs. The graphs can be
+read in any order.</P>
+<P>SceneGraphStreamReader and SceneGraphStreamWriter classes provide
+IO to and from a Stream. These classes allow a universe and/or
+multiple BranchGraphs to be passed over stream. In contrast to the
+FileReader/Writer sharing of Node's is NOT supported between graphs
+by the API. Sharing of node components is supported. If your
+application requires references to Nodes in other graphs (such as
+SharedGroups) the application must handle the references using the
+namedObjects constructs.</P>
+<P>Note : If you use SceneGraphStreamWriter class to write to a
+FileOutputStream the resulting file cannot be read using the
+SceneGraphFileReader, the converse is also true, you can not use a
+FileInputStream to load a file written by SceneGraphFileWriter.
+<P>
+The package supports the IO of all the Java3D 1.3 core classes
+and many of the utilities. It also includes interfaces which can be
+implemented to allow user defined subclasses of SceneGraphObjects to
+be stored. Information on the extensibility can be found
+<A HREF="doc-files/extensibility.html">here</A>
+<P>
+The package has a number of properties which can be used to control the IO
+behavior<p>
+
+<blockquote>
+<b>j3d.io.UseSuperClassIfNoChildClass</b> when this property is present the load
+operation will attempt to avoid failure if Scene Graph nodes are not present
+in the classpath. For example if a developer has subclassed BranchGroup with a 
+class called MyBG but has not
+implemented the SceneGraphIO interface when the API saves the graph the
+superclass (ie BranchGroup) data will be stored. When the scene is loaded 
+normally MyBG must be in the classpath otherwise the load will fail. If this
+property is set then the superclass node (ie BranchGroup) will be instantiated
+when MyBG is missing. Obviously, if MyBG contained any state information
+then this will be lost.<p>
+
+<b>j3d.io.ImageCompression</b> this can be set to None, GZIP, JPEG and tells the
+IO system to compress images in the .j3f file using the prescribed technique. In
+the future this will be extended to support all the formats available in
+javax.imageio in JDK 1.4.
+</blockquote>
+</P>
+</BODY>
+</HTML>

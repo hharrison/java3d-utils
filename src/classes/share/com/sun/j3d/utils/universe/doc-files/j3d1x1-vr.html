@@ -1,0 +1,173 @@
+<!--
+/*
+ * $RCSfile$
+ *
+ * Copyright (c) 2004 Sun Microsystems, Inc. All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ *
+ * - Redistribution of source code must retain the above copyright
+ *   notice, this list of conditions and the following disclaimer.
+ *
+ * - Redistribution in binary form must reproduce the above copyright
+ *   notice, this list of conditions and the following disclaimer in
+ *   the documentation and/or other materials provided with the
+ *   distribution.
+ *
+ * Neither the name of Sun Microsystems, Inc. or the names of
+ * contributors may be used to endorse or promote products derived
+ * from this software without specific prior written permission.
+ *
+ * This software is provided "AS IS," without a warranty of any
+ * kind. ALL EXPRESS OR IMPLIED CONDITIONS, REPRESENTATIONS AND
+ * WARRANTIES, INCLUDING ANY IMPLIED WARRANTY OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE OR NON-INFRINGEMENT, ARE HEREBY
+ * EXCLUDED. SUN MICROSYSTEMS, INC. ("SUN") AND ITS LICENSORS SHALL
+ * NOT BE LIABLE FOR ANY DAMAGES SUFFERED BY LICENSEE AS A RESULT OF
+ * USING, MODIFYING OR DISTRIBUTING THIS SOFTWARE OR ITS
+ * DERIVATIVES. IN NO EVENT WILL SUN OR ITS LICENSORS BE LIABLE FOR
+ * ANY LOST REVENUE, PROFIT OR DATA, OR FOR DIRECT, INDIRECT, SPECIAL,
+ * CONSEQUENTIAL, INCIDENTAL OR PUNITIVE DAMAGES, HOWEVER CAUSED AND
+ * REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF OR
+ * INABILITY TO USE THIS SOFTWARE, EVEN IF SUN HAS BEEN ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGES.
+ *
+ * You acknowledge that this software is not designed, licensed or
+ * intended for use in the design, construction, operation or
+ * maintenance of any nuclear facility.
+ *
+ * $Revision$
+ * $Date$
+ * $State$
+ */
+ -->
+
+<html>
+<head>
+   <title>j3d1x1-vr config file</title>
+</head>
+
+<body text="#000000" bgcolor="#FFFFFF" link="#0000EE" vlink="#551A8B" alink="#FF0000">
+<pre>
+/*
+ ************************************************************************
+ *  
+ * Java 3D configuration file for a single screen stereo desktop display
+ * using a head tracker and 6DOF mouse.
+ *
+ ************************************************************************
+ */
+
+// Create a screen object and give it a logical name.
+(NewScreen center 0)
+
+// Set the actual available image area.
+(ScreenProperty center PhysicalScreenWidth     0.398)
+(ScreenProperty center PhysicalScreenHeight    0.282)
+(ScreenProperty center WindowSize              NoBorderFullScreen)
+
+// Set the TrackerBaseToImagePlate transform for this screen.
+(ScreenProperty center TrackerBaseToImagePlate
+                 (RotateTranslate (Rotate    50.000 0.000 0.000)
+                                  (Translate  0.199 0.376 0.000)))
+
+// Configure the head tracker.
+(NewDevice      tracker1 com.sun.j3d.input.LogitechTracker)
+(DeviceProperty tracker1 SerialPort "/dev/ttya")
+(DeviceProperty tracker1 ReceiverBaseline     0.1450)
+(DeviceProperty tracker1 ReceiverLeftLeg      0.0875)
+(DeviceProperty tracker1 ReceiverHeight       0.0470)
+(DeviceProperty tracker1 ReceiverTopOffset    0.0000)
+(DeviceProperty tracker1 RealtimeSerialBuffer true)
+
+// Configure the 6DOF wand.
+(NewDevice      tracker2 com.sun.j3d.input.LogitechTracker)
+(DeviceProperty tracker2 SerialPort "/dev/ttyb")
+(DeviceProperty tracker2 ReceiverBaseline     0.0700)
+(DeviceProperty tracker2 ReceiverLeftLeg      0.0625)
+(DeviceProperty tracker2 ReceiverHeight       0.0510)
+(DeviceProperty tracker2 ReceiverTopOffset    0.0000)
+(DeviceProperty tracker2 RealtimeSerialBuffer true)
+
+// Make the tracker2 device a slave of the tracker1 device.
+(DeviceProperty tracker1 Slave (Device tracker2))
+
+// Create a 2D mouse valuator.
+(NewDevice      mouse com.sun.j3d.input.Mouse2DValuator)
+(DeviceProperty mouse Components (Canvas3D center))
+
+// Create logical names for the available sensors.
+(NewSensor head    tracker1 0)
+(NewSensor mouse6d tracker2 0)
+(NewSensor mouse2d mouse    0)
+
+// Set the 6DOF mouse sensor hotspot in the local sensor coordinate system.
+(SensorProperty mouse6d Hotspot (0.00 0.00 -0.10))
+
+// Create a physical environment.
+(NewPhysicalEnvironment SampleSite)
+
+// Register the input devices and head tracker sensor.
+(PhysicalEnvironmentProperty SampleSite InputDevice tracker1)
+(PhysicalEnvironmentProperty SampleSite InputDevice tracker2)
+(PhysicalEnvironmentProperty SampleSite InputDevice mouse)
+(PhysicalEnvironmentProperty SampleSite HeadTracker head)
+
+// Define coexistence coordinates.
+(PhysicalEnvironmentProperty SampleSite CoexistenceToTrackerBase
+                              (TranslateRotate (Translate 0.0 -0.235 0.0)
+                                               (Rotate -50.0 0.0 0.0)))
+
+// Define the physical body.
+(NewPhysicalBody SiteUser)
+
+// Set the interpupilary distance.
+(PhysicalBodyProperty SiteUser StereoEyeSeparation 0.066)
+
+// Define the head location relative to the tracker mounted on the head.
+(PhysicalBodyProperty SiteUser HeadToHeadTracker ((1.0 0.0 0.0 0.000)
+                                                  (0.0 1.0 0.0 0.020)
+                                                  (0.0 0.0 1.0 0.018)))
+
+// Create a view platform behavior.  
+// 
+(NewViewPlatformBehavior vpb com.sun.j3d.utils.behaviors.vp.WandViewBehavior)
+
+(ViewPlatformBehaviorProperty vpb Sensor6D (Sensor mouse6d))
+(ViewPlatformBehaviorProperty vpb Sensor2D (Sensor mouse2d))
+
+(ViewPlatformBehaviorProperty vpb ButtonAction6D 1 GrabView)
+(ViewPlatformBehaviorProperty vpb ButtonAction6D 2 TranslateForward)
+(ViewPlatformBehaviorProperty vpb ButtonAction6D 0 TranslateBackward)
+
+(ViewPlatformBehaviorProperty vpb RotationCoords ViewPlatform)
+(ViewPlatformBehaviorProperty vpb ButtonAction2D 1 Translation)
+(ViewPlatformBehaviorProperty vpb ButtonAction2D 2 Scale)
+
+(ViewPlatformBehaviorProperty vpb EchoType Beam) 
+(ViewPlatformBehaviorProperty vpb EchoSize 0.004) 
+
+(ViewPlatformBehaviorProperty vpb EchoColor 1.0 0.7 0.0)
+(ViewPlatformBehaviorProperty vpb EchoTransparency 0.4)
+
+// Create a new view platform and set the view platform behavior.
+// 
+(NewViewPlatform vp)
+(ViewPlatformProperty vp ViewPlatformBehavior vpb)
+
+// Create a view.
+//
+(NewView       view0)
+(ViewProperty  view0   Screen                  center)
+(ViewProperty  view0   PhysicalEnvironment     SampleSite)
+(ViewProperty  view0   PhysicalBody            SiteUser)
+(ViewProperty  view0   ViewPlatform            vp)
+
+// Enable stereo viewing and head tracking.
+(ViewProperty  view0   StereoEnable            true)
+(ViewProperty  view0   TrackingEnable          True)
+</pre>
+</body>
+</html>

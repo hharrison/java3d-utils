@@ -1,0 +1,111 @@
+<!--
+/*
+ * $RCSfile$
+ *
+ * Copyright (c) 2004 Sun Microsystems, Inc. All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ *
+ * - Redistribution of source code must retain the above copyright
+ *   notice, this list of conditions and the following disclaimer.
+ *
+ * - Redistribution in binary form must reproduce the above copyright
+ *   notice, this list of conditions and the following disclaimer in
+ *   the documentation and/or other materials provided with the
+ *   distribution.
+ *
+ * Neither the name of Sun Microsystems, Inc. or the names of
+ * contributors may be used to endorse or promote products derived
+ * from this software without specific prior written permission.
+ *
+ * This software is provided "AS IS," without a warranty of any
+ * kind. ALL EXPRESS OR IMPLIED CONDITIONS, REPRESENTATIONS AND
+ * WARRANTIES, INCLUDING ANY IMPLIED WARRANTY OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE OR NON-INFRINGEMENT, ARE HEREBY
+ * EXCLUDED. SUN MICROSYSTEMS, INC. ("SUN") AND ITS LICENSORS SHALL
+ * NOT BE LIABLE FOR ANY DAMAGES SUFFERED BY LICENSEE AS A RESULT OF
+ * USING, MODIFYING OR DISTRIBUTING THIS SOFTWARE OR ITS
+ * DERIVATIVES. IN NO EVENT WILL SUN OR ITS LICENSORS BE LIABLE FOR
+ * ANY LOST REVENUE, PROFIT OR DATA, OR FOR DIRECT, INDIRECT, SPECIAL,
+ * CONSEQUENTIAL, INCIDENTAL OR PUNITIVE DAMAGES, HOWEVER CAUSED AND
+ * REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF OR
+ * INABILITY TO USE THIS SOFTWARE, EVEN IF SUN HAS BEEN ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGES.
+ *
+ * You acknowledge that this software is not designed, licensed or
+ * intended for use in the design, construction, operation or
+ * maintenance of any nuclear facility.
+ *
+ * $Revision$
+ * $Date$
+ * $State$
+ */
+ -->
+
+<html>
+<head>
+   <title>j3d1x2-rot30 config file</title>
+</head>
+
+<body text="#000000" bgcolor="#FFFFFF" link="#0000EE" vlink="#551A8B" alink="#FF0000">
+<pre>
+/*
+ ************************************************************************
+ *  
+ * Java 3D configuration file for a dual-screen desktop configuration
+ * with each screen rotated toward the other by 30 degrees about Y from
+ * planar.  The inside angle between them is 120 degrees.
+ *  
+ ************************************************************************
+ */
+
+// Create new screen objects and associate them with logical names and numbers.
+// These numbers are used as indices to retrieve the AWT GraphicsDevice from
+// the array that GraphicsEnvironment.getScreenDevices() returns.
+// 
+// NOTE: The GraphicsDevice order in the array is specific to the local
+// site and display system.
+// 
+(NewScreen left  0)
+(NewScreen right 1)
+
+// Set the available image areas for full screens.
+// 
+(ScreenProperty left  PhysicalScreenWidth  0.360)
+(ScreenProperty left  PhysicalScreenHeight 0.288)
+
+(ScreenProperty right PhysicalScreenWidth  0.360)
+(ScreenProperty right PhysicalScreenHeight 0.288)
+
+// Specify full screen windows.
+// 
+(ScreenProperty left  WindowSize NoBorderFullScreen)
+(ScreenProperty right WindowSize NoBorderFullScreen)
+
+// Set the TrackerBaseToImagePlate transforms for these screens.
+// 
+// The tracker base is set here to the middle of the edge shared by the two
+// screens.  Each screen is rotated 30 degrees toward the other about the
+// tracker base +Y axis, so that the tracker base +Z is centered between the
+// two screens.
+//
+(ScreenProperty left  TrackerBaseToImagePlate
+                       (RotateTranslate (Rotate     0.000 -30.000 0.0)
+                                        (Translate  0.360   0.144 0.0)))
+
+(ScreenProperty right TrackerBaseToImagePlate
+                       (RotateTranslate (Rotate     0.000  30.000 0.0)
+		                        (Translate  0.000   0.144 0.0)))
+
+
+// Create a view using the defined screens.
+// 
+(NewView view0)
+(ViewProperty view0 Screen left)
+(ViewProperty view0 Screen right)
+(ViewProperty view0 CenterEyeInCoexistence (0.0 0.0 0.45))
+</pre>
+</body>
+</html>
