@@ -243,15 +243,14 @@ public abstract class MouseBehavior extends Behavior
       buttonPress = false;
       wakeUp = false;
     }    
-    else if (evt.getID() == MouseEvent.MOUSE_MOVED) {
-      // Process mouse move event
-    }
-    else if (evt.getID() == MouseEvent.MOUSE_WHEEL) {
-      // Process mouse wheel event
-    }
-    else {// no default code path authorized.
-	assert false;
-    }
+    /* 
+       else if (evt.getID() == MouseEvent.MOUSE_MOVED) {
+       // Process mouse move event
+       }
+       else if (evt.getID() == MouseEvent.MOUSE_WHEEL) {
+       // Process mouse wheel event
+       }
+    */
   }
   
   /**
