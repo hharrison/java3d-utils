@@ -94,14 +94,14 @@ public class RotationPathInterpolatorState extends PathInterpolatorState {
                                                     quats.getClass() },
                                       new Object[] { null,
                                                      null,
-                                                     null,
+                                                     new Transform3D(),
                                                      knots,
                                                      quats } );
                                                     
     }
     
     protected javax.media.j3d.SceneGraphObject createNode() {
-        return new RotationPathInterpolator( null, null, null, knots, quats );
+        return new RotationPathInterpolator( null, null, new Transform3D(), knots, quats );
     }
 
 

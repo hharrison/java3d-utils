@@ -110,7 +110,7 @@ public class RotPosScalePathInterpolatorState extends PathInterpolatorState {
                                                     scales.getClass() },
                                       new Object[] { null,
                                                      null,
-                                                     null,
+                                                     new Transform3D(),
                                                      knots,
                                                      quats,
                                                      positions,
@@ -119,6 +119,6 @@ public class RotPosScalePathInterpolatorState extends PathInterpolatorState {
     }
     
     protected javax.media.j3d.SceneGraphObject createNode() {
-        return new RotPosScalePathInterpolator( null, null, null, knots, quats, positions, scales );
+        return new RotPosScalePathInterpolator( null, null, new Transform3D(), knots, quats, positions, scales );
     }
 }

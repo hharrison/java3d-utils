@@ -91,13 +91,13 @@ public class PositionPathInterpolatorState extends PathInterpolatorState {
                                                     positions.getClass() },
                                       new Object[] { null,
                                                      null,
-                                                     null,
+                                                     new Transform3D(),
                                                      knots,
                                                      positions } );
     }
     
     protected javax.media.j3d.SceneGraphObject createNode() {
-        return new PositionPathInterpolator( null, null, null, knots, positions );
+        return new PositionPathInterpolator( null, null, new Transform3D(), knots, positions );
     }
 
 
