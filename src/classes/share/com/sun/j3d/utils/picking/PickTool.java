@@ -468,7 +468,7 @@ p	 @param end The end of the segment
 	    retval =  pickGeomAllIntersect(pickShape);
 	    break;
 	  default:
-	    throw new java.lang.InternalError("Invalid pick mode");
+	    throw new RuntimeException("Invalid pick mode");
 	}
 	return retval;
     }
@@ -491,7 +491,7 @@ p	 @param end The end of the segment
 	    retval =  pickGeomAnyIntersect(pickShape);
 	    break;
 	  default:
-	    throw new java.lang.InternalError("Invalid pick mode");
+	    throw new RuntimeException("Invalid pick mode");
 	}
 	return retval;
     }
@@ -533,7 +533,7 @@ p	 @param end The end of the segment
 	      retval =  pickGeomAllSortedIntersect(pickShape);
 	      break;
 	default:
-	    throw new java.lang.InternalError("Invalid pick mode");
+	    throw new RuntimeException("Invalid pick mode");
 	}
 	return retval;
     }
@@ -571,7 +571,7 @@ p	 @param end The end of the segment
 	    retval =  pickGeomClosestIntersect(pickShape);
 	    break;
 	  default:
-	    throw new java.lang.InternalError("Invalid pick mode");
+	    throw new RuntimeException("Invalid pick mode");
 	}
 	return retval;
     }
