@@ -59,7 +59,7 @@ import com.sun.j3d.internal.J3dUtilsI18N;
  */
 
 public abstract class MouseBehavior extends Behavior
-     implements MouseListener, MouseMotionListener {
+     implements MouseListener, MouseMotionListener, MouseWheelListener {
 
     private boolean listener = false;
     
@@ -141,6 +141,7 @@ public abstract class MouseBehavior extends Behavior
 	if (c != null) {
 	    c.addMouseListener(this);
 	    c.addMouseMotionListener(this);
+	    c.addMouseWheelListener(this);
 	}
 	listener = true;
     }
@@ -162,6 +163,7 @@ public abstract class MouseBehavior extends Behavior
 	if (c != null) {
 	    c.addMouseListener(this);
 	    c.addMouseMotionListener(this);
+	    c.addMouseWheelListener(this);
 	}
 	listener = true;
     }
@@ -192,11 +194,13 @@ public abstract class MouseBehavior extends Behavior
    */
 
   public void initialize() {
-    mouseEvents = new WakeupCriterion[3];
+    mouseEvents = new WakeupCriterion[4];
+
     if (!listener) {
 	mouseEvents[0] = new WakeupOnAWTEvent(MouseEvent.MOUSE_DRAGGED);
 	mouseEvents[1] = new WakeupOnAWTEvent(MouseEvent.MOUSE_PRESSED);
 	mouseEvents[2] = new WakeupOnAWTEvent(MouseEvent.MOUSE_RELEASED);
+	mouseEvents[3] = new WakeupOnAWTEvent(MouseEvent.MOUSE_WHEEL);
     }
     else {
 	mouseEvents[0] = new WakeupOnBehaviorPost(this,
@@ -205,6 +209,8 @@ public abstract class MouseBehavior extends Behavior
 						  MouseEvent.MOUSE_PRESSED);
 	mouseEvents[2] = new WakeupOnBehaviorPost(this,
 						  MouseEvent.MOUSE_RELEASED);
+	mouseEvents[3] = new WakeupOnBehaviorPost(this,
+						  MouseEvent.MOUSE_WHEEL);
 	mouseq = new LinkedList();
     }
     mouseCriterion = new WakeupOr(mouseEvents);
@@ -240,6 +246,12 @@ public abstract class MouseBehavior extends Behavior
     else if (evt.getID() == MouseEvent.MOUSE_MOVED) {
       // Process mouse move event
     }
+    else if (evt.getID() == MouseEvent.MOUSE_WHEEL) {
+      // Process mouse wheel event
+    }
+    else {// no default code path authorized.
+	assert false;
+    }
   }
   
   /**
@@ -248,11 +260,11 @@ public abstract class MouseBehavior extends Behavior
   public abstract void processStimulus (Enumeration criteria);
 
     /**
-     * Adds this behavior as a MouseListener and MouseMotionListener to
+     * Adds this behavior as a MouseListener, mouseWheelListener and MouseMotionListener to
      * the specified component.  This method can only be called if
      * the behavior was created with one of the constructors that takes
      * a Component as a parameter.
-     * @param c The component to add the MouseListener and
+     * @param c The component to add the MouseListener, MouseWheelListener and
      * MouseMotionListener to.
      * @exception IllegalStateException if the behavior was not created
      * as a listener
@@ -260,10 +272,11 @@ public abstract class MouseBehavior extends Behavior
      */
     public void addListener(Component c) {
 	if (!listener) {
-	    throw new IllegalStateException(J3dUtilsI18N.getString("Behavior0"));
+	   throw new IllegalStateException(J3dUtilsI18N.getString("Behavior0"));
 	}
 	c.addMouseListener(this);
 	c.addMouseMotionListener(this);
+	c.addMouseWheelListener(this);
     }
 
     public void mouseClicked(MouseEvent e) {}
@@ -322,6 +335,21 @@ public abstract class MouseBehavior extends Behavior
         this.enable = state;
 	if (!enable && (mouseq != null)) {
 	    mouseq.clear();
+	}
+    }
+
+    public void mouseWheelMoved(MouseWheelEvent e){
+	System.out.println("MouseBehavior : mouseWheel enable = " + enable );
+	
+	// add new event to the to the queue
+	// must be MT safe.
+	if (enable) {
+	    synchronized (mouseq) {
+		mouseq.add(e);
+		// only need to post if this is the only event in the queue
+		if (mouseq.size() == 1) 
+		    postId(MouseEvent.MOUSE_WHEEL);
+	    }
 	}
     }
 }
