@@ -120,6 +120,8 @@ public class ConfigContainer {
 
     // The visibility status of Viewer AWT components.
     private boolean setVisible = false ;
+    
+    private ClassLoader classLoader = ClassLoader.getSystemClassLoader();
 
     /**
      * The name of the file this ConfigContainer is currently loading.
@@ -135,6 +137,19 @@ public class ConfigContainer {
      */
     public ConfigContainer(URL userConfig) {
 	this(userConfig, false, 1, true) ;
+    }
+
+    /**
+     * Creates a new ConfigContainer and loads the configuration file at the
+     * specified URL.  All ViewingPlatform instances are created with a single
+     * TransformGroup and all Viewer components are initially invisible.
+     *
+     * @param userConfig URL of the configuration file to load
+     * @param classLoader the class loader to use to load classes specified
+     * in the config file.
+     */
+    public ConfigContainer(URL userConfig, ClassLoader classLoader) {
+	this(userConfig, false, 1, true, classLoader) ;
     }
 
     /**
@@ -156,6 +171,28 @@ public class ConfigContainer {
 	this(userConfig, setVisible, transformCount, true) ;
     }
 	
+    /**
+     * Creates a new ConfigContainer and loads the configuration file at the
+     * specified URL.  Any ViewingPlatform instantiated by the configuration
+     * file will be created with the specified number of transforms.  Viewer
+     * components may be set initially visible or invisible with the
+     * <code>setVisible</code> flag.
+     *
+     * @param userConfig URL of the configuration file to load
+     * @param setVisible if true, <code>setVisible(true)</code> is called on
+     *  all Viewers
+     * @param transformCount number of transforms to be included in any
+     *  ViewingPlatform created; must be greater than 0
+     * @param classLoader the class loader to use to load classes specified
+     * in the config file.
+     */
+    public ConfigContainer(URL userConfig,
+			   boolean setVisible, int transformCount,
+                           ClassLoader classLoader) {
+
+	this(userConfig, setVisible, transformCount, true, classLoader) ;
+    }
+
     /**
      * Package-scoped constructor for ConfigContainer.  This provides an
      * additional flag, <code>attachBehaviors</code>, which indicates whether
@@ -199,6 +236,18 @@ public class ConfigContainer {
     }
 	
     /**
+     * Package scoped constructor that adds the ability to set the ClassLoader
+     * which will be used to load any app specific classes specified in the
+     * configuration file. By default SystemClassLoader is used.
+     */
+    ConfigContainer(URL userConfig, boolean setVisible,
+		    int transformCount, boolean attachBehaviors,
+                    ClassLoader classLoader) {
+        this(userConfig, setVisible, transformCount, attachBehaviors);
+        this.classLoader = classLoader;
+    }
+
+   /**
      * Open, parse, and load the contents of a configuration file.
      * 
      * @param userConfig location of the configuration file
@@ -382,6 +431,7 @@ public class ConfigContainer {
 	configObject.configContainer = this ;
 
 	// Initialize specific fields and return the ConfigObject.
+        configObject.setClassLoader(classLoader);
 	configObject.initialize(cmd) ;
 	return configObject ;
     }

@@ -127,7 +127,17 @@ class ConfigObject {
      * List of alias Strings for this object if it's not an alias itself.
      */
     List aliases = new ArrayList() ;
+    
+    protected ClassLoader classLoader;
 
+    /**
+     * @param classLoader the ClassLoader to use when loading the implementation
+     * class for this object
+     */
+    void setClassLoader( ClassLoader classLoader ) {
+        this.classLoader = classLoader;
+    }
+    
     /**
      * The base initialize() implementation.  This takes a ConfigCommand with
      * three arguments:  the command name, the instance name, and the name of
@@ -232,8 +242,12 @@ class ConfigObject {
 	    // Use the system class loader.  If the Java 3D jar files are
 	    // installed directly in the JVM's lib/ext directory, then the
 	    // default class loader won't find user classes outside ext.
+            //
+            // From 1.3.2 we use the classLoader supplied to this object,
+            // normally this will be the system class loader, but for webstart
+            // apps the user can supply another class loader.
 	    return Class.forName(className, true,
-				 ClassLoader.getSystemClassLoader()) ;
+				 classLoader) ;
 	}
 	catch (ClassNotFoundException e) {
 	    throw new IllegalArgumentException
