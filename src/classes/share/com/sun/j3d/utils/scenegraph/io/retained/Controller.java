@@ -135,7 +135,7 @@ public abstract class Controller extends java.lang.Object {
      */
     private boolean useSuperClass = false;
         
-    private int imageCompression = ImageComponentState.JPEG_COMPRESSION;
+    private int imageCompression = ImageComponentState.NO_COMPRESSION;
     
     /** Creates new Controller */
     public Controller() {
