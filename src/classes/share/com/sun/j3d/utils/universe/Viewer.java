@@ -51,7 +51,8 @@ import java.util.*;
 import javax.media.j3d.*;
 import javax.swing.*;
 import javax.vecmath.*;
-import com.sun.j3d.audioengines.javasound.JavaSoundMixer;
+import com.sun.j3d.audioengines.AudioEngine3DL2;
+import java.lang.reflect.Constructor;
 import java.applet.*;
 
 /**
@@ -960,15 +961,42 @@ public class Viewer {
      * @return reference to created AudioDevice, or null if error occurs.
      */
     public AudioDevice createAudioDevice() {
-	if (physicalEnvironment != null) {
-	    AudioDevice3DL2 mixer = new JavaSoundMixer(physicalEnvironment);
-            mixer.initialize();
-            return mixer;
-        }
-	else
+	if (physicalEnvironment == null) {
+	    System.err.println("Java 3D: createAudioDevice: physicalEnvironment is null");
 	    return null;
+	}
+
+	try {
+	    String audioDeviceClassName =
+		(String) java.security.AccessController.doPrivileged(
+		    new java.security.PrivilegedAction() {
+			public Object run() {
+			    return System.getProperty("j3d.audiodevice");
+			}
+		    });
+
+	    if (audioDeviceClassName == null) {
+		throw new UnsupportedOperationException("No AudioDevice specified");
+	    }
+
+	    Class audioDeviceClass = Class.forName(audioDeviceClassName);
+	    Class physEnvClass = PhysicalEnvironment.class;
+	    Constructor audioDeviceConstructor =
+		    audioDeviceClass.getConstructor(new Class[] {physEnvClass});
+	    PhysicalEnvironment[] args = new PhysicalEnvironment[] { physicalEnvironment };
+	    AudioEngine3DL2 mixer =
+		(AudioEngine3DL2) audioDeviceConstructor.newInstance(args);
+	    mixer.initialize();
+	    return mixer;
+	}
+	catch (Throwable e) {
+	    e.printStackTrace();
+	    physicalEnvironment.setAudioDevice(null);
+	    System.err.println("Java 3D: audio is disabled");
+	    return null;
+	}
     }
-    
+
     /**
      * Returns the Universe to which this Viewer is attached
      *
