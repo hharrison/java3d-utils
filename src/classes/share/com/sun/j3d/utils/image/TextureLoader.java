@@ -45,26 +45,23 @@
 package com.sun.j3d.utils.image;
 
 import javax.media.j3d.*;
-import java.awt.Toolkit;
 import java.awt.Image;
 import java.awt.Component;
+import java.awt.Transparency;
+import java.awt.color.ColorSpace;
+import java.awt.geom.AffineTransform;
 import java.awt.image.*;
+import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.lang.reflect.Method;
-import java.awt.color.ColorSpace;
-import java.awt.Transparency;
-
-import java.awt.geom.AffineTransform;
-// TODO: remove the following for jdk1.2Beta4
-import java.awt.image.AffineTransformOp;
-// TODO: add the following for jdk1.2Beta4
-//import java.awt.image.AffineTransformOp;
+import javax.imageio.ImageIO;
 
 /**
  * This class is used for loading a texture from an Image or BufferedImage.
- * If Java Advanced Imaging is installed then it is used to load the
- * images, otherwise AWT toolkit it used. JAI is capable of loading
- * a larger set of image formats including .tiff and .bmp
+ * The Image I/O API is used to load the images.  (If the JAI IIO Tools
+ * package is available, a larger set of formats can be loaded, including
+ * TIFF, JPEG2000, and so on.)
  *
  * Methods are provided to retrieve the Texture object and the associated
  * ImageComponent object or a scaled version of the ImageComponent object.
@@ -72,7 +69,6 @@ import java.awt.image.AffineTransformOp;
  * Default format is RGBA. Other legal formats are: RGBA, RGBA4, RGB5_A1, 
  * RGB, RGB4, RGB5, R3_G3_B2, LUM8_ALPHA8, LUM4_ALPHA4, LUMINANCE and ALPHA
  */
-
 public class TextureLoader extends Object {
 
     /**
@@ -90,7 +86,7 @@ public class TextureLoader extends Object {
     
     /**
      * Optional flag - specifies that the ImageComponent2D will
-     * have a y-orientation of y up, meaning the orgin of the image is the
+     * have a y-orientation of y up, meaning the origin of the image is the
      * lower left
      *
      * @since Java 3D 1.2
@@ -113,19 +109,6 @@ public class TextureLoader extends Object {
     private int flags;
     private boolean byRef;
     private boolean yUp;
-
-    private boolean useJAI = false;
-
-    // JAI Methods
-    // Use introspection to get the methods so that JAI 
-    // is not required to compile the Java3D API.
-    private Method jaiGetWidth;
-    private Method jaiGetHeight;
-    private Method jaiGetAsBufferedImage;
-    private Method jaiGetRendering;
-    private Method jaiCreate;
-    private boolean doneJAICheck = false;
-    private boolean jaiInstalled = false;
 
     /**
      * Contructs a TextureLoader object using the specified BufferedImage 
@@ -176,7 +159,6 @@ public class TextureLoader extends Object {
 	}
     }
 
-
     /**
      * Contructs a TextureLoader object using the specified Image 
      * and default format RGBA
@@ -218,16 +200,16 @@ public class TextureLoader extends Object {
      * @param observer The associated image observer
      */
     public TextureLoader(Image image, String format, int flags, 
-		Component observer) {
+                         Component observer) {
 
 	if (observer == null) {
-	  observer = new java.awt.Container();
+            observer = new java.awt.Container();
 	}
 
 	parseFormat(format);
 	this.flags = flags;
 	bufferedImage = createBufferedImage(image, observer);
-	
+
 	if ((flags & BY_REFERENCE) != 0) {
 	    byRef = true;
 	}
@@ -235,7 +217,6 @@ public class TextureLoader extends Object {
 	    yUp = true;
 	}
     }
-
 
     /**
      * Contructs a TextureLoader object using the specified file 
@@ -277,36 +258,33 @@ public class TextureLoader extends Object {
      * @param flags The flags specify what options to use in texture loading (generate mipmap etc)
      * @param observer The associated image observer
      */
-    public TextureLoader(String fname, String format, int flags,
-		Component observer) {
+    public TextureLoader(final String fname, String format, int flags,
+			 Component observer) {
 
-	    if (observer == null) {
-	      observer = new java.awt.Container();
-	    }
+        if (observer == null) {
+            observer = new java.awt.Container();
+        }
 
-            final Toolkit toolkit = Toolkit.getDefaultToolkit();
-	    final Image image[] = new Image[1];
-	    final String fn = fname;
+        bufferedImage = (BufferedImage)
+            java.security.AccessController.doPrivileged(
+ 	        new java.security.PrivilegedAction() {
+                    public Object run() {
+                        try {
+                            return ImageIO.read(new File(fname));
+                        } catch (IOException e) {
+			    System.err.println(e);
+                            return null;
+                        }
+                    }
+                }
+            );
 
- 	    java.security.AccessController.doPrivileged(
- 						    new java.security.PrivilegedAction() {
- 	      public Object run() {
- 	        image[0] = toolkit.createImage(fn);
- 	        return null;
- 	      }
- 	    }
- 						    );
-	    parseFormat(format);
-	    this.flags = flags;
-	    bufferedImage = createBufferedImage(image[0], observer);
+        parseFormat(format);
+        this.flags = flags;
 
-        if (bufferedImage==null && JAIInstalled() ) {
-	    parseFormat(format);
-	    bufferedImage = JAIgetImage( fname, observer );
-	}
-
-	if (bufferedImage==null)
-		System.err.println("Error loading Image "+fname );
+	if (bufferedImage==null) {
+            System.err.println("Error loading Image "+fname );
+        }
 
 	if ((flags & BY_REFERENCE) != 0) {
 	    byRef = true;
@@ -315,129 +293,6 @@ public class TextureLoader extends Object {
 	    yUp = true;
 	}
     }
-
-    /**
-      * Load the image using the JAI API
-      */
-    private BufferedImage JAIgetImage( String filename, Component observer ) {
-	final String fn = filename;
-	BufferedImage bImage = null;
-
-	try {
- 	    Object source = java.security.AccessController.doPrivileged(
- 			    new java.security.PrivilegedAction() {
- 	    public Object run() {
-		try {
-		    Object renderedOp;
-	            renderedOp = jaiCreate.invoke( null, new Object[] { "fileload", fn } );
-		    // Force JAI to actually load the image
-		    // within this privileged action
-		    jaiGetRendering.invoke( renderedOp, new Object[] {} );
-
-		    return renderedOp;
-		} catch( Exception e ) {
-		     e.printStackTrace();
-		     return null;
-		}
- 	      }
- 	    }
- 			    );
-
-	    int width = ((Integer)jaiGetWidth.invoke( source, new Object[] {} )).intValue();
-	    int height = ((Integer)jaiGetHeight.invoke( source, new Object[] {} )).intValue();
-
-
-	    WritableRaster wr =  java.awt.image.Raster.createInterleavedRaster(DataBuffer.TYPE_BYTE, width, height , width * 4, 4, bandOffset, null);;
-	    bImage = new BufferedImage(colorModel, wr, false, null);
-
-   	    java.awt.Graphics g = bImage.getGraphics();
-	    BufferedImage im = (BufferedImage)jaiGetAsBufferedImage.invoke( source, new Object[] {} );
-   	    g.drawImage(im, 0, 0, observer );
-	} catch( Exception e ) {
-	    return null;
-	    //System.out.println("Unable to load Texture "+filename);
-	}
-
-
-	return bImage;
-    }
-
-    /**
-      * Load the image using the JAI API
-      */
-    private BufferedImage JAIgetImage( URL url, Component observer ) {
-	final URL local_url = url;
-	BufferedImage bImage=null;
-	try {
- 	    Object source = java.security.AccessController.doPrivileged(
- 			    new java.security.PrivilegedAction() {
- 	    public Object run() {
-		try {
-		    Object renderedOp;
-	            renderedOp = jaiCreate.invoke( null, new Object[] { "URL", local_url } );
-		    // Force JAI to actually load the image
-		    // within this privileged action
-		    jaiGetRendering.invoke( renderedOp, new Object[] {} );
-
-		    return renderedOp;
-                } catch( Exception e ) {
-		    e.printStackTrace();
-		    return null;
-		}
- 	      }
- 	    }
- 			    );
-
-
-	    int width = ((Integer)jaiGetWidth.invoke( source, new Object[] {} )).intValue();
-	    int height = ((Integer)jaiGetHeight.invoke( source, new Object[] {} )).intValue();
-
-
-	    WritableRaster wr =  java.awt.image.Raster.createInterleavedRaster(DataBuffer.TYPE_BYTE, width, height , width * 4, 4, bandOffset, null);;
-	    bImage = new BufferedImage(colorModel, wr, false, null);
-
-   	    java.awt.Graphics g = bImage.getGraphics();
-	    BufferedImage im = (BufferedImage)jaiGetAsBufferedImage.invoke( source, new Object[] {} );
-   	    g.drawImage(im, 0, 0, observer );
-	} catch( Exception e ) {
-	    return null;
-	    //System.out.println("Unable to load Texture "+local_url.toString());
-	}
-
-	return bImage;
-    }
-
-    /**
-      * Check if JAI is installed
-      * If it is installed created Methods for each method we need
-      * to call
-      */
-    private boolean JAIInstalled() {
-	if (!doneJAICheck) {
-	    try {
-	        Class cl = Class.forName("javax.media.jai.PlanarImage");
-		jaiGetWidth = cl.getDeclaredMethod( "getWidth", new Class[] {} );
-		jaiGetHeight = cl.getDeclaredMethod( "getHeight", new Class[] {} );
-		jaiGetAsBufferedImage = cl.getDeclaredMethod( "getAsBufferedImage", new Class[] {} );
-		Class cl2 = Class.forName("javax.media.jai.JAI");
-		jaiCreate = cl2.getDeclaredMethod( "create", new Class[] { String.class, Object.class } );
-		Class cl3 = Class.forName("javax.media.jai.RenderedOp");
-		jaiGetRendering = cl3.getDeclaredMethod("getRendering", new Class[] {} );
-
-	        jaiInstalled = true;
-	    } catch( ClassNotFoundException e ) {
-	        jaiInstalled = false;
-	    } catch( NoSuchMethodException ex ) {
-		ex.printStackTrace();
-		jaiInstalled = false;
-	    }
-
-	    doneJAICheck = true;
-	}
-
-	return jaiInstalled;
-    }
-
 
     /**
      * Contructs a TextureLoader object using the specified URL 
@@ -478,35 +333,33 @@ public class TextureLoader extends Object {
      * @param flags The flags specify what options to use in texture loading (generate mipmap etc)
      * @param observer The associated image observer
      */
-    public TextureLoader(URL url, String format, int flags,
-		Component observer) {
+    public TextureLoader(final URL url, String format, int flags,
+                         Component observer) {
 
-	    if (observer == null) {
-	      observer = new java.awt.Container();
-	    }
+        if (observer == null) {
+            observer = new java.awt.Container();
+        }
 
-            final Toolkit toolkit = Toolkit.getDefaultToolkit();
-	    final Image image[] = new Image[1];
-	    final URL Url = url;
+        bufferedImage = (BufferedImage)
+            java.security.AccessController.doPrivileged(
+ 	        new java.security.PrivilegedAction() {
+                    public Object run() {
+                        try {
+                            return ImageIO.read(url);
+                        } catch (IOException e) {
+			    System.err.println(e);
+                            return null;
+                        }
+                    }
+                }
+            );
 
-	    java.security.AccessController.doPrivileged(
-						    new java.security.PrivilegedAction() {
-	      public Object run() {
-	        image[0] = toolkit.getImage(Url);
-	        return null;
-	      }
-	    }
-						    );
-	    parseFormat(format);
-	    this.flags = flags;
-	    bufferedImage = createBufferedImage(image[0], observer);
+        parseFormat(format);
+        this.flags = flags;
 
-        if (bufferedImage==null && JAIInstalled() ) {
-	    bufferedImage = JAIgetImage( url, observer );
-	}
-
-	if (bufferedImage==null)
-		System.err.println("Error loading Image "+url.toString() );
+	if (bufferedImage==null) {
+            System.err.println("Error loading Image "+url.toString() );
+        }
 
 	if ((flags & BY_REFERENCE) != 0) {
 	    byRef = true;
@@ -523,7 +376,6 @@ public class TextureLoader extends Object {
      * @return The associated ImageComponent2D object
      */  
     public ImageComponent2D getImage() {
-
 	if (imageComponent == null) 
             imageComponent = new ImageComponent2D(imageComponentFormat, 
 						  bufferedImage, byRef, yUp);
@@ -539,7 +391,6 @@ public class TextureLoader extends Object {
      * @return The scaled ImageComponent2D object
      */  
     public ImageComponent2D getScaledImage(float xScale, float yScale) {
-
 	if (xScale == 1.0f && yScale == 1.0f)
 	    return getImage();
 	else
@@ -576,10 +427,9 @@ public class TextureLoader extends Object {
      * @return The associated Texture object
      */
     public Texture getTexture() {
-
 	ImageComponent2D[] scaledImageComponents = null;
 	BufferedImage[] scaledBufferedImages = null;
-    if (tex == null) {
+        if (tex == null) {
 	  if (bufferedImage==null) return null;
 
           int width = getClosestPowerOf2(bufferedImage.getWidth());
@@ -631,7 +481,8 @@ public class TextureLoader extends Object {
     }
 
     // create a BufferedImage from an Image object
-    private BufferedImage createBufferedImage(Image image, Component observer) {
+    private BufferedImage createBufferedImage(Image image,
+                                              Component observer) {
 
 	int status;
 	
@@ -651,7 +502,11 @@ public class TextureLoader extends Object {
         int width = image.getWidth(observer);
         int height = image.getHeight(observer);
 
-	WritableRaster wr =  java.awt.image.Raster.createInterleavedRaster(DataBuffer.TYPE_BYTE, width, height , width * 4, 4, bandOffset, null);;
+	WritableRaster wr =
+            java.awt.image.Raster.createInterleavedRaster(DataBuffer.TYPE_BYTE,
+                                           width, height,
+                                           width * 4, 4,
+                                           bandOffset, null);
 	BufferedImage bImage = new BufferedImage(colorModel, wr, false, null);
 	
    	java.awt.Graphics g = bImage.getGraphics();
@@ -709,8 +564,8 @@ public class TextureLoader extends Object {
     }
 
     // return a scaled image of given width and height
-    private BufferedImage getScaledImage(BufferedImage origImage, int width, 
-					int height){
+    private BufferedImage getScaledImage(BufferedImage origImage,
+                                         int width, int height) {
 
         int origW = origImage.getWidth();
         int origH = origImage.getHeight();
@@ -721,18 +576,22 @@ public class TextureLoader extends Object {
     }
 
     // return a scaled image of given x and y scale
-    private BufferedImage getScaledImage(BufferedImage origImage, float xScale,
-                                        float yScale){
- 
+    private BufferedImage getScaledImage(BufferedImage origImage,
+                                         float xScale, float yScale) {
+
         // If the image is already the requested size, no need to scale
         if (xScale == 1.0f && yScale == 1.0f)
             return origImage;
         else {
-
 	    int scaleW = (int)(origImage.getWidth() * xScale + 0.5);
 	    int scaleH = (int)(origImage.getHeight() * yScale + 0.5);
-	    WritableRaster wr =  java.awt.image.Raster.createInterleavedRaster(DataBuffer.TYPE_BYTE, scaleW, scaleH , scaleW * 4, 4, bandOffset, null);;
-	    BufferedImage scaledImage = new BufferedImage(colorModel, wr, false, null);
+	    WritableRaster wr = 
+                java.awt.image.Raster.createInterleavedRaster(DataBuffer.TYPE_BYTE,
+                                               scaleW, scaleH,
+                                               scaleW * 4, 4,
+                                               bandOffset, null);
+	    BufferedImage scaledImage = new BufferedImage(colorModel, wr,
+                                                          false, null);
 	    
 	    java.awt.Graphics2D g2 = scaledImage.createGraphics();
             AffineTransform at = AffineTransform.getScaleInstance(xScale,
@@ -743,7 +602,6 @@ public class TextureLoader extends Object {
             return scaledImage;
         }
     }
-
 
     private int computeLog(int value) {
         int i = 0;
