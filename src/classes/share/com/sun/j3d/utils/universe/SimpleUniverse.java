@@ -44,12 +44,13 @@
 
 package com.sun.j3d.utils.universe;
 
+import com.sun.j3d.utils.geometry.Primitive;
 import java.awt.GraphicsEnvironment;
 import java.awt.GraphicsConfiguration;
 import java.net.URL;
 
 import javax.media.j3d.*;
-import javax.vecmath.*;
+
 
 /**
  * This class sets up a minimal user environment to quickly and easily
@@ -407,6 +408,7 @@ public class SimpleUniverse extends VirtualUniverse {
 	removeAllLocales();
 	// viewerMap cleanup here to prevent memory leak problem.
 	Viewer.clearViewerMap();
+        Primitive.clearGeometryCache();
 
     }
 }

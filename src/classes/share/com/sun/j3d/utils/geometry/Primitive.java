@@ -258,5 +258,16 @@ public abstract class Primitive extends Group {
 
     return((GeomBuffer) cache);
   }
+  
+  /**
+   * Clear the shared geometry cache for all Primitive types.
+   * Existing Shapes with shared geometry will continue to share 
+   * the geometry. New Primitives will create new shared geometry.
+   *
+   * @since Java 3D 1.3.2
+   */
+  public static void clearGeometryCache() {
+    geomCache.clear();
+  }
 }
 
