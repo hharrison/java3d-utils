@@ -94,7 +94,6 @@ class ObjectFileMaterials implements ImageObserver {
     private String basePath;
     private boolean fromUrl;
 
-
     private class ObjectFileMaterial {
 
 	public Color3f Ka;
@@ -104,6 +103,7 @@ class ObjectFileMaterials implements ImageObserver {
 	public float Ns;
 	public Texture2D t;
 	public boolean transparent;
+	public float transparencyLevel;
 
 	public void ObjectFileMaterial() {
 	    Ka = null;
@@ -152,7 +152,7 @@ class ObjectFileMaterials implements ImageObserver {
 	    if (p.transparent) 
 		a.setTransparencyAttributes(
 		    new TransparencyAttributes(TransparencyAttributes.NICEST,
-					       0.0f));
+					       p.transparencyLevel));
 	}
 	a.setMaterial(m);
 	if ((DEBUG & 1) != 0) System.out.println(m);
@@ -222,7 +222,6 @@ class ObjectFileMaterials implements ImageObserver {
 
 
     private void readIllum(ObjectFileParser st) throws ParsingErrorException {
-	float f;
 
 	st.getNumber();
 	cur.illum = (int)st.nval;
@@ -230,6 +229,15 @@ class ObjectFileMaterials implements ImageObserver {
 	st.skipToNextLine();
     } // End of readSpecular
 
+    private void readTransparency(ObjectFileParser st) throws ParsingErrorException {
+
+	st.getNumber();
+	cur.transparencyLevel = (float)st.nval;
+	if ( cur.transparencyLevel < 1.0f ){
+		cur.transparent = true;
+	}
+	st.skipToNextLine();
+    } // End of readTransparency
 
     private void readShininess(ObjectFileParser st) throws ParsingErrorException {
 	float f;
@@ -342,7 +350,7 @@ class ObjectFileMaterials implements ImageObserver {
 		} else if (st.sval.equals("illum")) {
 		    readIllum(st);
 		} else if (st.sval.equals("d")) {
-		    st.skipToNextLine();
+		    readTransparency(st);
 		} else if (st.sval.equals("ns")) {
 		    readShininess(st);
 		} else if (st.sval.equals("tf")) {

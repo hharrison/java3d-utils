@@ -230,7 +230,7 @@ public class ObjectFile implements Loader {
     // 16=Tokens
     // 32=Token details (use with 16)
     // 64=limits of model coordinates
-    private static final int DEBUG = 1;
+    private static final int DEBUG = 0;
 
     /**
      * Flag sent to constructor.  The object's vertices will be changed
