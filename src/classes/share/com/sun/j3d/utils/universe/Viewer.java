@@ -979,7 +979,20 @@ public class Viewer {
 		throw new UnsupportedOperationException("No AudioDevice specified");
 	    }
 
-	    Class audioDeviceClass = Class.forName(audioDeviceClassName);
+	    ClassLoader audioDeviceClassLoader =
+		(ClassLoader) java.security.AccessController.doPrivileged(
+		    new java.security.PrivilegedAction() {
+			public Object run() {
+			    return ClassLoader.getSystemClassLoader();
+			}
+		    });
+
+	    if (audioDeviceClassLoader == null) {
+		throw new IllegalStateException("System ClassLoader is null");
+	    }
+
+	    Class audioDeviceClass =
+		Class.forName(audioDeviceClassName, true, audioDeviceClassLoader);
 	    Class physEnvClass = PhysicalEnvironment.class;
 	    Constructor audioDeviceConstructor =
 		    audioDeviceClass.getConstructor(new Class[] {physEnvClass});
