@@ -67,7 +67,7 @@ import java.util.ArrayList;
  * Subclass AudioEngine3DL2 instead.
  */
 
-public class AudioEngine3D extends AudioEngine implements AudioDevice3D
+public abstract class AudioEngine3D extends AudioEngine implements AudioDevice3D
 {
     /*
      *  Identifiers of sample associated with sound source
@@ -142,10 +142,7 @@ public class AudioEngine3D extends AudioEngine implements AudioDevice3D
      * Removes/clears associated sound data with this sound source node
      * @param index device specific reference number to device driver sample
      */  
-    public void clearSound(int index) {
-        // This method must be overridden by device specific implementation
-        return;
-    }
+    public abstract void clearSound(int index);
 
     /**
      * Set the transform for local to virtual world coordinate space
@@ -163,20 +160,14 @@ public class AudioEngine3D extends AudioEngine implements AudioDevice3D
      * @param index device specific reference number to device driver sample
      * @return status: < 0 denotes an error
      */
-    public int   startSample(int index) {
-        // This method must be overridden by device specific implementation
-        return -1;  // error if not overridden
-    }
+    public abstract int startSample(int index);
 
     /**
      * Stop sample playing on audio device
      * @param index device specific reference number to device driver sample
      * @return status: < 0 denotes an error
      */
-    public int   stopSample(int index) {
-        // This method must be overridden by device specific implementation
-        return -1;  // error if not overridden
-    }
+    public abstract int stopSample(int index);
 
     /**
      * Update sample. 
@@ -184,46 +175,31 @@ public class AudioEngine3D extends AudioEngine implements AudioDevice3D
      * @param index device specific reference number to device driver sample
      */
     // TODO: The update method exists on a TEMPORARY basis.
-    public void updateSample(int index) {
-        // This method must be overridden by device specific implementation
-        return;
-    }
+    public abstract void updateSample(int index);
 
     /**
      * Mute sample. 
      * @param index device specific reference number to device driver sample
      */
-    public void muteSample(int index) {
-        // This method must be overridden by device specific implementation
-        return;
-    }
+    public abstract void muteSample(int index);
 
     /**
      * Unmute sample. 
      * @param index device specific reference number to device driver sample
      */
-    public void unmuteSample(int index) {
-        // This method must be overridden by device specific implementation
-        return;
-    }
+    public abstract void unmuteSample(int index);
 
     /**
      * Pause sample. 
      * @param index device specific reference number to device driver sample
      */
-    public void pauseSample(int index) {
-        // This method must be overridden by device specific implementation
-        return;
-    }
+    public abstract void pauseSample(int index);
 
     /**
      * Unpause sample. 
      * @param index device specific reference number to device driver sample
      */
-    public void unpauseSample(int index) {
-        // This method must be overridden by device specific implementation
-        return;
-    }
+    public abstract void unpauseSample(int index);
     
     /*
      *

@@ -68,7 +68,7 @@ import java.util.ArrayList;
  *
  * @since Java 3D 1.3
  */
-public class AudioEngine3DL2 extends AudioEngine3D implements AudioDevice3DL2 {
+public abstract class AudioEngine3DL2 extends AudioEngine3D implements AudioDevice3DL2 {
     /**
      * Construct a new AudioEngine3DL2 with the specified PhysicalEnvironment.
      * @param physicalEnvironment the physical environment object where we
@@ -91,31 +91,22 @@ public class AudioEngine3DL2 extends AudioEngine3D implements AudioDevice3DL2 {
      * Causes all cached sounds to be paused and all streaming sounds to be
      * stopped.
      */
-    public void  pause() {
-        // This method must be overridden by device specific implementation
-        return;
-    }
+    public abstract void  pause();
+
     /**
      * Resumes audio device engine (if previously paused) without
      * reinitializing the device.
      * Causes all paused cached sounds to be resumed and all streaming
      * sounds restarted.
      */
-    public void resume() {
-        // This method must be overridden by device specific implementation
-        return;
-    }
+    public abstract void resume();
 
     /**
      * Set overall gain control of all sounds playing on the audio device.
      * @param scaleFactor scale factor applied to calculated amplitudes for
      * all sounds playing on this device
      */  
-    public void setGain(float scaleFactor) {
-        // This method must be overridden by device specific implementation
-        return;
-    }
-
+    public abstract void setGain(float scaleFactor);
 
     /*
      *

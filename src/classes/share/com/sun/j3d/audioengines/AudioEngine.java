@@ -55,7 +55,7 @@ import javax.media.j3d.*;
  * NOTE: AudioEngine developers should not subclass this class directly.
  * Subclass AudioEngine3DL2 instead.
  */
-public class AudioEngine implements AudioDevice {
+public abstract class AudioEngine implements AudioDevice {
 
     /*
      * This device's UNIX file descriptor
@@ -107,19 +107,13 @@ public class AudioEngine implements AudioDevice {
      * Code to initialize the device
      * @return flag: true is initialized sucessfully, false if error
      */
-    public boolean initialize() {
-        // Expected to be over-ridden by extending class
-        return true;
-    }
+    public abstract boolean initialize();
 
     /**
      * Code to close the device
      * @return flag: true is closed sucessfully, false if error
      */
-    public boolean close() {
-        // Expected to be over-ridden by extending class
-        return true;
-    }
+    public abstract boolean close();
 
     /*  
      * Audio Playback Methods
