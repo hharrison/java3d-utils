@@ -332,7 +332,7 @@ public abstract class SceneGraphObjectState {
         System.err.println("Unable to create node "+className+" attempting Java3D superclass "+superClass );
         
 	try {
-            Class state = Class.forName( superClass, true, control.getClassLoader() );
+            Class state = Class.forName( superClass );
             
 	    ret = (SceneGraphObject)state.newInstance();
 

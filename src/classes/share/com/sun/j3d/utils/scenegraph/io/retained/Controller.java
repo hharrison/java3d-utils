@@ -205,7 +205,7 @@ public abstract class Controller extends java.lang.Object {
         SceneGraphObjectState ret;
         
           try {
-              Class state = Class.forName( "com.sun.j3d.utils.scenegraph.io.state."+name+"State", true, classLoader );
+              Class state = Class.forName( "com.sun.j3d.utils.scenegraph.io.state."+name+"State" );
               ret = constructStateObj( symbol, state, obj.getClass() );
           } catch(ClassNotFoundException e) {
               ret = checkSuperClasses( symbol );
@@ -268,7 +268,7 @@ public abstract class Controller extends java.lang.Object {
             String name = cl.getName();
             //System.out.println("Got superclass "+name);
             try {
-                state = Class.forName( "com.sun.j3d.utils.scenegraph.io.state."+name+"State", true, classLoader );
+                state = Class.forName( "com.sun.j3d.utils.scenegraph.io.state."+name+"State" );
             } catch(ClassNotFoundException e) {
                 state = null;
             }
@@ -519,7 +519,7 @@ public abstract class Controller extends java.lang.Object {
 
         SceneGraphObjectState stateObj = null;
         try {
-            Class stateClass = Class.forName( stateClassName, true, ClassLoader.getSystemClassLoader() );
+            Class stateClass = Class.forName( stateClassName );
             Constructor stateConstructor = stateClass.getConstructor( new Class[] { SymbolTableData.class, Controller.class } );
             stateObj = (SceneGraphObjectState)stateConstructor.newInstance( new Object[] { null, this } );
         } catch( Exception e ) {
