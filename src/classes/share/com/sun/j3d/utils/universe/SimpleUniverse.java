@@ -403,9 +403,23 @@ public class SimpleUniverse extends VirtualUniverse {
      * Typically it should be invoked by the applet's destroy method.
      */
     public void cleanup() {
-	viewer[0].getView().removeAllCanvas3Ds();
+	// Get view associated with this SimpleUniverse
+	View view = viewer[0].getView();
+	
+	// Issue 134: cleanup all off-screen canvases
+	for (int i = view.numCanvas3Ds() - 1; i >= 0; i--) {
+	    Canvas3D c = view.getCanvas3D(i);
+	    if (c.isOffScreen()) {
+		c.setOffScreenBuffer(null);
+	    }
+	}
+
+	// Remove all canvases from view; remove the viewing platform from
+	// this viewer; remove all locales to cleanup the scene graph
+	view.removeAllCanvas3Ds();
         viewer[0].setViewingPlatform(null);
 	removeAllLocales();
+
 	// viewerMap cleanup here to prevent memory leak problem.
 	Viewer.clearViewerMap();
         Primitive.clearGeometryCache();

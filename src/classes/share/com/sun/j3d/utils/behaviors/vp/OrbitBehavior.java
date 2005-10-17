@@ -70,7 +70,7 @@ import com.sun.j3d.internal.J3dUtilsI18N;
 /**
  * Moves the View around a point of interest when the mouse is dragged with
  * a mouse button pressed.  Includes rotation, zoom, and translation
- * actions.
+ * actions. Zooming can also be obtained by using mouse wheel.
  * <p>
  * This behavior must be added to the ViewingPlatform
  * using the <code>ViewingPlatform.setViewPlatformBehavior</code> method.
@@ -178,6 +178,11 @@ public class OrbitBehavior extends ViewPlatformAWTBehavior {
     private int leftButton = ROTATE;
     private int rightButton = TRANSLATE;
     private int middleButton = ZOOM;
+
+    // the factor to be applied to wheel zooming so that it does not 
+    // look much different with mouse movement zooming. 
+    // This is a totally subjective factor.
+    private float wheelZoomFactor = 50.0f;
     
     /**
      * Constructor flag to reverse the rotate behavior
@@ -265,7 +270,7 @@ public class OrbitBehavior extends ViewPlatformAWTBehavior {
      * @since Java 3D 1.3
      */
     public OrbitBehavior() {
-	super(MOUSE_LISTENER | MOUSE_MOTION_LISTENER);
+	super(MOUSE_LISTENER | MOUSE_MOTION_LISTENER | MOUSE_WHEEL_LISTENER);
     }
 
     /**
@@ -284,7 +289,7 @@ public class OrbitBehavior extends ViewPlatformAWTBehavior {
      * @param flags The option flags
      */
     public OrbitBehavior(Canvas3D c, int flags) {
-	super(c, MOUSE_LISTENER | MOUSE_MOTION_LISTENER | flags );
+	super(c, MOUSE_LISTENER | MOUSE_MOTION_LISTENER | MOUSE_WHEEL_LISTENER | flags );
         
 	if ((flags & DISABLE_ROTATE) != 0) rotateEnabled = false;
 	if ((flags & DISABLE_ZOOM) != 0) zoomEnabled = false;
@@ -339,67 +344,96 @@ public class OrbitBehavior extends ViewPlatformAWTBehavior {
             }
 	    // zoom
 	    else if (zoom(evt)) {
-		if (proportionalZoom) {
-		    if (reverseZoom) {
-			if ((distanceFromCenter -
-			     (zoomMul*ychange*distanceFromCenter/100.0)) >
-			    minRadius) {
-			    distanceFromCenter -= (zoomMul*ychange*
-						   distanceFromCenter/100.0);
-			}
-			else {
-			    distanceFromCenter = minRadius;
-			}			    
-		    }
-		    else {
-			if ((distanceFromCenter +
-			     (zoomMul*ychange*distanceFromCenter/100.0))
-			     > minRadius) {
-			    distanceFromCenter += (zoomMul*ychange*
-						   distanceFromCenter/100.0);
-			}
-			else {
-			    distanceFromCenter = minRadius;
-			}
-		    }
-		}
-		else {
-		    if (stopZoom) {
-			if (reverseZoom) {
-			    if ((distanceFromCenter - ychange*zoomMul) > minRadius) {
-				distanceFromCenter -= ychange*zoomMul;
-			    }
-			    else {
-				distanceFromCenter = minRadius;
-			    }
-			}
-			else {
-			    if ((distanceFromCenter + ychange*zoomMul) > minRadius) {
-				distanceFromCenter += ychange * zoomMul;
-			    }
-			    else {
-				distanceFromCenter = minRadius;
-			    }
-			}
-		    }
-		    else {
-			if (reverseZoom) {
-			    distanceFromCenter -= ychange*zoomMul;
-			}
-			else {
-			    distanceFromCenter += ychange*zoomMul;
-			}
-		    }
-		}
+		doZoomOperations( ychange );
 	    }
             mouseX = evt.getX();
             mouseY = evt.getY();
 	    motion = true;
 	} else if (evt.getID()==MouseEvent.MOUSE_RELEASED ) {
-        }
-        
-    }
+	} else if (evt.getID()==MouseEvent.MOUSE_WHEEL ) {
+	    if (zoom(evt)) {
+		// if zooming is done through mouse wheel, 
+		// the amount of increments the wheel changed, 
+		// multiplied with wheelZoomFactor is used, 
+		// so that zooming speed looks natural compared to mouse movement zoom.
+		if ( evt instanceof java.awt.event.MouseWheelEvent){
+		    // I/O differenciation is made between 
+		    // java.awt.event.MouseWheelEvent.WHEEL_UNIT_SCROLL or 
+		    // java.awt.event.MouseWheelEvent.WHEEL_BLOCK_SCROLL so 
+		    // that behavior remains stable and not dependent on OS settings.
+		    // If getWheelRotation() was used for calculating the zoom, 
+		    // the zooming speed could act differently on different platforms, 
+		    // if, for example, the user sets his mouse wheel to jump 10 lines 
+		    // or a block.
+		    int zoom = 
+			((int)(((java.awt.event.MouseWheelEvent)evt).getWheelRotation() 
+			       * wheelZoomFactor));
+		    doZoomOperations( zoom );
+		    motion = true;
+		}
+	    }
+	}
+   }
     
+    /*extraction of the zoom algorithms so that there is no code duplication or source 'uglyfication'.
+     */
+    private void doZoomOperations( int ychange ) {
+	if (proportionalZoom) {
+	    if (reverseZoom) {
+		if ((distanceFromCenter -
+		     (zoomMul*ychange*distanceFromCenter/100.0)) >
+		    minRadius) {
+		    distanceFromCenter -= (zoomMul*ychange*
+					   distanceFromCenter/100.0);
+		}
+		else {
+		    distanceFromCenter = minRadius;
+		}			    
+	    }
+	    else {
+		if ((distanceFromCenter +
+		     (zoomMul*ychange*distanceFromCenter/100.0))
+		    > minRadius) {
+		    distanceFromCenter += (zoomMul*ychange*
+					   distanceFromCenter/100.0);
+		}
+		else {
+		    distanceFromCenter = minRadius;
+		}
+	    }
+	}
+	else {
+	    if (stopZoom) {
+		if (reverseZoom) {
+		    if ((distanceFromCenter - ychange*zoomMul) > minRadius) {
+			distanceFromCenter -= ychange*zoomMul;
+		    }
+		    else {
+			distanceFromCenter = minRadius;
+		    }
+		}
+		else {
+		    if ((distanceFromCenter + ychange*zoomMul) > minRadius) {
+			distanceFromCenter += ychange * zoomMul;
+		    }
+		    else {
+			distanceFromCenter = minRadius;
+		    }
+		}
+	    }
+	    else {
+		if (reverseZoom) {
+		    distanceFromCenter -= ychange*zoomMul;
+		}
+		else {
+		    distanceFromCenter += ychange*zoomMul;
+		}
+	    }
+	}
+    }
+		
+		
+		
     /**
      * Sets the ViewingPlatform for this behavior.  This method is
      * called by the ViewingPlatform.
@@ -447,46 +481,46 @@ public class OrbitBehavior extends ViewPlatformAWTBehavior {
     }
     
     protected synchronized void integrateTransforms() {
-            // Check if the transform has been changed by another
-            // behavior
-	    targetTG.getTransform(currentXfm) ;
-	    if (! targetTransform.equals(currentXfm))
-		resetView() ;
+	// Check if the transform has been changed by another
+	// behavior
+	targetTG.getTransform(currentXfm) ;
+	if (! targetTransform.equals(currentXfm))
+	    resetView() ;
             
-	    longditudeTransform.rotY( longditude );            
-	    latitudeTransform.rotX( latitude );
-	    rotateTransform.mul(rotateTransform, latitudeTransform);
-	    rotateTransform.mul(rotateTransform, longditudeTransform);
+	longditudeTransform.rotY( longditude );            
+	latitudeTransform.rotX( latitude );
+	rotateTransform.mul(rotateTransform, latitudeTransform);
+	rotateTransform.mul(rotateTransform, longditudeTransform);
 
-	    distanceVector.z = distanceFromCenter - startDistanceFromCenter;
+	distanceVector.z = distanceFromCenter - startDistanceFromCenter;
 
-	    temp1.set(distanceVector);
-	    temp1.mul(rotateTransform, temp1);
+	temp1.set(distanceVector);
+	temp1.mul(rotateTransform, temp1);
 
-	    // want to look at rotationCenter
-	    transVector.x = rotationCenter.x + xtrans;
-	    transVector.y = rotationCenter.y + ytrans;
-	    transVector.z = rotationCenter.z + ztrans;
+	// want to look at rotationCenter
+	transVector.x = rotationCenter.x + xtrans;
+	transVector.y = rotationCenter.y + ytrans;
+	transVector.z = rotationCenter.z + ztrans;
 
-	    translation.set(transVector);
-	    targetTransform.mul(temp1, translation);
+	translation.set(transVector);
+	targetTransform.mul(temp1, translation);
 
-	    // handle rotationCenter
-	    temp1.set(centerVector);
-	    temp1.mul(targetTransform);
+	// handle rotationCenter
+	temp1.set(centerVector);
+	temp1.mul(targetTransform);
            
-            invertCenterVector.x = -centerVector.x;
-            invertCenterVector.y = -centerVector.y;
-            invertCenterVector.z = -centerVector.z;
+	invertCenterVector.x = -centerVector.x;
+	invertCenterVector.y = -centerVector.y;
+	invertCenterVector.z = -centerVector.z;
             
-	    temp2.set(invertCenterVector);
-	    targetTransform.mul(temp1, temp2);
+	temp2.set(invertCenterVector);
+	targetTransform.mul(temp1, temp2);
 
-	    targetTG.setTransform(targetTransform);
+	targetTG.setTransform(targetTransform);
 
-	    // reset yaw and pitch angles
-	    longditude = 0.0;
-	    latitude = 0.0;        
+	// reset yaw and pitch angles
+	longditude = 0.0;
+	latitude = 0.0;        
     }
 
     /**
@@ -877,6 +911,9 @@ public class OrbitBehavior extends ViewPlatformAWTBehavior {
 
     boolean zoom(MouseEvent evt) {
 	if (zoomEnabled) {
+	    if (evt instanceof java.awt.event.MouseWheelEvent) {
+		return true;
+	    }
 	    if ((leftButton == ZOOM) &&
 		(!evt.isAltDown() && !evt.isMetaDown())) {
 		return true;

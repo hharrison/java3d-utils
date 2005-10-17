@@ -185,35 +185,37 @@ public class PickResult {
     static boolean debug = false; 
 
     /** if true, find only the first intersection */
-    boolean 	firstIntersectOnly = false;
+    private boolean 	firstIntersectOnly = false;
 
     /** Stored SceneGraphPath */
-    SceneGraphPath pickedSceneGraphPath = null;
+    private SceneGraphPath pickedSceneGraphPath = null;
 
     /** Picked node: shape3d, text3d, etc. */
-    Node 		pickedNode = null;
+    private Node pickedNode = null;
 
     /** GeometryArray(s) of the picked node */
-    GeometryArray[] geometryArrays = null;
+    private GeometryArray[] geometryArrays = null;
 
     /** Shape3Ds from CompressedGeometry on the picked node */
-    Shape3D[]	compressGeomShape3Ds = null;
+    private Shape3D[]	compressGeomShape3Ds = null;
 
     /** Transform to World Coordinates */
-    Transform3D 	localToVWorld = null;
+    private Transform3D 	localToVWorld = null;
 
     /** the pick shape to use for intersections */
-    PickShape pickShape = null;
+    private PickShape pickShape = null;
     /* data derived from the pick shape */
-    int 		pickShapeType = -1;
-    Vector3d 	pickShapeDir = null;
-    Point3d 	pickShapeStart = null;
-    Point3d 	pickShapeEnd = null;
-    Bounds 	pickShapeBounds = null;
+    private int 		pickShapeType = -1;
+    private Vector3d 	pickShapeDir = null;
+    private Point3d 	pickShapeStart = null;
+    private Point3d 	pickShapeEnd = null;
+    private Bounds 	pickShapeBounds = null;
 
     static final Point3d zeroPnt = new Point3d();
 
-    /** ArrayList to store intersection results */
+    /** ArrayList to store intersection results
+      * Used in PickTool
+      */
     ArrayList 	intersections = null;
     
     // internal constants used for intersections
@@ -1816,6 +1818,10 @@ public class PickResult {
 	Point4d tP4d = new Point4d();
 
 	Vector4d[] planes = new Vector4d [polytope.getNumPlanes()];
+
+	for(int i=0; i<planes.length; i++)
+	    planes[i]=new Vector4d();
+
 	polytope.getPlanes (planes);
 
 	if (coordinates.length == 2) {
@@ -2680,7 +2686,7 @@ public class PickResult {
 				isIntersect = ((t > -EPS) && (t < 1+EPS));
 				break;
 			    } else {
-				lastSign = 0; //degenerate line=>point
+				//degenerate line=>point
 			    }
 			}
 		    }
@@ -2712,7 +2718,7 @@ public class PickResult {
 				isIntersect = ((t > -EPS) && (t < 1+EPS));
 				break;
 			    } else {
-				lastSign = 0; //degenerate line=>point
+				//degenerate line=>point
 			    }
 			}
 		    }
@@ -2744,7 +2750,7 @@ public class PickResult {
 				isIntersect = ((t > -EPS) && (t < 1+EPS));
 				break;
 			    } else {
-				lastSign = 0; //degenerate line=>point
+				//degenerate line=>point
 			    }
 			}
 		    }
@@ -2774,7 +2780,7 @@ public class PickResult {
 				isIntersect = ((t > -EPS) && (t < 1+EPS));
 				break;
 			    } else {
-				lastSign = 0; //degenerate line=>point
+				//degenerate line=>point
 			    }
 			}
 		    }
@@ -2985,7 +2991,7 @@ public class PickResult {
 		    pi.setDistance(0);
 		}
 	    }
-	    freeVector3d(lDir);
+	    //freeVector3d(lDir);
 	    return isIntersect;
 	}
 	// Find the inverse.
@@ -3325,19 +3331,21 @@ public class PickResult {
     }
 
     static Vector3d getVector3d() {
-	return (Vector3d)UtilFreelistManager.vector3dFreelist.getObject();
+	//return (Vector3d)UtilFreelistManager.vector3dFreelist.getObject();
+        return new Vector3d();
     }
 
     static void freeVector3d(Vector3d v) {
-	UtilFreelistManager.vector3dFreelist.add(v);
+	//UtilFreelistManager.vector3dFreelist.add(v);
     }
     
     static Point3d getPoint3d() {
-	return (Point3d)UtilFreelistManager.point3dFreelist.getObject();
+	//return (Point3d)UtilFreelistManager.point3dFreelist.getObject();
+        return new Point3d();
     }
 
     static void freePoint3d(Point3d p) {
-	UtilFreelistManager.point3dFreelist.add(p);
+	//UtilFreelistManager.point3dFreelist.add(p);
     }
     
 

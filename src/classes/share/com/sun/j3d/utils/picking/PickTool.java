@@ -212,8 +212,19 @@ public class PickTool {
      * Returns the Locale to be picked if the tool was initialized with
      * a Locale, null otherwise.
      */
-    public Locale setBranchGroup (Locale l) {
+    public Locale getLocale () {
 	return pickRootL;
+    }
+    
+
+    /** 
+     * This method is not supported.
+     *
+     * @exception UnsupportedOperationException this method is not supported
+     *
+     */
+     public Locale setBranchGroup (Locale l) {
+	throw new UnsupportedOperationException();	
     }
 
     /** 
@@ -1007,16 +1018,17 @@ p	 @param end The end of the segment
     }
 
     PickResult getPickResult(SceneGraphPath spg, PickShape ps) {
-	PickResult pr = (PickResult)UtilFreelistManager.pickResultFreelist.getObject();
-	if (pr == null) {
-	    pr = new PickResult();
-	}
-	pr.reset(spg, ps);
+	//PickResult pr = (PickResult)UtilFreelistManager.pickResultFreelist.getObject();
+        PickResult pr = new PickResult(spg,ps);
+//	if (pr == null) {
+//	    pr = new PickResult();
+//	}
+//	pr.reset(spg, ps);
 	return pr;
     }
 
     void freePickResult(PickResult pr) {
-	UtilFreelistManager.pickResultFreelist.add(pr);
+	//UtilFreelistManager.pickResultFreelist.add(pr);
     }
 
 } // PickTool

@@ -47,6 +47,7 @@ package com.sun.j3d.utils.behaviors.vp;
 import java.awt.event.ComponentEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.MouseWheelListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.KeyListener;
 import java.awt.event.KeyEvent;
@@ -82,7 +83,7 @@ import com.sun.j3d.utils.universe.*;
  * @since Java 3D 1.2.1
  */
 public abstract class ViewPlatformAWTBehavior extends ViewPlatformBehavior
-implements MouseListener, MouseMotionListener, KeyListener {
+implements MouseListener, MouseMotionListener, KeyListener, MouseWheelListener {
 
     private final static boolean DEBUG = false;
     
@@ -125,7 +126,12 @@ implements MouseListener, MouseMotionListener, KeyListener {
      * Flag indicating Behavior should listen for Key Events
      */
     public final static int KEY_LISTENER = 0x04;
-    
+
+    /**
+     * Flag indicating Behavior should listen for MouseWheel Events
+     */
+    public final static int MOUSE_WHEEL_LISTENER = 0x08;
+
     /**
      * The Canvas3Ds from which this Behavior gets AWT events
      */
@@ -151,7 +157,7 @@ implements MouseListener, MouseMotionListener, KeyListener {
      * ConfiguredUniverse. 
      * 
      * @param listenerFlags Indicates which listener should be registered,
-     * one or more of MOUSE_LISTENER, MOUSE_MOTION_LISTENER, KEY_LISTENER
+     * one or more of MOUSE_LISTENER, MOUSE_MOTION_LISTENER, KEY_LISTENER, MOUSE_WHEEL_LISTENER
      * @since Java 3D 1.3
      */
     protected ViewPlatformAWTBehavior(int listenerFlags) {
@@ -165,7 +171,7 @@ implements MouseListener, MouseMotionListener, KeyListener {
      * @param c The Canvas3D on which to listen for events. If this is null a
      * NullPointerException will be thrown.
      * @param listenerFlags Indicates which listener should be registered,
-     * one or more of MOUSE_LISTENER, MOUSE_MOTION_LISTENER, KEY_LISTENER
+     * one or more of MOUSE_LISTENER, MOUSE_MOTION_LISTENER, KEY_LISTENER, MOUSE_WHEEL_LISTENER
      */
     public ViewPlatformAWTBehavior(Canvas3D c, int listenerFlags ) {
         super();
@@ -181,7 +187,7 @@ implements MouseListener, MouseMotionListener, KeyListener {
      * Sets listener flags for this behavior.
      *
      * @param listenerFlags Indicates which listener should be registered,
-     * one or more of MOUSE_LISTENER, MOUSE_MOTION_LISTENER, KEY_LISTENER
+     * one or more of MOUSE_LISTENER, MOUSE_MOTION_LISTENER, KEY_LISTENER, MOUSE_WHEEL_LISTENER
      * @since Java 3D 1.3
      */
     protected void setListenerFlags(int listenerFlags) {
@@ -263,6 +269,10 @@ implements MouseListener, MouseMotionListener, KeyListener {
                 for(int i=0; i<canvases.length; i++)
                     canvases[i].addMouseMotionListener(this);
 
+            if ( (listenerFlags & MOUSE_WHEEL_LISTENER)!=0)
+                for(int i=0; i<canvases.length; i++)
+                    canvases[i].addMouseWheelListener(this);
+
             if ( (listenerFlags & KEY_LISTENER)!=0)
                 for(int i=0; i<canvases.length; i++)
                     canvases[i].addKeyListener(this);
@@ -274,6 +284,10 @@ implements MouseListener, MouseMotionListener, KeyListener {
             if ( (listenerFlags & MOUSE_MOTION_LISTENER)!=0)
                 for(int i=0; i<canvases.length; i++)
                     canvases[i].removeMouseMotionListener(this);
+
+            if ( (listenerFlags & MOUSE_WHEEL_LISTENER)!=0)
+                for(int i=0; i<canvases.length; i++)
+                    canvases[i].removeMouseWheelListener(this);
 
             if ( (listenerFlags & KEY_LISTENER)!=0)
                 for(int i=0; i<canvases.length; i++)
@@ -395,6 +409,9 @@ implements MouseListener, MouseMotionListener, KeyListener {
     public void keyTyped(final java.awt.event.KeyEvent e) {
         queueAWTEvent( e );
     }
-    
+
+    public void mouseWheelMoved( final java.awt.event.MouseWheelEvent e) {
+	queueAWTEvent( e );
+    }    
 }
 
