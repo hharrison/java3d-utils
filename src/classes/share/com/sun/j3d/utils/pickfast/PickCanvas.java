@@ -62,7 +62,7 @@ import com.sun.j3d.utils.geometry.*; // Cone, Cylinder
  * initialize the pick canvas:
  * <blockquote><pre>
  *     PickCanvas pickCanvas = new PickCanvas(canvas, scene);
- *     pickCanvas.setMode(PickTool.PICK_GEOMETRY); 
+ *     pickCanvas.setMode(PickInfo.PICK_GEOMETRY); 
  *     pickCanvas.setFlags(PickInfo.NODE | PickInfo.CLOSEST_INTERSECTION_POINT); 
  *     pickCanvas.setTolerance(4.0f);
  * </pre></blockquote>
