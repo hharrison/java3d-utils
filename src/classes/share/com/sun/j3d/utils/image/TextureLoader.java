@@ -257,6 +257,8 @@ public class TextureLoader extends Object {
      * @param format The format specifies which channels to use
      * @param flags The flags specify what options to use in texture loading (generate mipmap etc)
      * @param observer The associated image observer
+     *
+     * @exception ImageException if there is a problem reading the image
      */
     public TextureLoader(final String fname, String format, int flags,
 			 Component observer) {
@@ -272,8 +274,7 @@ public class TextureLoader extends Object {
                         try {
                             return ImageIO.read(new File(fname));
                         } catch (IOException e) {
-			    System.err.println(e);
-                            return null;
+			    throw new ImageException(e);
                         }
                     }
                 }
@@ -283,7 +284,7 @@ public class TextureLoader extends Object {
         this.flags = flags;
 
 	if (bufferedImage==null) {
-            System.err.println("Error loading Image "+fname );
+            throw new ImageException("Error loading image: " + fname);
         }
 
 	if ((flags & BY_REFERENCE) != 0) {
@@ -332,6 +333,8 @@ public class TextureLoader extends Object {
      * @param format The format specifies which channels to use
      * @param flags The flags specify what options to use in texture loading (generate mipmap etc)
      * @param observer The associated image observer
+     *
+     * @exception ImageException if there is a problem reading the image
      */
     public TextureLoader(final URL url, String format, int flags,
                          Component observer) {
@@ -347,8 +350,7 @@ public class TextureLoader extends Object {
                         try {
                             return ImageIO.read(url);
                         } catch (IOException e) {
-			    System.err.println(e);
-                            return null;
+			    throw new ImageException(e);
                         }
                     }
                 }
@@ -358,7 +360,7 @@ public class TextureLoader extends Object {
         this.flags = flags;
 
 	if (bufferedImage==null) {
-            System.err.println("Error loading Image "+url.toString() );
+            throw new ImageException("Error loading image: " + url.toString());
         }
 
 	if ((flags & BY_REFERENCE) != 0) {
