@@ -369,8 +369,8 @@ class ConfigObject {
      */
     static String errorMessage(ConfigCommand cmd, String s) {
 	return
-	    "\n" + s + "\nat line " + cmd.lineNumber +
-	    " in " + cmd.fileName + "\n" + cmd + "\n" ;
+	    s + "\nat line " + cmd.lineNumber +
+	    " in " + cmd.fileName + "\n" + cmd;
     }
 
     /**

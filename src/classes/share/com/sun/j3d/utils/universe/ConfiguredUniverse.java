@@ -470,8 +470,8 @@ public class ConfiguredUniverse extends SimpleUniverse {
 
 	Collection c = configContainer.getViewers();
 	if (c == null || c.size() == 0)
-	    throw new IllegalArgumentException
-		("\nno views defined in configuration file\n");
+	    throw new IllegalArgumentException(
+                    "no views defined in configuration file");
 
 	viewer = (Viewer[])c.toArray(new Viewer[1]);
 	
@@ -536,8 +536,8 @@ public class ConfiguredUniverse extends SimpleUniverse {
 
 	    Collection c = configContainer.getViewers();
 	    if (c == null || c.size() == 0)
-		throw new IllegalArgumentException
-		    ("\nno views defined in configuration file\n");
+		throw new IllegalArgumentException(
+                        "no views defined in configuration file");
 
 	    viewer = (Viewer[])c.toArray(new Viewer[1]);
 

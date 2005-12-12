@@ -264,8 +264,8 @@ public class ConfigContainer {
 	    streamTokenizer = new StreamTokenizer(r) ;
 	}
 	catch (IOException e) {
-	    throw new IllegalArgumentException
-		("\n" + e + "\nUnable to open " + currentFileName) ;
+	    throw new IllegalArgumentException(
+                    e + "\nUnable to open " + currentFileName) ;
 	}
 
 	//
@@ -302,8 +302,8 @@ public class ConfigContainer {
 	    inputStream.close() ;
 	}
 	catch (IOException e) {
-	    throw new IllegalArgumentException
-		("\n" + e + "\nUnable to close " + currentFileName) ;
+	    throw new IllegalArgumentException(
+                    e + "\nUnable to close " + currentFileName) ;
 	}
 
 	// Restore current file name.

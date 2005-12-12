@@ -2171,8 +2171,8 @@ public class ViewInfo {
 	// Now get the CanvasInfo to update.
 	CanvasInfo ci = (CanvasInfo)canvasMap.get(c3d) ;
 	if (ci == null)
-	    throw new IllegalArgumentException
-		("\nSpecified Canvas3D is not a component of the View") ;
+	    throw new IllegalArgumentException(
+                    "Specified Canvas3D is not a component of the View") ;
 
 	// Check rest of autoUpdateFlags.
 	if (autoUpdate) getAutoUpdate(ci) ;

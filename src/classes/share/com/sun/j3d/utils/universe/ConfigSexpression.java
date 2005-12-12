@@ -67,7 +67,7 @@ class ConfigSexpression {
 	    tok = st.nextToken() ;
 	}
 	catch (IOException e) {
-	    throw new RuntimeException("\n" + e + "\nwhile reading " + file) ;
+	    throw new RuntimeException(e + "\nwhile reading " + file) ;
 	}
 	return tok ;
     }
