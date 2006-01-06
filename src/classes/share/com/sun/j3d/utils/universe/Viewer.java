@@ -1,7 +1,7 @@
 /*
  * $RCSfile$
  *
- * Copyright (c) 2005 Sun Microsystems, Inc. All rights reserved.
+ * Copyright (c) 2006 Sun Microsystems, Inc. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -499,8 +499,8 @@ public class Viewer {
         devices = graphicsEnv.getScreenDevices();
 
 	if (devices == null)
-	    throw new RuntimeException
-		("\nNo screen devices available in local environment");
+	    throw new RuntimeException(
+                    "No screen devices available in local environment");
 
 	if (debug) {
 	    System.out.println
@@ -534,22 +534,21 @@ public class Viewer {
 	// the configured attributes for the Canvas3D and Screen3D associated
 	// with each screen.
 	for (int i = 0; i < cs.length; i++) {
-	    if (cs[i].frameBufferNumber >= devices.length)
-		throw new ArrayIndexOutOfBoundsException
-		    (cs[i].errorMessage
-		     (cs[i].creatingCommand,
-		      "Screen " + cs[i].frameBufferNumber + " is invalid; " +
-		      (devices.length-1) + " is the maximum local index."));
+            if (cs[i].frameBufferNumber >= devices.length)
+                throw new ArrayIndexOutOfBoundsException(
+                    cs[i].errorMessage(cs[i].creatingCommand,
+                        "Screen " + cs[i].frameBufferNumber + " is invalid; " +
+                        (devices.length-1) + " is the maximum local index."));
 
 	    Rectangle bounds;
 	    Container contentPane;
 	    GraphicsConfiguration cfg =
 		devices[cs[i].frameBufferNumber].getBestConfiguration(tpl3D);
-		
+
 	    if (cfg == null)
-		throw new RuntimeException
-		    ("\nNo GraphicsConfiguration on screen " +
-		     cs[i].frameBufferNumber + " conforms to template");
+                throw new RuntimeException(
+                        "No GraphicsConfiguration on screen " +
+                        cs[i].frameBufferNumber + " conforms to template");
 
 	    bounds = cfg.getBounds();
 	    cs[i].j3dJFrame = j3dJFrames[i] =
@@ -849,8 +848,8 @@ public class Viewer {
      *  Viewer class.
      */
     public Frame getFrame() {
-	throw new UnsupportedOperationException
-	    ("\nAWT Frame components are not created by the Viewer class");
+        throw new UnsupportedOperationException(
+                "AWT Frame components are not created by the Viewer class");
     }
 
     /**
@@ -911,8 +910,8 @@ public class Viewer {
      * Viewer class.
      */
     public Panel getPanel() {
-	throw new UnsupportedOperationException
-	    ("\nAWT Panel components are not created by the Viewer class");
+        throw new UnsupportedOperationException(
+                "AWT Panel components are not created by the Viewer class");
     }
 
     /**
@@ -1040,7 +1039,7 @@ public class Viewer {
 	win.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent winEvent) {
 		Window w = winEvent.getWindow();
-		w.hide();
+		w.setVisible(false);
 		try {
 		    w.dispose();
 		} catch (IllegalStateException e) {}

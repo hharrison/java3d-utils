@@ -1,7 +1,7 @@
 /*
  * $RCSfile$
  *
- * Copyright (c) 2005 Sun Microsystems, Inc. All rights reserved.
+ * Copyright (c) 2006 Sun Microsystems, Inc. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -2171,8 +2171,8 @@ public class ViewInfo {
 	// Now get the CanvasInfo to update.
 	CanvasInfo ci = (CanvasInfo)canvasMap.get(c3d) ;
 	if (ci == null)
-	    throw new IllegalArgumentException
-		("\nSpecified Canvas3D is not a component of the View") ;
+	    throw new IllegalArgumentException(
+                    "Specified Canvas3D is not a component of the View") ;
 
 	// Check rest of autoUpdateFlags.
 	if (autoUpdate) getAutoUpdate(ci) ;

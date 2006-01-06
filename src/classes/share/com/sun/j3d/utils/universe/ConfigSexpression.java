@@ -1,7 +1,7 @@
 /*
  * $RCSfile$
  *
- * Copyright (c) 2005 Sun Microsystems, Inc. All rights reserved.
+ * Copyright (c) 2006 Sun Microsystems, Inc. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -67,7 +67,7 @@ class ConfigSexpression {
 	    tok = st.nextToken() ;
 	}
 	catch (IOException e) {
-	    throw new RuntimeException("\n" + e + "\nwhile reading " + file) ;
+	    throw new RuntimeException(e + "\nwhile reading " + file) ;
 	}
 	return tok ;
     }
