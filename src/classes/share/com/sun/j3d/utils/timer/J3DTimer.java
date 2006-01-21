@@ -42,13 +42,9 @@
  * $State$
  */
 
-/**
- * A High Resolution operating system dependent interval timer.
- */
 package com.sun.j3d.utils.timer;
 
 /**
- *
  * A High Resolution interval timer. The timer resolution is 
  * operating system dependent and can be queried using 
  * getTimerResolution(). 
@@ -56,8 +52,13 @@ package com.sun.j3d.utils.timer;
  * These methods are not reentrant and should not
  * be called concurrently from multiple threads.
  *
+ * @deprecated Use java.jang.System.nanoTime() instead.
  */
 public class J3DTimer {
+
+    // Since we can't get the resolution from the JDK, we will hard-code it
+    // at 1000 (microsecond resolution).
+    private static final long resolution = 1000L;
 
     /**
      * Private constructor because users should
@@ -65,7 +66,7 @@ public class J3DTimer {
      */
     private J3DTimer() {
     }
-    
+
     /**
      * Get the timer value, in nanoseconds.
      * The initial value of the timer is OS dependent.
@@ -73,30 +74,15 @@ public class J3DTimer {
      * @return The current timer value in nanoseconds.
      */
     public static long getValue() {
-        return getNativeTimer();
+        return System.nanoTime();
     }
-    
+
     /**
      * Get the nanosecond resolution of the timer
      *
      * @return The timer resolution in nanoseconds.
      */
     public static long getResolution() {
-        return getNativeTimerResolution();
-    }
-    
-    private static native long getNativeTimer();
-    
-    private static native long getNativeTimerResolution();
-
-    static {
-        java.security.AccessController.doPrivileged(
-            new java.security.PrivilegedAction() {
-            public Object run() {
-                System.loadLibrary("j3dutils");
-                return null;
-            }
-        });
-
+        return resolution;
     }
 }
