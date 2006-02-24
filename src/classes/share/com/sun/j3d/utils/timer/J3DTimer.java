@@ -52,7 +52,7 @@ package com.sun.j3d.utils.timer;
  * These methods are not reentrant and should not
  * be called concurrently from multiple threads.
  *
- * @deprecated Use java.jang.System.nanoTime() instead.
+ * @deprecated Use java.lang.System.nanoTime() instead.
  */
 public class J3DTimer {
 
