@@ -997,7 +997,7 @@ public class Viewer {
 		    audioDeviceClass.getConstructor(new Class[] {physEnvClass});
 	    PhysicalEnvironment[] args = new PhysicalEnvironment[] { physicalEnvironment };
 	    AudioEngine3DL2 mixer =
-		(AudioEngine3DL2) audioDeviceConstructor.newInstance(args);
+		(AudioEngine3DL2) audioDeviceConstructor.newInstance((Object[])args);
 	    mixer.initialize();
 	    return mixer;
 	}
