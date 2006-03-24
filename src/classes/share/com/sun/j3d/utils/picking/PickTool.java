@@ -485,8 +485,8 @@ p	 @param end The end of the segment
     }
 
     /** Select one of the nodes that intersect the PickShape
-        @return An array of <code>PickResult</code> objects which will contain 
-         information about the picked instances. <code>null</code> if nothing 
+        @return A <code>PickResult</code> object which will contain 
+         information about the picked instance. <code>null</code> if nothing 
 	 was picked.
     */ 
     public PickResult pickAny () {
@@ -553,8 +553,8 @@ p	 @param end The end of the segment
         intersects the PickShape. See note above to see how "closest" is 
 	determined.
 	<p>
-	@return An array of <code>PickResult</code> objects which will contain 
-	information about the picked instances. <code>null</code> if nothing 
+	@return A <code>PickResult</code> object which will contain 
+	information about the picked instance. <code>null</code> if nothing 
 	was picked.
     */
     public PickResult pickClosest () {
