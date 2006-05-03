@@ -218,13 +218,11 @@ public class PickTool {
     
 
     /** 
-     * This method is not supported.
-     *
-     * @exception UnsupportedOperationException this method is not supported
-     *
+     * @deprecated This method does nothing other than return its
+     * input parameter.
      */
      public Locale setBranchGroup (Locale l) {
-	throw new UnsupportedOperationException();	
+         return l;
     }
 
     /** 
