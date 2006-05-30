@@ -126,7 +126,8 @@ public class PickTranslateBehavior extends PickMouseBehavior implements MouseBeh
 	translate.setTransformGroup(tg);
 	translate.wakeup();
 	currentTG = tg;
-	freePickResult(pr);
+        // Need to clean up Issue 123 --- Chien        
+	// freePickResult(pr);
       } else if (callback!=null)
 	callback.transformChanged( PickingCallback.NO_PICK, null );
     }

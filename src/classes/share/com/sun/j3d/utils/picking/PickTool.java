@@ -863,8 +863,7 @@ p	 @param end The end of the segment
 	
 	PickResult[] pr = new PickResult[sgp.length];
 	for (i=0; i<sgp.length; i++) {
-// 	    pr[i] = new PickResult(sgp[i], pickShape);
-	    pr[i] = getPickResult(sgp[i], pickShape);
+ 	    pr[i] = new PickResult(sgp[i], pickShape);
 	    int numIntersection = pr[i].numIntersections();
 	    if (numIntersection > 0) {
 		// System.out.println ("numIntersection " + numIntersection);
@@ -938,9 +937,6 @@ p	 @param end The end of the segment
 	if (pr == null) {
 	    return null;
 	} else {
-	    for (int i = 1; i < pr.length; i++) {
-		freePickResult(pr[i]);
-	    }
 	    return pr[0];
 	}
     }
@@ -1013,20 +1009,6 @@ p	 @param end The end of the segment
 
 	if (l<j) quicksort(l, j, dist, pos);
 	if (l<r) quicksort(i, r, dist, pos);
-    }
-
-    PickResult getPickResult(SceneGraphPath spg, PickShape ps) {
-	//PickResult pr = (PickResult)UtilFreelistManager.pickResultFreelist.getObject();
-        PickResult pr = new PickResult(spg,ps);
-//	if (pr == null) {
-//	    pr = new PickResult();
-//	}
-//	pr.reset(spg, ps);
-	return pr;
-    }
-
-    void freePickResult(PickResult pr) {
-	//UtilFreelistManager.pickResultFreelist.add(pr);
     }
 
 } // PickTool

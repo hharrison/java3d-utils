@@ -142,7 +142,8 @@ public class PickRotateBehavior extends PickMouseBehavior implements MouseBehavi
 	drag.wakeup();
 	currentTG = tg;
 	// free the PickResult
-	freePickResult(pr);
+        // Need to clean up Issue 123 --- Chien        
+        // freePickResult(pr);
       } else if (callback!=null)
 	callback.transformChanged( PickingCallback.NO_PICK, null );
     }

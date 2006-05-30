@@ -713,7 +713,7 @@ public class PickResult {
 		for (int i=0; i < numPts; i++) {
 
 		    // Need to transform each pnt by localToVWorld.
-		    pnts[i] = getPoint3d();
+		    pnts[i] = new Point3d();
 		    pnts[i].x = doubleData[offset++];
 		    pnts[i].y = doubleData[offset++];
 		    pnts[i].z = doubleData[offset++];
@@ -726,7 +726,7 @@ public class PickResult {
 		for (int i=0; i < numPts; i++) {
 
 		    // Need to transform each pnt by localToVWorld.
-		    pnts[i] = getPoint3d();
+		    pnts[i] = new Point3d();
 		    pnts[i].x = floatData[offset++];
 		    pnts[i].y = floatData[offset++];
 		    pnts[i].z = floatData[offset++];
@@ -738,7 +738,7 @@ public class PickResult {
 		for (int i=0; i < numPts; i++) {
 
 		    // Need to transform each pnt by localToVWorld.
-		    pnts[i] = getPoint3d();
+		    pnts[i] = new Point3d();
 		    pnts[i].set(p3fData[i]);
 		    localToVWorld.transform(pnts[i]);
 		}
@@ -747,7 +747,7 @@ public class PickResult {
 		for (int i=0; i < numPts; i++) {
 
 		    // Need to transform each pnt by localToVWorld.
-		    pnts[i] = getPoint3d();
+		    pnts[i] = new Point3d();
 		    pnts[i].set(p3dData[i]);
 		    localToVWorld.transform(pnts[i]);
 		}
@@ -774,7 +774,7 @@ public class PickResult {
 	    for (int i=0; i < numPts; i++) {
 
 		// Need to transform each pnt by localToVWorld.
-		pnts[i] = getPoint3d();
+		pnts[i] = new Point3d();
 		pnts[i].x = floatData[offset];
 		pnts[i].y = floatData[offset+1];
 		pnts[i].z = floatData[offset+2];
@@ -835,13 +835,6 @@ public class PickResult {
 	} else {
 	    throw new RuntimeException ("incorrect class type");
 	}
-	
-	if(retFlag == false) {
-	    for (int i = 0; i < numPts; i++) {
-		freePoint3d(pnts[i]);
-	    }
-	}
-
 	return retFlag;
 
     }
@@ -2503,13 +2496,11 @@ public class PickResult {
 
     static boolean intersectRay(Point3d coordinates[], 
 				PickRay ray, PickIntersection pi) {
-	Point3d origin = getPoint3d(); 
-	Vector3d direction = getVector3d(); 
+	Point3d origin = new Point3d(); 
+	Vector3d direction = new Vector3d(); 
 	boolean result;
 	ray.get (origin, direction);
 	result = intersectRayOrSegment(coordinates, direction, origin, pi, false);
-	freeVector3d(direction);
-	freePoint3d(origin);
 	return result;
     }
 
@@ -2523,9 +2514,9 @@ public class PickResult {
 	Vector3d vec0, vec1, pNrm, tempV3d;
 	Point3d iPnt;
 
-	vec0 = getVector3d();
-	vec1 = getVector3d();
-	pNrm = getVector3d();
+	vec0 = new Vector3d();
+	vec1 = new Vector3d();
+	pNrm = new Vector3d();
 
 	double  absNrmX, absNrmY, absNrmZ, pD = 0.0;
 	double pNrmDotrDir = 0.0; 
@@ -2574,11 +2565,6 @@ public class PickResult {
 					      origin,
 					      direction, 
 					      pi);
-
-	    // put the Vectors on the freelist
-	    freeVector3d(vec0);
-	    freeVector3d(vec1);
-	    freeVector3d(pNrm);
 	    return isIntersect;
 	}
 
@@ -2606,14 +2592,11 @@ public class PickResult {
 		    break;
 		}
 	    }
-	    freeVector3d(vec0);
-	    freeVector3d(vec1);
-	    freeVector3d(pNrm);
 	    return isIntersect;
 	}
 
 	// Plane equation: (p - p0)*pNrm = 0 or p*pNrm = pD;
-	tempV3d = getVector3d();
+	tempV3d = new Vector3d();
 	tempV3d.set((Tuple3d) coordinates[0]);
 	pD = pNrm.dot(tempV3d);
 	tempV3d.set((Tuple3d) origin);
@@ -2629,16 +2612,12 @@ public class PickResult {
 	    (isSegment && (dist > 1.0+EPS))) {
 	    // Ray intersects the plane behind the ray's origin
 	    // or intersect point not fall in Segment 
-	    freeVector3d(vec0);
-	    freeVector3d(vec1);
-	    freeVector3d(pNrm);
-	    freeVector3d(tempV3d);
 	    return false;
 	}
 
 	// Now, one thing for sure the ray intersect the plane.
 	// Find the intersection point.
-	iPnt = getPoint3d();
+	iPnt = new Point3d();
 	iPnt.x = origin.x + direction.x * dist;
 	iPnt.y = origin.y + direction.y * dist;
 	iPnt.z = origin.z + direction.z * dist;
@@ -2792,11 +2771,6 @@ public class PickResult {
 	    pi.setDistance(dist*direction.length());
 	    pi.setPointCoordinatesVW(iPnt);
 	} 
-	freeVector3d(vec0);
-	freeVector3d(vec1);
-	freeVector3d(pNrm);
-	freeVector3d(tempV3d);
-	freePoint3d(iPnt);
 	return isIntersect;
     }
 
@@ -2807,18 +2781,15 @@ public class PickResult {
       */
     static boolean intersectSegment (Point3d coordinates[], PickSegment segment,
 				     PickIntersection pi) {
-    	Point3d start = getPoint3d();
-	Point3d end = getPoint3d();
-	Vector3d direction = getVector3d();
+    	Point3d start = new Point3d();
+	Point3d end = new Point3d();
+	Vector3d direction = new Vector3d();
 	boolean result;
 	segment.get(start, end);
 	direction.x = end.x - start.x;
 	direction.y = end.y - start.y;
 	direction.z = end.z - start.z;
 	result = intersectRayOrSegment(coordinates, direction, start, pi, true);
-	freeVector3d(direction);
-	freePoint3d(start);	
-	freePoint3d(end);	
 	return result;
     }
 
@@ -2991,7 +2962,6 @@ public class PickResult {
 		    pi.setDistance(0);
 		}
 	    }
-	    //freeVector3d(lDir);
 	    return isIntersect;
 	}
 	// Find the inverse.
@@ -3043,12 +3013,12 @@ public class PickResult {
     static boolean intersectCylinder (Point3d coordinates[], 
 				      PickCylinder cyl, PickIntersection pi) {
     
-	Point3d origin = getPoint3d();
-	Point3d end = getPoint3d();
-	Vector3d direction = getVector3d();
-	Point3d iPnt1 = getPoint3d();
-	Point3d iPnt2 = getPoint3d();
-	Vector3d originToIpnt = getVector3d();
+	Point3d origin = new Point3d();
+	Point3d end = new Point3d();
+	Vector3d direction = new Vector3d();
+	Point3d iPnt1 = new Point3d();
+	Point3d iPnt2 = new Point3d();
+	Vector3d originToIpnt = new Vector3d();
 
 	// Get cylinder information
 	cyl.getOrigin (origin);
@@ -3064,25 +3034,11 @@ public class PickResult {
 	if (coordinates.length > 2) {
 	    if (cyl instanceof PickCylinderRay) {
 		if (intersectRay (coordinates, new PickRay (origin, direction), pi)) {
-		    freePoint3d(origin);
-		    freePoint3d(end);
-		    freeVector3d(direction);
-		    freePoint3d(iPnt1);
-		    freePoint3d(iPnt2);
-		    freeVector3d(originToIpnt);
-		    
 		    return true;
 		}
 	    }
 	    else {
 		if (intersectSegment (coordinates, new PickSegment (origin, end), pi)) {
-		    freePoint3d(origin);
-		    freePoint3d(end);
-		    freeVector3d(direction);
-		    freePoint3d(iPnt1);
-		    freePoint3d(iPnt2);
-		    freeVector3d(originToIpnt);
-		    
 		    return true;
 		}
 	    }
@@ -3107,25 +3063,9 @@ public class PickResult {
 		pi.setPointCoordinatesVW (iPnt2);
 		originToIpnt.sub (iPnt1, origin);
 		pi.setDistance (originToIpnt.length());
-
-		freePoint3d(origin);
-		freePoint3d(end);
-		freeVector3d(direction);
-		freePoint3d(iPnt1);
-		freePoint3d(iPnt2);
-		freeVector3d(originToIpnt);
-		    
 		return true;
 	    }
 	}
-
-	freePoint3d(origin);
-	freePoint3d(end);
-	freeVector3d(direction);
-	freePoint3d(iPnt1);
-	freePoint3d(iPnt2);
-	freeVector3d(originToIpnt);
-		    
 	return false;
     }
 
@@ -3136,15 +3076,15 @@ public class PickResult {
     static boolean intersectCone (Point3d coordinates[], 
 				  PickCone cone, PickIntersection pi) {
 
-	Point3d origin = getPoint3d();
-	Point3d end = getPoint3d();
-	Vector3d direction = getVector3d();
-	Vector3d originToIpnt = getVector3d();
+	Point3d origin = new Point3d();
+	Point3d end = new Point3d();
+	Vector3d direction = new Vector3d();
+	Vector3d originToIpnt = new Vector3d();
 	double distance;
     
-	Point3d iPnt1 = getPoint3d();
-	Point3d iPnt2 = getPoint3d();
-	Vector3d vector = getVector3d();
+	Point3d iPnt1 = new Point3d();
+	Point3d iPnt2 = new Point3d();
+	Vector3d vector = new Vector3d();
 
 	// Get cone information
 	cone.getOrigin (origin);
@@ -3160,26 +3100,12 @@ public class PickResult {
 	if (coordinates.length > 2) {
 	    if (cone instanceof PickConeRay) {
 		if (intersectRay (coordinates, new PickRay (origin, direction), pi)) {
-		    freePoint3d(origin);
-		    freePoint3d(end);
-		    freePoint3d(iPnt1);
-		    freePoint3d(iPnt2);
-		    freeVector3d(direction);
-		    freeVector3d(originToIpnt);
-		    freeVector3d(vector);
 		    return true;
 		}
 	    }
 	    else {
 		if (intersectSegment (coordinates, new PickSegment (origin, end), 
 				      pi)) {
-		    freePoint3d(origin);
-		    freePoint3d(end);
-		    freePoint3d(iPnt1);
-		    freePoint3d(iPnt2);
-		    freeVector3d(direction);
-		    freeVector3d(originToIpnt);
-		    freeVector3d(vector);
 		    return true;
 		}
 	    }
@@ -3207,27 +3133,9 @@ public class PickResult {
 		//	System.out.println ("intersectCone: edge "+i+" intersected");
 		pi.setPointCoordinatesVW (iPnt2);
 		pi.setDistance (distance);
-
-		freePoint3d(origin);
-		freePoint3d(end);
-		freePoint3d(iPnt1);
-		freePoint3d(iPnt2);
-		freeVector3d(direction);
-		freeVector3d(originToIpnt);
-		freeVector3d(vector);
-
 		return true;
 	    }
 	}
-
-	freePoint3d(origin);
-	freePoint3d(end);
-	freePoint3d(iPnt1);
-	freePoint3d(iPnt2);
-	freeVector3d(direction);
-	freeVector3d(originToIpnt);
-	freeVector3d(vector);
-
 	return false;
     }
 
@@ -3239,11 +3147,11 @@ public class PickResult {
     static boolean intersectCylinder (Point3d pt, 
 				      PickCylinder cyl, PickIntersection pi) {
 
-	Point3d origin = getPoint3d();
-	Point3d end = getPoint3d();
-	Vector3d direction = getVector3d();
-	Point3d iPnt = getPoint3d();
-	Vector3d originToIpnt = getVector3d();
+	Point3d origin = new Point3d();
+	Point3d end = new Point3d();
+	Vector3d direction = new Vector3d();
+	Point3d iPnt = new Point3d();
+	Vector3d originToIpnt = new Vector3d();
 
 	// Get cylinder information
 	cyl.getOrigin (origin);
@@ -3262,19 +3170,8 @@ public class PickResult {
 	    pi.setPointCoordinatesVW (pt);
 	    originToIpnt.sub (iPnt, origin);
 	    pi.setDistance (originToIpnt.length());
-
-	    freePoint3d(origin);
-	    freePoint3d(end);
-	    freeVector3d(direction);
-	    freePoint3d(iPnt);
-	    freeVector3d(originToIpnt);
 	    return true;
 	}
-	freePoint3d(origin);
-	freePoint3d(end);
-	freeVector3d(direction);
-	freePoint3d(iPnt);
-	freeVector3d(originToIpnt);
 	return false;
     }
     /**
@@ -3286,11 +3183,11 @@ public class PickResult {
 
 	//    System.out.println ("Intersect.intersectCone point");
 
-	Point3d origin = getPoint3d();
-	Point3d end = getPoint3d();
-	Vector3d direction = getVector3d();
-	Point3d iPnt = getPoint3d();// the closest point on the cone vector
-	Vector3d originToIpnt = getVector3d();
+	Point3d origin = new Point3d();
+	Point3d end = new Point3d();
+	Vector3d direction = new Vector3d();
+	Point3d iPnt = new Point3d();// the closest point on the cone vector
+	Vector3d originToIpnt = new Vector3d();
 
 	// Get cone information
 	cone.getOrigin (origin);
@@ -3312,41 +3209,9 @@ public class PickResult {
 	if (sqDist <= radius*radius) {
 	    pi.setPointCoordinatesVW (pt);
 	    pi.setDistance (distance);
-
-	    freePoint3d(origin);
-	    freePoint3d(end);
-	    freeVector3d(direction);
-	    freePoint3d(iPnt);
-	    freeVector3d(originToIpnt);
-
 	    return true;
 	}
-	freePoint3d(origin);
-	freePoint3d(end);
-	freeVector3d(direction);
-	freePoint3d(iPnt);
-	freeVector3d(originToIpnt);
-	
 	return false;
     }
-
-    static Vector3d getVector3d() {
-	//return (Vector3d)UtilFreelistManager.vector3dFreelist.getObject();
-        return new Vector3d();
-    }
-
-    static void freeVector3d(Vector3d v) {
-	//UtilFreelistManager.vector3dFreelist.add(v);
-    }
-    
-    static Point3d getPoint3d() {
-	//return (Point3d)UtilFreelistManager.point3dFreelist.getObject();
-        return new Point3d();
-    }
-
-    static void freePoint3d(Point3d p) {
-	//UtilFreelistManager.point3dFreelist.add(p);
-    }
-    
 
 } // PickResult

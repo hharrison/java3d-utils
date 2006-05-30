@@ -174,9 +174,5 @@ public abstract class PickMouseBehavior extends Behavior {
    */
   public abstract void updateScene(int xpos, int ypos);
 
-    void freePickResult(PickResult pr) {
-	UtilFreelistManager.pickResultFreelist.add(pr);
-    }
-
 }
 
