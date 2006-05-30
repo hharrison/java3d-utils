@@ -268,41 +268,6 @@ public class PickResult {
 	}
     }
 
-    // similar to the constructor, resets the data in PickResult so it can be
-    // reused via a freelist
-    void reset(SceneGraphPath sgp, PickShape ps) {
-	firstIntersectOnly = false;
-	geometryArrays = null;
-	compressGeomShape3Ds = null;
-	pickShapeBounds = null;
-	intersections = null;
-	pickedSceneGraphPath = sgp;
-	pickedNode = sgp.getObject();
-	localToVWorld = sgp.getTransform();
-	pickShape = ps;
-	initPickShape();
-    }
-
-    // similar to the constructor, resets the data in PickResult so
-    // it can be reused via a freelist
-    void reset(Node pn, Transform3D l2vw, PickShape ps) {
-	if ((pn instanceof Shape3D) || (pn instanceof Morph)) {
-	    firstIntersectOnly = false;
-	    geometryArrays = null;
-	    compressGeomShape3Ds = null;
-	    pickShapeBounds = null;
-	    intersections = null;
-	    pickedSceneGraphPath = null;
-	    pickedNode = pn;
-	    localToVWorld = l2vw;
-	    pickShape = ps;
-	    initPickShape();
-	}
-	else {
-	    throw new IllegalArgumentException();
-	}
-    }
-
     void initPickShape() {
 	if(pickShape instanceof PickRay) {
 	    if (pickShapeStart == null) pickShapeStart = new Point3d();
