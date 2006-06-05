@@ -550,9 +550,11 @@ public class Viewer {
                         "No GraphicsConfiguration on screen " +
                         cs[i].frameBufferNumber + " conforms to template");
 
-	    bounds = cfg.getBounds();
+            // Workaround for Issue 316 - use the default config for the screen
+            GraphicsConfiguration defCfg = cfg.getDevice().getDefaultConfiguration();
+	    bounds = defCfg.getBounds();
 	    cs[i].j3dJFrame = j3dJFrames[i] =
-		new JFrame(cs[i].instanceName, cfg);
+		new JFrame(cs[i].instanceName, defCfg);
 
 	    if (cs[i].noBorderFullScreen) {
 		try {

@@ -2728,7 +2728,8 @@ public class ViewInfo {
 		}
 	    }
 
-	    this.screenBounds = graphicsConfiguration.getBounds() ;
+            // Workaround for Issue 316 - use the default config for the screen
+	    this.screenBounds = graphicsConfiguration.getDevice().getDefaultConfiguration().getBounds() ;
 	    double mpx = screenWidth  / (double)screenBounds.width ;
 	    double mpy = screenHeight / (double)screenBounds.height ;
 	    if ((mpx != metersPerPixelX) || (mpy != metersPerPixelY)) {
