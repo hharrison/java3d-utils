@@ -42,7 +42,7 @@
  * $State$
  */
 
-package com.sun.j3d.utils.compression;
+package com.sun.j3d.utils.geometry.compression;
 
 import com.sun.j3d.internal.BufferWrapper;
 import com.sun.j3d.internal.ByteBufferWrapper;
@@ -53,7 +53,6 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
 import javax.media.j3d.Appearance;
-import javax.media.j3d.CompressedGeometryHeader;
 import javax.media.j3d.Geometry;
 import javax.media.j3d.GeometryArray;
 import javax.media.j3d.GeometryStripArray;
@@ -89,8 +88,7 @@ import javax.vecmath.Vector3f;
  *
  * @see GeometryCompressor
  *
- * @deprecated As of Java 3D 1.5, replaced by
- * com.sun.j3d.utils.geometry.compression.{@link com.sun.j3d.utils.geometry.compression.CompressionStream}.
+ * @since Java 3D 1.5
  */
 public class CompressionStream {
     //
@@ -169,9 +167,9 @@ public class CompressionStream {
     static final float ByteToFloatScale = 1.0f/255.0f;
 
     /**
-     * Type of this stream, either CompressedGeometryHeader.POINT_BUFFER,
-     * CompressedGeometryHeader.LINE_BUFFER, or
-     * CompressedGeometryHeader.TRIANGLE_BUFFER
+     * Type of this stream, either CompressedGeometryData.Header.POINT_BUFFER,
+     * CompressedGeometryData.Header.LINE_BUFFER, or
+     * CompressedGeometryData.Header.TRIANGLE_BUFFER
      */
     int streamType ;
 
@@ -425,16 +423,14 @@ public class CompressionStream {
     /**
      * Creates a new CompressionStream for the specified geometry type and
      * vertex format.<p>
-     *
+     * 
      * @param streamType type of data in this stream, either
-     * CompressedGeometryHeader.POINT_BUFFER,
-     * CompressedGeometryHeader.LINE_BUFFER, or
-     * CompressedGeometryHeader.TRIANGLE_BUFFER
-     *
+     * CompressedGeometryData.Header.POINT_BUFFER,
+     * CompressedGeometryData.Header.LINE_BUFFER, or
+     * CompressedGeometryData.Header.TRIANGLE_BUFFER
      * @param vertexComponents a mask indicating which components are present
      * in each vertex, as defined by GeometryArray: COORDINATES, NORMALS, and
      * COLOR_3 or COLOR_4.
-     *
      * @see GeometryCompressor
      * @see GeometryArray
      */
@@ -513,17 +509,17 @@ public class CompressionStream {
 	    ga instanceof QuadArray ||
 	    ga instanceof IndexedQuadArray)
 
-	    return CompressedGeometryHeader.TRIANGLE_BUFFER ;
+	    return CompressedGeometryData.Header.TRIANGLE_BUFFER ;
 
 	else if (ga instanceof LineArray ||
 		 ga instanceof IndexedLineArray ||
 		 ga instanceof LineStripArray ||
 		 ga instanceof IndexedLineStripArray)
 
-	    return CompressedGeometryHeader.LINE_BUFFER ;
+	    return CompressedGeometryData.Header.LINE_BUFFER ;
 
 	else
-	    return CompressedGeometryHeader.POINT_BUFFER ;
+	    return CompressedGeometryData.Header.POINT_BUFFER ;
     }
 
     /**

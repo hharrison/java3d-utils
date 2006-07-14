@@ -42,7 +42,7 @@
  * $State$
  */
 
-package com.sun.j3d.utils.compression;
+package com.sun.j3d.utils.geometry.compression;
 
 /**
  * Instances of this class are used as elements in a CompressionStream.
