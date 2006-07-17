@@ -44,6 +44,7 @@
 
 package com.sun.j3d.utils.geometry.compression;
 
+import com.sun.j3d.internal.J3dUtilsI18N;
 import javax.media.j3d.J3DBuffer;
 import javax.media.j3d.Shape3D;
 import javax.vecmath.Point3d;
@@ -89,7 +90,8 @@ import javax.vecmath.Point3d;
  */
 public class CompressedGeometryData extends Object {
 
-    private Header cgHeader ;
+    private Header cgHeader;
+    private CompressedGeometryRetained retained;
 
 
     /**
@@ -113,7 +115,7 @@ public class CompressedGeometryData extends Object {
     public CompressedGeometryData(Header hdr,
             byte[] compressedGeometry) {
 
-        throw new RuntimeException("not implemented");
+        this(hdr, compressedGeometry, false);
     }
 
     /**
@@ -142,7 +144,25 @@ public class CompressedGeometryData extends Object {
             byte[] compressedGeometry,
             boolean byReference) {
 
-        throw new RuntimeException("not implemented");
+        if ((hdr.size + hdr.start) > compressedGeometry.length) {
+            throw new IllegalArgumentException(J3dUtilsI18N.getString("CompressedGeometry0"));
+        }
+
+        // Create a separate copy of the given header.
+        cgHeader = new Header();
+        hdr.copy(cgHeader);
+
+        // Create the retained object.
+        retained = new CompressedGeometryRetained();
+        this.retained.createCompressedGeometry(cgHeader, compressedGeometry, byReference);
+
+        // This constructor is designed to accept byte arrays that may contain
+        // possibly many large compressed geometry blocks interspersed with
+        // non-J3D-specific metadata.  Only one of these blocks is used per
+        // CompressedGeometry object, so set the geometry offset to zero in
+        // the header if the data itself is copied.
+        if (!byReference)
+            cgHeader.start = 0;
     }
 
     /**
@@ -186,7 +206,7 @@ public class CompressedGeometryData extends Object {
      * @return the size, in bytes, of the compressed geometry buffer.
      */
     public int getByteCount() {
-        throw new RuntimeException("not implemented");
+	return cgHeader.size;
     }
 
     /**
@@ -199,7 +219,7 @@ public class CompressedGeometryData extends Object {
      * compressed geometry byte array was created.
      */
     public void getCompressedGeometryHeader(Header hdr) {
-        throw new RuntimeException("not implemented");
+	cgHeader.copy(hdr);
     }
 
     /**
@@ -219,7 +239,17 @@ public class CompressedGeometryData extends Object {
      * array is not large enough to receive the compressed geometry
      */
     public void getCompressedGeometry(byte[] compressedGeometry) {
-        throw new RuntimeException("not implemented");
+	if (isByReference()) {
+	    throw new IllegalStateException(
+                    J3dUtilsI18N.getString("CompressedGeometry7"));
+        }
+
+	if (cgHeader.size > compressedGeometry.length) {
+	    throw new ArrayIndexOutOfBoundsException(
+                    J3dUtilsI18N.getString("CompressedGeometry4"));
+        }
+
+	this.retained.copy(compressedGeometry);
     }
 
     /**
@@ -233,7 +263,23 @@ public class CompressedGeometryData extends Object {
      * object, or null if its version is incompatible
      */
     public Shape3D[] decompress() {
-        throw new RuntimeException("not implemented");
+	CompressedGeometryRetained cgr = this.retained;
+
+	GeometryDecompressorShape3D decompressor =
+                new GeometryDecompressorShape3D();
+
+	// Decompress the geometry as TriangleStripArrays.  A combination of
+	// TriangleStripArrays and TrianglesFanArrays is more compact but
+	// requires twice as many Shape3D objects, resulting in slower
+	// rendering performance.
+	//
+	// Using TriangleArray output is currently the fastest, given the
+	// strip sizes observed from various compressed geometry objects, but
+	// produces about twice as many vertices.  TriangleStripArray produces
+	// the same number of Shape3D objects as TriangleArray using 1/2
+	// to 2/3 of the vertices, with only a marginal performance penalty.
+	//
+	return decompressor.toTriangleStripArrays(cgr);
     }
 
 
@@ -245,7 +291,7 @@ public class CompressedGeometryData extends Object {
      * <code>false</code> if the data access mode is by-copying.
      */
     public boolean isByReference() {
-        throw new RuntimeException("not implemented");
+	return this.retained.isByReference();
     }
 
 
@@ -258,7 +304,12 @@ public class CompressedGeometryData extends Object {
      * object is not by-reference.
      */
     public byte[] getCompressedGeometryRef() {
-        throw new RuntimeException("not implemented");
+	if (!isByReference()) {
+	    throw new IllegalStateException(
+                    J3dUtilsI18N.getString("CompressedGeometry8"));
+        }
+
+	return this.retained.getReference();
     }
 
 
@@ -270,7 +321,7 @@ public class CompressedGeometryData extends Object {
      * @return null
      */
     public J3DBuffer getCompressedGeometryBuffer() {
-        throw new RuntimeException("not implemented");
+        return null;
     }
 
 
@@ -290,17 +341,17 @@ public class CompressedGeometryData extends Object {
         /**
          * bufferType: compressed geometry is made up of individual points.
          */
-        public static final int POINT_BUFFER = 0 ;
+        public static final int POINT_BUFFER = 0;
 
         /**
          * bufferType: compressed geometry is made up of line segments.
          */
-        public static final int LINE_BUFFER = 1 ;
+        public static final int LINE_BUFFER = 1;
 
         /**
          * bufferType: compressed geometry is made up of triangles.
          */
-        public static final int TRIANGLE_BUFFER = 2 ;
+        public static final int TRIANGLE_BUFFER = 2;
 
         // Valid values for the bufferDataPresent field.
 
@@ -308,19 +359,19 @@ public class CompressedGeometryData extends Object {
          * bufferDataPresent: bit indicating that normal information is
          * bundled with the vertices in the compressed geometry buffer.
          */
-        public static final int NORMAL_IN_BUFFER = 1 ;
+        public static final int NORMAL_IN_BUFFER = 1;
 
         /**
          * bufferDataPresent: bit indicating that RGB color information is
          * bundled with the vertices in the compressed geometry buffer.
          */
-        public static final int COLOR_IN_BUFFER = 2 ;
+        public static final int COLOR_IN_BUFFER = 2;
 
         /**
          * bufferDataPresent: bit indicating that alpha information is
          * bundled with the vertices in the compressed geometry buffer.
          */
-        public static final int ALPHA_IN_BUFFER = 4 ;
+        public static final int ALPHA_IN_BUFFER = 4;
 
         /**
          * The major version number for the compressed geometry format that
@@ -332,7 +383,7 @@ public class CompressedGeometryData extends Object {
          *
          * @see Canvas3D#queryProperties
          */
-        public int majorVersionNumber ;
+        public int majorVersionNumber;
 
         /**
          * The minor version number for the compressed geometry format that
@@ -344,7 +395,7 @@ public class CompressedGeometryData extends Object {
          *
          * @see Canvas3D#queryProperties
          */
-        public int minorVersionNumber ;
+        public int minorVersionNumber;
 
         /**
          * The minor-minor version number for the compressed geometry format
@@ -356,26 +407,26 @@ public class CompressedGeometryData extends Object {
          *
          * @see Canvas3D#queryProperties
          */
-        public int minorMinorVersionNumber ;
+        public int minorMinorVersionNumber;
 
         /**
          * Describes the type of data in the compressed geometry buffer.
          * Only one type may be present in any given compressed geometry
          * buffer.
          */
-        public int bufferType ;
+        public int bufferType;
 
         /**
          * Contains bits indicating what data is bundled with the vertices in the
          * compressed geometry buffer.  If this data is not present (e.g. color)
          * then this info will be inherited from the Appearance node.
          */
-        public int bufferDataPresent ;
+        public int bufferDataPresent;
 
         /**
          * Size of the compressed geometry in bytes.
          */
-        public int size ;
+        public int size;
 
         /**
          * Offset in bytes of the start of the compressed geometry from the
@@ -395,7 +446,7 @@ public class CompressedGeometryData extends Object {
          * bytes used to construct the object, and the getCompressedGeometryHeader()
          * method will return a header with the <code>start</code> field set to 0.
          */
-        public int start ;
+        public int start;
 
         /**
          * A point that defines the lower bound of the <i>x</i>,
@@ -406,7 +457,7 @@ public class CompressedGeometryData extends Object {
          * that are used in nodes for which the auto compute bounds flag
          * is true.  The default value for this point is null.
          */
-        public Point3d lowerBound = null ;
+        public Point3d lowerBound = null;
 
         /**
          * A point that defines the upper bound of the <i>x</i>,
@@ -417,7 +468,7 @@ public class CompressedGeometryData extends Object {
          * in nodes for which the auto compute bounds flag is true.  The
          * default value for this point is null.
          */
-        public Point3d upperBound = null ;
+        public Point3d upperBound = null;
 
         /**
          * Creates a new Header object used for the
@@ -439,15 +490,15 @@ public class CompressedGeometryData extends Object {
          * current Header.
          */
         void copy(Header hdr) {
-            hdr.majorVersionNumber = this.majorVersionNumber ;
-            hdr.minorVersionNumber = this.minorVersionNumber ;
-            hdr.minorMinorVersionNumber = this.minorMinorVersionNumber ;
-            hdr.bufferType = this.bufferType ;
-            hdr.bufferDataPresent = this.bufferDataPresent ;
-            hdr.size = this.size ;
-            hdr.start = this.start ;
-            hdr.lowerBound = this.lowerBound ;
-            hdr.upperBound = this.upperBound ;
+            hdr.majorVersionNumber = this.majorVersionNumber;
+            hdr.minorVersionNumber = this.minorVersionNumber;
+            hdr.minorMinorVersionNumber = this.minorMinorVersionNumber;
+            hdr.bufferType = this.bufferType;
+            hdr.bufferDataPresent = this.bufferDataPresent;
+            hdr.size = this.size;
+            hdr.start = this.start;
+            hdr.lowerBound = this.lowerBound;
+            hdr.upperBound = this.upperBound;
         }
 
         /**
@@ -457,28 +508,28 @@ public class CompressedGeometryData extends Object {
          * @return a String describing contents of the compressed geometry header
          */
         public String toString() {
-            String type = "UNKNOWN" ;
+            String type = "UNKNOWN";
             switch (bufferType) {
-                case POINT_BUFFER:    type = "POINT_BUFFER" ;    break ;
-                case LINE_BUFFER:     type = "LINE_BUFFER" ;     break ;
-                case TRIANGLE_BUFFER: type = "TRIANGLE_BUFFER" ; break ;
+                case POINT_BUFFER:    type = "POINT_BUFFER";    break;
+                case LINE_BUFFER:     type = "LINE_BUFFER";     break;
+                case TRIANGLE_BUFFER: type = "TRIANGLE_BUFFER"; break;
             }
 
-            String data = "" ;
+            String data = "";
             if ((bufferDataPresent & NORMAL_IN_BUFFER) != 0)
-                data = data + "NORMALS " ;
+                data = data + "NORMALS ";
             if ((bufferDataPresent & COLOR_IN_BUFFER) != 0)
-                data = data + "COLORS " ;
+                data = data + "COLORS ";
             if ((bufferDataPresent & ALPHA_IN_BUFFER) != 0)
-                data = data + "ALPHA " ;
+                data = data + "ALPHA ";
 
-            String lbound = "null" ;
+            String lbound = "null";
             if (lowerBound != null)
-                lbound = lowerBound.toString() ;
+                lbound = lowerBound.toString();
 
-            String ubound = "null" ;
+            String ubound = "null";
             if (upperBound != null)
-                ubound = upperBound.toString() ;
+                ubound = upperBound.toString();
 
             return
                     "majorVersionNumber: "      + majorVersionNumber      + "  " +
@@ -489,7 +540,7 @@ public class CompressedGeometryData extends Object {
                     "size: "                    + size                    + "  " +
                     "start: "                   + start                   + "\n" +
                     "lower bound: "             + lbound                  + "\n" +
-                    "upper bound: "             + ubound                  + "  " ;
+                    "upper bound: "             + ubound                  + "  ";
         }
     }
 }
