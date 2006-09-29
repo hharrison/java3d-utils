@@ -42,47 +42,17 @@
  * $State$
  */
 
-package com.sun.j3d.utils.timer;
+package com.sun.j3d.exp.swing.impl;
 
 /**
- * A High Resolution interval timer. The timer resolution is 
- * operating system dependent and can be queried using 
- * getTimerResolution(). 
+ * Tagging interface for Java 3D off-screen Canvas3D objects that are
+ * automatically rendered. This is used internally by the JCanvas3D
+ * implementation.
+ * <p>
+ * NOTE: this is an experimental interface, which is not intended for use
+ * by applications.
  *
- * These methods are not reentrant and should not
- * be called concurrently from multiple threads.
- *
- * @deprecated Use java.lang.System.nanoTime() instead.
+ * @author pepe
  */
-public class J3DTimer {
-
-    // Since we can't get the resolution from the JDK, we will hard-code it
-    // at 1000 (microsecond resolution).
-    private static final long resolution = 1000L;
-
-    /**
-     * Private constructor because users should
-     * not construct instances of this class
-     */
-    private J3DTimer() {
-    }
-
-    /**
-     * Get the timer value, in nanoseconds.
-     * The initial value of the timer is OS dependent.
-     *
-     * @return The current timer value in nanoseconds.
-     */
-    public static long getValue() {
-        return System.nanoTime();
-    }
-
-    /**
-     * Get the nanosecond resolution of the timer
-     *
-     * @return The timer resolution in nanoseconds.
-     */
-    public static long getResolution() {
-        return resolution;
-    }
+public interface AutoOffScreenCanvas3D {
 }

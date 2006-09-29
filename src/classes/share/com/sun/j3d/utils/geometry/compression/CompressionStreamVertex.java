@@ -42,7 +42,7 @@
  * $State$
  */
 
-package com.sun.j3d.utils.compression;
+package com.sun.j3d.utils.geometry.compression;
 
 import javax.vecmath.Color3f;
 import javax.vecmath.Color4f;

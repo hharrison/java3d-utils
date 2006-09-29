@@ -261,7 +261,8 @@ public class PickTool {
     }
 
     /** Sets the PickInfo content flags. The default is PickInfo.NODE.
-     * @param flags One of the following:
+     * @param flags specified as one or more individual bits that are 
+     * bitwise "OR"ed together : 
      * <ul>
      * <code>PickInfo.SCENEGRAPHPATH</code> - request for computed SceneGraphPath.<br>    
      * <code>PickInfo.NODE</code> - request for computed intersected Node.<br>
@@ -381,8 +382,8 @@ public class PickTool {
     }
 
     /** Select one of the nodes that intersect the PickShape
-        @return An array of <code>PickInfo</code> objects which will contain 
-         information about the picked instances. <code>null</code> if nothing 
+        @return A <code>PickInfo</code> object which will contain 
+         information about the picked instance. <code>null</code> if nothing 
 	 was picked.
     */ 
     public PickInfo pickAny () {
@@ -417,8 +418,8 @@ public class PickTool {
         intersects the PickShape. See note above to see how "closest" is 
 	determined.
 	<p>
-	@return An array of <code>PickInfo</code> objects which will contain 
-	information about the picked instances. <code>null</code> if nothing 
+	@return A <code>PickInfo</code> object which will contain 
+	information about the picked instance. <code>null</code> if nothing 
 	was picked.
     */
     public PickInfo pickClosest () {

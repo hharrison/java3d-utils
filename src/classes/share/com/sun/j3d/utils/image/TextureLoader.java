@@ -73,7 +73,7 @@ public class TextureLoader extends Object {
 
     /**
      * Optional flag - specifies that mipmaps are generated for all levels 
-     **/
+     */
     public static final int GENERATE_MIPMAP =  0x01;
 
     /**
@@ -81,7 +81,7 @@ public class TextureLoader extends Object {
      * access the image data by reference
      *
      * @since Java 3D 1.2
-     **/
+     */
     public static final int BY_REFERENCE = 0x02;
     
     /**
@@ -90,10 +90,27 @@ public class TextureLoader extends Object {
      * lower left
      *
      * @since Java 3D 1.2
-     **/
+     */
     public static final int Y_UP = 0x04;
 
     /**
+     * Optional flag - specifies that the ImageComponent2D is allowed
+     * to have dimensions that are not a power of two. If this flag is set,
+     * TextureLoader will not perform any scaling of images. If this flag
+     * is not set, images will be scaled to the nearest power of two. This is
+     * the default mode.
+     * <p>
+     * Note that non-power-of-two textures may not be supported by all graphics
+     * cards. Applications should check whether a particular Canvas3D supports
+     * non-power-of-two textures by calling the {@link Canvas3D#queryProperties}
+     * method, and checking whether the
+     * <code>textureNonPowerOfTwoAvailable</code> property is set to true.
+     *
+     * @since Java 3D 1.5
+     */
+    public static final int ALLOW_NON_POWER_OF_TWO = 0x08;
+
+    /*
      * Private declaration for BufferedImage allocation
      */
     private static ColorSpace cs = ColorSpace.getInstance(ColorSpace.CS_sRGB); 
@@ -107,8 +124,9 @@ public class TextureLoader extends Object {
     private int textureFormat = Texture.RGBA;
     private int imageComponentFormat = ImageComponent.FORMAT_RGBA;
     private int flags;
-    private boolean byRef;
-    private boolean yUp;
+    private boolean byRef = false;
+    private boolean yUp = false;
+    private boolean forcePowerOfTwo = true;
 
     /**
      * Contructs a TextureLoader object using the specified BufferedImage 
@@ -156,6 +174,9 @@ public class TextureLoader extends Object {
 	}
 	if ((flags & Y_UP) != 0) {
 	    yUp = true;
+	}
+	if ((flags & ALLOW_NON_POWER_OF_TWO) != 0) {
+	    forcePowerOfTwo = false;
 	}
     }
 
@@ -215,6 +236,9 @@ public class TextureLoader extends Object {
 	}
 	if ((flags & Y_UP) != 0) {
 	    yUp = true;
+	}
+	if ((flags & ALLOW_NON_POWER_OF_TWO) != 0) {
+	    forcePowerOfTwo = false;
 	}
     }
 
@@ -293,6 +317,9 @@ public class TextureLoader extends Object {
 	if ((flags & Y_UP) != 0) {
 	    yUp = true;
 	}
+	if ((flags & ALLOW_NON_POWER_OF_TWO) != 0) {
+	    forcePowerOfTwo = false;
+	}
     }
 
     /**
@@ -369,6 +396,9 @@ public class TextureLoader extends Object {
 	if ((flags & Y_UP) != 0) {
 	    yUp = true;
 	}
+	if ((flags & ALLOW_NON_POWER_OF_TWO) != 0) {
+	    forcePowerOfTwo = false;
+	}
     }
 
 
@@ -434,8 +464,16 @@ public class TextureLoader extends Object {
         if (tex == null) {
 	  if (bufferedImage==null) return null;
 
-          int width = getClosestPowerOf2(bufferedImage.getWidth());
-          int height = getClosestPowerOf2(bufferedImage.getHeight());
+          int width;
+          int height;
+
+          if (forcePowerOfTwo) {
+              width = getClosestPowerOf2(bufferedImage.getWidth());
+              height = getClosestPowerOf2(bufferedImage.getHeight());
+	  } else {
+              width = bufferedImage.getWidth();
+              height = bufferedImage.getHeight();
+	  }
 
 	  if ((flags & GENERATE_MIPMAP) != 0) {
       
@@ -455,8 +493,17 @@ public class TextureLoader extends Object {
 			byRef, yUp);
 	
                 tex.setImage(i, scaledImageComponents[i]);
-                if (newW > 1) newW >>= 1;
-                if (newH > 1) newH >>= 1;
+		if (forcePowerOfTwo) {
+		    if (newW > 1) newW >>= 1;
+		    if (newH > 1) newH >>= 1;
+		} else {
+		    if (newW > 1) {
+			newW = (int) Math.floor(newW / 2.0);
+		    }
+		    if (newH > 1) {
+			newH = (int) Math.floor(newH / 2.0);
+		    }
+		}
 	        origImage = scaledBufferedImages[i];
             }
 

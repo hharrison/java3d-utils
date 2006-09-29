@@ -126,7 +126,8 @@ public class PickZoomBehavior extends PickMouseBehavior implements MouseBehavior
 	zoom.setTransformGroup(tg);
 	zoom.wakeup();
 	currentTG = tg;
-	freePickResult(pr);
+        // Need to clean up Issue 123 --- Chien        
+	// freePickResult(pr);
       } else if (callback!=null)
           callback.transformChanged( PickingCallback.NO_PICK, null );
     }

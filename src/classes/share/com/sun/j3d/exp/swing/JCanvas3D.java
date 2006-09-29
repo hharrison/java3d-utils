@@ -42,57 +42,12 @@
  * $State$
  */
 
-package com.sun.j3d.internal;
+package com.sun.j3d.exp.swing;
 
-
-public class UtilFreelistManager {
-
-    private static final boolean DEBUG = false;
-
-    // constants that represent the freelists managed by the Manager
-    public static final int VECTOR3D = 0;
-    public static final int POINT3D = 1;
-    public static final int PICKRESULT = 2;
-    public static final int MAXINT = 2;
-    
-    // what list we are going to shrink next
-    private static int currlist = 0;
-
-    // the freelists managed by the manager
-    public static UtilMemoryFreelist vector3dFreelist = new UtilMemoryFreelist("javax.vecmath.Vector3d");
-    public static UtilMemoryFreelist point3dFreelist = new UtilMemoryFreelist("javax.vecmath.Point3d");
-    public static UtilMemoryFreelist pickResultFreelist = new UtilMemoryFreelist("com.sun.j3d.utils.picking.PickResult");
-
-
-//     static MemoryFreeList[] freelist = new MemoryFreeList[MAXINT+1];
-
-//     static void createFreeLists() {
-// 	freelist[VECTOR3D] = new MemoryFreeList("javax.vecmath.Vector3d");
-// 	freelist[POINT3D] = new MemoryFreeList("javax.vecmath.Point3d");
-//     }
-
-
-//     // see if the current list can be shrunk
-//     static void manageLists() {
-// // 	System.out.println("manageLists");
-// 	if (freelist[currlist] != null) {
-// 	    freelist[currlist].shrink();
-// 	}
-	
-// 	currlist++;
-// 	if (currlist > MAXINT) currlist = 0;
-//     }
-
-//     // return the freelist specified by the list param
-//     static MemoryFreeList getFreeList(int list) {
-// 	if (list < 0 || list > MAXINT) {
-// 	    if (DEBUG) System.out.println("illegal list");
-// 	    return null;
-// 	}
-// 	else {
-// 	    return freelist[list];
-// 	}
-//     }
-
-    
+/**
+ * Placeholder for JCanvas3D class.
+ */
+public class JCanvas3D {
+    private JCanvas3D() {
+    }
 }

@@ -42,11 +42,9 @@
  * $State$
  */
 
-package com.sun.j3d.utils.compression;
+package com.sun.j3d.utils.geometry.compression;
 
 import java.io.IOException;
-import javax.media.j3d.CompressedGeometry;
-import javax.media.j3d.CompressedGeometryHeader;
 import javax.vecmath.Point3d;
 
 /**
@@ -54,15 +52,14 @@ import javax.vecmath.Point3d;
  * quantization parameters (the CompressionStream object) and
  * compresses it into a stream of commands as defined by appendix B
  * of the Java 3D specification.  The resulting data may be output
- * in the form of a CompressedGeometry node component or appended
+ * in the form of a CompressedGeometryData node component or appended
  * to a CompressedGeometryFile.
- * 
+ *
  * @see CompressionStream
- * @see CompressedGeometry
+ * @see CompressedGeometryData
  * @see CompressedGeometryFile
  *
- * @deprecated As of Java 3D 1.5, replaced by
- * com.sun.j3d.utils.geometry.compression.{@link com.sun.j3d.utils.geometry.compression.GeometryCompressor}.
+ * @since Java 3D 1.5
  */
 public class GeometryCompressor {
     private static final boolean benchmark = false ;
@@ -71,12 +68,12 @@ public class GeometryCompressor {
 
     private HuffmanTable huffmanTable ;
     private CommandStream outputBuffer ;
-    private CompressedGeometryHeader cgHeader ;
+    private CompressedGeometryData.Header cgHeader ;
     private long startTime ;
 
     public GeometryCompressor() {
 	// Create a compressed geometry header. 
-	cgHeader = new CompressedGeometryHeader() ;
+	cgHeader = new CompressedGeometryData.Header() ;
 
 	// v1.0.0 - pre-FCS
 	// v1.0.1 - fixed winding order, FCS version (J3D 1.1.2)
@@ -87,16 +84,17 @@ public class GeometryCompressor {
     }
 
     /**
-     * Compress a stream into a CompressedGeometry node component.
+     * Compress a stream into a CompressedGeometryData node component.
+     * 
      * 
      * @param stream CompressionStream containing the geometry to be compressed
-     * @return a CompressedGeometry node component
+     * @return a CompressedGeometryData node component
      */
-    public CompressedGeometry compress(CompressionStream stream) {
-	CompressedGeometry cg ;
+    public CompressedGeometryData compress(CompressionStream stream) {
+	CompressedGeometryData cg ;
 
 	compressStream(stream) ;
-	cg = new CompressedGeometry(cgHeader, outputBuffer.getBytes()) ;
+	cg = new CompressedGeometryData(cgHeader, outputBuffer.getBytes()) ;
 
 	outputBuffer.clear() ;
 	return cg ;
@@ -122,7 +120,7 @@ public class GeometryCompressor {
 
     //
     // Compress the stream and put the results in the output buffer.
-    // Set up the CompressedGeometryHeader object.
+    // Set up the CompressedGeometryData.Header object.
     //
     private void compressStream(CompressionStream stream) {
 	if (benchmark) startTime = System.currentTimeMillis() ;
@@ -154,15 +152,15 @@ public class GeometryCompressor {
 
 	if (stream.vertexNormals)
 	    cgHeader.bufferDataPresent |=
-		CompressedGeometryHeader.NORMAL_IN_BUFFER ;
+		CompressedGeometryData.Header.NORMAL_IN_BUFFER ;
 			       
 	if (stream.vertexColor3 || stream.vertexColor4)
 	    cgHeader.bufferDataPresent |=
-		CompressedGeometryHeader.COLOR_IN_BUFFER ;
+		CompressedGeometryData.Header.COLOR_IN_BUFFER ;
 			       
 	if (stream.vertexColor4)
 	    cgHeader.bufferDataPresent |=
-		CompressedGeometryHeader.ALPHA_IN_BUFFER ;
+		CompressedGeometryData.Header.ALPHA_IN_BUFFER ;
 
 	cgHeader.start = 0 ;
 	cgHeader.size = outputBuffer.getByteCount() ;

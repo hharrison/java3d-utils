@@ -45,6 +45,7 @@
 package com.sun.j3d.utils.universe ;
 
 import java.awt.GraphicsConfiguration ;
+import java.awt.GraphicsEnvironment;
 import java.awt.Point ;
 import java.awt.Rectangle ;
 import java.text.DecimalFormat ;
@@ -2728,7 +2729,14 @@ public class ViewInfo {
 		}
 	    }
 
-	    this.screenBounds = graphicsConfiguration.getBounds() ;
+            GraphicsConfiguration gc1 = graphicsConfiguration;
+            // Workaround for Issue 316 - use the default config for screen 0
+            // if the graphics config is null
+            if (gc1 == null) {
+                gc1 = GraphicsEnvironment.getLocalGraphicsEnvironment().
+                        getDefaultScreenDevice().getDefaultConfiguration();
+            }
+            this.screenBounds = gc1.getBounds() ;
 	    double mpx = screenWidth  / (double)screenBounds.width ;
 	    double mpy = screenHeight / (double)screenBounds.height ;
 	    if ((mpx != metersPerPixelX) || (mpy != metersPerPixelY)) {

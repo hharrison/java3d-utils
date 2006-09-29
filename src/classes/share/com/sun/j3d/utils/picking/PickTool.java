@@ -218,13 +218,11 @@ public class PickTool {
     
 
     /** 
-     * This method is not supported.
-     *
-     * @exception UnsupportedOperationException this method is not supported
-     *
+     * @deprecated This method does nothing other than return its
+     * input parameter.
      */
      public Locale setBranchGroup (Locale l) {
-	throw new UnsupportedOperationException();	
+         return l;
     }
 
     /** 
@@ -485,8 +483,8 @@ p	 @param end The end of the segment
     }
 
     /** Select one of the nodes that intersect the PickShape
-        @return An array of <code>PickResult</code> objects which will contain 
-         information about the picked instances. <code>null</code> if nothing 
+        @return A <code>PickResult</code> object which will contain 
+         information about the picked instance. <code>null</code> if nothing 
 	 was picked.
     */ 
     public PickResult pickAny () {
@@ -553,8 +551,8 @@ p	 @param end The end of the segment
         intersects the PickShape. See note above to see how "closest" is 
 	determined.
 	<p>
-	@return An array of <code>PickResult</code> objects which will contain 
-	information about the picked instances. <code>null</code> if nothing 
+	@return A <code>PickResult</code> object which will contain 
+	information about the picked instance. <code>null</code> if nothing 
 	was picked.
     */
     public PickResult pickClosest () {
@@ -865,8 +863,7 @@ p	 @param end The end of the segment
 	
 	PickResult[] pr = new PickResult[sgp.length];
 	for (i=0; i<sgp.length; i++) {
-// 	    pr[i] = new PickResult(sgp[i], pickShape);
-	    pr[i] = getPickResult(sgp[i], pickShape);
+ 	    pr[i] = new PickResult(sgp[i], pickShape);
 	    int numIntersection = pr[i].numIntersections();
 	    if (numIntersection > 0) {
 		// System.out.println ("numIntersection " + numIntersection);
@@ -940,9 +937,6 @@ p	 @param end The end of the segment
 	if (pr == null) {
 	    return null;
 	} else {
-	    for (int i = 1; i < pr.length; i++) {
-		freePickResult(pr[i]);
-	    }
 	    return pr[0];
 	}
     }
@@ -1015,20 +1009,6 @@ p	 @param end The end of the segment
 
 	if (l<j) quicksort(l, j, dist, pos);
 	if (l<r) quicksort(i, r, dist, pos);
-    }
-
-    PickResult getPickResult(SceneGraphPath spg, PickShape ps) {
-	//PickResult pr = (PickResult)UtilFreelistManager.pickResultFreelist.getObject();
-        PickResult pr = new PickResult(spg,ps);
-//	if (pr == null) {
-//	    pr = new PickResult();
-//	}
-//	pr.reset(spg, ps);
-	return pr;
-    }
-
-    void freePickResult(PickResult pr) {
-	//UtilFreelistManager.pickResultFreelist.add(pr);
     }
 
 } // PickTool

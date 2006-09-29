@@ -42,47 +42,64 @@
  * $State$
  */
 
-package com.sun.j3d.utils.timer;
+package com.sun.j3d.utils.geometry.compression;
 
 /**
- * A High Resolution interval timer. The timer resolution is 
- * operating system dependent and can be queried using 
- * getTimerResolution(). 
+ * A class which implements GeneralizedStripFlags provides the means to access
+ * the vertex replace code flags associated with each vertex of a generalized
+ * strip.  This allows a flexible representation of generalized strips for
+ * various classes and makes it possible to provide a common subset of static
+ * methods which operate only on their topology.
  *
- * These methods are not reentrant and should not
- * be called concurrently from multiple threads.
- *
- * @deprecated Use java.lang.System.nanoTime() instead.
+ * @see GeneralizedStrip
+ * @see GeneralizedVertexList
  */
-public class J3DTimer {
-
-    // Since we can't get the resolution from the JDK, we will hard-code it
-    // at 1000 (microsecond resolution).
-    private static final long resolution = 1000L;
+interface GeneralizedStripFlags {
 
     /**
-     * Private constructor because users should
-     * not construct instances of this class
+     * This flag indicates that a vertex starts a new strip with clockwise
+     * winding. 
      */
-    private J3DTimer() {
-    }
+    static final int RESTART_CW = 0 ;
 
     /**
-     * Get the timer value, in nanoseconds.
-     * The initial value of the timer is OS dependent.
-     *
-     * @return The current timer value in nanoseconds.
+     * This flag indicates that a vertex starts a new strip with
+     * counter-clockwise winding.
      */
-    public static long getValue() {
-        return System.nanoTime();
-    }
+    static final int RESTART_CCW = 1 ;
 
     /**
-     * Get the nanosecond resolution of the timer
-     *
-     * @return The timer resolution in nanoseconds.
+     * This flag indicates that the next triangle in the strip is defined by
+     * replacing the middle vertex of the previous triangle in the strip.
      */
-    public static long getResolution() {
-        return resolution;
-    }
+    static final int REPLACE_MIDDLE = 2 ;
+
+    /**
+     * This flag indicates that the next triangle in the strip is defined by
+     * replacing the oldest vertex of the previous triangle in the strip.
+     */
+    static final int REPLACE_OLDEST = 3 ;
+
+    /**
+     * This constant is used to indicate that triangles with clockwise vertex
+     * winding are front facing.
+     */
+    static final int FRONTFACE_CW  = 0 ;
+
+    /**
+     * This constant is used to indicate that triangles with counter-clockwise
+     * vertex winding are front facing.
+     */
+    static final int FRONTFACE_CCW = 1 ;
+
+    /**
+     * Return the number of flags.  This should be the same as the number of
+     * vertices in the generalized strip.
+     */
+    int getFlagCount() ;
+
+    /**
+     * Return the flag associated with the vertex at the specified index.
+     */
+    int getFlag(int index) ;
 }

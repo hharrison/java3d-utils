@@ -50,10 +50,8 @@ import java.net.URL;
 import java.util.*;
 import javax.media.j3d.*;
 import javax.swing.*;
-import javax.vecmath.*;
 import com.sun.j3d.audioengines.AudioEngine3DL2;
 import java.lang.reflect.Constructor;
-import java.applet.*;
 
 /**
  * The Viewer class holds all the information that describes the physical
@@ -550,9 +548,11 @@ public class Viewer {
                         "No GraphicsConfiguration on screen " +
                         cs[i].frameBufferNumber + " conforms to template");
 
-	    bounds = cfg.getBounds();
+            // Workaround for Issue 316 - use the default config for the screen
+            GraphicsConfiguration defCfg = cfg.getDevice().getDefaultConfiguration();
+	    bounds = defCfg.getBounds();
 	    cs[i].j3dJFrame = j3dJFrames[i] =
-		new JFrame(cs[i].instanceName, cfg);
+		new JFrame(cs[i].instanceName, defCfg);
 
 	    if (cs[i].noBorderFullScreen) {
 		try {
@@ -978,26 +978,37 @@ public class Viewer {
 		throw new UnsupportedOperationException("No AudioDevice specified");
 	    }
 
-	    ClassLoader audioDeviceClassLoader =
-		(ClassLoader) java.security.AccessController.doPrivileged(
-		    new java.security.PrivilegedAction() {
-			public Object run() {
-			    return ClassLoader.getSystemClassLoader();
-			}
-		    });
+            // Issue 341: try the current class loader first before trying the
+            // system class loader
+	    Class audioDeviceClass = null;
+            try {
+                audioDeviceClass = Class.forName(audioDeviceClassName);
+            } catch (ClassNotFoundException ex) {
+                // Ignore excpetion and try system class loader
+            }
 
-	    if (audioDeviceClassLoader == null) {
-		throw new IllegalStateException("System ClassLoader is null");
-	    }
+            if (audioDeviceClass == null) {
+                ClassLoader audioDeviceClassLoader =
+                    (ClassLoader) java.security.AccessController.doPrivileged(
+                        new java.security.PrivilegedAction() {
+                            public Object run() {
+                                return ClassLoader.getSystemClassLoader();
+                            }
+                        });
 
-	    Class audioDeviceClass =
-		Class.forName(audioDeviceClassName, true, audioDeviceClassLoader);
+                if (audioDeviceClassLoader == null) {
+                    throw new IllegalStateException("System ClassLoader is null");
+                }
+
+                audioDeviceClass = Class.forName(audioDeviceClassName, true, audioDeviceClassLoader);
+            }
+
 	    Class physEnvClass = PhysicalEnvironment.class;
 	    Constructor audioDeviceConstructor =
 		    audioDeviceClass.getConstructor(new Class[] {physEnvClass});
 	    PhysicalEnvironment[] args = new PhysicalEnvironment[] { physicalEnvironment };
 	    AudioEngine3DL2 mixer =
-		(AudioEngine3DL2) audioDeviceConstructor.newInstance(args);
+		(AudioEngine3DL2) audioDeviceConstructor.newInstance((Object[])args);
 	    mixer.initialize();
 	    return mixer;
 	}
