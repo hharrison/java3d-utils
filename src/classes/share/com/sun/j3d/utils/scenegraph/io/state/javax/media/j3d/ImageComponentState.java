@@ -145,8 +145,32 @@ public abstract class ImageComponentState extends NodeComponentState {
     private void writeBufferedImageNoCompression( DataOutput out, BufferedImage image ) throws IOException {
         ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
         DataOutputStream dataOut = new DataOutputStream( byteStream );
+        ColorModel colorModel = (ColorModel) image.getColorModel();
         
-        writeColorModel( dataOut, image.getColorModel() );
+        if (colorModel instanceof ComponentColorModel) {
+            ComponentColorModel cm = (ComponentColorModel) colorModel;
+            int numComponents = cm.getNumComponents();
+            int type;
+            switch (numComponents) {
+                case 3:
+                    type = BufferedImage.TYPE_INT_RGB;
+                    break;
+                case 4:
+                    type = BufferedImage.TYPE_INT_ARGB;
+                    break;
+                default:
+                    throw new SGIORuntimeException("Unsupported ColorModel "+colorModel.getClass().getName() );
+                    
+            }
+            
+            BufferedImage tmpBuf = new BufferedImage(image.getWidth(), image.getHeight(), type);
+            WritableRaster dstRaster = tmpBuf.getRaster();
+            Raster srcRaster = image.getRaster();  
+            dstRaster.setRect(srcRaster);           
+           image = tmpBuf;
+        }
+                   
+        writeColorModel( dataOut, image.getColorModel() );      
         writeWritableRaster( dataOut, image.getRaster() );
         dataOut.writeBoolean( image.isAlphaPremultiplied() );
         
@@ -248,7 +272,8 @@ public abstract class ImageComponentState extends NodeComponentState {
         if (colorModel instanceof DirectColorModel) {
             out.writeInt( DIRECT_COLOR_MODEL );
             writeDirectColorModel( out, (DirectColorModel)colorModel );
-        } else
+        } 
+        else
             throw new SGIORuntimeException("Unsupported ColorModel "+colorModel.getClass().getName() );
     }
     
