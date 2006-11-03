@@ -134,7 +134,7 @@ public class TextureLoader extends Object {
      * @param bImage The BufferedImage used for loading the texture 
      */
     public TextureLoader(BufferedImage bImage) {
-        this(bImage, new String("RGBA"), 0);
+        this(bImage, null, 0);
     }
 
     /**
@@ -154,7 +154,7 @@ public class TextureLoader extends Object {
      * @param flags The flags specify what options to use in texture loading (generate mipmap etc)
      */
     public TextureLoader(BufferedImage bImage, int flags) {
-        this(bImage, new String("RGBA"), flags);
+        this(bImage, null, flags);
     }
 
     /**
@@ -168,7 +168,9 @@ public class TextureLoader extends Object {
 	parseFormat(format);
 	this.flags = flags;
 	bufferedImage = bImage;
-	
+        if (format==null)
+            chooseFormat(bufferedImage);
+        
 	if ((flags & BY_REFERENCE) != 0) {
 	    byRef = true;
 	}
@@ -187,7 +189,7 @@ public class TextureLoader extends Object {
      * @param observer The associated image observer
      */
     public TextureLoader(Image image, Component observer) {
-	this(image, new String("RGBA"), 0, observer);
+	this(image, null, 0, observer);
     }
 
     /**
@@ -209,7 +211,7 @@ public class TextureLoader extends Object {
      * @param observer The associated image observer
      */
     public TextureLoader(Image image, int flags, Component observer) {
-	this(image, new String("RGBA"), flags, observer);
+	this(image, null, flags, observer);
     }
  
     /**
@@ -231,6 +233,9 @@ public class TextureLoader extends Object {
 	this.flags = flags;
 	bufferedImage = createBufferedImage(image, observer);
 
+        if (format==null)
+            chooseFormat(bufferedImage);
+        
 	if ((flags & BY_REFERENCE) != 0) {
 	    byRef = true;
 	}
@@ -249,7 +254,7 @@ public class TextureLoader extends Object {
      * @param observer The associated image observer
      */
     public TextureLoader(String fname, Component observer) {
-        this(fname, new String("RGBA"), 0, observer);
+        this(fname, null, 0, observer);
     }
 
     /**
@@ -271,7 +276,7 @@ public class TextureLoader extends Object {
      * @param observer The associated image observer
      */
     public TextureLoader(String fname, int flags, Component observer) {
-        this(fname, new String("RGBA"), flags, observer);
+        this(fname, null, flags, observer);
     }
 
     /**
@@ -307,6 +312,9 @@ public class TextureLoader extends Object {
         parseFormat(format);
         this.flags = flags;
 
+        if (format==null)
+            chooseFormat(bufferedImage);
+        
 	if (bufferedImage==null) {
             throw new ImageException("Error loading image: " + fname);
         }
@@ -329,7 +337,7 @@ public class TextureLoader extends Object {
      * @param observer The associated image observer
      */
     public TextureLoader(URL url, Component observer) {
-        this(url, new String("RGBA"), 0, observer);
+        this(url, null, 0, observer);
     }
 
     /**
@@ -351,7 +359,7 @@ public class TextureLoader extends Object {
      * @param observer The associated image observer
      */
     public TextureLoader(URL url, int flags, Component observer) {
-        this(url, new String("RGBA"), flags, observer);
+        this(url, null, flags, observer);
     }
     /**
      * Contructs a TextureLoader object using the specified URL, 
@@ -386,6 +394,9 @@ public class TextureLoader extends Object {
         parseFormat(format);
         this.flags = flags;
 
+        if (format==null)
+            chooseFormat(bufferedImage);
+        
 	if (bufferedImage==null) {
             throw new ImageException("Error loading image: " + url.toString());
         }
@@ -549,8 +560,8 @@ public class TextureLoader extends Object {
         }
 
         int width = image.getWidth(observer);
-        int height = image.getHeight(observer);
-
+        int height = image.getHeight(observer);      
+        
 	WritableRaster wr =
             java.awt.image.Raster.createInterleavedRaster(DataBuffer.TYPE_BYTE,
                                            width, height,
@@ -564,8 +575,161 @@ public class TextureLoader extends Object {
 	return bImage;
     }
 
+     /**
+     * Choose the correct ImageComponent and Texture format for the given
+     * image
+     */
+    private void chooseFormat(BufferedImage image) {
+        switch (image.getType()) {
+            case BufferedImage.TYPE_4BYTE_ABGR :  
+            case BufferedImage.TYPE_INT_ARGB :
+                imageComponentFormat = ImageComponent.FORMAT_RGBA;
+                textureFormat = Texture.RGBA;
+                break;
+            case BufferedImage.TYPE_3BYTE_BGR :
+            case BufferedImage.TYPE_INT_BGR:
+            case BufferedImage.TYPE_INT_RGB:                
+                imageComponentFormat = ImageComponent.FORMAT_RGB;
+                textureFormat = Texture.RGB;
+                break;
+            case BufferedImage.TYPE_BYTE_INDEXED :
+                //System.out.println("ChooseFormat TYPE_BYTE_INDEXED");
+                imageComponentFormat = ImageComponent.FORMAT_RGB;
+                textureFormat = Texture.RGB;
+                break;
+            case BufferedImage.TYPE_CUSTOM:
+                if (is4ByteRGBAOr3ByteRGB(image)) {
+                    SampleModel sm = image.getSampleModel();
+                    if (sm.getNumBands() == 3) {
+                        //System.out.println("ChooseFormat Custom:TYPE_4BYTE_ABGR");
+                        imageComponentFormat = ImageComponent.FORMAT_RGB;
+                        textureFormat = Texture.RGB;
+                    }
+                    else {
+                        imageComponentFormat = ImageComponent.FORMAT_RGBA;
+                        //System.out.println("ChooseFormat Custom:TYPE_3BYTE_BGR");
+                        textureFormat = Texture.RGBA;
+                    }
+                }
+                break;
+            default :
+                // System.err.println("Unoptimized Image Type "+image.getType());
+                imageComponentFormat = ImageComponent.FORMAT_RGBA;
+                textureFormat = Texture.RGBA;
+                break;
+        }
+    }   
+
+    private boolean is4ByteRGBAOr3ByteRGB(RenderedImage ri) {
+        boolean value = false;
+        int i;
+        int biType = getImageType(ri);
+        if (biType != BufferedImage.TYPE_CUSTOM)
+            return false;
+        ColorModel cm = ri.getColorModel();
+        ColorSpace cs = cm.getColorSpace();
+        SampleModel sm = ri.getSampleModel();
+        boolean isAlphaPre = cm.isAlphaPremultiplied();
+        int csType = cs.getType();
+        if ( csType == ColorSpace.TYPE_RGB) {
+            int numBands = sm.getNumBands();
+            if (sm.getDataType() == DataBuffer.TYPE_BYTE) {
+                if (cm instanceof ComponentColorModel &&
+                    sm instanceof PixelInterleavedSampleModel) {
+                    PixelInterleavedSampleModel csm = 
+				(PixelInterleavedSampleModel) sm;
+                    int[] offs = csm.getBandOffsets();
+                    ComponentColorModel ccm = (ComponentColorModel)cm;
+                    int[] nBits = ccm.getComponentSize();
+                    boolean is8Bit = true;
+                    for (i=0; i < numBands; i++) {
+                        if (nBits[i] != 8) {
+                            is8Bit = false;
+                            break;
+                        }
+                    }
+                    if (is8Bit &&
+                        offs[0] == 0 &&
+                        offs[1] == 1 &&
+                        offs[2] == 2) {
+                        if (numBands == 3) {
+                            value = true;
+                        }
+                        else if (offs[3] == 3 && !isAlphaPre) {
+                            value = true;
+                        }
+                    }
+                }
+            }
+        }
+        return value;
+    }
+    
+     private int getImageType(RenderedImage ri) {
+        int imageType = BufferedImage.TYPE_CUSTOM;
+        int i;
+
+        if (ri instanceof BufferedImage) {
+            return ((BufferedImage)ri).getType();
+        }
+        ColorModel cm = ri.getColorModel();
+        ColorSpace cs = cm.getColorSpace();
+        SampleModel sm = ri.getSampleModel();
+        int csType = cs.getType();
+        boolean isAlphaPre = cm.isAlphaPremultiplied();
+        if ( csType != ColorSpace.TYPE_RGB) {
+            if (csType == ColorSpace.TYPE_GRAY &&
+                cm instanceof ComponentColorModel) {
+                if (sm.getDataType() == DataBuffer.TYPE_BYTE) {
+                    imageType = BufferedImage.TYPE_BYTE_GRAY;
+                } else if (sm.getDataType() == DataBuffer.TYPE_USHORT) {
+                    imageType = BufferedImage.TYPE_USHORT_GRAY;
+                }
+            }
+        }
+        // RGB , only interested in BYTE ABGR and BGR for now
+        // all others will be copied to a buffered image
+        else {
+            int numBands = sm.getNumBands();
+            if (sm.getDataType() == DataBuffer.TYPE_BYTE) {
+                if (cm instanceof ComponentColorModel &&
+                    sm instanceof PixelInterleavedSampleModel) {
+                    PixelInterleavedSampleModel csm = 
+				(PixelInterleavedSampleModel) sm;
+                    int[] offs = csm.getBandOffsets();
+                    ComponentColorModel ccm = (ComponentColorModel)cm;
+                    int[] nBits = ccm.getComponentSize();
+                    boolean is8Bit = true;
+                    for (i=0; i < numBands; i++) {
+                        if (nBits[i] != 8) {
+                            is8Bit = false;
+                            break;
+                        }
+                    }
+                    if (is8Bit &&
+                        offs[0] == numBands-1 &&
+                        offs[1] == numBands-2 &&
+                        offs[2] == numBands-3) {
+                        if (numBands == 3) {
+                            imageType = BufferedImage.TYPE_3BYTE_BGR;
+                        }
+                        else if (offs[3] == 0) {
+                            imageType = (isAlphaPre
+                                         ? BufferedImage.TYPE_4BYTE_ABGR_PRE
+                                         : BufferedImage.TYPE_4BYTE_ABGR);
+                        }
+                    }
+                }
+            }
+        }
+        return imageType;
+    }
+         
     // initialize appropriate format for ImageComponent and Texture
     private void parseFormat(String format) {
+         if (format==null)
+            return;
+         
         if (format.equals("RGBA")) {
             imageComponentFormat = ImageComponent.FORMAT_RGBA;
             textureFormat = Texture.RGBA;
@@ -628,20 +792,19 @@ public class TextureLoader extends Object {
     private BufferedImage getScaledImage(BufferedImage origImage,
                                          float xScale, float yScale) {
 
+
+        // System.err.println("(1) origImage " + origImage);
         // If the image is already the requested size, no need to scale
         if (xScale == 1.0f && yScale == 1.0f)
             return origImage;
         else {
 	    int scaleW = (int)(origImage.getWidth() * xScale + 0.5);
 	    int scaleH = (int)(origImage.getHeight() * yScale + 0.5);
-	    WritableRaster wr = 
-                java.awt.image.Raster.createInterleavedRaster(DataBuffer.TYPE_BYTE,
-                                               scaleW, scaleH,
-                                               scaleW * 4, 4,
-                                               bandOffset, null);
-	    BufferedImage scaledImage = new BufferedImage(colorModel, wr,
-                                                          false, null);
-	    
+      
+            WritableRaster origWr = origImage.getRaster();
+            WritableRaster wr = origWr.createCompatibleWritableRaster(0, 0, scaleW, scaleH);
+            BufferedImage scaledImage = new BufferedImage(scaleW, scaleH, origImage.getType());
+            scaledImage.setData(wr);
 	    java.awt.Graphics2D g2 = scaledImage.createGraphics();
             AffineTransform at = AffineTransform.getScaleInstance(xScale,
                                                                   yScale);
