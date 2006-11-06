@@ -53,6 +53,8 @@ package com.sun.j3d.exp.swing.impl;
  * by applications.
  *
  * @author pepe
+ *
+ * @since Java 3D 1.5
  */
 public interface AutoOffScreenCanvas3D {
 }

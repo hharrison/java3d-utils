@@ -49,6 +49,7 @@ import com.sun.j3d.exp.swing.impl.AutoOffScreenCanvas3D;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.EventQueue;
+import java.awt.GraphicsConfigTemplate;
 import java.awt.GraphicsConfiguration;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
@@ -101,15 +102,17 @@ import javax.swing.event.AncestorListener;
  * @see getLightweightComponent()
  * @see setResizeValidationDelay()
  * @see setResizeMode()
+ *
+ * @since Java 3D 1.5
  */
 public class JCanvas3D extends JPanel implements AncestorListener {
     /**
-     * Resizing the canvas or component will be done immediatly. This
+     * Resizing the canvas or component will be done immediately. This
      * operation might take some time and make the application look sluggish.
      *
      * @see setResizeMode()
      */
-    public final static int RESIZE_IMMEDIATLY = 0;
+    public final static int RESIZE_IMMEDIATELY = 0;
 
     /**
      * Resizing the canvas or component will be done if no resizing
@@ -146,62 +149,84 @@ public class JCanvas3D extends JPanel implements AncestorListener {
 
     //TODO: FBA: the constructor below should be callable. Code should be changed so that it is possible, in order for the canvas to be useable into netbeans.
     //TODO: FBA: create a netbeans module that installs J3D as a library and the JCanvas3D as a new item in a new J3D category of the swing palette (take from the java.net swash project)
+
     /**
-     * Blocks creation of parameterless canvas3D.
+     * Constructs and initializes a new JCanvas3D object that Java 3D
+     * can render into. The screen device is obtained from
+     * <code>GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice()</code>,
+     * which might not be the one you should use if you are in a multiscreen environment.
+     * The JCanvas3D is constructed using the following default parameters:<br>
+     * resize mode : RESIZE_IMMEDIATELY<br>
+     * validation delay : 100ms<br>
+     * double buffer enable : false<br>
+     * stereo enable : false<br>
      */
-    private JCanvas3D() {
+    public JCanvas3D() {
+        this(null, GraphicsEnvironment.getLocalGraphicsEnvironment().
+                getDefaultScreenDevice());
     }
 
     /**
      * Constructs and initializes a new Canvas3D object that Java 3D
-     * can render into. Screen device is obtained from
+     * can render into, using the specified graphics device.
+     *
+     * @param device the screen graphics device that will be used to construct
+     *        a GraphicsConfiguration.
+     */
+    public JCanvas3D(GraphicsDevice device) {
+        this(null, device);
+    }
+
+    /**
+     * Constructs and initializes a new Canvas3D object that Java 3D
+     * can render into, using the specified template.
+     * The screen device is obtained from
      * <code>GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice()</code>,
-     * which might not be the one you should use if you are in a multiscreen environment.<br>
-     * left manual eye in image plate : (0.142, 0.135, 0.4572)<br>
-     * right manual eye in image plate : (0.208, 0.135, 0.4572)<br>
-     * stereo enable : UNNECESSARY<br>
-     * double buffer enable : UNNECESSARY<br>
-     * monoscopic view policy : View.CYCLOPEAN_EYE_VIEW<br>
-     * resize mode : RESIZE_IMMEDIATLY<br>
-     * validation delay : 100ms<br>
-     * Please note that stereo and doublebuffer are forced to values indicated
-     * above.<br>
+     * which might not be the one you should use if you are
+     * in a multiscreen environment.
      *
      * @param template The template that will be used to construct a
-     *        GraphicsDevice.
+     *        GraphicsConfiguration. The stereo and doublebuffer properties
+     *        are forced to UNNECESSARY.
      */
     public JCanvas3D(GraphicsConfigTemplate3D template) {
-        this(template,
-            GraphicsEnvironment.getLocalGraphicsEnvironment()
-                               .getDefaultScreenDevice());
+        this(template, GraphicsEnvironment.getLocalGraphicsEnvironment().
+                getDefaultScreenDevice());
     }
 
     /**
      * Constructs and initializes a new Canvas3D object that Java 3D
-     * can render into.<br>
-     * left manual eye in image plate : (0.142, 0.135, 0.4572)<br>
-     * right manual eye in image plate : (0.208, 0.135, 0.4572)<br>
-     * stereo enable : UNNECESSARY<br>
-     * double buffer enable : UNNECESSARY<br>
-     * monoscopic view policy : View.CYCLOPEAN_EYE_VIEW<br>
-     * resize mode : RESIZE_IMMEDIATLY<br>
-     * validation delay : 100ms<br>
-     * Please note that stereo and doublebuffer are forced to values indicated
-     * above.<br>
+     * can render into, using the specified template and graphics device.
      *
      * @param template The template that will be used to construct a
-     *        GraphicsDevice.
-     * @param device the device to create a GraphicsDevice from, in conjunction
-     *        with the template.
+     *        GraphicsConfiguration. The stereo and doublebuffer properties
+     *        are forced to UNNECESSARY.
+     * @param device the screen graphics device that will be used to construct
+     *        a GraphicsConfiguration in conjunction with the template.
      */
     public JCanvas3D(GraphicsConfigTemplate3D template, GraphicsDevice device) {
         this.device = device;
-        template.setStereo(template.UNNECESSARY);
-        template.setDoubleBuffer(template.UNNECESSARY);
-        this.template = template;
+        this.template = new GraphicsConfigTemplate3D();
+
+        if (template != null) {
+            // Clone template (it would be easier if GCT3D were cloneable)
+            this.template.setRedSize(template.getRedSize());
+            this.template.setGreenSize(template.getGreenSize());
+            this.template.setBlueSize(template.getBlueSize());
+            this.template.setDepthSize(template.getDepthSize());
+            this.template.setSceneAntialiasing(template.getSceneAntialiasing());
+            this.template.setStencilSize(template.getStencilSize());
+//            this.template.setDoubleBuffer(template.getDoubleBuffer());
+//            this.template.setStereo(template.getStereo());
+        }
+
+        // Force double-buffer and stereo to UNNECESSARY
+        this.template.setStereo(GraphicsConfigTemplate.UNNECESSARY);
+        this.template.setDoubleBuffer(GraphicsConfigTemplate.UNNECESSARY);
+
         addAncestorListener(this);
         setDoubleBuffered(false);
-        setResizeMode(RESIZE_IMMEDIATLY);
+        setResizeMode(RESIZE_IMMEDIATELY);
         setResizeValidationDelay(100);
 
         // so that key events and such can be received.
@@ -342,8 +367,8 @@ public class JCanvas3D extends JPanel implements AncestorListener {
 
     /**
      * Retrieves the resize mode for that component.
-     *
-     * @return the resize mode, which can be one of RESIZE_IMMEDIATLY or
+     * 
+     * @return the resize mode, which can be one of RESIZE_IMMEDIATELY or
      *         RESIZE_DELAYED
      */
     public int getResizeMode() {
@@ -495,7 +520,7 @@ public class JCanvas3D extends JPanel implements AncestorListener {
         super.setBounds(x, y, width, height);
 
         if ((null == canvas) || (null == canvas.getOffScreenBuffer()) ||
-                (JCanvas3D.RESIZE_IMMEDIATLY == getResizeMode())) //whatever the resize mode, i create on first setbounds(). (not doing so would create a deadlock in DELAYED mode when trying to do the first paint
+                (JCanvas3D.RESIZE_IMMEDIATELY == getResizeMode())) //whatever the resize mode, i create on first setbounds(). (not doing so would create a deadlock in DELAYED mode when trying to do the first paint
          {
             createCanvas(width, height);
         } else if ((JCanvas3D.RESIZE_DELAYED == getResizeMode()) &&
@@ -529,10 +554,9 @@ public class JCanvas3D extends JPanel implements AncestorListener {
      * drawbacks will be users will see nothing. Default delay is set to
      * 100ms, which is low enough for common human not to be able to really
      * see that the rendered image is scaled.
-     *
-     * @param resizeMode can be one of RESIZE_IMMEDIATLY or RESIZE_DELAYED
-     *
-     * @see #RESIZE_IMMEDIATLY
+     * 
+     * @param resizeMode can be one of RESIZE_IMMEDIATELY or RESIZE_DELAYED
+     * @see #RESIZE_IMMEDIATELY
      * @see #RESIZE_DELAYED
      */
     public void setResizeMode(int resizeMode) {
@@ -545,11 +569,10 @@ public class JCanvas3D extends JPanel implements AncestorListener {
      * using rendered buffer scaling. Once that delay expired, the canvas is
      * resized at the lowest level possible, thus in the rendering pipeline.
      * Note: Changing this field is only useful if resize mode is set to
-     * RESIZE_IMMEDIATLY or RESIZE_DELAYED
-     *
+     * RESIZE_IMMEDIATELY or RESIZE_DELAYED
+     * 
      * @param resizeValidationDelay the delay before a real resize would occur.
-     *
-     * @see #RESIZE_IMMEDIATLY
+     * @see #RESIZE_IMMEDIATELY
      * @see #RESIZE_DELAYED
      */
     public void setResizeValidationDelay(int resizeValidationDelay) {
@@ -628,8 +651,8 @@ public class JCanvas3D extends JPanel implements AncestorListener {
 
         /**
          * Creates a new instance of JCanvas3D. Resize mode is set
-         * to RESIZE_IMMEDIATLY and validation delay to 100ms.
-         *
+         * to RESIZE_IMMEDIATELY and validation delay to 100ms.
+         * 
          * @param graphicsConfiguration The graphics configuration to be used.
          * @param lwCanvas the lightweight canvas that is linked to that
          *        heavyweight canvas.
