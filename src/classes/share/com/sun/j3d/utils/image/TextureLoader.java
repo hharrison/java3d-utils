@@ -798,18 +798,58 @@ public class TextureLoader extends Object {
         if (xScale == 1.0f && yScale == 1.0f)
             return origImage;
         else {
-	    int scaleW = (int)(origImage.getWidth() * xScale + 0.5);
-	    int scaleH = (int)(origImage.getHeight() * yScale + 0.5);
-      
-            WritableRaster origWr = origImage.getRaster();
-            WritableRaster wr = origWr.createCompatibleWritableRaster(0, 0, scaleW, scaleH);
-            BufferedImage scaledImage = new BufferedImage(scaleW, scaleH, origImage.getType());
+            int scaleW = (int)(origImage.getWidth() * xScale + 0.5);
+            int scaleH = (int)(origImage.getHeight() * yScale + 0.5);
+
+            int origImageType = origImage.getType();
+            BufferedImage scaledImage;
+            WritableRaster wr;
+
+            if (origImageType != BufferedImage.TYPE_CUSTOM) {
+                WritableRaster origWr = origImage.getRaster();
+                wr = origWr.createCompatibleWritableRaster(0, 0, scaleW, scaleH);
+                scaledImage = new BufferedImage(scaleW, scaleH, origImageType);
+            } else {
+                int numComponents = origImage.getSampleModel().getNumBands();
+                int[] bandOffset = new int[numComponents];
+                int[] nBits = new int[numComponents];
+                for (int ii=0; ii < numComponents; ii++) {
+                    bandOffset[ii] = ii;
+                    nBits[ii] = 8;
+                }
+                ComponentColorModel colorModel = new ComponentColorModel(cs, nBits, true, false, Transparency.TRANSLUCENT, 0);
+
+                wr = java.awt.image.Raster.createInterleavedRaster(DataBuffer.TYPE_BYTE,
+                        scaleW, scaleH,
+                        scaleW * numComponents, numComponents,
+                        bandOffset, null);
+
+                int imageType;
+                
+                switch (numComponents) {
+                    case 1:
+                        imageType = BufferedImage.TYPE_BYTE_GRAY;
+                        break;
+                    case 3:
+                        imageType = BufferedImage.TYPE_3BYTE_BGR;
+                        break;
+                    case 4:
+                        imageType = BufferedImage.TYPE_4BYTE_ABGR;
+                        break;
+                    default:
+                        throw new ImageException("Illegal number of bands : " + numComponents);
+                        
+                }
+                
+                scaledImage = new BufferedImage(scaleW, scaleH, imageType);
+            }
+            
             scaledImage.setData(wr);
-	    java.awt.Graphics2D g2 = scaledImage.createGraphics();
+            java.awt.Graphics2D g2 = scaledImage.createGraphics();
             AffineTransform at = AffineTransform.getScaleInstance(xScale,
-                                                                  yScale);
-	    g2.transform(at);
-	    g2.drawImage(origImage, 0, 0, null);
+                    yScale);
+            g2.transform(at);
+            g2.drawImage(origImage, 0, 0, null);
 
             return scaledImage;
         }
