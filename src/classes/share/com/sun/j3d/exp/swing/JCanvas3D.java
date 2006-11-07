@@ -45,8 +45,6 @@
 package com.sun.j3d.exp.swing;
 
 import com.sun.j3d.exp.swing.impl.AutoOffScreenCanvas3D;
-
-import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.GraphicsConfigTemplate;
@@ -55,12 +53,9 @@ import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
-
 import java.lang.reflect.InvocationTargetException;
-
 import javax.media.j3d.Canvas3D;
 import javax.media.j3d.GraphicsConfigTemplate3D;
-
 import javax.swing.JPanel;
 import javax.swing.event.AncestorListener;
 
@@ -585,12 +580,13 @@ public class JCanvas3D extends JPanel implements AncestorListener {
      * able to tell the lightweight component when refreshes are needed.
      */
     static class InternalCanvas3D extends Canvas3D
-        implements AutoOffScreenCanvas3D {
-        /**
-         * This is the number of wait loops that the canvas will be
-         * expected to be tested for response, before declaring it crashed.
-         */
-        private static int WAITLOOP_INIT = 30;
+            implements AutoOffScreenCanvas3D {
+
+        // These two constants define the maximum amount of time
+        // to wait for the readback of the off-screen buffer to complete.
+        // The total time is MAX_WAIT_LOOPS * MAX_WAIT_TIME msec.
+        private static final int MAX_WAIT_LOOPS = 5;
+        private static final long MAX_WAIT_TIME = 100;
 
         /**
          * the bufferedImage that will be displayed as the result
@@ -642,14 +638,6 @@ public class JCanvas3D extends JPanel implements AncestorListener {
         boolean waitingForSwap;
 
         /**
-         * Counter. Will wait X times for the buffer to be
-         * accessible. This is done in order to prevail against renderer
-         * crashes blocking swing eternally or long operations to make swing
-         * too sluggish.
-         */
-        int waitLoop;
-
-        /**
          * Creates a new instance of JCanvas3D. Resize mode is set
          * to RESIZE_IMMEDIATELY and validation delay to 100ms.
          * 
@@ -664,7 +652,6 @@ public class JCanvas3D extends JPanel implements AncestorListener {
             imageReadyBis = false;
             waitingForSwap = false;
             addNotifyFlag = false;
-            waitLoop = WAITLOOP_INIT;
         }
 
         /**
@@ -717,24 +704,7 @@ public class JCanvas3D extends JPanel implements AncestorListener {
                     //                    System.err.println("repaint " + System.currentTimeMillis());
                     this.lwCanvas.repaint();
                 } else {
-                    //                    System.err.println("BEFORE notification");
-                    notifyAll();
-                    //                    System.err.println("swapped " + System.currentTimeMillis());
-                    //                new Thread (new Runnable()
-                    //                {
-                    //                    public void run()
-                    //                    {
-                    //                      JFrame jframe = new JFrame();
-                    //                     jframe.setSize(320, 256 );
-                    //                     JLabel label = new JLabel();
-                    //                     BufferedImage buff = new BufferedImage( bi.getWidth(), bi.getHeight(), bi.getType() );
-                    //                     buff.getGraphics().drawImage( bi, 0, 0, null );
-                    //                     label.setIcon( new ImageIcon( buff ));
-                    //                      jframe.getContentPane().add( label );
-                    //                      jframe.setVisible( true );
-                    //                    }
-                    //                }).start();
-                    waitingForSwap = false;
+                    notify();
                 }
             } else {
                 //                System.err.println("SWAP WITHOUT RENDERER RUNNING");
@@ -810,35 +780,27 @@ public class JCanvas3D extends JPanel implements AncestorListener {
          * of the buffer, wait a bit before trying again.
          */
         synchronized public void waitForSwap() {
-            waitingForSwap = true;
-
+            int counter = MAX_WAIT_LOOPS;
             while (false == imageReadyBis) {
                 try {
-                    //                    System.err.println("waiting for swap");
-                    wait((int) Math.max(20.0,
-                            getView().getMinimumFrameCycleTime())); // waiting one cycle time cap of the canvas, with a low cap at 20ms.(empiric number)
-                    waitLoop--;
+                    waitingForSwap = true;
+                    wait(MAX_WAIT_TIME);
                     waitingForSwap = false;
 
-                    if (0 == waitLoop) {
+                    if (!imageReadyBis && --counter <= 0) {
                         //if i've waited too long for the canvas to be there, let us declare it crashed.
+                        System.err.println("CANVAS CRASHED!!!");
                         canvasCrashed = true;
+                        return;
                     }
-
-                    return;
-                } catch (InterruptedException e) {
-                    waitingForSwap = false;
-                    waitLoop = WAITLOOP_INIT;
-
-                    return;
+                } catch (InterruptedException ex) {
+                    System.err.println(ex);
                 }
             }
-
-            waitingForSwap = false;
-            waitLoop = WAITLOOP_INIT;
         }
-    }
 
+    }
+    
     /**
      * This Runnable is the class used when the canvas has to be
      * resized.
