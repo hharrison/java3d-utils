@@ -592,11 +592,6 @@ public class TextureLoader extends Object {
                 imageComponentFormat = ImageComponent.FORMAT_RGB;
                 textureFormat = Texture.RGB;
                 break;
-            case BufferedImage.TYPE_BYTE_INDEXED :
-                //System.out.println("ChooseFormat TYPE_BYTE_INDEXED");
-                imageComponentFormat = ImageComponent.FORMAT_RGB;
-                textureFormat = Texture.RGB;
-                break;
             case BufferedImage.TYPE_CUSTOM:
                 if (is4ByteRGBAOr3ByteRGB(image)) {
                     SampleModel sm = image.getSampleModel();
