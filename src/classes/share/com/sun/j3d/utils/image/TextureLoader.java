@@ -812,8 +812,7 @@ public class TextureLoader extends Object {
                     bandOffset[ii] = ii;
                     nBits[ii] = 8;
                 }
-                ComponentColorModel colorModel = new ComponentColorModel(cs, nBits, true, false, Transparency.TRANSLUCENT, 0);
-
+                
                 wr = java.awt.image.Raster.createInterleavedRaster(DataBuffer.TYPE_BYTE,
                         scaleW, scaleH,
                         scaleW * numComponents, numComponents,
