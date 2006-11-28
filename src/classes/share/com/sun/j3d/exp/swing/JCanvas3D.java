@@ -331,7 +331,7 @@ public class JCanvas3D extends JPanel implements AncestorListener {
         java.awt.image.BufferedImage bImage = new java.awt.image.BufferedImage(width,
                 height, java.awt.image.BufferedImage.TYPE_INT_ARGB);
         javax.media.j3d.ImageComponent2D image = new javax.media.j3d.ImageComponent2D(javax.media.j3d.ImageComponent2D.FORMAT_RGBA8,
-                bImage, true, true);
+                bImage, true, false );
         image.setCapability(image.ALLOW_IMAGE_READ);
         image.setCapability(image.ALLOW_IMAGE_WRITE);
 
