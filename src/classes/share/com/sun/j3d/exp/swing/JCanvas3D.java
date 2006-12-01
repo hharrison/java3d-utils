@@ -126,6 +126,9 @@ public class JCanvas3D extends JPanel implements AncestorListener {
 
     /** the template to be used for this canvas */
     private GraphicsConfigTemplate3D template;
+    
+    /** the graphics configuration used for this canvas */
+    private GraphicsConfiguration graphicsConfig;
 
     /** The canvas that is linked to the component. */
     InternalCanvas3D canvas;
@@ -219,6 +222,8 @@ public class JCanvas3D extends JPanel implements AncestorListener {
         this.template.setStereo(GraphicsConfigTemplate.UNNECESSARY);
         this.template.setDoubleBuffer(GraphicsConfigTemplate.UNNECESSARY);
 
+        graphicsConfig = this.device.getBestConfiguration(this.template);
+
         addAncestorListener(this);
         setDoubleBuffered(false);
         setResizeMode(RESIZE_IMMEDIATELY);
@@ -310,8 +315,7 @@ public class JCanvas3D extends JPanel implements AncestorListener {
             }
         } else {
             // no canvas, i have to create it.
-            canvas = new InternalCanvas3D(device.getBestConfiguration(
-                        this.template), this);
+            canvas = new InternalCanvas3D(this.graphicsConfig, this);
         }
 
         createOffScreenBuffer(width, height); // whatever happened right above, i need to create the offscreen buffer.
