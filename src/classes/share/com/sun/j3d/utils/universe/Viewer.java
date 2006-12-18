@@ -372,6 +372,10 @@ public class Viewer {
         // Create a View and attach the Canvas3D and the physical
         // body and environment to the view.
         view = new View();
+        
+        // Fix to issue 424
+        view.setUserHeadToVworldEnable(true);
+        
 	// Add it to the Viewer's HashMap.
 	synchronized (viewerMap) {
 	    Viewer.viewerMap.put(view, this);
@@ -444,6 +448,10 @@ public class Viewer {
         // Create a View and attach the Canvas3D and the physical
         // body and environment to the view.
         view = new View();
+        
+        // Fix to issue 424
+        view.setUserHeadToVworldEnable(true);
+        
 	// Add it to the Viewer's HashMap.
 	synchronized (viewerMap) {
 	    Viewer.viewerMap.put(view, this);
