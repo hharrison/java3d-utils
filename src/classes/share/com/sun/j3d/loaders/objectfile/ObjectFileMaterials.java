@@ -104,15 +104,7 @@ class ObjectFileMaterials implements ImageObserver {
 	public Texture2D t;
 	public boolean transparent;
 	public float transparencyLevel;
-
-	public void ObjectFileMaterial() {
-	    Ka = null;
-	    Kd = null;
-	    Ks = null;
-	    illum = -1;
-	    Ns = -1.0f;
-	    t = null;
-	} // End of ObjectFileMaterial
+        
     }
 
 
