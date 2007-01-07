@@ -278,7 +278,8 @@ public class JCanvas3D extends JPanel implements AncestorListener {
      * Computes the physical dimensions of the screen in space.
      */
     private void computePhysicalDimensions() {
-        Rectangle screenRect = canvas.getGraphicsConfiguration().getBounds();
+        // Fix to Issue : 433 - JCanvas3D crashed when using jogl pipe.
+        Rectangle screenRect = this.graphicsConfig.getBounds();
         int screenWidth = (int) screenRect.getWidth();
         int screenHeight = (int) screenRect.getHeight();
         canvas.getScreen3D().setSize(screenWidth, screenHeight);
