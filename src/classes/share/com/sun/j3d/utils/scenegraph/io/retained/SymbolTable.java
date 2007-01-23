@@ -698,7 +698,8 @@ public class SymbolTable extends java.lang.Object implements SceneGraphObjectRef
      * Add all the named objects in <code>map</code>
      */
     public void addNamedObjects( HashMap map ) {
-        namedObjects.putAll( map );
+        if (map!=null)
+            namedObjects.putAll( map );
     }
     
     /**
