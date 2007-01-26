@@ -158,6 +158,32 @@ public class SimpleUniverse extends VirtualUniverse {
     }
 
     /**
+     * Creates a locale, a single ViewingPlatform, and a Viewer object
+     * The Viewer object uses default values for everything but the canvas.
+     * The ViewingPlatform is created with the specified number of
+     * TransformGroups.
+     *
+     * @param canvas The canvas to associate with the Viewer object.  Passing
+     * in null will cause this parameter to be ignored and a canvas to be
+     * created by the utility.
+     * @param numTransforms The number of transforms to be in the
+     * MultiTransformGroup object.
+     * @param localeFactory Factory for creating the locale
+     *
+     * @see Locale
+     * @see Viewer
+     * @see ViewingPlatform
+     * @see MultiTransformGroup
+     *
+     * @since Java 3D 1.5.1
+     */
+    public SimpleUniverse(Canvas3D canvas, int numTransforms, LocaleFactory localeFactory) {
+	// call main constructor with default values except canvas,
+	// numTransforms and localeFactory
+	this(null, numTransforms, canvas, null, localeFactory);
+    }
+
+    /**
      * Creates the "view" side of the scene graph.  The passed in parameters
      * override the default values where appropriate.
      *
