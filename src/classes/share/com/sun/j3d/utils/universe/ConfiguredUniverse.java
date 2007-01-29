@@ -254,6 +254,29 @@ public class ConfiguredUniverse extends SimpleUniverse {
     }
 
     /**
+     * Creates a Locale, a single ViewingPlatform with the specified number of
+     * transforms, and a Viewer object using the given array of Canvas3D
+     * instances.  
+     *
+     * @param canvases the canvases to associate with the Viewer object;
+     *  passing in null will cause this parameter to be ignored and a canvas 
+     *  to be created by the utility
+     * @param transformCount the number of transforms in the
+     *  MultiTransformGroup object to be created
+     * @param localeFactory the factory object used to create the Locale
+     *
+     * @since Java 3D 1.5.1
+     *
+     * @see Locale
+     * @see Viewer
+     * @see ViewingPlatform
+     * @see MultiTransformGroup
+     */
+    public ConfiguredUniverse(Canvas3D[] canvases, int transformCount, LocaleFactory localeFactory ) {
+	this(transformCount, canvases, null, localeFactory, null, true);
+    }
+
+    /**
      * Reads the configuration specified by the given URL to create a Locale,
      * one or more ViewingPlatforms, and at least one Viewer object.  The
      * configuration file may also create InputDevice, Sensor, and
