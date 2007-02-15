@@ -87,8 +87,7 @@ public class PickZoomBehavior extends PickMouseBehavior implements MouseBehavior
      * @param root   Root of your scene graph.
      * @param canvas Java 3D drawing canvas.
      * @param bounds Bounds of your scene.
-     * @param pickMode specifys PickTool.BOUNDS, PickTool.GEOMETRY or
-     * PickTool.GEOMETRY_INTERSECT_INFO.  
+     * @param pickMode specifys PickTool.PICK_BOUNDS or PickTool.PICK_GEOMETRY.
      * @see PickTool#setMode
      */
     public PickZoomBehavior(BranchGroup root, Canvas3D canvas, Bounds bounds, 
