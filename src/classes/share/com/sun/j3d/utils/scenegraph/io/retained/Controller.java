@@ -44,6 +44,7 @@
 
 package com.sun.j3d.utils.scenegraph.io.retained;
 
+import com.sun.j3d.utils.scenegraph.io.SceneGraphStateProvider;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.io.DataOutput;
@@ -213,7 +214,11 @@ public abstract class Controller extends java.lang.Object {
         SceneGraphObjectState ret;
         
           try {
-              Class state = Class.forName( "com.sun.j3d.utils.scenegraph.io.state."+name+"State" );
+              Class state;
+              if (obj instanceof SceneGraphStateProvider)
+                  state = ((SceneGraphStateProvider)obj).getStateClass();
+              else 
+                  state = Class.forName( "com.sun.j3d.utils.scenegraph.io.state."+name+"State" );
               ret = constructStateObj( symbol, state, obj.getClass() );
           } catch(ClassNotFoundException e) {
               ret = checkSuperClasses( symbol );
