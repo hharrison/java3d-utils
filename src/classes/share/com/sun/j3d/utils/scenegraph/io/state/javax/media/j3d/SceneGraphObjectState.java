@@ -134,6 +134,7 @@ public abstract class SceneGraphObjectState {
         }
         
         writeUserData( out );
+        writeString(node.getName(), out);
         
         writeCapabilities( out );
     }
@@ -179,6 +180,9 @@ public abstract class SceneGraphObjectState {
         
         symbol = control.getSymbolTable().createSymbol( this, node, nodeID );
         readUserData( in );
+        if (control.getCurrentFileVersion()>2) {
+            node.setName(readString(in));
+        }
 
         readCapabilities( in );
     }
@@ -501,6 +505,24 @@ public abstract class SceneGraphObjectState {
     public void cleanup() {
         control = null;
         node = null;
+    }
+    
+    /**
+     * Read and return a possibly null string
+     */
+    protected String readString(DataInput in) throws IOException {
+            if (in.readBoolean())
+                return (in.readUTF());
+            return null;        
+    }
+    
+    /**
+      * Write a possibly null string to the stream
+     */
+    protected void writeString(String str, DataOutput out) throws IOException {
+        out.writeBoolean(str!=null);
+        if (str!=null)
+            out.writeUTF(str);       
     }
     
 }

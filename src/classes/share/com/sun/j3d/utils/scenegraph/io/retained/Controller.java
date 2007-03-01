@@ -113,8 +113,9 @@ public abstract class Controller extends java.lang.Object {
 			      SceneGraphIO interface
             		   2) Add missing duplicateOnCloneTree flag 
 			      (bug 4690159)
+     * 3 = Java3D 1.5.1    1) Add support for SceneGraphObject Name field
      */
-    protected int outputFileVersion = 2;
+    protected int outputFileVersion = 3;
 
     /**
      * When running the application within webstart this may not be the 
