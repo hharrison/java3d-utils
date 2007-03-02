@@ -1025,14 +1025,20 @@ public class PickIntersection {
     public TexCoord3f[] getPrimitiveTexCoords (int index) {
 	if (primitiveTexCoords == null) {
 	    primitiveTexCoords = new TexCoord3f[primitiveVertexIndices.length];
+	    TexCoord2f primitiveTexCoords2DTmp = new TexCoord2f();
+
 	    int[] indices = getPrimitiveTexCoordIndices(index);
 	    int vformat = geom.getVertexFormat();
-	    if ((vformat & GeometryArray.BY_REFERENCE) == 0) {
-		for (int i = 0; i < indices.length; i++) {
-		    primitiveTexCoords[i] = new TexCoord3f();
-		    geom.getTextureCoordinate(index, indices[i], primitiveTexCoords[i]);
-		}
-	    }
+            if ((vformat & GeometryArray.BY_REFERENCE) == 0) {
+                for (int i = 0; i < indices.length; i++) {
+                    primitiveTexCoords[i] = new TexCoord3f();
+                    geom.getTextureCoordinate(index, indices[i], primitiveTexCoords2DTmp);
+                    primitiveTexCoords[i].set(
+                            primitiveTexCoords2DTmp.x,
+                            primitiveTexCoords2DTmp.y,
+                            0.0f);
+                }
+            }
 	    else {
 		if ((vformat & GeometryArray.INTERLEAVED) == 0) {
 		    int val;
