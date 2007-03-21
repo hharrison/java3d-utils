@@ -115,7 +115,7 @@ public class SceneGraphStreamReader extends java.lang.Object {
     /**
      * Close the SceneGraphStreamReader stream
      *
-     * @since 1.5.1
+     * @since Java 3D 1.5.1
      */
     public void close() throws IOException {
         in.close();
