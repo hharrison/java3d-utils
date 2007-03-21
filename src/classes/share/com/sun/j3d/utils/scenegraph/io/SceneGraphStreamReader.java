@@ -112,6 +112,15 @@ public class SceneGraphStreamReader extends java.lang.Object {
         return control.getClassLoader();
     }
  
+    /**
+     * Close the SceneGraphStreamReader stream
+     *
+     * @since 1.5.1
+     */
+    public void close() throws IOException {
+        in.close();
+        control.close();
+    }
   
 }
 

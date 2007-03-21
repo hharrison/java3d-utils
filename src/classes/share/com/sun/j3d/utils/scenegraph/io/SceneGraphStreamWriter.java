@@ -119,9 +119,10 @@ public class SceneGraphStreamWriter extends java.lang.Object {
     }
     
     /** 
-     * Close the SceneGraphStreamWriter, but does not close the Stream
+     * Close the SceneGraphStreamWriter and the associated stream
      */
     public void close() throws IOException {
         control.close();
+        out.close();
     }
 }
