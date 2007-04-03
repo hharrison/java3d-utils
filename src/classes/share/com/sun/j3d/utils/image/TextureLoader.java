@@ -132,6 +132,8 @@ public class TextureLoader extends Object {
      * Contructs a TextureLoader object using the specified BufferedImage 
      * and default format RGBA
      * @param bImage The BufferedImage used for loading the texture 
+     *
+     * @exception NullPointerException if bImage is null
      */
     public TextureLoader(BufferedImage bImage) {
         this(bImage, null, 0);
@@ -142,6 +144,8 @@ public class TextureLoader extends Object {
      * and format
      * @param bImage The BufferedImage used for loading the texture 
      * @param format The format specifies which channels to use
+     *
+     * @exception NullPointerException if bImage is null
      */
     public TextureLoader(BufferedImage bImage, String format) {
         this(bImage, format, 0);
@@ -152,6 +156,8 @@ public class TextureLoader extends Object {
      * option flags and default format RGBA
      * @param bImage The BufferedImage used for loading the texture
      * @param flags The flags specify what options to use in texture loading (generate mipmap etc)
+     *
+     * @exception NullPointerException if bImage is null
      */
     public TextureLoader(BufferedImage bImage, int flags) {
         this(bImage, null, flags);
@@ -163,8 +169,14 @@ public class TextureLoader extends Object {
      * @param bImage The BufferedImage used for loading the texture 
      * @param format The format specifies which channels to use
      * @param flags The flags specify what options to use in texture loading (generate mipmap etc)
+     *
+     * @exception NullPointerException if bImage is null
      */
     public TextureLoader(BufferedImage bImage, String format, int flags) {
+        if (bImage == null) {
+            throw new NullPointerException();
+        }
+
 	parseFormat(format);
 	this.flags = flags;
 	bufferedImage = bImage;
@@ -187,6 +199,9 @@ public class TextureLoader extends Object {
      * and default format RGBA
      * @param image The Image used for loading the texture
      * @param observer The associated image observer
+     *
+     * @exception NullPointerException if image is null
+     * @exception ImageException if there is a problem loading the image
      */
     public TextureLoader(Image image, Component observer) {
 	this(image, null, 0, observer);
@@ -198,6 +213,9 @@ public class TextureLoader extends Object {
      * @param image The Image used for loading the texture 
      * @param format The format specifies which channels to use
      * @param observer The associated image observer
+     *
+     * @exception NullPointerException if image is null
+     * @exception ImageException if there is a problem loading the image
      */
     public TextureLoader(Image image, String format, Component observer) {
 	this(image, format, 0, observer);
@@ -209,6 +227,9 @@ public class TextureLoader extends Object {
      * @param image The Image used for loading the texture 
      * @param flags The flags specify what options to use in texture loading (generate mipmap etc)
      * @param observer The associated image observer
+     *
+     * @exception NullPointerException if image is null
+     * @exception ImageException if there is a problem loading the image
      */
     public TextureLoader(Image image, int flags, Component observer) {
 	this(image, null, flags, observer);
@@ -221,9 +242,16 @@ public class TextureLoader extends Object {
      * @param format The format specifies which channels to use
      * @param flags The flags specify what options to use in texture loading (generate mipmap etc)
      * @param observer The associated image observer
+     *
+     * @exception NullPointerException if image is null
+     * @exception ImageException if there is a problem loading the image
      */
     public TextureLoader(Image image, String format, int flags, 
                          Component observer) {
+
+        if (image == null) {
+            throw new NullPointerException();
+        }
 
 	if (observer == null) {
             observer = new java.awt.Container();
@@ -232,6 +260,10 @@ public class TextureLoader extends Object {
 	parseFormat(format);
 	this.flags = flags;
 	bufferedImage = createBufferedImage(image, observer);
+
+        if (bufferedImage==null) {
+            throw new ImageException("Error loading image: " + image.toString());
+        }
 
         if (format==null)
             chooseFormat(bufferedImage);
@@ -252,6 +284,8 @@ public class TextureLoader extends Object {
      * and default format RGBA
      * @param fname The file that specifies an Image to load the texture with
      * @param observer The associated image observer
+     *
+     * @exception ImageException if there is a problem reading the image
      */
     public TextureLoader(String fname, Component observer) {
         this(fname, null, 0, observer);
@@ -263,6 +297,8 @@ public class TextureLoader extends Object {
      * @param fname The file that specifies an Image to load the texture with
      * @param format The format specifies which channels to use
      * @param observer The associated image observer
+     *
+     * @exception ImageException if there is a problem reading the image
      */
     public TextureLoader(String fname, String format, Component observer) {
         this(fname, format, 0, observer);
@@ -274,6 +310,8 @@ public class TextureLoader extends Object {
      * @param fname The file that specifies an Image to load the texture with
      * @param flags The flags specify what options to use in texture loading (generate mipmap etc)
      * @param observer The associated image observer
+     *
+     * @exception ImageException if there is a problem reading the image
      */
     public TextureLoader(String fname, int flags, Component observer) {
         this(fname, null, flags, observer);
@@ -309,15 +347,15 @@ public class TextureLoader extends Object {
                 }
             );
 
+        if (bufferedImage==null) {
+            throw new ImageException("Error loading image: " + fname);
+        }
+
         parseFormat(format);
         this.flags = flags;
 
         if (format==null)
             chooseFormat(bufferedImage);
-        
-	if (bufferedImage==null) {
-            throw new ImageException("Error loading image: " + fname);
-        }
 
 	if ((flags & BY_REFERENCE) != 0) {
 	    byRef = true;
@@ -335,6 +373,8 @@ public class TextureLoader extends Object {
      * and default format RGBA
      * @param url The URL that specifies an Image to load the texture with
      * @param observer The associated image observer
+     *
+     * @exception ImageException if there is a problem reading the image
      */
     public TextureLoader(URL url, Component observer) {
         this(url, null, 0, observer);
@@ -346,6 +386,8 @@ public class TextureLoader extends Object {
      * @param url The URL that specifies an Image to load the texture with
      * @param format The format specifies which channels to use
      * @param observer The associated image observer
+     *
+     * @exception ImageException if there is a problem reading the image
      */
     public TextureLoader(URL url, String format, Component observer) {
         this(url, format, 0, observer);
@@ -357,6 +399,8 @@ public class TextureLoader extends Object {
      * @param url The URL that specifies an Image to load the texture with
      * @param flags The flags specify what options to use in texture loading (generate mipmap etc)
      * @param observer The associated image observer
+     *
+     * @exception ImageException if there is a problem reading the image
      */
     public TextureLoader(URL url, int flags, Component observer) {
         this(url, null, flags, observer);
@@ -391,15 +435,15 @@ public class TextureLoader extends Object {
                 }
             );
 
+        if (bufferedImage==null) {
+            throw new ImageException("Error loading image: " + url.toString());
+        }
+
         parseFormat(format);
         this.flags = flags;
 
         if (format==null)
             chooseFormat(bufferedImage);
-        
-	if (bufferedImage==null) {
-            throw new ImageException("Error loading image: " + url.toString());
-        }
 
 	if ((flags & BY_REFERENCE) != 0) {
 	    byRef = true;
@@ -464,8 +508,7 @@ public class TextureLoader extends Object {
     }
 
     /**
-     * Returns the associated Texture object
-     * or null if the image failed to load
+     * Returns the associated Texture object.
      *   
      * @return The associated Texture object
      */
@@ -473,7 +516,6 @@ public class TextureLoader extends Object {
 	ImageComponent2D[] scaledImageComponents = null;
 	BufferedImage[] scaledBufferedImages = null;
         if (tex == null) {
-	  if (bufferedImage==null) return null;
 
           int width;
           int height;
