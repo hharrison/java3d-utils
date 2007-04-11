@@ -131,7 +131,10 @@ public class JCanvas3D extends JPanel implements AncestorListener {
     private GraphicsConfiguration graphicsConfig;
 
     /** The canvas that is linked to the component. */
-    InternalCanvas3D canvas;
+    private InternalCanvas3D canvas;
+    
+    /** flag indicating that the JCanvas3D has been added to a container */
+    private boolean hasBeenAdded = false;
 
     /** The resize mode currently being used. */
     int resizeMode;
@@ -254,6 +257,7 @@ public class JCanvas3D extends JPanel implements AncestorListener {
             createCanvas(sz.width, sz.height);
             canvas.addNotifyFlag = true; // make it so that i can call addNotify() without being rejected.
             canvas.addNotify();
+            hasBeenAdded = true;
         }
     }
 
@@ -271,6 +275,7 @@ public class JCanvas3D extends JPanel implements AncestorListener {
      * @param event {@inheritDoc}
      */
     public void ancestorRemoved(javax.swing.event.AncestorEvent event) {
+        hasBeenAdded = false;
         canvas.removeNotify();
     }
 
@@ -396,17 +401,21 @@ public class JCanvas3D extends JPanel implements AncestorListener {
     public void paintComponent(java.awt.Graphics g) {
         super.paintComponent(g); //paint background
 
-        if ((false == canvas.canvasCrashed) &&
-                (true == canvas.isRendererRunning())) {
-            //            System.err.println("paintComponentWaitforSwap");
-            canvas.waitForSwap();
+        // Wait for and display image if JCanvas3D was added to an ancestor
+        if (hasBeenAdded) {
+            if ((false == canvas.canvasCrashed) &&
+                    (true == canvas.isRendererRunning())) {
+                //            System.err.println("paintComponentWaitforSwap");
+                canvas.waitForSwap();
 
-            //            System.err.println("wait is over");
-        }
+                //            System.err.println("wait is over");
+            }
 
-        if (null != canvas.bi) {
-            // can eventually be null if the canvas did not send the result in the desired timeframe, for first render. In that case, we don't paint and keep the background as-is.
-            g.drawImage(canvas.bi, 0, 0, getWidth(), getHeight(), null);
+            if (null != canvas.bi) {
+                // can eventually be null if the canvas did not send the result in the desired timeframe
+                // for first render. In that case, we don't paint and keep the background as-is.
+                g.drawImage(canvas.bi, 0, 0, getWidth(), getHeight(), null);
+            }
         }
     }
 
@@ -597,7 +606,7 @@ public class JCanvas3D extends JPanel implements AncestorListener {
          * the bufferedImage that will be displayed as the result
          * of the computations.
          */
-        BufferedImage bi;
+        BufferedImage bi = null;
 
         /**
          * This is the lightweight canvas that is linked to that
@@ -784,7 +793,7 @@ public class JCanvas3D extends JPanel implements AncestorListener {
          * If the Canvas is in a state that forbids the retrieving
          * of the buffer, wait a bit before trying again.
          */
-        synchronized public void waitForSwap() {
+        synchronized void waitForSwap() {
             int counter = MAX_WAIT_LOOPS;
             while (false == imageReadyBis) {
                 try {
