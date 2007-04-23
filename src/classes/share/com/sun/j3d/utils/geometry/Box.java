@@ -167,11 +167,13 @@ public class Box extends Primitive {
     zDim = zdim;
     flags = primflags;
     numTexUnit = numTexUnit;
-
+    boolean texCoordYUp = (flags & GENERATE_TEXTURE_COORDS_YUP) != 0;
+    
     //Depending on whether normal inward bit is set.
     if ((flags & GENERATE_NORMALS_INWARD) != 0)
-      sign = -1.0;
+        sign = -1.0;
     else sign = 1.0;
+    
     
 //     TransformGroup objTrans = new TransformGroup();
 //     objTrans.setCapability(ALLOW_CHILDREN_READ);
@@ -200,7 +202,13 @@ public class Box extends Primitive {
 		gbuf.normal3d( (double) normals[i].x*sign, 
 			       (double) normals[i].y*sign, 
 			       (double) normals[i].z*sign);
-		gbuf.texCoord2d(tcoords[i*8 + j*2], tcoords[i*8 + j*2 + 1]);
+                if (texCoordYUp) {
+                   gbuf.texCoord2d(tcoords[i*8 + j*2], 1.0 - tcoords[i*8 + j*2 + 1]);                    
+                }
+                else {
+                    gbuf.texCoord2d(tcoords[i*8 + j*2], tcoords[i*8 + j*2 + 1]);
+                }
+                
 		gbuf.vertex3d( (double) verts[i*12 + j*3]*xdim, 
 			       (double) verts[i*12+ j*3 + 1]*ydim,
 			       (double) verts[i*12+ j*3 + 2]*zdim );
@@ -209,7 +217,12 @@ public class Box extends Primitive {
 		gbuf.normal3d( (double) normals[i].x*sign, 
 			       (double) normals[i].y*sign, 
 			       (double) normals[i].z*sign);
-		gbuf.texCoord2d(tcoords[i*8 + j*2], tcoords[i*8 + j*2 + 1]);
+                if (texCoordYUp) {
+                    gbuf.texCoord2d(tcoords[i*8 + j*2], 1.0 - tcoords[i*8 + j*2 + 1]);                    
+                }
+                else {
+                    gbuf.texCoord2d(tcoords[i*8 + j*2], tcoords[i*8 + j*2 + 1]);
+                }
 		gbuf.vertex3d( (double) verts[i*12 + j*3]*xdim, 
 			       (double) verts[i*12+ j*3 + 1]*ydim,
 			       (double) verts[i*12+ j*3 + 2]*zdim );

@@ -96,8 +96,6 @@ class GeomBuffer extends Object{
   static final int TRIANGLE_STRIP = 0x20;  
 
   private int flags;
-  static final int GENERATE_NORMALS =  0x01;
-  static final int GENERATE_TEXTURE_COORDS = 0x02;
 
   Point3f[] pts = null;
   Vector3f[] normals = null;
@@ -285,9 +283,9 @@ class GeomBuffer extends Object{
     if (debug >= 1) System.out.println("totalVerts " + totalVerts);
 
     int tsaFlags = TriangleStripArray.COORDINATES;
-    if ((flags & GENERATE_NORMALS) != 0)
+    if ((flags & Primitive.GENERATE_NORMALS) != 0)
 	tsaFlags |= TriangleStripArray.NORMALS;
-    if ((flags & GENERATE_TEXTURE_COORDS) != 0)
+    if ((flags & Primitive.GENERATE_TEXTURE_COORDS) != 0)
 	 tsaFlags |= TriangleStripArray.TEXTURE_COORDINATE_2;
 
     // Create GeometryArray to pass back
@@ -314,9 +312,9 @@ class GeomBuffer extends Object{
     numTris += totalVerts - currPrimCnt * 2;
 
     obj.setCoordinates(0, newpts);
-    if ((flags & GENERATE_NORMALS) != 0)
+    if ((flags & Primitive.GENERATE_NORMALS) != 0)
       obj.setNormals(0, newnormals);
-    if ((flags & GENERATE_TEXTURE_COORDS) != 0)
+    if ((flags & Primitive.GENERATE_TEXTURE_COORDS) != 0)
       obj.setTextureCoordinates(0, 0, newtcoords);
 
     geometry = obj;
@@ -335,8 +333,8 @@ class GeomBuffer extends Object{
 
     if (debug >= 1) System.out.println("totalVerts " + totalVerts);
 
-    if (((flags & GENERATE_NORMALS) != 0) &&
-	((flags & GENERATE_TEXTURE_COORDS) != 0)){
+    if (((flags & Primitive.GENERATE_NORMALS) != 0) &&
+	((flags & Primitive.GENERATE_TEXTURE_COORDS) != 0)){
       obj = new QuadArray(totalVerts,
 			  QuadArray.COORDINATES | 
 			  QuadArray.NORMALS |
@@ -344,16 +342,16 @@ class GeomBuffer extends Object{
 			  1, texCoordSetMap);
     }
     else 
-      if (((flags & GENERATE_NORMALS) == 0) &&
-	  ((flags & GENERATE_TEXTURE_COORDS) != 0)){
+      if (((flags & Primitive.GENERATE_NORMALS) == 0) &&
+	  ((flags & Primitive.GENERATE_TEXTURE_COORDS) != 0)){
 	obj = new QuadArray(totalVerts,
 			    QuadArray.COORDINATES | 
 			    QuadArray.TEXTURE_COORDINATE_2, 
 			    1, texCoordSetMap);
       }
     else 
-      if (((flags & GENERATE_NORMALS) != 0) &&
-	  ((flags & GENERATE_TEXTURE_COORDS) == 0)){
+      if (((flags & Primitive.GENERATE_NORMALS) != 0) &&
+	  ((flags & Primitive.GENERATE_TEXTURE_COORDS) == 0)){
 	obj = new QuadArray(totalVerts,
 			    QuadArray.COORDINATES | 
 			    QuadArray.NORMALS);
@@ -388,9 +386,9 @@ class GeomBuffer extends Object{
     numVerts = currVert;
 
     obj.setCoordinates(0, newpts);
-    if ((flags & GENERATE_NORMALS) != 0)
+    if ((flags & Primitive.GENERATE_NORMALS) != 0)
       obj.setNormals(0, newnormals);
-    if ((flags & GENERATE_TEXTURE_COORDS) != 0)
+    if ((flags & Primitive.GENERATE_TEXTURE_COORDS) != 0)
       obj.setTextureCoordinates(0, 0, newtcoords);
 
     geometry = obj;
@@ -409,8 +407,8 @@ class GeomBuffer extends Object{
 
     if (debug >= 1) System.out.println("totalVerts " + totalVerts);
 
-    if (((flags & GENERATE_NORMALS) != 0) &&
-	((flags & GENERATE_TEXTURE_COORDS) != 0)){
+    if (((flags & Primitive.GENERATE_NORMALS) != 0) &&
+	((flags & Primitive.GENERATE_TEXTURE_COORDS) != 0)){
       obj = new TriangleArray(totalVerts,
 			  TriangleArray.COORDINATES | 
 			  TriangleArray.NORMALS |
@@ -418,16 +416,16 @@ class GeomBuffer extends Object{
 			  1, texCoordSetMap);
     }
     else 
-      if (((flags & GENERATE_NORMALS) == 0) &&
-	  ((flags & GENERATE_TEXTURE_COORDS) != 0)){
+      if (((flags & Primitive.GENERATE_NORMALS) == 0) &&
+	  ((flags & Primitive.GENERATE_TEXTURE_COORDS) != 0)){
 	obj = new TriangleArray(totalVerts,
 			    TriangleArray.COORDINATES | 
 			    TriangleArray.TEXTURE_COORDINATE_2,
 			  1, texCoordSetMap);
       }
     else 
-      if (((flags & GENERATE_NORMALS) != 0) &&
-	  ((flags & GENERATE_TEXTURE_COORDS) == 0)){
+      if (((flags & Primitive.GENERATE_NORMALS) != 0) &&
+	  ((flags & Primitive.GENERATE_TEXTURE_COORDS) == 0)){
 	obj = new TriangleArray(totalVerts,
 			    TriangleArray.COORDINATES | 
 			    TriangleArray.NORMALS);
@@ -456,9 +454,9 @@ class GeomBuffer extends Object{
     numVerts = currVert;
 
     obj.setCoordinates(0, newpts);
-    if ((flags & GENERATE_NORMALS) != 0)
+    if ((flags & Primitive.GENERATE_NORMALS) != 0)
       obj.setNormals(0, newnormals);
-    if ((flags & GENERATE_TEXTURE_COORDS) != 0)
+    if ((flags & Primitive.GENERATE_TEXTURE_COORDS) != 0)
       obj.setTextureCoordinates(0, 0, newtcoords);
 
     geometry = obj;
@@ -483,10 +481,10 @@ class GeomBuffer extends Object{
 
     // figure out what flags we need
     int tfFlags = TriangleFanArray.COORDINATES;
-    if ((flags & GENERATE_NORMALS) != 0) {
+    if ((flags & Primitive.GENERATE_NORMALS) != 0) {
       tfFlags |= TriangleFanArray.NORMALS;
     }
-    if ((flags & GENERATE_TEXTURE_COORDS) != 0) {
+    if ((flags & Primitive.GENERATE_TEXTURE_COORDS) != 0) {
       tfFlags |= TriangleFanArray.TEXTURE_COORDINATE_2;
     }
 
@@ -520,10 +518,10 @@ class GeomBuffer extends Object{
     obj.setCoordinates(0, newpts);
 
     // set the normals and tex coords if necessary
-    if ((flags & GENERATE_NORMALS) != 0) {
+    if ((flags & Primitive.GENERATE_NORMALS) != 0) {
       obj.setNormals(0, newnormals);
     }
-    if ((flags & GENERATE_TEXTURE_COORDS) != 0) {
+    if ((flags & Primitive.GENERATE_TEXTURE_COORDS) != 0) {
       obj.setTextureCoordinates(0, 0, newtcoords);
     }
     geometry = obj;
@@ -545,10 +543,10 @@ class GeomBuffer extends Object{
 
     dpts[dloc] = new Point3f(spts[sloc]);
 
-    if ((flags & GENERATE_NORMALS) != 0){
+    if ((flags & Primitive.GENERATE_NORMALS) != 0){
       dnormals[dloc] = new Vector3f(snormals[sloc]);
     }
-    if ((flags & GENERATE_TEXTURE_COORDS) != 0){
+    if ((flags & Primitive.GENERATE_TEXTURE_COORDS) != 0){
       if (debug >= 2) System.out.println("final out tcoord");
       dtcoords[dloc] = new TexCoord2f(stcoords[sloc]);
     }

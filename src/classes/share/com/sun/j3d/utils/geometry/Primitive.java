@@ -80,6 +80,12 @@ public abstract class Primitive extends Group {
    */
   public static final int GENERATE_NORMALS_INWARD = 0x04;
 
+  /**
+   * Specifies that texture coordinates are to be Y up. 
+   */
+  public static final int GENERATE_TEXTURE_COORDS_YUP = 0x08;
+  
+  
   /** 
    * Specifies that the geometry being created will not be shared by
    * another scene graph node. By default all primitives created with

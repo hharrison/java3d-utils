@@ -211,6 +211,7 @@ public class Cone extends Primitive {
     ydivisions = ydivision;
     flags = primflags;
     boolean outside = (flags & GENERATE_NORMALS_INWARD) == 0;
+    boolean texCoordYUp = (flags & GENERATE_TEXTURE_COORDS_YUP) != 0;
     Quadrics q = new Quadrics();
     GeomBuffer gbuf = null;
 
@@ -229,7 +230,7 @@ public class Cone extends Primitive {
 	gbuf = q.coneTop((double)(height/2.0 - height/ydivisions),
 			 (double)(radius/ydivisions), height/ydivisions,
 			 xdivisions, 1.0-1.0/(double)ydivisions,
-			 outside);
+			 outside, texCoordYUp);
       shape[BODY] = new Shape3D(gbuf.getGeom(flags));
       numVerts += gbuf.getNumVerts();
       numTris += gbuf.getNumTris();
@@ -255,7 +256,7 @@ public class Cone extends Primitive {
 			      (double)(height/2.0-height/ydivisions),
 			      (double)radius, (double)(radius/ydivisions),
 			      xdivisions, ydivisions-1, 1.0/(double)ydivisions,
-			      outside);
+			      outside, texCoordYUp);
 	    shape[BODY].addGeometry(gbuf.getGeom(flags));
 	    numVerts += gbuf.getNumVerts();
 	    numTris += gbuf.getNumTris();
@@ -289,7 +290,7 @@ public class Cone extends Primitive {
     }
     else {
 	gbuf = q.disk((double)radius, xdivision, -(double)height/2.0,
-		      !outside);
+		      !outside, texCoordYUp);
 	shape[CAP] = new Shape3D(gbuf.getGeom(flags));
 	numVerts += gbuf.getNumVerts();
 	numTris += gbuf.getNumTris();

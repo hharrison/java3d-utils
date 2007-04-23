@@ -212,6 +212,7 @@ public class Cylinder extends Primitive{
       this.ydivisions = ydivision;
       flags = primflags;
       boolean outside = (flags & GENERATE_NORMALS_INWARD) == 0;
+      boolean texCoordYUp = (flags & GENERATE_TEXTURE_COORDS_YUP) != 0;
       // Create many body of the cylinder.
       Quadrics q = new Quadrics();
       GeomBuffer gbuf = null;
@@ -228,7 +229,7 @@ public class Cylinder extends Primitive{
       }
       else {
 	  gbuf = q.cylinder((double)height, (double)radius,
-			    xdivision, ydivision, outside);
+			    xdivision, ydivision, outside, texCoordYUp);
 	  shape[BODY] = new Shape3D(gbuf.getGeom(flags));
 	  numVerts += gbuf.getNumVerts();
 	  numTris += gbuf.getNumTris();
@@ -260,7 +261,7 @@ public class Cylinder extends Primitive{
       }
       else {
 	  gbuf = q.disk((double)radius, xdivision, height/2.0,
-			outside);
+			outside, texCoordYUp);
 	  shape[TOP] = new Shape3D(gbuf.getGeom(flags));
 	  numVerts += gbuf.getNumVerts();
 	  numTris += gbuf.getNumTris();
@@ -293,7 +294,7 @@ public class Cylinder extends Primitive{
 	  numTris += cache.getNumTris();
       }
       else {
-	  gbuf = q.disk((double)radius, xdivision, -height/2.0, !outside);
+	  gbuf = q.disk((double)radius, xdivision, -height/2.0, !outside, texCoordYUp);
 	  shape[BOTTOM] = new Shape3D(gbuf.getGeom(flags));
 	  numVerts += gbuf.getNumVerts();
 	  numTris += gbuf.getNumTris();
