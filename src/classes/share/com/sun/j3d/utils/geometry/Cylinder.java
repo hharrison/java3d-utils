@@ -212,7 +212,7 @@ public class Cylinder extends Primitive{
       this.ydivisions = ydivision;
       flags = primflags;
       boolean outside = (flags & GENERATE_NORMALS_INWARD) == 0;
-      boolean texCoordYUp = (flags & GENERATE_TEXTURE_COORDS_YUP) != 0;
+      boolean texCoordYUp = (flags & GENERATE_TEXTURE_COORDS_Y_UP) != 0;
       // Create many body of the cylinder.
       Quadrics q = new Quadrics();
       GeomBuffer gbuf = null;

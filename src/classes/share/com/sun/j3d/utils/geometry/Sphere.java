@@ -206,7 +206,7 @@ public class Sphere extends Primitive {
      */
 
     flags = primflags;
-    boolean texCoordYUp = (flags & GENERATE_TEXTURE_COORDS_YUP) != 0;    
+    boolean texCoordYUp = (flags & GENERATE_TEXTURE_COORDS_Y_UP) != 0;    
  
     //Depending on whether normal inward bit is set.
     if ((flags & GENERATE_NORMALS_INWARD) != 0) {
@@ -245,13 +245,24 @@ public class Sphere extends Primitive {
 	GeomBuffer gbuf = new GeomBuffer(8*nstep*(nstep+2));
 	
 	for (int i=0; i < 4; i++) {
-	    buildQuadrant(gbuf, i*Math.PI/2, (i+1)*Math.PI/2, sign, texCoordYUp, nstep, n, true);
-	    buildQuadrant(gbuf, i*Math.PI/2, (i+1)*Math.PI/2, sign, texCoordYUp, nstep, n, false);            
+	    buildQuadrant(gbuf, i*Math.PI/2, (i+1)*Math.PI/2, sign, nstep, n, true);
+	    buildQuadrant(gbuf, i*Math.PI/2, (i+1)*Math.PI/2, sign, nstep, n, false);
 	}
 
+        // Fix to Issue 411. Java 3D prefers images used for texture mapping to be Y-up 
+        if (texCoordYUp) {
+            TexCoord2f[] texCoords  = gbuf.getTexCoords();
+            if (texCoords != null) {
+                for (int ii=0; ii<texCoords.length; ii++) {
+                    texCoords[ii].y = 1.0f - texCoords[ii].y;
+                }
+            }
+        }
+        
 	shape = new Shape3D(gbuf.getGeom(flags));
 	numVerts = gbuf.getNumVerts();
-	numTris = gbuf.getNumTris();
+	numTris = gbuf.getNumTris();       
+        
 	if ((primflags & Primitive.GEOMETRY_NOT_SHARED) == 0) {
 	    cacheGeometry(Primitive.SPHERE,
 			  radius, 0.0f, 0.0f, 
@@ -355,7 +366,7 @@ public class Sphere extends Primitive {
     }
 
     void buildQuadrant(GeomBuffer gbuf, double startDelta, double endDelta,
-		       int sign, boolean texCoordYUp, int nstep, int n, boolean upperSphere)
+		       int sign, int nstep, int n, boolean upperSphere)
     {
 	
 	double ds, dt, theta, delta;
@@ -416,32 +427,17 @@ public class Sphere extends Primitive {
 			texCoord = gbuf.tcoords[index];
 			// connect with correspondent vertices from previous row
 			gbuf.normal3d(norm.x, norm.y, norm.z);
-                        if(texCoordYUp) {
-                            gbuf.texCoord2d(texCoord.x, 1.0 - texCoord.y);                            
-                        }
-                        else {
-                            gbuf.texCoord2d(texCoord.x, texCoord.y);
-                        }
+			gbuf.texCoord2d(texCoord.x, texCoord.y);
 			gbuf.vertex3d(pt.x, pt.y, pt.z);
 		    } else {
 			gbuf.normal3d(0, sign*starth, 0);
-                        if (sign > 0) {
-                            if (texCoordYUp) {
-                                gbuf.texCoord2d(0.75 - (startDelta + endDelta)/(4*Math.PI),
-                                        (theta - dt)/Math.PI);                                
-                            } else {
-                                gbuf.texCoord2d(0.75 - (startDelta + endDelta)/(4*Math.PI),
-                                        1.0 - (theta - dt)/Math.PI);
-                            }
-                        } else {
-                            if (texCoordYUp) {
-                                gbuf.texCoord2d(0.75 - (startDelta + endDelta)/(4*Math.PI),
-                                        1.0 - (theta - dt)/Math.PI);                                
-                            } else {
-                                gbuf.texCoord2d(0.75 - (startDelta + endDelta)/(4*Math.PI),
-                                        (theta - dt)/Math.PI);
-                            }
-                        }
+			if (sign > 0) {
+			    gbuf.texCoord2d(0.75 - (startDelta + endDelta)/(4*Math.PI), 
+					    1.0 - (theta - dt)/Math.PI);
+			} else {
+			    gbuf.texCoord2d(0.75 - (startDelta + endDelta)/(4*Math.PI), 
+					    (theta - dt)/Math.PI);
+			}
                         gbuf.vertex3d( 0, starth*radius, 0); 
 			
 		    }
@@ -455,12 +451,7 @@ public class Sphere extends Primitive {
 		vx = r*Math.cos(delta);
 		vz = r*Math.sin(delta);
 		gbuf.normal3d( vx*sign, h*sign, vz*sign );
-                if(texCoordYUp) {
-                    gbuf.texCoord2d(0.75 - delta/(2*Math.PI), 1.0 - t);
-                }
-                else {                
-                    gbuf.texCoord2d(0.75 - delta/(2*Math.PI), t);
-                }
+		gbuf.texCoord2d(0.75 - delta/(2*Math.PI), t);
 		gbuf.vertex3d( vx*radius, h*radius, vz*radius);
 	    } else {
 		delta =  endDelta;
@@ -472,11 +463,7 @@ public class Sphere extends Primitive {
 		    gbuf.normal3d( vx*sign, h*sign, vz*sign );
 		    // Convert texture coordinate back to one
 		    // set in previous version 
-                    if(texCoordYUp) {
-                        gbuf.texCoord2d(0.75 - delta/(2*Math.PI), 1.0 - t);
-                    } else {
-                        gbuf.texCoord2d(0.75 - delta/(2*Math.PI), t);
-                    }
+		    gbuf.texCoord2d(0.75 - delta/(2*Math.PI), t);
 		    gbuf.vertex3d( vx*radius, h*radius, vz*radius );
 		    if (i > 1) {
 			// get previous vertex from buffer
@@ -485,31 +472,17 @@ public class Sphere extends Primitive {
 			norm = gbuf.normals[index];
 			texCoord = gbuf.tcoords[index];
 			gbuf.normal3d(norm.x, norm.y, norm.z);
-                        if(texCoordYUp) {
-                            gbuf.texCoord2d(texCoord.x, 1.0 - texCoord.y);
-                        } else {
-                            gbuf.texCoord2d(texCoord.x, texCoord.y);
-                        }
+			gbuf.texCoord2d(texCoord.x, texCoord.y);
 			gbuf.vertex3d(pt.x, pt.y, pt.z);
 		    } else {
 			gbuf.normal3d(0, sign*starth, 0);
 			if (sign > 0) {
-                            if (texCoordYUp) {
-                                gbuf.texCoord2d(0.75 - (startDelta + endDelta)/(4*Math.PI),
-                                        (theta - dt)/Math.PI);
-                            } else {
-                                gbuf.texCoord2d(0.75 - (startDelta + endDelta)/(4*Math.PI),
-                                        1.0 - (theta - dt)/Math.PI);
-                            }
-                        } else {
-                            if (texCoordYUp) {
-                                gbuf.texCoord2d(0.75 - (startDelta + endDelta)/(4*Math.PI),
-                                        1.0 - (theta - dt)/Math.PI);                                
-                            } else {
-                                gbuf.texCoord2d(0.75 - (startDelta + endDelta)/(4*Math.PI),
-                                        (theta - dt)/Math.PI);
-                            }
-                        }
+			    gbuf.texCoord2d(0.75 - (startDelta + endDelta)/(4*Math.PI), 
+					    1.0 - (theta - dt)/Math.PI);
+			} else {
+			    gbuf.texCoord2d(0.75 - (startDelta + endDelta)/(4*Math.PI), 
+					    (theta - dt)/Math.PI);			    
+			}
                         gbuf.vertex3d( 0, starth*radius, 0);      
 
 		    }
@@ -520,15 +493,11 @@ public class Sphere extends Primitive {
 		// for numerical accuracy we don't use delta
 		// compute from above. 
 		delta = startDelta;
-                vx = r*Math.cos(delta);
-                vz = r*Math.sin(delta);
-                gbuf.normal3d( vx*sign, h*sign, vz*sign );
-                if(texCoordYUp) {
-                    gbuf.texCoord2d(0.75 - delta/(2*Math.PI), 1.0 - t);
-                } else {
-                    gbuf.texCoord2d(0.75 - delta/(2*Math.PI), t);
-                }
-                gbuf.vertex3d( vx*radius, h*radius, vz*radius );
+		vx = r*Math.cos(delta);
+		vz = r*Math.sin(delta);
+		gbuf.normal3d( vx*sign, h*sign, vz*sign );
+		gbuf.texCoord2d(0.75 - delta/(2*Math.PI), t);
+		gbuf.vertex3d( vx*radius, h*radius, vz*radius );	    
 
 	    } 
 

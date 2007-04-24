@@ -211,7 +211,7 @@ public class Cone extends Primitive {
     ydivisions = ydivision;
     flags = primflags;
     boolean outside = (flags & GENERATE_NORMALS_INWARD) == 0;
-    boolean texCoordYUp = (flags & GENERATE_TEXTURE_COORDS_YUP) != 0;
+    boolean texCoordYUp = (flags & GENERATE_TEXTURE_COORDS_Y_UP) != 0;
     Quadrics q = new Quadrics();
     GeomBuffer gbuf = null;
 

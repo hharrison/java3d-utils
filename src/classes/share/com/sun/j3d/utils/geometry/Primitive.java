@@ -81,9 +81,12 @@ public abstract class Primitive extends Group {
   public static final int GENERATE_NORMALS_INWARD = 0x04;
 
   /**
-   * Specifies that texture coordinates are to be Y up. 
+   * Specifies that texture coordinates are to be Y up.
+   *
+   * @since Java 3D 1.5.1
    */
-  public static final int GENERATE_TEXTURE_COORDS_YUP = 0x08;
+  // Fix to Issue 411. Java 3D prefers images used for texture mapping to be Y-up   
+  public static final int GENERATE_TEXTURE_COORDS_Y_UP = 0x08;
   
   
   /** 

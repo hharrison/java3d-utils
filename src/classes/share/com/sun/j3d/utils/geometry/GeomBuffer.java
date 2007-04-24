@@ -246,6 +246,11 @@ class GeomBuffer extends Object{
     tcoords[currVertCnt] = new TexCoord2f((float)s, (float)t);
   }
   
+  // Return a reference to the texture coordinates of this geom buffer.
+  TexCoord2f[] getTexCoords() {
+      return tcoords;
+  }
+  
   /**
    * Returns the Java 3D geometry gotten from calling getGeom.
    *
