@@ -152,7 +152,7 @@ class Quadrics extends Object {
                 // vert 2
                 gbuf.normal3d(px*sign, 0.0, pz*sign);
                 if (texCoordYUp) {
-                    gbuf.texCoord2d(s, 1.0 - t + dv);                    
+                    gbuf.texCoord2d(s, 1.0 - (t + dv));                    
                 }
                 else {
                     gbuf.texCoord2d(s, t+dv);
@@ -171,7 +171,7 @@ class Quadrics extends Object {
                 // vert 4
                 gbuf.normal3d(qx*sign, 0.0, qz*sign);
                 if (texCoordYUp) {
-                    gbuf.texCoord2d(s+du, 1.0 - t + dv);                    
+                    gbuf.texCoord2d(s+du, 1.0 - (t + dv));                    
                 }
                 else {
                     gbuf.texCoord2d(s+du, t+dv);
@@ -197,7 +197,7 @@ class Quadrics extends Object {
                     // vert 6
                     gbuf.normal3d(px*sign, 0.0, pz*sign);
                     if (texCoordYUp) {
-                        gbuf.texCoord2d(s, 1.0 - t + dv);                        
+                        gbuf.texCoord2d(s, 1.0 - (t + dv));                        
                     }
                     else {
                         gbuf.texCoord2d(s, t+dv);
@@ -226,7 +226,7 @@ class Quadrics extends Object {
                 
                 gbuf.normal3d(px*sign, 0.0, pz*sign);
                 if (texCoordYUp) {
-                    gbuf.texCoord2d(s, 1.0 - t + dv);                    
+                    gbuf.texCoord2d(s, 1.0 - (t + dv));                    
                 }
                 else {
                     gbuf.texCoord2d(s, t+dv);
@@ -245,7 +245,7 @@ class Quadrics extends Object {
                 
                 gbuf.normal3d(qx*sign, 0.0, qz*sign);
                 if (texCoordYUp) {
-                    gbuf.texCoord2d(s+du, 1.0 - t + dv);                    
+                    gbuf.texCoord2d(s+du, 1.0 - (t + dv));                    
                 }
                 else {
                     gbuf.texCoord2d(s+du, t+dv);
@@ -269,7 +269,7 @@ class Quadrics extends Object {
                     
                     gbuf.normal3d(px*sign, 0.0, pz*sign);
                     if (texCoordYUp) {
-                        gbuf.texCoord2d(s, 1.0 - t + dv);                        
+                        gbuf.texCoord2d(s, 1.0 - (t + dv));                        
                     }
                     else {
                         gbuf.texCoord2d(s, t+dv);
@@ -339,7 +339,7 @@ class Quadrics extends Object {
                 // vert2
                 gbuf.normal3d(px*sign, ynormal*sign, pz*sign);
                 if (texCoordYUp) {
-                    gbuf.texCoord2d(s, 1.0 - t + dv);                    
+                    gbuf.texCoord2d(s, 1.0 - (t + dv));                    
                 }
                 else {
                     gbuf.texCoord2d(s, t+dv);
@@ -359,7 +359,7 @@ class Quadrics extends Object {
                 // vert4
                 gbuf.normal3d(qx*sign, ynormal*sign, qz*sign);
                 if (texCoordYUp) {
-                    gbuf.texCoord2d(s+du, 1.0 - t + dv);                    
+                    gbuf.texCoord2d(s+du, 1.0 - (t + dv));                    
                 }
                 else {
                     gbuf.texCoord2d(s+du, t+dv);
@@ -385,7 +385,7 @@ class Quadrics extends Object {
                     // vert 6
                     gbuf.normal3d(px*sign, ynormal*sign, pz*sign);
                     if (texCoordYUp) {
-                        gbuf.texCoord2d(s, 1.0 - t + dv);
+                        gbuf.texCoord2d(s, 1.0 - (t + dv));
                     } else {
                         gbuf.texCoord2d(s, t+dv);
                     }
@@ -412,7 +412,7 @@ class Quadrics extends Object {
                 // vert1
                 gbuf.normal3d(px*sign, ynormal*sign, pz*sign);
                 if (texCoordYUp) {
-                   gbuf.texCoord2d(s, 1.0 - t + dv);                    
+                   gbuf.texCoord2d(s, 1.0 - (t + dv));                    
                 }
                 else {
                     gbuf.texCoord2d(s, t+dv);
@@ -430,7 +430,7 @@ class Quadrics extends Object {
                 
                 gbuf.normal3d(qx*sign, ynormal*sign, qz*sign);
                 if (texCoordYUp) {
-                    gbuf.texCoord2d(s+du, 1.0 - t + dv);
+                    gbuf.texCoord2d(s+du, 1.0 - (t + dv));
                 }
                 else {
                     gbuf.texCoord2d(s+du, t+dv);
@@ -454,7 +454,7 @@ class Quadrics extends Object {
                     
                     gbuf.normal3d(px*sign, ynormal*sign, pz*sign);
                     if (texCoordYUp) {
-                        gbuf.texCoord2d(s, 1.0 - t + dv);                        
+                        gbuf.texCoord2d(s, 1.0 - (t + dv));                        
                     }
                     else {
                         gbuf.texCoord2d(s, t+dv);
