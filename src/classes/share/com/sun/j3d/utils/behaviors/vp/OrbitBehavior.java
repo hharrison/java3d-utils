@@ -44,19 +44,10 @@
 
 package com.sun.j3d.utils.behaviors.vp;
 
-import java.awt.event.ComponentEvent;
 import java.awt.event.MouseEvent;
-import java.awt.event.KeyEvent;
 import java.awt.AWTEvent;
-import java.awt.Component;
-import java.awt.Cursor;
-import javax.swing.SwingUtilities;
 
-import javax.media.j3d.WakeupOnAWTEvent;
-import javax.media.j3d.WakeupOnElapsedFrames;
-import javax.media.j3d.TransformGroup;
 import javax.media.j3d.Transform3D;
-import javax.media.j3d.View;
 import javax.media.j3d.Canvas3D;
 
 import javax.vecmath.Vector3d;
@@ -127,9 +118,7 @@ import com.sun.j3d.internal.J3dUtilsI18N;
  */
 public class OrbitBehavior extends ViewPlatformAWTBehavior {
 
-    private Transform3D velocityTransform = new Transform3D();
     private Transform3D longditudeTransform = new Transform3D();
-    private Transform3D rollTransform = new Transform3D();
     private Transform3D latitudeTransform = new Transform3D();
     private Transform3D rotateTransform = new Transform3D();
 
@@ -144,11 +133,8 @@ public class OrbitBehavior extends ViewPlatformAWTBehavior {
 
     private double longditude = 0.0;
     private double latitude = 0.0;
-    private double rollAngle = 0.0;
     private double startDistanceFromCenter = 20.0;
     private double distanceFromCenter = 20.0;
-    private final double MAX_MOUSE_ANGLE = Math.toRadians( 3 );
-    private final double ZOOM_FACTOR = 1.0;
     private Point3d rotationCenter = new Point3d();
     private Matrix3d rotMatrix = new Matrix3d();
     private Transform3D currentXfm = new Transform3D();
@@ -441,6 +427,7 @@ public class OrbitBehavior extends ViewPlatformAWTBehavior {
      * super.setViewingPlatform(vp).
      * NOTE: Applications should <i>not</i> call this method.    
      */
+    @Override
     public void setViewingPlatform(ViewingPlatform vp) {
         super.setViewingPlatform( vp );
 
@@ -529,10 +516,18 @@ public class OrbitBehavior extends ViewPlatformAWTBehavior {
      * @param center The Point3d to set the center of rotation to
      */
     public synchronized void setRotationCenter(Point3d center) {
-	rotationCenter.x = center.x;
-	rotationCenter.y = center.y;
-	rotationCenter.z = center.z;
-	centerVector.set(rotationCenter);
+        Point3d centerDelta = new Point3d();
+        centerDelta.sub(centerVector, center);
+        Transform3D invRot = new Transform3D(rotateTransform);
+        invRot.invert();
+        invRot.transform(centerDelta);
+        xtrans += centerDelta.x;
+        ytrans += centerDelta.y;
+        ztrans += centerDelta.z;
+        rotationCenter.x = center.x;
+        rotationCenter.y = center.y;
+        rotationCenter.z = center.z;
+        centerVector.set(rotationCenter);
     }
 
     /**
