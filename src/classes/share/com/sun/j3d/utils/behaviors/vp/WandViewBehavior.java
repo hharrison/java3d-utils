@@ -3435,7 +3435,11 @@ public class WandViewBehavior extends ViewPlatformBehavior {
      *  nominal sensor transform
      */
     public void getNominalSensorRotation(Transform3D t3d) {
-        t3d.set(nominalSensorRotation) ;
+        if (nominalSensorRotation != null) {
+            t3d.set(nominalSensorRotation);
+        } else {
+            t3d.setIdentity();
+        }
     }
 
     /**
