@@ -48,11 +48,11 @@ import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 import com.sun.j3d.utils.scenegraph.io.retained.Controller;
+import com.sun.j3d.utils.scenegraph.io.retained.RandomAccessFileControl;
 import com.sun.j3d.utils.scenegraph.io.retained.SymbolTableData;
 import javax.media.j3d.SceneGraphObject;
 import javax.media.j3d.Background;
 import javax.media.j3d.BoundingLeaf;
-import javax.media.j3d.Appearance;
 import javax.media.j3d.ImageComponent2D;
 import javax.media.j3d.BranchGroup;
 import javax.vecmath.Color3f;
@@ -73,6 +73,7 @@ public class BackgroundState extends LeafState {
         }
     }
     
+    @Override
     public void writeObject( DataOutput out ) throws IOException {
         super.writeObject( out );
         
@@ -84,8 +85,11 @@ public class BackgroundState extends LeafState {
         ((Background)node).getColor(clr);
         control.writeColor3f( out, clr );
 	out.writeInt( ((Background)node).getImageScaleMode() );
+	// Fixed to issue #532 : write the background geometry BranchGraph
+	control.writeBranchGraph(((Background) node).getGeometry(),null);
     }
     
+    @Override
     public void readObject( DataInput in ) throws IOException {
         super.readObject( in );
         
@@ -94,9 +98,11 @@ public class BackgroundState extends LeafState {
         image = in.readInt();
         
         ((Background)node).setApplicationBounds( control.readBounds(in));
-        ((Background)node).setColor( control.readColor3f(in));
-        
+        ((Background)node).setColor( control.readColor3f(in));        
 	((Background)node).setImageScaleMode( in.readInt() );
+	// Fix to issue #532 : read the background geometry BranchGraph
+	int id = control.getSymbolTable().getSymbol(geometry).branchGraphID;
+	((RandomAccessFileControl)control).readBranchGraph(id);
     }
 
     /**
@@ -109,6 +115,7 @@ public class BackgroundState extends LeafState {
         control.getSymbolTable().incNodeComponentRefCount( image );
     }
     
+    @Override
     public void buildGraph() {
         ((Background)node).setApplicationBoundingLeaf( (BoundingLeaf)control.getSymbolTable().getJ3dNode( boundingLeaf ));
         ((Background)node).setGeometry( (BranchGroup)control.getSymbolTable().getJ3dNode( geometry ));
@@ -117,6 +124,7 @@ public class BackgroundState extends LeafState {
  
     }
     
+    @Override
     protected SceneGraphObject createNode() {
         return new Background();
     }
