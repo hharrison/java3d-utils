@@ -44,43 +44,51 @@
 
 package com.sun.j3d.utils.scenegraph.io.retained;
 
-import com.sun.j3d.utils.scenegraph.io.SceneGraphStateProvider;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.DataInput;
+import java.io.DataOutput;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.io.DataOutput;
-import java.io.DataInput;
-import java.io.ByteArrayOutputStream;
-import java.io.ObjectOutputStream;
-import java.io.ByteArrayInputStream;
-import java.io.ObjectInputStream;
-import java.io.IOException;
 import java.util.ListIterator;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.Iterator;
 
-import javax.media.j3d.SceneGraphObject;
-import javax.media.j3d.BranchGroup;
-import javax.media.j3d.SharedGroup;
-import javax.media.j3d.Bounds;
-import javax.media.j3d.CapabilityNotSetException;
 import javax.media.j3d.BoundingBox;
-import javax.media.j3d.BoundingSphere;
 import javax.media.j3d.BoundingPolytope;
-import javax.media.j3d.Transform3D;
+import javax.media.j3d.BoundingSphere;
+import javax.media.j3d.Bounds;
+import javax.media.j3d.BranchGroup;
 import javax.media.j3d.Canvas3D;
-import javax.vecmath.*;
-import com.sun.j3d.utils.universe.SimpleUniverse;
-import com.sun.j3d.utils.scenegraph.io.state.javax.media.j3d.SceneGraphObjectState;
-import com.sun.j3d.utils.scenegraph.io.state.javax.media.j3d.NullSceneGraphObjectState;
-import com.sun.j3d.utils.scenegraph.io.state.javax.media.j3d.*;
-import com.sun.j3d.utils.scenegraph.io.state.com.sun.j3d.utils.universe.SimpleUniverseState;
-import com.sun.j3d.utils.scenegraph.io.state.javax.media.j3d.ImageComponentState;
-import com.sun.j3d.utils.scenegraph.io.UnsupportedUniverseException;
+import javax.media.j3d.CapabilityNotSetException;
+import javax.media.j3d.SceneGraphObject;
+import javax.media.j3d.SharedGroup;
+import javax.media.j3d.Transform3D;
+import javax.vecmath.Color3f;
+import javax.vecmath.Color4f;
+import javax.vecmath.Matrix4d;
+import javax.vecmath.Point3d;
+import javax.vecmath.Point3f;
+import javax.vecmath.Quat4f;
+import javax.vecmath.Tuple3d;
+import javax.vecmath.Tuple3f;
+import javax.vecmath.Tuple4d;
+import javax.vecmath.Tuple4f;
+import javax.vecmath.Vector3f;
+import javax.vecmath.Vector4d;
+import javax.vecmath.Vector4f;
+
 import com.sun.j3d.utils.scenegraph.io.NamedObjectException;
 import com.sun.j3d.utils.scenegraph.io.ObjectNotLoadedException;
-import com.sun.j3d.utils.universe.SimpleUniverse;
+import com.sun.j3d.utils.scenegraph.io.SceneGraphStateProvider;
+import com.sun.j3d.utils.scenegraph.io.UnsupportedUniverseException;
+import com.sun.j3d.utils.scenegraph.io.state.com.sun.j3d.utils.universe.SimpleUniverseState;
+import com.sun.j3d.utils.scenegraph.io.state.javax.media.j3d.ImageComponentState;
+import com.sun.j3d.utils.scenegraph.io.state.javax.media.j3d.NullSceneGraphObjectState;
+import com.sun.j3d.utils.scenegraph.io.state.javax.media.j3d.SceneGraphObjectState;
 import com.sun.j3d.utils.universe.ConfiguredUniverse;
+import com.sun.j3d.utils.universe.SimpleUniverse;
 
 /**
  * Provides code to control the reading and writing of Java3D objects to and 
@@ -114,8 +122,9 @@ public abstract class Controller extends java.lang.Object {
             		   2) Add missing duplicateOnCloneTree flag 
 			      (bug 4690159)
      * 3 = Java3D 1.5.1    1) Add support for SceneGraphObject Name field
+     * 4 = Java3D 1.5.2    issue 532, for saving Background Geometry
      */
-    protected int outputFileVersion = 3;
+    protected int outputFileVersion = 4;
 
     /**
      * When running the application within webstart this may not be the 
