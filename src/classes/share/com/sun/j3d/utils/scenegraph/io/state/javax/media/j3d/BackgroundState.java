@@ -47,87 +47,104 @@ package com.sun.j3d.utils.scenegraph.io.state.javax.media.j3d;
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
-import com.sun.j3d.utils.scenegraph.io.retained.Controller;
-import com.sun.j3d.utils.scenegraph.io.retained.RandomAccessFileControl;
-import com.sun.j3d.utils.scenegraph.io.retained.SymbolTableData;
-import javax.media.j3d.SceneGraphObject;
+
 import javax.media.j3d.Background;
 import javax.media.j3d.BoundingLeaf;
-import javax.media.j3d.ImageComponent2D;
 import javax.media.j3d.BranchGroup;
+import javax.media.j3d.ImageComponent2D;
+import javax.media.j3d.SceneGraphObject;
 import javax.vecmath.Color3f;
 
+import com.sun.j3d.utils.scenegraph.io.retained.Controller;
+import com.sun.j3d.utils.scenegraph.io.retained.SymbolTableData;
+
 public class BackgroundState extends LeafState {
-    
+
     private int image;
     private int boundingLeaf;
-    private int geometry;
-    
-    public BackgroundState(SymbolTableData symbol,Controller control) {
+    /*
+     * issue 532; reference variable "geometry" below has never worked, but we
+     * need to read/write a dummy value for backward compatibility
+     */
+    // private int geometry;
+    private SceneGraphObjectState branchState; // issue 532 added
+
+    public BackgroundState(SymbolTableData symbol, Controller control) {
         super(symbol, control);
-        
-        if (node!=null) {
-            boundingLeaf = control.getSymbolTable().addReference( ((Background)node).getApplicationBoundingLeaf());
-            geometry =  control.getSymbolTable().addReference( ((Background)node).getGeometry());
-            image = control.getSymbolTable().addReference( ((Background)node).getImage());
+
+        if (node != null) {
+
+            boundingLeaf = control.getSymbolTable().addReference(
+                    ((Background) node).getApplicationBoundingLeaf());
+            image = control.getSymbolTable().addReference(
+                    ((Background) node).getImage());
+
         }
     }
-    
-    @Override
-    public void writeObject( DataOutput out ) throws IOException {
-        super.writeObject( out );
-        
-        out.writeInt( boundingLeaf );
-        out.writeInt( geometry );
-        out.writeInt( image );
-        control.writeBounds( out, ((Background)node).getApplicationBounds() );
+
+    public void writeObject(DataOutput out) throws IOException {
+        super.writeObject(out);
+
+        out.writeInt(boundingLeaf);
+        out.writeInt(0); // issue 532; maintain compatibility
+        out.writeInt(image);
+        control.writeBounds(out, ((Background) node).getApplicationBounds());
         Color3f clr = new Color3f();
-        ((Background)node).getColor(clr);
-        control.writeColor3f( out, clr );
-	out.writeInt( ((Background)node).getImageScaleMode() );
-	// Fixed to issue #532 : write the background geometry BranchGraph
-	control.writeBranchGraph(((Background) node).getGeometry(),null);
+        ((Background) node).getColor(clr);
+        control.writeColor3f(out, clr);
+        out.writeInt(((Background) node).getImageScaleMode());
+        control.writeObject(out, control.createState(((Background) node)
+                .getGeometry()));
     }
-    
-    @Override
-    public void readObject( DataInput in ) throws IOException {
-        super.readObject( in );
-        
+
+    public void readObject(DataInput in) throws IOException {
+        super.readObject(in);
+
         boundingLeaf = in.readInt();
-        geometry = in.readInt();
+        in.readInt(); // issue 532; maintain compatibility
         image = in.readInt();
-        
-        ((Background)node).setApplicationBounds( control.readBounds(in));
-        ((Background)node).setColor( control.readColor3f(in));        
-	((Background)node).setImageScaleMode( in.readInt() );
-	// Fix to issue #532 : read the background geometry BranchGraph
-	int id = control.getSymbolTable().getSymbol(geometry).branchGraphID;
-	((RandomAccessFileControl)control).readBranchGraph(id);
+
+        ((Background) node).setApplicationBounds(control.readBounds(in));
+        ((Background) node).setColor(control.readColor3f(in));
+        ((Background) node).setImageScaleMode(in.readInt());
+
+        // issue 532; maintain compatibility
+        if (control.getCurrentFileVersion() < 4) {
+            return;
+        }
+
+        branchState = control.readObject(in);
+        if (!(branchState instanceof NullSceneGraphObjectState)) {
+            ((Background) node)
+                    .setGeometry((BranchGroup) branchState.getNode());
+        }
     }
 
     /**
-     * Called when this component reference count is incremented.
-     * Allows this component to update the reference count of any components
-     * that it references.
+     * Called when this component reference count is incremented. Allows this
+     * component to update the reference count of any components that it
+     * references.
      */
     public void addSubReference() {
-	// geometry and boundingLeaf not node components
-        control.getSymbolTable().incNodeComponentRefCount( image );
+        // geometry and boundingLeaf not node components
+        control.getSymbolTable().incNodeComponentRefCount(image);
     }
-    
-    @Override
+
     public void buildGraph() {
-        ((Background)node).setApplicationBoundingLeaf( (BoundingLeaf)control.getSymbolTable().getJ3dNode( boundingLeaf ));
-        ((Background)node).setGeometry( (BranchGroup)control.getSymbolTable().getJ3dNode( geometry ));
-        ((Background)node).setImage( (ImageComponent2D)control.getSymbolTable().getJ3dNode( image ));
-        super.buildGraph();     // Must be last call in method
- 
+        ((Background) node).setApplicationBoundingLeaf((BoundingLeaf) control
+                .getSymbolTable().getJ3dNode(boundingLeaf));
+        ((Background) node).setImage((ImageComponent2D) control
+                .getSymbolTable().getJ3dNode(image));
+        if (branchState != null && !branchState.getSymbol().graphBuilt) {
+            branchState.buildGraph();
+            branchState.getSymbol().graphBuilt = true;
+        }
+        super.buildGraph(); // Must be last call in method
+
     }
-    
-    @Override
+
     protected SceneGraphObject createNode() {
         return new Background();
     }
-    
-}
 
+}
