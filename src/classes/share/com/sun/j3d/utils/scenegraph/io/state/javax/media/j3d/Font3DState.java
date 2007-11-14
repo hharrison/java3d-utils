@@ -41,7 +41,6 @@
  * $Date$
  * $State$
  */
-
 package com.sun.j3d.utils.scenegraph.io.state.javax.media.j3d;
 
 import javax.media.j3d.Font3D;
@@ -61,103 +60,121 @@ import java.awt.geom.GeneralPath;
 
 public class Font3DState extends NodeComponentState {
 
-    private Font font=null;
-    private double tesselationTolerance=0.0D;
-    private FontExtrusion extrudePath=null;
+    private Font font = null;
+    private double tesselationTolerance = 0.0D;
+    private FontExtrusion extrudePath = null;
 
-    public Font3DState( SymbolTableData symbol, Controller control ) {
-	super( symbol, control );
+    public Font3DState(SymbolTableData symbol, Controller control) {
+        super(symbol, control);
     }
 
-    public void writeConstructorParams( DataOutput out ) throws IOException {
-	super.writeConstructorParams( out );
+    public void writeConstructorParams(DataOutput out) throws IOException {
+        super.writeConstructorParams(out);
 
-	out.writeUTF( font.getFontName() );
-	out.writeInt( font.getStyle() );
-	out.writeInt( font.getSize() );
+        // issue 483: init the node
+        Font3D font3D = (Font3D) node;
+        font = font3D.getFont();
 
-	out.writeDouble( tesselationTolerance );
+        out.writeUTF(font.getFontName());
+        out.writeInt(font.getStyle());
+        out.writeInt(font.getSize());
+        out.writeDouble(font3D.getTessellationTolerance());
 
-	if ( extrudePath!=null ) {
-	    Shape shape = extrudePath.getExtrusionShape();
-	    if ( shape != null ) {
-		PathIterator shapePath = shape.getPathIterator( null );
-		float[] coords = new float[ 6 ];
-		int segType;
-		int points;
-		while ( !(shapePath.isDone()) ) {
-		    // Get type of current path segment and associated coordinates
-		    segType = shapePath.currentSegment( coords );
-		    out.writeInt( segType );
+        // issue 483
+        extrudePath = new FontExtrusion();
+        font3D.getFontExtrusion(extrudePath);
+        if (extrudePath.getExtrusionShape() == null) {
+            extrudePath = null;
+        }
 
-		    // Write out relevant coordinates
-		    points = 0;
-		    if ( segType==PathIterator.SEG_MOVETO) points = 1;
-		    else if ( segType==PathIterator.SEG_LINETO ) points = 1;
-		    else if (segType==PathIterator.SEG_QUADTO ) points = 2;
-		    else if (segType==PathIterator.SEG_CUBICTO ) points = 3;
+        if (extrudePath != null) {
+            Shape shape = extrudePath.getExtrusionShape();
+            if (shape != null) {
+                PathIterator shapePath = shape.getPathIterator(null);
+                float[] coords = new float[6];
+                int segType;
+                int points;
+                while (!(shapePath.isDone())) {
+                    // Get type of current path segment and associated
+                    // coordinates
+                    segType = shapePath.currentSegment(coords);
+                    out.writeInt(segType);
 
-		    for (int i=0;i<points;i++ ) {
-			out.writeFloat( coords[ i*2+0 ] );
-			out.writeFloat( coords[ i*2+1 ] );
-		    }
+                    // Write out relevant coordinates
+                    points = 0;
+                    if (segType == PathIterator.SEG_MOVETO)
+                        points = 1;
+                    else if (segType == PathIterator.SEG_LINETO)
+                        points = 1;
+                    else if (segType == PathIterator.SEG_QUADTO)
+                        points = 2;
+                    else if (segType == PathIterator.SEG_CUBICTO)
+                        points = 3;
 
-		    // Next segment
-		    if ( !(shapePath.isDone()) ) shapePath.next();
-		}
-	    }
-	    // Flag for end of path definition
-	    out.writeInt( Integer.MIN_VALUE );
-	    out.writeDouble( extrudePath.getTessellationTolerance() );
-	} else out.writeInt( Integer.MIN_VALUE );
+                    for (int i = 0; i < points; i++) {
+                        out.writeFloat(coords[i * 2 + 0]);
+                        out.writeFloat(coords[i * 2 + 1]);
+                    }
+
+                    // Next segment
+                    if (!(shapePath.isDone()))
+                        shapePath.next();
+                }
+            }
+            // Flag for end of path definition
+            out.writeInt(Integer.MIN_VALUE);
+            out.writeDouble(extrudePath.getTessellationTolerance());
+
+        } else {
+            out.writeInt(Integer.MIN_VALUE);
+        }
     }
 
-    public void readConstructorParams( DataInput in ) throws IOException {
-	super.readConstructorParams( in );
+    public void readConstructorParams(DataInput in) throws IOException {
+        super.readConstructorParams(in);
 
-	String fontName = in.readUTF();
-	int style = in.readInt();
-	int size = in.readInt();
-	font = new Font( fontName, style, size );
+        String fontName = in.readUTF();
+        int style = in.readInt();
+        int size = in.readInt();
+        font = new Font(fontName, style, size);
 
-	tesselationTolerance = in.readDouble();
+        tesselationTolerance = in.readDouble();
 
-	GeneralPath shape = null;
-	int segType = in.readInt();
-	while ( segType!=Integer.MIN_VALUE ) {
-	    if ( shape==null ) shape = new GeneralPath();
+        GeneralPath shape = null;
+        int segType = in.readInt();
+        while (segType != Integer.MIN_VALUE) {
+            if (shape == null)
+                shape = new GeneralPath();
 
-	    if ( segType==PathIterator.SEG_MOVETO) {
-		shape.moveTo( in.readFloat(), in.readFloat() );
-	    } else if ( segType==PathIterator.SEG_LINETO ) {
-		shape.lineTo( in.readFloat(), in.readFloat() );
-	    } else if ( segType==PathIterator.SEG_QUADTO ) {
-		shape.quadTo( in.readFloat(), in.readFloat(),
-			      in.readFloat(), in.readFloat() );
-	    } else if ( segType==PathIterator.SEG_CUBICTO ) {
-		shape.curveTo( in.readFloat(), in.readFloat(),
-			       in.readFloat(), in.readFloat(),
-			       in.readFloat(), in.readFloat() );
-	    } else if ( segType==PathIterator.SEG_CLOSE ) {
-		shape.closePath();
-	    }
+            if (segType == PathIterator.SEG_MOVETO) {
+                shape.moveTo(in.readFloat(), in.readFloat());
+            } else if (segType == PathIterator.SEG_LINETO) {
+                shape.lineTo(in.readFloat(), in.readFloat());
+            } else if (segType == PathIterator.SEG_QUADTO) {
+                shape.quadTo(in.readFloat(), in.readFloat(), in.readFloat(), in
+                        .readFloat());
+            } else if (segType == PathIterator.SEG_CUBICTO) {
+                shape.curveTo(in.readFloat(), in.readFloat(), in.readFloat(),
+                        in.readFloat(), in.readFloat(), in.readFloat());
+            } else if (segType == PathIterator.SEG_CLOSE) {
+                shape.closePath();
+            }
 
-	    segType = in.readInt();
-	}
-	if ( shape!=null ) extrudePath = new FontExtrusion( shape, in.readDouble() );
-	else extrudePath = null;
+            segType = in.readInt();
+        }
+        if (shape != null)
+            extrudePath = new FontExtrusion(shape, in.readDouble());
+        else
+            extrudePath = null;
     }
 
-    public SceneGraphObject createNode( Class j3dClass ) {
-	return createNode( j3dClass, new Class[] { Font.class,
-						   Double.TYPE,
-						   FontExtrusion.class },
-				     new Object[] { font,
-						    new Double( tesselationTolerance ),
-						    extrudePath } );
+    public SceneGraphObject createNode(Class j3dClass) {
+        return createNode(j3dClass, new Class[] { Font.class, Double.TYPE,
+                FontExtrusion.class }, new Object[] { font,
+                new Double(tesselationTolerance), extrudePath });
     }
 
     protected SceneGraphObject createNode() {
-	return new Font3D( font, tesselationTolerance, extrudePath );
+        return new Font3D(font, tesselationTolerance, extrudePath);
     }
 }
