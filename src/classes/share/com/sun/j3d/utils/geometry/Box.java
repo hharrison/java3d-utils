@@ -166,7 +166,7 @@ public class Box extends Primitive {
     yDim = ydim;
     zDim = zdim;
     flags = primflags;
-    numTexUnit = numTexUnit;
+    this.numTexUnit = numTexUnit;
     boolean texCoordYUp = (flags & GENERATE_TEXTURE_COORDS_Y_UP) != 0;
     
     //Depending on whether normal inward bit is set.
@@ -320,11 +320,11 @@ public class Box extends Primitive {
     // front face
     1.0f, -1.0f,  1.0f,
     1.0f,  1.0f,  1.0f,
--1.0f,  1.0f,  1.0f,
--1.0f, -1.0f,  1.0f,
+   -1.0f,  1.0f,  1.0f,
+   -1.0f, -1.0f,  1.0f,
     // back face
--1.0f, -1.0f, -1.0f,
--1.0f,  1.0f, -1.0f,
+   -1.0f, -1.0f, -1.0f,
+   -1.0f,  1.0f, -1.0f,
     1.0f,  1.0f, -1.0f,
     1.0f, -1.0f, -1.0f,
     // right face
@@ -333,18 +333,18 @@ public class Box extends Primitive {
     1.0f,  1.0f,  1.0f,
     1.0f, -1.0f,  1.0f,
     // left face
--1.0f, -1.0f,  1.0f,
--1.0f,  1.0f,  1.0f,
--1.0f,  1.0f, -1.0f,
--1.0f, -1.0f, -1.0f,
+  -1.0f, -1.0f,  1.0f,
+  -1.0f,  1.0f,  1.0f,
+  -1.0f,  1.0f, -1.0f,
+  -1.0f, -1.0f, -1.0f,
     // top face
     1.0f,  1.0f,  1.0f,
     1.0f,  1.0f, -1.0f,
--1.0f,  1.0f, -1.0f,
--1.0f,  1.0f,  1.0f,
+   -1.0f,  1.0f, -1.0f,
+   -1.0f,  1.0f,  1.0f,
     // bottom face
--1.0f, -1.0f,  1.0f,
--1.0f, -1.0f, -1.0f,
+   -1.0f, -1.0f,  1.0f,
+   -1.0f, -1.0f, -1.0f,
     1.0f, -1.0f, -1.0f,
     1.0f, -1.0f,  1.0f,
   };
