@@ -166,7 +166,7 @@ public class Box extends Primitive {
     yDim = ydim;
     zDim = zdim;
     flags = primflags;
-    numTexUnit = numTexUnit;
+    this.numTexUnit = numTexUnit;
     boolean texCoordYUp = (flags & GENERATE_TEXTURE_COORDS_Y_UP) != 0;
     
     //Depending on whether normal inward bit is set.
