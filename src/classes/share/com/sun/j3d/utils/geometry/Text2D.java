@@ -43,6 +43,7 @@
  */
 
 package com.sun.j3d.utils.geometry;
+import java.awt.geom.AffineTransform;
 
 import java.awt.image.BufferedImage;
 import java.awt.image.WritableRaster;
@@ -51,6 +52,9 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.RenderingHints;
 import java.awt.Toolkit;
 import java.util.Hashtable;
 
@@ -75,12 +79,23 @@ public class Text2D extends Shape3D {
     // This table caches FontMetrics objects to avoid the huge cost
     // of re-retrieving metrics for a font we've already seen.
     private static Hashtable metricsTable = new Hashtable(); 
-    float rectangleScaleFactor = 1f/256f;
+    private float rectangleScaleFactor = 1f/256f;
+    
+    private boolean enableTextureWrite = false; 
 
-    Color3f   color = new Color3f();
-    String    fontName;
-    int       fontSize, fontStyle;
-    String text;
+    private Color3f   color = new Color3f();
+    private String    fontName;
+    private int       fontSize, fontStyle;
+    private String text;
+    
+    // max texture dimension, as some font size can be greater than
+    // video card max texture size. 2048 is a conservative value.
+    private int MAX_TEXTURE_DIM = 2048; 
+
+    // vWidth is the virtual width texture. Value set by setupImage()
+    private int vWidth;
+    // vHeight is the virtual height texture. Value set by setupImage()
+    private int vHeight;
 
 
     /**
@@ -104,6 +119,9 @@ public class Text2D extends Shape3D {
         this.fontSize = fontSize;
         this.fontStyle = fontStyle;
 	this.text = text;
+	    setCapability(Shape3D.ALLOW_GEOMETRY_WRITE);
+	    setCapability(Shape3D.ALLOW_APPEARANCE_READ);
+	    setCapability(Shape3D.ALLOW_APPEARANCE_WRITE);
 
         updateText2D(text, color, fontName, fontSize, fontStyle);
     }
@@ -120,6 +138,8 @@ public class Text2D extends Shape3D {
 	Texture tex = getAppearance().getTexture();
 	int width = tex.getWidth();
 	int height = tex.getHeight();	
+    int oldVW = vWidth; 
+    int oldVH = vHeight;
 
         ImageComponent imageComponent = setupImage(text, color, fontName,
                                           fontSize, fontStyle);
@@ -150,6 +170,11 @@ public class Text2D extends Shape3D {
 	    newTex.setUserData(tex.getUserData());
 	    getAppearance().setTexture(newTex);
 	}
+	// Does the new text requires a new geometry ?
+	if ( oldVH != vHeight || oldVW != vWidth){
+		QuadArray rect = setupGeometry(vWidth, vHeight);
+		setGeometry(rect);
+	}
     }
 
     private void updateText2D(String text, Color3f color, String fontName,
@@ -159,8 +184,7 @@ public class Text2D extends Shape3D {
 
         Texture2D t2d = setupTexture(imageComponent);
 
-	QuadArray rect = setupGeometry(imageComponent.getWidth(), 
-		imageComponent.getHeight());
+	QuadArray rect = setupGeometry(vWidth, vHeight);
 	setGeometry(rect);
 
     	Appearance appearance = setupAppearance(t2d);
@@ -197,8 +221,8 @@ public class Text2D extends Shape3D {
 				      Texture.RGBA,
 				      imageComponent.getWidth(),
 				      imageComponent.getHeight());
-	t2d.setMinFilter(t2d.BASE_LEVEL_LINEAR);
-	t2d.setMagFilter(t2d.BASE_LEVEL_LINEAR);
+	t2d.setMinFilter(Texture2D.BASE_LEVEL_LINEAR);
+	t2d.setMagFilter(Texture2D.BASE_LEVEL_LINEAR);
 	t2d.setImage(0, imageComponent);
 	t2d.setEnable(true);
 	t2d.setCapability(Texture.ALLOW_IMAGE_WRITE);
@@ -255,7 +279,7 @@ public class Text2D extends Shape3D {
 	// For now, jdk 1.2 only handles ARGB format, not the RGBA we want
 	BufferedImage bImage = new BufferedImage(width, height,
 						 BufferedImage.TYPE_INT_ARGB);
-	Graphics offscreenGraphics = bImage.createGraphics();
+	Graphics2D offscreenGraphics = bImage.createGraphics();
 
 	// First, erase the background to the text panel - set alpha to 0
 	Color myFill = new Color(0f, 0f, 0f, 0f);
@@ -267,6 +291,14 @@ public class Text2D extends Shape3D {
 	Color myTextColor = new Color(color.x, color.y, color.z, 1f);
 	offscreenGraphics.setColor(myTextColor);
 	offscreenGraphics.drawString(text, 0, height - descent);
+	offscreenGraphics.dispose();
+	//store virtual size	
+	vWidth = width;
+	vHeight = height;
+	// rescale down big images
+    if(width > MAX_TEXTURE_DIM || height > MAX_TEXTURE_DIM){
+    	bImage = rescaleImage(bImage);    	
+    }
 
 	ImageComponent imageComponent =
 	    new ImageComponent2D(ImageComponent.FORMAT_RGBA, 
@@ -275,6 +307,25 @@ public class Text2D extends Shape3D {
 	imageComponent.setCapability(ImageComponent.ALLOW_SIZE_READ);
 
 	return imageComponent;
+    }
+    // rescale image
+    private BufferedImage rescaleImage(BufferedImage bImage){
+    	int width = bImage.getWidth();
+    	int height = bImage.getHeight();
+    	
+    	float sx = (width > MAX_TEXTURE_DIM) ? (float) MAX_TEXTURE_DIM / (float)width  : 1.0f;
+    	float sy = (height > MAX_TEXTURE_DIM)? (float) MAX_TEXTURE_DIM / (float)height : 1.0f;
+    	    	    	
+    	width = Math.round((float) width * sx);
+    	height = Math.round((float)height * sy);
+    	
+    	Image scaledImage = bImage.getScaledInstance(width, height, Image.SCALE_AREA_AVERAGING);
+    	bImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+    	Graphics2D g = bImage.createGraphics();
+    	g.drawImage(scaledImage, 0,0, null);
+    	g.dispose();
+    	
+    	return  bImage;
     }
 
     /**
@@ -315,16 +366,25 @@ public class Text2D extends Shape3D {
      * simply be colored, not lit.
      */
     private Appearance setupAppearance(Texture2D t2d) {
+    Appearance appearance = getAppearance();
+    
+    if (appearance == null) {
 	TransparencyAttributes transp = new TransparencyAttributes();
 	transp.setTransparencyMode(TransparencyAttributes.BLENDED);
 	transp.setTransparency(0f);
-	Appearance appearance = new Appearance();
+			appearance = new Appearance();
 	appearance.setTransparencyAttributes(transp);
 	appearance.setTexture(t2d);
 
 	Material m = new Material();
 	m.setLightingEnable(false);
 	appearance.setMaterial(m);
+			appearance.setCapability(Appearance.ALLOW_TEXTURE_WRITE);
+			appearance.setCapability(Appearance.ALLOW_TEXTURE_READ);
+			appearance.setCapabilityIsFrequent(Appearance.ALLOW_TEXTURE_READ);
+		}else{			
+			appearance.setTexture(t2d);
+		}
 	
 	return appearance;
     }
