@@ -44,39 +44,34 @@
 
 package com.sun.j3d.loaders.objectfile;
 
-import javax.media.j3d.Appearance;
-import javax.media.j3d.Material;
-import javax.media.j3d.Shape3D;
-import javax.vecmath.Color3f;
-import com.sun.j3d.loaders.ParsingErrorException;
-import com.sun.j3d.loaders.IncorrectFormatException;
-import java.io.FileNotFoundException;
-import java.io.StringReader;
-import java.io.Reader;
-import java.io.FileReader;
-import java.io.BufferedReader;
-import java.io.BufferedInputStream;
-import java.io.InputStreamReader;
-import java.io.IOException;
-import java.io.FileInputStream;
-import java.util.HashMap;
-import com.sun.j3d.loaders.objectfile.DefaultMaterials;
-import java.net.URL;
-import java.net.MalformedURLException;
-import java.awt.Toolkit;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
-import javax.media.j3d.Texture2D;
 import java.awt.image.ImageObserver;
-import java.awt.image.PixelGrabber;
-import java.awt.image.DataBufferInt;
-import javax.media.j3d.ImageComponent2D;
-import javax.media.j3d.TexCoordGeneration;
-import java.security.AccessController;
-import java.security.PrivilegedAction;
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.io.StringReader;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.HashMap;
+
+import javax.media.j3d.Appearance;
 import javax.media.j3d.GeometryArray;
-import com.sun.j3d.utils.image.TextureLoader;
+import javax.media.j3d.Material;
+import javax.media.j3d.Shape3D;
+import javax.media.j3d.TexCoordGeneration;
+import javax.media.j3d.Texture2D;
 import javax.media.j3d.TransparencyAttributes;
+import javax.vecmath.Color3f;
+
+import com.sun.j3d.loaders.ParsingErrorException;
+import com.sun.j3d.utils.image.ImageException;
+import com.sun.j3d.utils.image.TextureLoader;
 
 
 class ObjectFileMaterials implements ImageObserver {
@@ -309,6 +304,9 @@ class ObjectFileMaterials implements ImageObserver {
 		}
 		catch (IOException e) {
 		    // Texture won't get loaded if file can't be found
+		} // mcneillk: issue 639
+		catch (ImageException iex) {
+		    // Texture won't get loaded if other problem
 		}
 	    }
 	}
