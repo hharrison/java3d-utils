@@ -141,7 +141,7 @@ class ObjectFileParser extends StreamTokenizer {
      *	We're already at the end of a line
      */
     void skipToNextLine() throws ParsingErrorException {
-	while (ttype != TT_EOL) {
+	while (ttype != TT_EOL && ttype != -1 /* issue 587*/) {
 	    getToken();
 	}
     } // end of skipToNextLine
