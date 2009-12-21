@@ -1191,8 +1191,8 @@ public class ObjectFile implements Loader {
 
 		// Put geometry into Shape3d
 		Shape3D shape = new Shape3D();
-
-		shape.setGeometry(gi.getGeometryArray(true, true, false));
+		// issue 638; default to BY_COPY for consistency
+		shape.setGeometry(gi.getGeometryArray(false, false, false));
 
 		String matName = (String)groupMaterials.get(curname);
 		materials.assignMaterial(matName, shape);
