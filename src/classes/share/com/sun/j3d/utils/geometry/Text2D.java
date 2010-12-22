@@ -43,23 +43,28 @@
  */
 
 package com.sun.j3d.utils.geometry;
-import java.awt.geom.AffineTransform;
 
 import java.awt.image.BufferedImage;
-import java.awt.image.WritableRaster;
-import java.awt.image.DataBufferInt;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
-import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
-import java.awt.RenderingHints;
 import java.awt.Toolkit;
 import java.util.Hashtable;
 
-import javax.media.j3d.*;
-import javax.vecmath.*;
+import javax.media.j3d.Appearance;
+import javax.media.j3d.ImageComponent;
+import javax.media.j3d.ImageComponent2D;
+import javax.media.j3d.Material;
+import javax.media.j3d.Node;
+import javax.media.j3d.QuadArray;
+import javax.media.j3d.Shape3D;
+import javax.media.j3d.Texture;
+import javax.media.j3d.Texture2D;
+import javax.media.j3d.TransparencyAttributes;
+import javax.vecmath.Color3f;
+import javax.vecmath.Color4f;
 
 /**
  * A Text2D object is a representation of a string as a texture mapped
@@ -126,6 +131,28 @@ public class Text2D extends Shape3D {
         updateText2D(text, color, fontName, fontSize, fontStyle);
     }
 
+    // issue 655
+    private Text2D() {
+    	
+	    setCapability(Shape3D.ALLOW_GEOMETRY_WRITE);
+	    setCapability(Shape3D.ALLOW_APPEARANCE_READ);
+	    setCapability(Shape3D.ALLOW_APPEARANCE_WRITE);
+    }
+    
+    // issue 655
+    public Node cloneNode(boolean forceDuplicate) {
+        Text2D t2d = new Text2D();
+
+        t2d.color.set(color);
+        t2d.fontName = fontName;
+        t2d.fontSize = fontSize;
+        t2d.fontStyle = fontStyle;
+	    t2d.text = text;
+
+        t2d.duplicateNode(this, forceDuplicate);
+        return t2d;
+    }
+    
     /*
      * Changes text of this Text2D to 'text'. All other
      * parameters (color, fontName, fontSize, fontStyle
