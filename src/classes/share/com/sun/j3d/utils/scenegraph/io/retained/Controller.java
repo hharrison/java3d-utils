@@ -123,8 +123,9 @@ public abstract class Controller extends java.lang.Object {
 			      (bug 4690159)
      * 3 = Java3D 1.5.1    1) Add support for SceneGraphObject Name field
      * 4 = Java3D 1.5.2    issue 532, for saving Background Geometry
+     * 5 = Java3D 1.5.2+   issue 654, for saving required SpotLight attributes
      */
-    protected int outputFileVersion = 4;
+    protected int outputFileVersion = 5;
 
     /**
      * When running the application within webstart this may not be the 
