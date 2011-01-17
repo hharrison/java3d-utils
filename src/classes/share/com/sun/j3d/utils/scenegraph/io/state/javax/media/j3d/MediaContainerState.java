@@ -44,37 +44,75 @@
 
 package com.sun.j3d.utils.scenegraph.io.state.javax.media.j3d;
 
-import java.io.IOException;
 import java.io.DataInput;
 import java.io.DataOutput;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+
 import javax.media.j3d.MediaContainer;
-import javax.media.j3d.SceneGraphObject;
+
 import com.sun.j3d.utils.scenegraph.io.retained.Controller;
 import com.sun.j3d.utils.scenegraph.io.retained.SymbolTableData;
 
 public class MediaContainerState extends NodeComponentState {
 
-    public MediaContainerState(SymbolTableData symbol,Controller control) {
-        super( symbol, control );
-    }
-    
-    public void writeObject( DataOutput out ) throws IOException {
-        super.writeObject( out );
-        
-        out.writeBoolean( ((MediaContainer)node).getCacheEnable() );
-        out.writeUTF( ((MediaContainer)node).getURLString() );
-    }
-    
-    public void readObject( DataInput in ) throws IOException {
-        super.readObject( in );
-        
-        ((MediaContainer)node).setCacheEnable( in.readBoolean() );
-        ((MediaContainer)node).setURLString( in.readUTF() );
-    }    
-    
-    protected javax.media.j3d.SceneGraphObject createNode() {
-        return new MediaContainer();
-    }
+	private static final int URL_STRING = 0;
+	private static final int URL_OBJECT = 1;
+	private static final int INPUT_STREAM = 2;
 
+	public MediaContainerState(SymbolTableData symbol, Controller control) {
+		super(symbol, control);
+	}
+
+	public void writeObject(DataOutput out) throws IOException {
+		super.writeObject(out);
+
+		// issue 656: rework
+		MediaContainer mediaContainer = (MediaContainer) node;
+		out.writeBoolean(mediaContainer.getCacheEnable());
+		// out.writeUTF( ((MediaContainer)node).getURLString() );
+
+		if (mediaContainer.getURLString() != null) {
+			out.writeInt(URL_STRING);
+			out.writeUTF(mediaContainer.getURLString());
+			return;
+		}
+		if (mediaContainer.getURLObject() != null) {
+			out.writeInt(URL_OBJECT);
+			out.writeUTF(mediaContainer.getURLObject().toString());
+			return;
+		}
+		out.writeInt(INPUT_STREAM);
+	}
+
+	public void readObject(DataInput in) throws IOException {
+		super.readObject(in);
+
+		((MediaContainer) node).setCacheEnable(in.readBoolean());
+
+		int type = in.readInt();
+
+		switch (type) {
+		case URL_STRING:
+			((MediaContainer) node).setURLString(in.readUTF());
+			return;
+		case URL_OBJECT:
+			try {
+				((MediaContainer) node).setURLObject(new URI(in.readUTF())
+						.toURL());
+			} catch (URISyntaxException e) {
+				e.printStackTrace();
+			}
+			return;
+		case INPUT_STREAM:
+			// do nothing
+		}
+
+	}
+
+	protected javax.media.j3d.SceneGraphObject createNode() {
+		return new MediaContainer();
+	}
 
 }
