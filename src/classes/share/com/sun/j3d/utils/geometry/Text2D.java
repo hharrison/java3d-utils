@@ -163,6 +163,12 @@ public class Text2D extends Shape3D {
 	this.text = text;
 	
 	Texture tex = getAppearance().getTexture();
+	
+	// mcneillk: JAVA3D-657
+	if (tex == null) {
+		tex = getAppearance().getTextureUnitState(0).getTexture();
+	}
+	
 	int width = tex.getWidth();
 	int height = tex.getHeight();	
     int oldVW = vWidth; 
@@ -195,7 +201,13 @@ public class Text2D extends Shape3D {
 	    tex.getBoundaryColor(c);
 	    newTex.setBoundaryColor(c);      
 	    newTex.setUserData(tex.getUserData());
-	    getAppearance().setTexture(newTex);
+	    
+	    // mcneillk: JAVA3D-657
+	    if (getAppearance().getTexture() != null) {
+		    getAppearance().setTexture(newTex);			
+		} else {
+			getAppearance().getTextureUnitState(0).setTexture(newTex);					
+		}
 	}
 	// Does the new text requires a new geometry ?
 	if ( oldVH != vHeight || oldVW != vWidth){
