@@ -44,19 +44,21 @@
 
 package com.sun.j3d.utils.scenegraph.io.state.javax.media.j3d;
 
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.DataInput;
+import java.io.DataInputStream;
+import java.io.DataOutput;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.Serializable;
 import java.lang.reflect.Constructor;
-import java.util.ArrayList;
-import java.util.Enumeration;
+
 import javax.media.j3d.SceneGraphObject;
-import javax.vecmath.Color3f;
-import javax.vecmath.Point3d;
-import javax.vecmath.Vector4d;
-import javax.vecmath.Tuple3d;
-import javax.vecmath.Tuple4d;
+
 import com.sun.j3d.utils.scenegraph.io.retained.Controller;
-import com.sun.j3d.utils.scenegraph.io.retained.SymbolTableData;
 import com.sun.j3d.utils.scenegraph.io.retained.SGIORuntimeException;
+import com.sun.j3d.utils.scenegraph.io.retained.SymbolTableData;
 
 public abstract class SceneGraphObjectState {
 

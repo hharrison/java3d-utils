@@ -44,9 +44,15 @@
 
 package com.sun.j3d.audioengines;
 
-import javax.media.j3d.*;
-import javax.vecmath.*;
 import java.util.ArrayList;
+
+import javax.media.j3d.AudioDevice3D;
+import javax.media.j3d.MediaContainer;
+import javax.media.j3d.PhysicalEnvironment;
+import javax.media.j3d.Transform3D;
+import javax.media.j3d.View;
+import javax.vecmath.Point3d;
+import javax.vecmath.Vector3d;
 
 
 /**

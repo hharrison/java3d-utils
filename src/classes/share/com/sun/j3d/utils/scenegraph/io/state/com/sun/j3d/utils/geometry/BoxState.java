@@ -44,11 +44,14 @@
 
 package com.sun.j3d.utils.scenegraph.io.state.com.sun.j3d.utils.geometry;
 
-import java.io.*;
-import com.sun.j3d.utils.geometry.Box;
+import java.io.DataInput;
+import java.io.DataOutput;
+import java.io.IOException;
+
 import javax.media.j3d.Appearance;
 import javax.media.j3d.SceneGraphObject;
-import javax.vecmath.Color3f;
+
+import com.sun.j3d.utils.geometry.Box;
 import com.sun.j3d.utils.scenegraph.io.retained.Controller;
 import com.sun.j3d.utils.scenegraph.io.retained.SymbolTableData;
 

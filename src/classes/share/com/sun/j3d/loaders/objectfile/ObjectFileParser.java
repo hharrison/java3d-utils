@@ -44,9 +44,10 @@
 
 package com.sun.j3d.loaders.objectfile;
 
-import java.io.StreamTokenizer;
 import java.io.IOException;
 import java.io.Reader;
+import java.io.StreamTokenizer;
+
 import com.sun.j3d.loaders.ParsingErrorException;
 
 class ObjectFileParser extends StreamTokenizer {

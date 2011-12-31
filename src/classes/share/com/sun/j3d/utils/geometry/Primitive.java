@@ -44,12 +44,13 @@
 
 package com.sun.j3d.utils.geometry;
 
-import com.sun.j3d.utils.geometry.*;
-import java.io.*;
-import java.util.*;
-import javax.media.j3d.*;
-import javax.vecmath.*;
-import java.math.*;
+import java.util.Hashtable;
+
+import javax.media.j3d.Appearance;
+import javax.media.j3d.Group;
+import javax.media.j3d.Material;
+import javax.media.j3d.Shape3D;
+import javax.vecmath.Color3f;
 
 /**
  * Base class for all Java 3D primitives. By default all primitives

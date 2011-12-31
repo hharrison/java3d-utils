@@ -44,9 +44,18 @@
 
 package com.sun.j3d.utils.picking;
 
-import javax.vecmath.*;
-import javax.media.j3d.*;
-import com.sun.j3d.utils.geometry.Primitive;
+import javax.media.j3d.GeometryArray;
+import javax.media.j3d.IndexedGeometryArray;
+import javax.vecmath.Color3b;
+import javax.vecmath.Color3f;
+import javax.vecmath.Color4b;
+import javax.vecmath.Color4f;
+import javax.vecmath.Point3d;
+import javax.vecmath.Point3f;
+import javax.vecmath.TexCoord2f;
+import javax.vecmath.TexCoord3f;
+import javax.vecmath.Vector3d;
+import javax.vecmath.Vector3f;
 
 /**
  * Holds information about an intersection of a PickShape with a Node

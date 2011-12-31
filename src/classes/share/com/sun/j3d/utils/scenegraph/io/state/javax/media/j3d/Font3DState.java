@@ -43,20 +43,20 @@
  */
 package com.sun.j3d.utils.scenegraph.io.state.javax.media.j3d;
 
+import java.awt.Font;
+import java.awt.Shape;
+import java.awt.geom.GeneralPath;
+import java.awt.geom.PathIterator;
+import java.io.DataInput;
+import java.io.DataOutput;
+import java.io.IOException;
+
 import javax.media.j3d.Font3D;
 import javax.media.j3d.FontExtrusion;
 import javax.media.j3d.SceneGraphObject;
-import java.awt.Font;
+
 import com.sun.j3d.utils.scenegraph.io.retained.Controller;
 import com.sun.j3d.utils.scenegraph.io.retained.SymbolTableData;
-import java.awt.Shape;
-import java.lang.String;
-import java.lang.Integer;
-import java.io.IOException;
-import java.io.DataInput;
-import java.io.DataOutput;
-import java.awt.geom.PathIterator;
-import java.awt.geom.GeneralPath;
 
 public class Font3DState extends NodeComponentState {
 

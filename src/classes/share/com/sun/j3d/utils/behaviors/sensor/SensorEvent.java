@@ -44,8 +44,8 @@
 
 package com.sun.j3d.utils.behaviors.sensor ;
 
-import javax.media.j3d.Sensor ;
-import javax.media.j3d.Transform3D ;
+import javax.media.j3d.Sensor;
+import javax.media.j3d.Transform3D;
 
 /**
  * This class defines the event object that is created by a

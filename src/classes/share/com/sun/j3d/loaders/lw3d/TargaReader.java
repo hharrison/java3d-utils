@@ -44,23 +44,17 @@
 
 package com.sun.j3d.loaders.lw3d;
 
+import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
-import java.applet.Applet;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.MediaTracker;
-import java.awt.Frame;
-import java.awt.Image;
-import java.awt.image.MemoryImageSource;
-import java.awt.Toolkit;
-import java.io.FileNotFoundException;
+import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 import java.io.FileInputStream;
-import java.io.BufferedInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
 import com.sun.j3d.loaders.IncorrectFormatException;
 import com.sun.j3d.loaders.ParsingErrorException;
-import java.io.IOException;
 
 /**
  * This class parses a standard Targa file and retrieves the image stored

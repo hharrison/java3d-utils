@@ -45,14 +45,14 @@
 package com.sun.j3d.loaders.lw3d;
 
 import java.awt.Image;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Vector;
-import java.util.Enumeration;
+
 import javax.vecmath.Color3f;
 import javax.vecmath.Vector3f;
-import com.sun.j3d.loaders.lw3d.LWOBFileReader;
+
 import com.sun.j3d.internal.J3dUtilsI18N;
-import java.io.FileNotFoundException;
 import com.sun.j3d.loaders.IncorrectFormatException;
 import com.sun.j3d.loaders.ParsingErrorException;
 

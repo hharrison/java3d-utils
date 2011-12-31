@@ -46,12 +46,17 @@ package com.sun.j3d.utils.universe;
 
 import java.util.Enumeration;
 import java.util.Hashtable;
-import java.util.Vector;
-import java.awt.Component;
-import javax.media.j3d.*;
-import javax.vecmath.*;
-import com.sun.j3d.utils.behaviors.vp.*;
+
+import javax.media.j3d.BranchGroup;
+import javax.media.j3d.Group;
+import javax.media.j3d.Transform3D;
+import javax.media.j3d.TransformGroup;
+import javax.media.j3d.View;
+import javax.media.j3d.ViewPlatform;
+import javax.vecmath.Vector3d;
+
 import com.sun.j3d.internal.J3dUtilsI18N;
+import com.sun.j3d.utils.behaviors.vp.ViewPlatformBehavior;
 
 /**
  * This class is used to set up the "view" side of a Java 3D scene graph.

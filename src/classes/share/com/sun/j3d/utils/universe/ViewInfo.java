@@ -44,15 +44,31 @@
 
 package com.sun.j3d.utils.universe ;
 
-import java.awt.GraphicsConfiguration ;
+import java.awt.GraphicsConfiguration;
 import java.awt.GraphicsEnvironment;
-import java.awt.Point ;
-import java.awt.Rectangle ;
-import java.text.DecimalFormat ;
-import java.text.FieldPosition ;
-import java.util.* ;
-import javax.media.j3d.* ;
-import javax.vecmath.* ;
+import java.awt.Point;
+import java.awt.Rectangle;
+import java.text.DecimalFormat;
+import java.text.FieldPosition;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import javax.media.j3d.Canvas3D;
+import javax.media.j3d.Node;
+import javax.media.j3d.PhysicalBody;
+import javax.media.j3d.PhysicalEnvironment;
+import javax.media.j3d.Screen3D;
+import javax.media.j3d.Sensor;
+import javax.media.j3d.Transform3D;
+import javax.media.j3d.View;
+import javax.media.j3d.ViewPlatform;
+import javax.vecmath.Point3d;
+import javax.vecmath.Vector3d;
 
 /**
  * Provides methods to extract synchronized transform information from a View.

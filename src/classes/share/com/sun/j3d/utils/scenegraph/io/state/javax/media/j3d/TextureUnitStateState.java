@@ -47,14 +47,14 @@ package com.sun.j3d.utils.scenegraph.io.state.javax.media.j3d;
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
-import com.sun.j3d.utils.scenegraph.io.retained.Controller;
-import com.sun.j3d.utils.scenegraph.io.retained.SymbolTableData;
-import javax.media.j3d.SceneGraphObject;
-import javax.media.j3d.TextureUnitState;
+
+import javax.media.j3d.TexCoordGeneration;
 import javax.media.j3d.Texture;
 import javax.media.j3d.TextureAttributes;
-import javax.media.j3d.TexCoordGeneration;
-import javax.vecmath.Color3f;
+import javax.media.j3d.TextureUnitState;
+
+import com.sun.j3d.utils.scenegraph.io.retained.Controller;
+import com.sun.j3d.utils.scenegraph.io.retained.SymbolTableData;
 
 public class TextureUnitStateState extends NodeComponentState {
 

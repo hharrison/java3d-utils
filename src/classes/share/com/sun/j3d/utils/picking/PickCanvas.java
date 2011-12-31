@@ -44,10 +44,19 @@
 
 package com.sun.j3d.utils.picking;
 
-import java.awt.event.*;
-import javax.vecmath.*;
-import javax.media.j3d.*;
-import com.sun.j3d.utils.geometry.*; // Cone, Cylinder
+import java.awt.event.MouseEvent;
+
+import javax.media.j3d.BranchGroup;
+import javax.media.j3d.Canvas3D;
+import javax.media.j3d.Locale;
+import javax.media.j3d.PickConeRay;
+import javax.media.j3d.PickCylinderRay;
+import javax.media.j3d.PickRay;
+import javax.media.j3d.PickShape;
+import javax.media.j3d.Transform3D;
+import javax.media.j3d.View;
+import javax.vecmath.Point3d;
+import javax.vecmath.Vector3d;
 
 /**
  * A subclass of PickTool, simplifies picking using mouse events from a canvas.

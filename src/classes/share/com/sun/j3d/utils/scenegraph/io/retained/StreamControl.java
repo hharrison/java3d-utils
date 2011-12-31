@@ -44,23 +44,14 @@
 
 package com.sun.j3d.utils.scenegraph.io.retained;
 
-import java.io.RandomAccessFile;
-import java.io.IOException;
-import java.io.DataOutput;
-import java.io.DataInput;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.IOException;
 import java.util.HashMap;
-import java.util.Iterator;
 
-import javax.media.j3d.VirtualUniverse;
 import javax.media.j3d.BranchGroup;
-import javax.media.j3d.SceneGraphObject;
 
 import com.sun.j3d.utils.scenegraph.io.state.javax.media.j3d.SceneGraphObjectState;
-import com.sun.j3d.utils.scenegraph.io.state.javax.media.j3d.NodeComponentState;
-import com.sun.j3d.utils.scenegraph.io.state.javax.media.j3d.BranchGroupState;
-import com.sun.j3d.utils.scenegraph.io.UnsupportedUniverseException;
 
 /**
  * Provides the infrastructure for ScenGraphStream Reader and Writer

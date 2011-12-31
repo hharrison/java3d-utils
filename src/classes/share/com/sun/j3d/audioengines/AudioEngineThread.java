@@ -48,7 +48,6 @@ package com.sun.j3d.audioengines;
  * Audio Engine Thread
  */
 
-import javax.media.j3d.*;
 
 /**
  * The Thread Class extended for Audio Device engines that must process

@@ -51,11 +51,15 @@
 
 package com.sun.j3d.audioengines.javasound;
 
-import java.net.URL;
 import java.io.InputStream;
-import javax.media.j3d.*;
-import javax.sound.sampled.*;
-import com.sun.j3d.audioengines.*;
+import java.net.URL;
+
+import javax.media.j3d.MediaContainer;
+import javax.media.j3d.View;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.DataLine;
+
+import com.sun.j3d.audioengines.AuralParameters;
 
 /**
  * The Sample Class extended for Java Sound Mixer specific audio device.

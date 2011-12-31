@@ -44,14 +44,14 @@
 
 package com.sun.j3d.utils.scenegraph.io.state.javax.media.j3d;
 
-import java.io.DataOutput;
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
+
+import javax.media.j3d.NodeComponent;
+
 import com.sun.j3d.utils.scenegraph.io.retained.Controller;
 import com.sun.j3d.utils.scenegraph.io.retained.SymbolTableData;
-import javax.media.j3d.NodeComponent;
-import javax.media.j3d.SceneGraphObject;
 
 public abstract class NodeComponentState extends SceneGraphObjectState {
 

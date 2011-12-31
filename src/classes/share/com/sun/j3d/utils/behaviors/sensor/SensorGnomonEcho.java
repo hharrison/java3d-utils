@@ -44,15 +44,15 @@
 
 package com.sun.j3d.utils.behaviors.sensor ;
 
-import javax.media.j3d.Shape3D ;
-import javax.media.j3d.Material ;
-import javax.media.j3d.Appearance ;
-import javax.media.j3d.Transform3D ;
-import javax.media.j3d.GeometryArray ;
-import javax.media.j3d.TriangleArray ;
+import javax.media.j3d.Appearance;
+import javax.media.j3d.GeometryArray;
+import javax.media.j3d.Material;
+import javax.media.j3d.Shape3D;
+import javax.media.j3d.Transform3D;
 import javax.media.j3d.TransparencyAttributes;
-import javax.vecmath.Point3f ;
-import javax.vecmath.Vector3f ;
+import javax.media.j3d.TriangleArray;
+import javax.vecmath.Point3f;
+import javax.vecmath.Vector3f;
 
 /**
  * A Shape3D representing a gnomon pointing along each coordinate

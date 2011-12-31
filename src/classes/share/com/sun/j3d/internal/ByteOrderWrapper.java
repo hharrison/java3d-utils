@@ -44,8 +44,6 @@
 
 package com.sun.j3d.internal;
 
-import javax.media.j3d.J3DBuffer;
-import java.nio.Buffer;
 import java.nio.ByteOrder;
 
 /**

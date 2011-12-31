@@ -44,17 +44,16 @@
 
 package com.sun.j3d.utils.scenegraph.io.state.com.sun.j3d.utils.behaviors.mouse;
 
-import java.io.IOException;
 import java.io.DataInput;
 import java.io.DataOutput;
-import javax.media.j3d.Interpolator;
-import javax.media.j3d.SceneGraphObject;
+import java.io.IOException;
+
+import javax.media.j3d.TransformGroup;
+
 import com.sun.j3d.utils.behaviors.mouse.MouseBehavior;
 import com.sun.j3d.utils.scenegraph.io.retained.Controller;
 import com.sun.j3d.utils.scenegraph.io.retained.SymbolTableData;
 import com.sun.j3d.utils.scenegraph.io.state.javax.media.j3d.BehaviorState;
-import javax.media.j3d.TransformGroup;
-import javax.media.j3d.TransformInterpolator;
 
 public class MouseBehaviorState extends BehaviorState {
 

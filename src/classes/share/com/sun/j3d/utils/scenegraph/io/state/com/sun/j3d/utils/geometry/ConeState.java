@@ -44,14 +44,14 @@
 
 package com.sun.j3d.utils.scenegraph.io.state.com.sun.j3d.utils.geometry;
 
-import java.io.*;
-import com.sun.j3d.utils.geometry.Cone;
-import javax.media.j3d.SceneGraphObject;
+import java.io.DataInput;
+import java.io.DataOutput;
+import java.io.IOException;
+
 import javax.media.j3d.Appearance;
-import javax.media.j3d.PolygonAttributes;
-import javax.media.j3d.AmbientLight;
-import javax.media.j3d.BoundingSphere;
-import javax.media.j3d.Material;
+import javax.media.j3d.SceneGraphObject;
+
+import com.sun.j3d.utils.geometry.Cone;
 import com.sun.j3d.utils.scenegraph.io.retained.Controller;
 import com.sun.j3d.utils.scenegraph.io.retained.SymbolTableData;
 

@@ -44,9 +44,11 @@
 
 package com.sun.j3d.utils.geometry;
 
-import com.sun.j3d.utils.geometry.*;
-import javax.media.j3d.*;
-import javax.vecmath.*;
+import javax.media.j3d.Appearance;
+import javax.media.j3d.Node;
+import javax.media.j3d.NodeComponent;
+import javax.media.j3d.Shape3D;
+import javax.vecmath.Vector3f;
 
 /**
  * Box is a geometry primitive created with a given length, width, and height.

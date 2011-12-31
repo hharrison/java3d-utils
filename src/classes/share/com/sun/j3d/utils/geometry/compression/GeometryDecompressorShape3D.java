@@ -44,9 +44,10 @@
 
 package com.sun.j3d.utils.geometry.compression;
 
-import com.sun.j3d.internal.J3dUtilsI18N;
 import java.util.ArrayList;
+
 import javax.media.j3d.Appearance;
+import javax.media.j3d.CompressedGeometry;
 import javax.media.j3d.GeometryArray;
 import javax.media.j3d.GeometryStripArray;
 import javax.media.j3d.LineStripArray;
@@ -58,6 +59,8 @@ import javax.media.j3d.TriangleStripArray;
 import javax.vecmath.Color4f;
 import javax.vecmath.Point3f;
 import javax.vecmath.Vector3f;
+
+import com.sun.j3d.internal.J3dUtilsI18N;
 
 /**
  * This class implements a Shape3D backend for the abstract

@@ -51,13 +51,16 @@
 
 package com.sun.j3d.audioengines.javasound;
 
-import java.net.URL;
-import java.io.InputStream;
-import javax.vecmath.*;
-import javax.media.j3d.*;
-import com.sun.j3d.audioengines.*;
-import java.util.ArrayList;
-import java.lang.Thread;
+import javax.media.j3d.AudioDevice3D;
+import javax.media.j3d.MediaContainer;
+import javax.media.j3d.PhysicalEnvironment;
+import javax.media.j3d.Sound;
+import javax.media.j3d.Transform3D;
+import javax.vecmath.Point3d;
+import javax.vecmath.Vector3d;
+
+import com.sun.j3d.audioengines.AudioEngine3DL2;
+import com.sun.j3d.audioengines.Sample;
 
 /**
  * The JavaSoundMixer Class defines an audio output device that accesses

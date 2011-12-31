@@ -59,9 +59,6 @@
 
 package com.sun.j3d.utils.geometry;
 
-import java.io.*;
-import java.util.*;
-import javax.vecmath.*;
 
 class Degenerate {
 

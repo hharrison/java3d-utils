@@ -44,9 +44,27 @@
 
 package com.sun.j3d.utils.picking;
 
-import javax.vecmath.*;
-import javax.media.j3d.*;
-import com.sun.j3d.internal.*;
+import javax.media.j3d.Bounds;
+import javax.media.j3d.BranchGroup;
+import javax.media.j3d.CompressedGeometry;
+import javax.media.j3d.Geometry;
+import javax.media.j3d.GeometryArray;
+import javax.media.j3d.IndexedGeometryArray;
+import javax.media.j3d.Locale;
+import javax.media.j3d.Morph;
+import javax.media.j3d.Node;
+import javax.media.j3d.PickBounds;
+import javax.media.j3d.PickConeRay;
+import javax.media.j3d.PickConeSegment;
+import javax.media.j3d.PickCylinderRay;
+import javax.media.j3d.PickCylinderSegment;
+import javax.media.j3d.PickRay;
+import javax.media.j3d.PickSegment;
+import javax.media.j3d.PickShape;
+import javax.media.j3d.SceneGraphPath;
+import javax.media.j3d.Shape3D;
+import javax.vecmath.Point3d;
+import javax.vecmath.Vector3d;
 
 /**
  * The base class for picking operations.

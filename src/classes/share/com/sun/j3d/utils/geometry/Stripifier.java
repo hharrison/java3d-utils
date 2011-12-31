@@ -59,9 +59,8 @@
 
 package com.sun.j3d.utils.geometry;
 
-import com.sun.j3d.utils.geometry.GeometryInfo;
-import java.util.LinkedList;
 import java.util.ArrayList;
+
 import com.sun.j3d.internal.J3dUtilsI18N;
 
 /**

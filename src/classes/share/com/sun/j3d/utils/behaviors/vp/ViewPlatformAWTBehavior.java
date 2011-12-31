@@ -44,31 +44,22 @@
 
 package com.sun.j3d.utils.behaviors.vp;
 
-import java.awt.event.ComponentEvent;
+import java.awt.AWTEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.awt.event.MouseWheelListener;
 import java.awt.event.MouseMotionListener;
-import java.awt.event.KeyListener;
-import java.awt.event.KeyEvent;
-import java.awt.AWTEvent;
-import java.awt.Component;
-import java.awt.Cursor;
-import javax.swing.SwingUtilities;
+import java.awt.event.MouseWheelListener;
 import java.util.ArrayList;
 
+import javax.media.j3d.Canvas3D;
+import javax.media.j3d.Transform3D;
+import javax.media.j3d.WakeupCondition;
 import javax.media.j3d.WakeupOnBehaviorPost;
 import javax.media.j3d.WakeupOnElapsedFrames;
-import javax.media.j3d.WakeupOr;
-import javax.media.j3d.WakeupCriterion;
-import javax.media.j3d.WakeupCondition;
-import javax.media.j3d.TransformGroup;
-import javax.media.j3d.Transform3D;
-import javax.media.j3d.View;
-import javax.media.j3d.Canvas3D;
 
-import javax.vecmath.Vector3f;
-import com.sun.j3d.utils.universe.*;
+import com.sun.j3d.utils.universe.Viewer;
+import com.sun.j3d.utils.universe.ViewingPlatform;
 
 
 /**

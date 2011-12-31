@@ -44,14 +44,34 @@
 
 package com.sun.j3d.utils.universe;
 
-import java.awt.event.*;
-import java.awt.*;
-import java.net.URL;
-import java.util.*;
-import javax.media.j3d.*;
-import javax.swing.*;
-import com.sun.j3d.audioengines.AudioEngine3DL2;
+import java.awt.BorderLayout;
+import java.awt.Container;
+import java.awt.Frame;
+import java.awt.GraphicsConfiguration;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
+import java.awt.Panel;
+import java.awt.Rectangle;
+import java.awt.Window;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.lang.reflect.Constructor;
+import java.net.URL;
+import java.util.HashMap;
+
+import javax.media.j3d.AudioDevice;
+import javax.media.j3d.Canvas3D;
+import javax.media.j3d.GraphicsConfigTemplate3D;
+import javax.media.j3d.PhysicalBody;
+import javax.media.j3d.PhysicalEnvironment;
+import javax.media.j3d.Screen3D;
+import javax.media.j3d.Transform3D;
+import javax.media.j3d.View;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JWindow;
+
+import com.sun.j3d.audioengines.AudioEngine3DL2;
 
 /**
  * The Viewer class holds all the information that describes the physical

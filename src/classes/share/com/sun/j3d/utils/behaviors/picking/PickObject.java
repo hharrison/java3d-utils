@@ -83,12 +83,24 @@ Misc:
 
 package com.sun.j3d.utils.behaviors.picking;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.util.*;
-import javax.media.j3d.*;
+import javax.media.j3d.BranchGroup;
+import javax.media.j3d.Canvas3D;
+import javax.media.j3d.Group;
+import javax.media.j3d.Link;
+import javax.media.j3d.Morph;
+import javax.media.j3d.Node;
+import javax.media.j3d.PickRay;
+import javax.media.j3d.PickShape;
+import javax.media.j3d.SceneGraphPath;
+import javax.media.j3d.Shape3D;
+import javax.media.j3d.Switch;
+import javax.media.j3d.Transform3D;
+import javax.media.j3d.TransformGroup;
+import javax.media.j3d.View;
+import javax.vecmath.Point3d;
+import javax.vecmath.Vector3d;
+
 import com.sun.j3d.utils.geometry.Primitive;
-import javax.vecmath.*;
 
 /*
  * Contains methods to aid in picking.  A PickObject is created

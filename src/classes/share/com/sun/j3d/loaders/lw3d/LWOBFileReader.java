@@ -46,11 +46,11 @@ package com.sun.j3d.loaders.lw3d;
 
 
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileInputStream;
 import java.io.BufferedInputStream;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+
 import com.sun.j3d.loaders.ParsingErrorException;
 
 

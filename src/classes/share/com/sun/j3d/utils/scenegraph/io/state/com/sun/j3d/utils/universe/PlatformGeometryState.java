@@ -44,13 +44,10 @@
 
 package com.sun.j3d.utils.scenegraph.io.state.com.sun.j3d.utils.universe;
 
-import java.io.DataInput;
-import java.io.DataOutput;
-import java.io.IOException;
-import com.sun.j3d.utils.universe.PlatformGeometry;
 import com.sun.j3d.utils.scenegraph.io.retained.Controller;
 import com.sun.j3d.utils.scenegraph.io.retained.SymbolTableData;
 import com.sun.j3d.utils.scenegraph.io.state.javax.media.j3d.BranchGroupState;
+import com.sun.j3d.utils.universe.PlatformGeometry;
 
 public class PlatformGeometryState extends BranchGroupState {
 

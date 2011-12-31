@@ -44,11 +44,61 @@
 
 package com.sun.j3d.utils.picking;
 
-import javax.vecmath.*;
-import javax.media.j3d.*;
 import java.util.ArrayList;
+
+import javax.media.j3d.BoundingBox;
+import javax.media.j3d.BoundingPolytope;
+import javax.media.j3d.BoundingSphere;
+import javax.media.j3d.Bounds;
+import javax.media.j3d.BranchGroup;
+import javax.media.j3d.CompressedGeometry;
+import javax.media.j3d.Geometry;
+import javax.media.j3d.GeometryArray;
+import javax.media.j3d.Group;
+import javax.media.j3d.IndexedGeometryArray;
+import javax.media.j3d.IndexedLineArray;
+import javax.media.j3d.IndexedLineStripArray;
+import javax.media.j3d.IndexedPointArray;
+import javax.media.j3d.IndexedQuadArray;
+import javax.media.j3d.IndexedTriangleArray;
+import javax.media.j3d.IndexedTriangleFanArray;
+import javax.media.j3d.IndexedTriangleStripArray;
+import javax.media.j3d.LineArray;
+import javax.media.j3d.LineStripArray;
+import javax.media.j3d.Link;
+import javax.media.j3d.Morph;
+import javax.media.j3d.Node;
+import javax.media.j3d.PickBounds;
+import javax.media.j3d.PickCone;
+import javax.media.j3d.PickConeRay;
+import javax.media.j3d.PickConeSegment;
+import javax.media.j3d.PickCylinder;
+import javax.media.j3d.PickCylinderRay;
+import javax.media.j3d.PickCylinderSegment;
+import javax.media.j3d.PickPoint;
+import javax.media.j3d.PickRay;
+import javax.media.j3d.PickSegment;
+import javax.media.j3d.PickShape;
+import javax.media.j3d.PointArray;
+import javax.media.j3d.QuadArray;
+import javax.media.j3d.SceneGraphPath;
+import javax.media.j3d.Shape3D;
+import javax.media.j3d.Switch;
+import javax.media.j3d.Transform3D;
+import javax.media.j3d.TransformGroup;
+import javax.media.j3d.TriangleArray;
+import javax.media.j3d.TriangleFanArray;
+import javax.media.j3d.TriangleStripArray;
+import javax.vecmath.Point2d;
+import javax.vecmath.Point3d;
+import javax.vecmath.Point3f;
+import javax.vecmath.Point4d;
+import javax.vecmath.Tuple3d;
+import javax.vecmath.Vector3d;
+import javax.vecmath.Vector4d;
+
+import com.sun.j3d.internal.Distance;
 import com.sun.j3d.utils.geometry.Primitive;
-import com.sun.j3d.internal.*;
 
 /**
  * Stores information about a pick hit.

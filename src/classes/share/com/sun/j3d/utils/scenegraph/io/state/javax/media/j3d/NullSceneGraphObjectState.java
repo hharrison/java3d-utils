@@ -44,18 +44,12 @@
 
 package com.sun.j3d.utils.scenegraph.io.state.javax.media.j3d;
 
-import java.io.*;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Enumeration;
+import java.io.DataInput;
+import java.io.DataOutput;
+import java.io.IOException;
+
 import javax.media.j3d.SceneGraphObject;
-import javax.vecmath.Color3f;
-import javax.vecmath.Point3d;
-import javax.vecmath.Vector4d;
-import javax.vecmath.Tuple3d;
-import javax.vecmath.Tuple4d;
+
 import com.sun.j3d.utils.scenegraph.io.retained.Controller;
 import com.sun.j3d.utils.scenegraph.io.retained.SymbolTableData;
 

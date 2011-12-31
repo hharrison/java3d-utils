@@ -44,12 +44,13 @@
 
 package com.sun.j3d.utils.scenegraph.io.state.javax.media.j3d;
 
-import java.io.*;
-import javax.media.j3d.Fog;
+import java.io.DataInput;
+import java.io.DataOutput;
+import java.io.IOException;
+
 import javax.media.j3d.BoundingLeaf;
+import javax.media.j3d.Fog;
 import javax.media.j3d.Group;
-import javax.media.j3d.NodeComponent;
-import javax.media.j3d.SceneGraphObject;
 import javax.vecmath.Color3f;
 
 import com.sun.j3d.utils.scenegraph.io.retained.Controller;

@@ -44,8 +44,9 @@
 
 package com.sun.j3d.internal;
 
-import javax.media.j3d.J3DBuffer;
 import java.nio.Buffer;
+
+import javax.media.j3d.J3DBuffer;
 
 /**
  * NIO Buffers are new in Java 1.4 but we need to run on 1.3

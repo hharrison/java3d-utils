@@ -44,26 +44,24 @@
 
 package com.sun.j3d.utils.scenegraph.io.retained;
 
-import java.io.IOException;
 import java.io.DataOutput;
-import java.io.DataInput;
-import java.util.HashMap;
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.ListIterator;
-import java.util.LinkedList;
-import java.util.Iterator;
+import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Collection;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.ListIterator;
 import java.util.Stack;
 
 import javax.media.j3d.SceneGraphObject;
 
-import com.sun.j3d.utils.scenegraph.io.state.javax.media.j3d.SceneGraphObjectState;
-import com.sun.j3d.utils.scenegraph.io.state.javax.media.j3d.NullSceneGraphObjectState;
-import com.sun.j3d.utils.scenegraph.io.state.javax.media.j3d.NodeComponentState;
 import com.sun.j3d.utils.scenegraph.io.NamedObjectException;
 import com.sun.j3d.utils.scenegraph.io.ObjectNotLoadedException;
 import com.sun.j3d.utils.scenegraph.io.SceneGraphObjectReferenceControl;
+import com.sun.j3d.utils.scenegraph.io.state.javax.media.j3d.NodeComponentState;
+import com.sun.j3d.utils.scenegraph.io.state.javax.media.j3d.NullSceneGraphObjectState;
+import com.sun.j3d.utils.scenegraph.io.state.javax.media.j3d.SceneGraphObjectState;
 
 /**
  * SymbolTable class for SceneGraph I/O.

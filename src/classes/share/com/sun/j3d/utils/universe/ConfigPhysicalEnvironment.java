@@ -44,9 +44,13 @@
 
 package com.sun.j3d.utils.universe ;
 
-import javax.media.j3d.* ;
-import javax.vecmath.* ;
-import java.util.* ;
+import java.util.ArrayList;
+
+import javax.media.j3d.InputDevice;
+import javax.media.j3d.PhysicalEnvironment;
+import javax.media.j3d.Transform3D;
+import javax.media.j3d.View;
+import javax.vecmath.Matrix4d;
 
 class ConfigPhysicalEnvironment extends ConfigObject {
 

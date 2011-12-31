@@ -50,15 +50,15 @@
 package com.sun.j3d.audioengines.javasound;
 
 // import java.applet.*;
-import java.util.*;
-import java.lang.String;
-import java.net.*;
-import java.io.*;
 import java.io.InputStream;
-// import sun.applet.*;
-import javax.sound.sampled.*;
-import com.sun.j3d.audioengines.*;
-// import javax.media.j3d.*;
+import java.net.URL;
+
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.DataLine;
+
+import com.sun.j3d.audioengines.Sample;
 
 /**
  * The JSChannel Class defines an audio output methods that call JavaSound

@@ -44,8 +44,6 @@
 
 package com.sun.j3d.audioengines.javasound;
 
-import java.lang.String;
-import java.io.*;
 
 /**
  * The AudioDevice dependent sound node and aural attribute node parameters.

@@ -46,10 +46,11 @@ package com.sun.j3d.loaders.lw3d;
 
 
 
-import java.io.*;
+import java.io.StreamTokenizer;
+
 import javax.vecmath.Matrix4d;
-import javax.vecmath.Vector3d;
 import javax.vecmath.Point3f;
+import javax.vecmath.Vector3d;
 
 /**
  * This class is responsible for parsing the data in a Scene file

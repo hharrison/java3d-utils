@@ -44,24 +44,15 @@
 
 package com.sun.j3d.utils.scenegraph.io.state.com.sun.j3d.utils.image;
 
-import java.io.IOException;
-import java.io.ByteArrayOutputStream;
-import java.io.ByteArrayInputStream;
 import java.io.DataInput;
 import java.io.DataOutput;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.awt.Point;
-import java.awt.image.*;
+import java.io.IOException;
+
 import javax.media.j3d.SceneGraphObject;
-import javax.media.j3d.ImageComponent2D;
 
 import com.sun.j3d.utils.scenegraph.io.retained.Controller;
 import com.sun.j3d.utils.scenegraph.io.retained.SymbolTableData;
 import com.sun.j3d.utils.scenegraph.io.state.javax.media.j3d.ImageComponentState;
-
-import javax.swing.*;
-import java.awt.*;
 
 public class ImageComponent2DURLState extends ImageComponentState {
 

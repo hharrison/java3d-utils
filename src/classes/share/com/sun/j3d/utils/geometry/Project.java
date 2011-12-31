@@ -59,9 +59,10 @@
 
 package com.sun.j3d.utils.geometry;
 
-import javax.vecmath.*;
-import java.io.*;
-import java.util.*;
+import javax.vecmath.Matrix4f;
+import javax.vecmath.Point3f;
+import javax.vecmath.Tuple3f;
+import javax.vecmath.Vector3f;
 
 class Project  {
 

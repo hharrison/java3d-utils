@@ -44,10 +44,30 @@
 
 package com.sun.j3d.utils.pickfast;
 
+import javax.media.j3d.Bounds;
+import javax.media.j3d.BranchGroup;
+import javax.media.j3d.Group;
+import javax.media.j3d.Link;
+import javax.media.j3d.Locale;
+import javax.media.j3d.Morph;
+import javax.media.j3d.Node;
+import javax.media.j3d.PickBounds;
+import javax.media.j3d.PickConeRay;
+import javax.media.j3d.PickConeSegment;
+import javax.media.j3d.PickCylinderRay;
+import javax.media.j3d.PickCylinderSegment;
+import javax.media.j3d.PickInfo;
+import javax.media.j3d.PickRay;
+import javax.media.j3d.PickSegment;
+import javax.media.j3d.PickShape;
+import javax.media.j3d.SceneGraphPath;
+import javax.media.j3d.Shape3D;
+import javax.media.j3d.Switch;
+import javax.media.j3d.TransformGroup;
+import javax.vecmath.Point3d;
+import javax.vecmath.Vector3d;
+
 import com.sun.j3d.utils.geometry.Primitive;
-import javax.vecmath.*;
-import javax.media.j3d.*;
-import com.sun.j3d.internal.*;
 
 /**
  * The base class for optimized picking operations.

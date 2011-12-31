@@ -47,6 +47,8 @@ package com.sun.j3d.utils.compression;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+
+import javax.media.j3d.CapabilityNotSetException;
 import javax.media.j3d.CompressedGeometry;
 import javax.media.j3d.CompressedGeometryHeader;
 

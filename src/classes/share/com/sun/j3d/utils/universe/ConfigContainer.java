@@ -44,12 +44,22 @@
 
 package com.sun.j3d.utils.universe ;
 
-import java.io.* ;
-import java.util.* ;
-import java.net.URL ;
-import java.net.MalformedURLException ;
-import javax.media.j3d.* ;
-import com.sun.j3d.utils.behaviors.vp.ViewPlatformBehavior ;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.io.StreamTokenizer;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.AbstractMap;
+import java.util.AbstractSet;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Loads a Java 3D configuration file and creates a container of named objects

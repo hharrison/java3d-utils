@@ -46,10 +46,15 @@ package com.sun.j3d.loaders.lw3d;
 
 
 
-import java.io.*;
-import javax.media.j3d.*;
-import javax.vecmath.*;
-import java.util.Enumeration;
+import java.io.IOException;
+import java.io.StreamTokenizer;
+
+import javax.media.j3d.BoundingSphere;
+import javax.media.j3d.Fog;
+import javax.media.j3d.LinearFog;
+import javax.vecmath.Color3f;
+import javax.vecmath.Point3d;
+
 import com.sun.j3d.loaders.ParsingErrorException;
 
 

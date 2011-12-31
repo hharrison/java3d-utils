@@ -44,8 +44,14 @@
 
 package com.sun.j3d.audioengines;
 
-import javax.media.j3d.*;
-import javax.vecmath.*;
+import javax.media.j3d.MediaContainer;
+import javax.media.j3d.Sound;
+import javax.media.j3d.Transform3D;
+import javax.media.j3d.View;
+import javax.vecmath.Point3d;
+import javax.vecmath.Point3f;
+import javax.vecmath.Vector3d;
+import javax.vecmath.Vector3f;
 
 /**
  * The Sample class defines the data and methods associated with a sound

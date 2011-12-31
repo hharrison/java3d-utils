@@ -44,21 +44,21 @@
 
 package com.sun.j3d.loaders.lw3d;
 
-import java.awt.Component;
-import java.util.Enumeration;
-import java.util.Hashtable;
-import java.util.Vector;
 import java.io.BufferedReader;
-import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.StreamTokenizer;
 import java.io.IOException;
-import javax.media.j3d.*;
+import java.io.StreamTokenizer;
+import java.util.Enumeration;
+import java.util.Vector;
+
+import javax.media.j3d.Alpha;
+import javax.media.j3d.BoundingSphere;
+import javax.media.j3d.Switch;
+import javax.media.j3d.TransformGroup;
 import javax.vecmath.Point3d;
 
-import com.sun.j3d.loaders.IncorrectFormatException;
 import com.sun.j3d.loaders.ParsingErrorException;
-import java.io.FileNotFoundException;
 
 /**
  * This class was created to read a special file format devised for

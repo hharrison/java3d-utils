@@ -44,12 +44,13 @@
 
 package com.sun.j3d.utils.scenegraph.io.state.javax.media.j3d;
 
-import java.io.IOException;
 import java.io.DataInput;
 import java.io.DataOutput;
-import javax.media.j3d.Clip;
-import javax.media.j3d.SceneGraphObject;
+import java.io.IOException;
+
 import javax.media.j3d.BoundingLeaf;
+import javax.media.j3d.Clip;
+
 import com.sun.j3d.utils.scenegraph.io.retained.Controller;
 import com.sun.j3d.utils.scenegraph.io.retained.SymbolTableData;
 

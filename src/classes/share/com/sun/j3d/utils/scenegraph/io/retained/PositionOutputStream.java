@@ -44,7 +44,6 @@
 
 package com.sun.j3d.utils.scenegraph.io.retained;
 
-import java.io.DataOutputStream;
 import java.io.IOException;
 
 class PositionOutputStream extends java.io.OutputStream {

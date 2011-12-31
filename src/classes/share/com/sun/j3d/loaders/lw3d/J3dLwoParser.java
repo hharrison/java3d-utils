@@ -44,21 +44,27 @@
 
 package com.sun.j3d.loaders.lw3d;
 
-import java.awt.Component;
-import java.awt.Image;
+import java.io.FileNotFoundException;
+import java.net.URL;
 import java.util.Enumeration;
 import java.util.Vector;
+
+import javax.media.j3d.Appearance;
+import javax.media.j3d.ColoringAttributes;
+import javax.media.j3d.GeometryArray;
+import javax.media.j3d.Material;
+import javax.media.j3d.PointAttributes;
+import javax.media.j3d.Shape3D;
+import javax.media.j3d.Texture;
+import javax.media.j3d.TextureAttributes;
+import javax.media.j3d.TransparencyAttributes;
+import javax.vecmath.Color3f;
+import javax.vecmath.Vector3f;
+
+import com.sun.j3d.loaders.IncorrectFormatException;
 import com.sun.j3d.utils.geometry.GeometryInfo;
 import com.sun.j3d.utils.geometry.NormalGenerator;
 import com.sun.j3d.utils.geometry.Stripifier;
-import com.sun.j3d.utils.image.TextureLoader;
-import com.sun.j3d.loaders.IncorrectFormatException;
-import java.io.FileNotFoundException;
-
-import javax.media.j3d.*;
-import javax.vecmath.*;
-
-import java.net.*;
 
 
 /**

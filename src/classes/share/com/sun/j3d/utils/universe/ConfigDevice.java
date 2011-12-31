@@ -43,7 +43,7 @@
  */
 
 package com.sun.j3d.utils.universe ;
-import javax.media.j3d.InputDevice ;
+import javax.media.j3d.InputDevice;
 
 /**
  * Mostly empty now; ConfigObject provides all required methods.

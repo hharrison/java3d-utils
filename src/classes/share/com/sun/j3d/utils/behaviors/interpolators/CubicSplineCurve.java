@@ -44,9 +44,6 @@
 
 package com.sun.j3d.utils.behaviors.interpolators;
 
-import javax.media.j3d.*;
-import java.util.*;
-import javax.vecmath.*;
 import com.sun.j3d.internal.J3dUtilsI18N;
 
 /**

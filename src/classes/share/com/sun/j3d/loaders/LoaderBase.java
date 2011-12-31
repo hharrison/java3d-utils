@@ -45,7 +45,6 @@
 package com.sun.j3d.loaders;
 
 import java.net.URL;
-import java.io.Reader;
 
 /**
  * This class implements the Loader interface.  To use

@@ -47,21 +47,22 @@ package com.sun.j3d.utils.scenegraph.io.state.javax.media.j3d;
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
-import com.sun.j3d.utils.scenegraph.io.retained.Controller;
-import com.sun.j3d.utils.scenegraph.io.retained.SymbolTableData;
-import javax.media.j3d.NodeComponent;
+
 import javax.media.j3d.Appearance;
-import javax.media.j3d.PolygonAttributes;
-import javax.media.j3d.RenderingAttributes;
 import javax.media.j3d.ColoringAttributes;
 import javax.media.j3d.LineAttributes;
 import javax.media.j3d.Material;
 import javax.media.j3d.PointAttributes;
+import javax.media.j3d.PolygonAttributes;
+import javax.media.j3d.RenderingAttributes;
 import javax.media.j3d.TexCoordGeneration;
 import javax.media.j3d.Texture;
 import javax.media.j3d.TextureAttributes;
 import javax.media.j3d.TextureUnitState;
 import javax.media.j3d.TransparencyAttributes;
+
+import com.sun.j3d.utils.scenegraph.io.retained.Controller;
+import com.sun.j3d.utils.scenegraph.io.retained.SymbolTableData;
 
 public class AppearanceState extends NodeComponentState {
 

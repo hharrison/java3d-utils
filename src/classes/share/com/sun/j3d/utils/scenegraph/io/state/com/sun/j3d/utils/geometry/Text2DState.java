@@ -44,15 +44,18 @@
 
 package com.sun.j3d.utils.scenegraph.io.state.com.sun.j3d.utils.geometry;
 
-import java.io.*;
-import com.sun.j3d.utils.geometry.Sphere;
+import java.io.DataInput;
+import java.io.DataOutput;
+import java.io.IOException;
+
 import javax.media.j3d.SceneGraphObject;
 import javax.media.j3d.Shape3D;
 import javax.vecmath.Color3f;
+
 import com.sun.j3d.utils.geometry.Text2D;
-import com.sun.j3d.utils.scenegraph.io.state.javax.media.j3d.LeafState;
 import com.sun.j3d.utils.scenegraph.io.retained.Controller;
 import com.sun.j3d.utils.scenegraph.io.retained.SymbolTableData;
+import com.sun.j3d.utils.scenegraph.io.state.javax.media.j3d.LeafState;
 
 public class Text2DState extends LeafState {
 

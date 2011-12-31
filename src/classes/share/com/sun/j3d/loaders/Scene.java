@@ -46,13 +46,13 @@ package com.sun.j3d.loaders;
 
 import java.util.Hashtable;
 
+import javax.media.j3d.Background;
 import javax.media.j3d.Behavior;
 import javax.media.j3d.BranchGroup;
-import javax.media.j3d.TransformGroup;
-import javax.media.j3d.Light;
-import javax.media.j3d.Background;
 import javax.media.j3d.Fog;
+import javax.media.j3d.Light;
 import javax.media.j3d.Sound;
+import javax.media.j3d.TransformGroup;
 
 
 /**

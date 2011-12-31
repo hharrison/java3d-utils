@@ -44,8 +44,8 @@
 
 package com.sun.j3d.internal;
 
-import java.io.*;
-import java.util.*;
+import java.util.MissingResourceException;
+import java.util.ResourceBundle;
 
 
 public class J3dUtilsI18N {

@@ -44,21 +44,20 @@
 
 package com.sun.j3d.utils.scenegraph.io.retained;
 
-import java.io.RandomAccessFile;
-import java.io.IOException;
-import java.io.DataOutput;
 import java.io.DataInput;
+import java.io.DataOutput;
+import java.io.IOException;
+import java.io.RandomAccessFile;
 
 import javax.media.j3d.BranchGroup;
-import javax.media.j3d.CapabilityNotSetException;
 import javax.media.j3d.Canvas3D;
+import javax.media.j3d.CapabilityNotSetException;
 
-import com.sun.j3d.utils.scenegraph.io.state.javax.media.j3d.SceneGraphObjectState;
-import com.sun.j3d.utils.scenegraph.io.state.javax.media.j3d.NodeComponentState;
-import com.sun.j3d.utils.scenegraph.io.state.javax.media.j3d.BranchGroupState;
 import com.sun.j3d.utils.scenegraph.io.UnsupportedUniverseException;
-import com.sun.j3d.utils.universe.SimpleUniverse;
+import com.sun.j3d.utils.scenegraph.io.state.javax.media.j3d.BranchGroupState;
+import com.sun.j3d.utils.scenegraph.io.state.javax.media.j3d.SceneGraphObjectState;
 import com.sun.j3d.utils.universe.ConfiguredUniverse;
+import com.sun.j3d.utils.universe.SimpleUniverse;
 
 public class RandomAccessFileControl extends Controller {
 

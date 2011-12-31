@@ -44,9 +44,9 @@
 
 package com.sun.j3d.loaders;
 
-import java.net.URL;
-import java.io.Reader;
 import java.io.FileNotFoundException;
+import java.io.Reader;
+import java.net.URL;
 
 /**
  * The Loader interface is used to specify the location

@@ -44,11 +44,10 @@
 
 package com.sun.j3d.utils.geometry;
 
-import com.sun.j3d.utils.geometry.*;
-import java.io.*;
-import java.util.*;
-import javax.media.j3d.*;
-import javax.vecmath.*;
+import javax.media.j3d.Appearance;
+import javax.media.j3d.Node;
+import javax.media.j3d.NodeComponent;
+import javax.media.j3d.Shape3D;
 
 /**
  * Cone is a geometry primitive defined with a radius and a height.

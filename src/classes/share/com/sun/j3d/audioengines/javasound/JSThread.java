@@ -51,8 +51,8 @@ package com.sun.j3d.audioengines.javasound;
  * to be rewritten.  When this is done, we may or may not need this class.
  */
 
-import javax.media.j3d.*;
-import com.sun.j3d.audioengines.*;
+import com.sun.j3d.audioengines.AudioEngine3D;
+import com.sun.j3d.audioengines.AudioEngine3DL2;
 
 /**
  * The Thread Class extended for JavaSound Mixer specific audio device

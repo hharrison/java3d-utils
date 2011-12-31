@@ -44,12 +44,14 @@
 
 package com.sun.j3d.utils.behaviors.sensor ;
 
-import java.util.Iterator ;
-import java.util.List ;
-import java.util.ArrayList ;
-import javax.media.j3d.Sensor ;
-import javax.media.j3d.Transform3D ;
-import com.sun.j3d.utils.timer.J3DTimer ;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+import javax.media.j3d.Sensor;
+import javax.media.j3d.Transform3D;
+
+import com.sun.j3d.utils.timer.J3DTimer;
 
 /**
  * This class works in conjunction with the <code>SensorButtonListener</code>

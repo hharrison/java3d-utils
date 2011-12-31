@@ -44,11 +44,10 @@
 
 package com.sun.j3d.utils.geometry;
 
-import com.sun.j3d.utils.geometry.GeometryInfo;
-import com.sun.j3d.utils.geometry.EdgeTable;
 import java.util.ArrayList;
-import javax.vecmath.Vector3f;
+
 import javax.vecmath.Point3f;
+import javax.vecmath.Vector3f;
 
 /**
  * The NormalGenerator utility will calculate and fill in the normals

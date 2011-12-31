@@ -44,15 +44,25 @@
 
 package com.sun.j3d.loaders.lw3d;
 
-import java.io.*;
+import java.io.StreamTokenizer;
 import java.util.Enumeration;
 import java.util.Vector;
-import javax.media.j3d.*;
-import javax.vecmath.*;
-import com.sun.j3d.utils.behaviors.interpolators.*;
+
+import javax.media.j3d.Alpha;
+import javax.media.j3d.Behavior;
+import javax.media.j3d.BoundingSphere;
+import javax.media.j3d.Transform3D;
+import javax.media.j3d.TransformGroup;
+import javax.vecmath.Matrix4d;
+import javax.vecmath.Point3d;
+import javax.vecmath.Point3f;
+import javax.vecmath.Quat4f;
+
 import com.sun.j3d.internal.J3dUtilsI18N;
-import com.sun.j3d.loaders.ParsingErrorException;
 import com.sun.j3d.loaders.IncorrectFormatException;
+import com.sun.j3d.loaders.ParsingErrorException;
+import com.sun.j3d.utils.behaviors.interpolators.KBKeyFrame;
+import com.sun.j3d.utils.behaviors.interpolators.KBRotPosScaleSplinePathInterpolator;
 
 /**
  * This class is responsible for parsing the data in a Scene file related to

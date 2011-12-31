@@ -45,20 +45,26 @@
 package com.sun.j3d.loaders.lw3d;
 
 
-import java.awt.Component;
-import java.io.*;
-import java.util.Vector;
-import javax.media.j3d.*;
-import javax.vecmath.*;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.StreamTokenizer;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Enumeration;
 import java.util.StringTokenizer;
 import java.util.Vector;
-import com.sun.j3d.utils.geometry.ColorCube;
-import com.sun.j3d.loaders.ParsingErrorException;
-import com.sun.j3d.loaders.IncorrectFormatException;
-import java.net.MalformedURLException;
 
-import java.net.*;
+import javax.media.j3d.Behavior;
+import javax.media.j3d.Group;
+import javax.media.j3d.Shape3D;
+import javax.media.j3d.Transform3D;
+import javax.media.j3d.TransformGroup;
+import javax.vecmath.Matrix4d;
+import javax.vecmath.Vector3f;
+
+import com.sun.j3d.loaders.IncorrectFormatException;
+import com.sun.j3d.loaders.ParsingErrorException;
 
 /**
  * An LwsObject is passed a handle to the text file that contains the scene

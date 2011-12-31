@@ -44,8 +44,7 @@
 
 package com.sun.j3d.utils.universe;
 
-import javax.media.j3d.*;
-import javax.vecmath.*;
+import javax.media.j3d.TransformGroup;
 
 /**
  * A convenience class that effectively creates a series of TransformGroup

@@ -46,10 +46,13 @@ package com.sun.j3d.loaders.lw3d;
 
 
 
-import java.io.*;
-import javax.media.j3d.*;
-import javax.vecmath.*;
+import java.io.StreamTokenizer;
+
+import javax.media.j3d.Alpha;
+import javax.media.j3d.Behavior;
+import javax.media.j3d.BoundingSphere;
 import javax.media.j3d.TransformGroup;
+import javax.vecmath.Point3d;
 
 
 /**

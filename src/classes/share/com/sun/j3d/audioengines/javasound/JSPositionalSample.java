@@ -51,9 +51,14 @@
 
 package com.sun.j3d.audioengines.javasound;
 
-import javax.media.j3d.*;
-import javax.vecmath.*;
-import com.sun.j3d.audioengines.*;
+import javax.media.j3d.PhysicalBody;
+import javax.media.j3d.Transform3D;
+import javax.media.j3d.View;
+import javax.vecmath.Point3d;
+import javax.vecmath.Point3f;
+import javax.vecmath.Vector3f;
+
+import com.sun.j3d.audioengines.AuralParameters;
 
 /**
  * The PostionalSample Class defines the data and methods associated with a

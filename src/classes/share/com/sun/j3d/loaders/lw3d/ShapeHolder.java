@@ -45,6 +45,7 @@
 package com.sun.j3d.loaders.lw3d;
 
 import java.util.Vector;
+
 import javax.vecmath.Vector3f;
 
 

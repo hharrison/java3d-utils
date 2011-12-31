@@ -44,13 +44,15 @@
 
 package com.sun.j3d.utils.scenegraph.io.state.javax.media.j3d;
 
-import java.io.IOException;
 import java.io.DataInput;
 import java.io.DataOutput;
-import javax.vecmath.Point3d;
+import java.io.IOException;
+
 import javax.media.j3d.CompressedGeometry;
-import javax.media.j3d.SceneGraphObject;
 import javax.media.j3d.CompressedGeometryHeader;
+import javax.media.j3d.SceneGraphObject;
+import javax.vecmath.Point3d;
+
 import com.sun.j3d.utils.scenegraph.io.retained.Controller;
 import com.sun.j3d.utils.scenegraph.io.retained.SymbolTableData;
 

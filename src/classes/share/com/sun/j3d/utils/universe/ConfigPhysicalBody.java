@@ -44,12 +44,10 @@
 
 package com.sun.j3d.utils.universe;
 
-import java.awt.event.*;
-import java.lang.Integer;
-import java.io.*;
-import javax.media.j3d.*;
-import javax.vecmath.*;
-import java.util.*;
+import javax.media.j3d.PhysicalBody;
+import javax.media.j3d.Transform3D;
+import javax.vecmath.Matrix4d;
+import javax.vecmath.Point3d;
 
 class ConfigPhysicalBody extends ConfigObject {
 

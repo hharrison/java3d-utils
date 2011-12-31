@@ -44,15 +44,13 @@
 
 package com.sun.j3d.utils.scenegraph.io;
 
-import java.io.File;
-import java.io.IOException;
 import java.io.DataOutputStream;
+import java.io.IOException;
 import java.util.HashMap;
 
 import javax.media.j3d.BranchGroup;
-import javax.media.j3d.SceneGraphObject;
-import javax.media.j3d.CapabilityNotSetException;
 import javax.media.j3d.DanglingReferenceException;
+
 import com.sun.j3d.utils.scenegraph.io.retained.StreamControl;
 import com.sun.j3d.utils.universe.SimpleUniverse;
 

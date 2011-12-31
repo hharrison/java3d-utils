@@ -45,13 +45,7 @@
 package com.sun.j3d.utils.geometry.compression;
 
 import javax.media.j3d.BoundingBox;
-import javax.media.j3d.Bounds;
-import javax.media.j3d.Canvas3D;
 import javax.media.j3d.GeometryArray;
-import javax.media.j3d.PickInfo;
-import javax.media.j3d.PickShape;
-import javax.media.j3d.Transform3D;
-import javax.vecmath.Point3d;
 
 /**
  * The compressed geometry object is used to store geometry in a

@@ -44,9 +44,17 @@
 
 package com.sun.j3d.utils.behaviors.interpolators;
 
-import javax.media.j3d.*;
-import java.util.*;
-import javax.vecmath.*;
+import javax.media.j3d.Alpha;
+import javax.media.j3d.Node;
+import javax.media.j3d.NodeComponent;
+import javax.media.j3d.RestrictedAccessException;
+import javax.media.j3d.Transform3D;
+import javax.media.j3d.TransformGroup;
+import javax.vecmath.Matrix4d;
+import javax.vecmath.Point3f;
+import javax.vecmath.Quat4f;
+import javax.vecmath.Vector3d;
+import javax.vecmath.Vector3f;
 
 
 /**

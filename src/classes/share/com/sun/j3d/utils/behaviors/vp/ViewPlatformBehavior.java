@@ -44,9 +44,11 @@
 
 package com.sun.j3d.utils.behaviors.vp;
 
-import javax.vecmath.*;
-import javax.media.j3d.*;
-import com.sun.j3d.utils.universe.*;
+import javax.media.j3d.Behavior;
+import javax.media.j3d.Transform3D;
+import javax.media.j3d.TransformGroup;
+
+import com.sun.j3d.utils.universe.ViewingPlatform;
 
 /**
  * Abstract class for ViewPlatformBehaviors.  A ViewPlatformBehavior must

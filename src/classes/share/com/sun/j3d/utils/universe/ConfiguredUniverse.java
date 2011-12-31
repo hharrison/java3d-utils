@@ -45,11 +45,14 @@
 package com.sun.j3d.utils.universe;
 
 import java.net.URL;
-import java.net.MalformedURLException;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
-import javax.media.j3d.*;
+
+import javax.media.j3d.Canvas3D;
+import javax.media.j3d.HiResCoord;
+import javax.media.j3d.Locale;
+import javax.media.j3d.View;
 
 /**
  * This utility class creates all the necessary objects on the view side of

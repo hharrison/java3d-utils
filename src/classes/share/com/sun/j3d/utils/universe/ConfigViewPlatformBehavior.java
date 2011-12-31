@@ -44,14 +44,11 @@
 
 package com.sun.j3d.utils.universe ;
 
-import java.lang.reflect.* ;
-import java.util.ArrayList ;
-import javax.vecmath.Matrix4d ;
-import javax.media.j3d.Bounds ;
-import javax.media.j3d.Canvas3D ;
-import javax.media.j3d.Sensor ;
-import javax.media.j3d.Transform3D ;
-import com.sun.j3d.utils.behaviors.vp.ViewPlatformBehavior ;
+import javax.media.j3d.Bounds;
+import javax.media.j3d.Transform3D;
+import javax.vecmath.Matrix4d;
+
+import com.sun.j3d.utils.behaviors.vp.ViewPlatformBehavior;
 
 class ConfigViewPlatformBehavior extends ConfigObject {
 

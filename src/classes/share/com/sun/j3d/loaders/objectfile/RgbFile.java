@@ -44,18 +44,16 @@
 
 package com.sun.j3d.loaders.objectfile;
 
-import java.io.BufferedInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileInputStream;
-import java.io.InputStream;
+import java.awt.Transparency;
+import java.awt.color.ColorSpace;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
+import java.awt.image.ComponentColorModel;
 import java.awt.image.DataBuffer;
 import java.awt.image.DataBufferByte;
-import java.awt.image.ComponentColorModel;
 import java.awt.image.WritableRaster;
-import java.awt.color.ColorSpace;
-import java.awt.Transparency;
+import java.io.BufferedInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 
 class RgbFile extends BufferedInputStream {
 

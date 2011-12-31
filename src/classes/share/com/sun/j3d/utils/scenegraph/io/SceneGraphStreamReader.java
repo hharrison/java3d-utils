@@ -44,14 +44,14 @@
 
 package com.sun.j3d.utils.scenegraph.io;
 
-import java.io.InputStream;
 import java.io.DataInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 
 import javax.media.j3d.BranchGroup;
-import javax.media.j3d.SceneGraphObject;
 import javax.media.j3d.Canvas3D;
+
 import com.sun.j3d.utils.scenegraph.io.retained.StreamControl;
 import com.sun.j3d.utils.universe.ConfiguredUniverse;
 

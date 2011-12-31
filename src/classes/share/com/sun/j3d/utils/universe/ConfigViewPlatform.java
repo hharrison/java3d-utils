@@ -44,14 +44,14 @@
 
 package com.sun.j3d.utils.universe ;
 
-import java.util.ArrayList ;
-import javax.media.j3d.Node ;
-import javax.media.j3d.View ;
-import javax.media.j3d.ViewPlatform ;
-import javax.media.j3d.Transform3D ;
-import javax.media.j3d.TransformGroup ;
-import javax.vecmath.Matrix4d ;
-import com.sun.j3d.utils.behaviors.vp.ViewPlatformBehavior ;
+import java.util.ArrayList;
+
+import javax.media.j3d.Node;
+import javax.media.j3d.Transform3D;
+import javax.media.j3d.TransformGroup;
+import javax.media.j3d.View;
+import javax.media.j3d.ViewPlatform;
+import javax.vecmath.Matrix4d;
 
 class ConfigViewPlatform extends ConfigObject {
 

@@ -44,35 +44,32 @@
 
 package com.sun.j3d.loaders.objectfile;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+
+import javax.media.j3d.BranchGroup;
+import javax.media.j3d.Shape3D;
+import javax.vecmath.Point3f;
+import javax.vecmath.TexCoord2f;
+import javax.vecmath.Vector3f;
+
+import com.sun.j3d.loaders.IncorrectFormatException;
+import com.sun.j3d.loaders.Loader;
+import com.sun.j3d.loaders.ParsingErrorException;
 import com.sun.j3d.loaders.Scene;
 import com.sun.j3d.loaders.SceneBase;
-import com.sun.j3d.loaders.Loader;
-import com.sun.j3d.loaders.IncorrectFormatException;
-import com.sun.j3d.loaders.ParsingErrorException;
-import com.sun.j3d.loaders.objectfile.ObjectFileParser;
-import com.sun.j3d.loaders.objectfile.ObjectFileMaterials;
 import com.sun.j3d.utils.geometry.GeometryInfo;
 import com.sun.j3d.utils.geometry.NormalGenerator;
 import com.sun.j3d.utils.geometry.Stripifier;
-import java.io.FileNotFoundException;
-import java.io.StreamTokenizer;
-import java.io.Reader;
-import java.io.BufferedReader;
-import java.io.BufferedInputStream;
-import java.io.FileReader;
-import java.io.InputStreamReader;
-import java.io.IOException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.HashMap;
-import java.util.StringTokenizer;
-import javax.media.j3d.*;
-import javax.vecmath.Color3f;
-import javax.vecmath.Point3f;
-import javax.vecmath.Vector3f;
-import javax.vecmath.TexCoord2f;
-import java.net.MalformedURLException;
 
 
 

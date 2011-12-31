@@ -44,9 +44,17 @@
 
 package com.sun.j3d.utils.pickfast;
 
-import javax.vecmath.*;
-import javax.media.j3d.*;
-import com.sun.j3d.utils.geometry.Primitive;
+import javax.media.j3d.Geometry;
+import javax.media.j3d.GeometryArray;
+import javax.media.j3d.IndexedGeometryArray;
+import javax.media.j3d.PickInfo;
+import javax.media.j3d.Transform3D;
+import javax.vecmath.Color3f;
+import javax.vecmath.Color4f;
+import javax.vecmath.Point3d;
+import javax.vecmath.TexCoord3f;
+import javax.vecmath.Vector3d;
+import javax.vecmath.Vector3f;
 
 /**
  * Holds information about an intersection of a PickShape with a Node

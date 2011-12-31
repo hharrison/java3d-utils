@@ -44,17 +44,17 @@
 
 package com.sun.j3d.utils.behaviors.sensor ;
 
-import javax.media.j3d.Shape3D ;
-import javax.media.j3d.Material ;
-import javax.media.j3d.Appearance ;
-import javax.media.j3d.Transform3D ;
-import javax.media.j3d.GeometryArray ;
-import javax.media.j3d.TriangleStripArray ;
+import javax.media.j3d.Appearance;
+import javax.media.j3d.GeometryArray;
+import javax.media.j3d.Material;
+import javax.media.j3d.Shape3D;
+import javax.media.j3d.Transform3D;
 import javax.media.j3d.TransparencyAttributes;
-import javax.vecmath.AxisAngle4f ;
-import javax.vecmath.Point3d ;
-import javax.vecmath.Point3f ;
-import javax.vecmath.Vector3f ;
+import javax.media.j3d.TriangleStripArray;
+import javax.vecmath.AxisAngle4f;
+import javax.vecmath.Point3d;
+import javax.vecmath.Point3f;
+import javax.vecmath.Vector3f;
 
 /**
  * A Shape3D representing a beam pointing from the origin of a

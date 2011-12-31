@@ -48,6 +48,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 
+import javax.media.j3d.CapabilityNotSetException;
+
 //
 // The compressed geometry file format supported by this class has a 32
 // byte header followed by multiple compressed geometry objects.

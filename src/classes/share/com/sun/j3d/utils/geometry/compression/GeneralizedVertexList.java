@@ -45,6 +45,7 @@
 package com.sun.j3d.utils.geometry.compression;
 
 import java.util.ArrayList;
+
 import javax.media.j3d.GeometryArray;
 import javax.media.j3d.GeometryStripArray;
 import javax.media.j3d.LineStripArray;

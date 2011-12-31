@@ -44,9 +44,10 @@
 
 package com.sun.j3d.utils.universe ;
 
-import java.lang.reflect.* ;
-import java.util.List ;
-import java.util.ArrayList ;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Base class for all configuration objects.  A ConfigObject processes

@@ -59,9 +59,12 @@
 
 package com.sun.j3d.utils.geometry;
 
-import javax.vecmath.*;
-import java.util.*;
-import com.sun.j3d.utils.geometry.GeometryInfo;
+import java.util.Random;
+
+import javax.vecmath.Point2f;
+import javax.vecmath.Point3f;
+import javax.vecmath.Vector3f;
+
 import com.sun.j3d.internal.J3dUtilsI18N;
 
 /**

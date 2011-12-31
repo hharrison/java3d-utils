@@ -46,8 +46,8 @@ package com.sun.j3d.loaders.lw3d;
 
 
 
-import javax.vecmath.Color3f;
 import javax.media.j3d.Light;
+import javax.vecmath.Color3f;
 
 
 /**

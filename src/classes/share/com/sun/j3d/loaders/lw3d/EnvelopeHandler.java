@@ -45,13 +45,10 @@
 package com.sun.j3d.loaders.lw3d;
 
 import java.io.StreamTokenizer;
-import java.io.IOException;
 import java.lang.reflect.Constructor;
-import com.sun.j3d.loaders.ParsingErrorException;
-import java.lang.ClassNotFoundException;
-import java.lang.InstantiationException;
-import java.lang.IllegalAccessException;
 import java.lang.reflect.InvocationTargetException;
+
+import com.sun.j3d.loaders.ParsingErrorException;
 
 
 /**

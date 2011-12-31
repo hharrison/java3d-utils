@@ -46,13 +46,10 @@ package com.sun.j3d.utils.scenegraph.io;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Iterator;
 
 import javax.media.j3d.BranchGroup;
 import javax.media.j3d.SceneGraphObject;
-import javax.media.j3d.CapabilityNotSetException;
+
 import com.sun.j3d.utils.scenegraph.io.retained.RandomAccessFileControl;
 import com.sun.j3d.utils.universe.SimpleUniverse;
 

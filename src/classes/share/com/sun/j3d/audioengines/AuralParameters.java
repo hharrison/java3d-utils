@@ -44,8 +44,6 @@
 
 package com.sun.j3d.audioengines;
 
-import javax.media.j3d.*;
-import javax.vecmath.*;
 
 /**
  * The AuralParameters Class defines a set of fields that define the

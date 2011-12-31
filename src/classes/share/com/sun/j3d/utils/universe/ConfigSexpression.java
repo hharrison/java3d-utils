@@ -44,13 +44,18 @@
 
 package com.sun.j3d.utils.universe ;
 
-import java.awt.event.* ;
-import java.io.* ;
-import java.lang.Integer ;
-import java.lang.Boolean ;
-import java.util.* ;
-import javax.vecmath.* ;
-import javax.media.j3d.* ;
+import java.io.IOException;
+import java.io.StreamTokenizer;
+import java.util.ArrayList;
+
+import javax.media.j3d.BoundingSphere;
+import javax.media.j3d.Transform3D;
+import javax.vecmath.Matrix3d;
+import javax.vecmath.Matrix4d;
+import javax.vecmath.Point2d;
+import javax.vecmath.Point3d;
+import javax.vecmath.Point4d;
+import javax.vecmath.Vector3d;
 
 class ConfigSexpression {
 

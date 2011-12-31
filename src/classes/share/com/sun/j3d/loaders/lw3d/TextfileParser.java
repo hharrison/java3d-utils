@@ -44,7 +44,9 @@
 
 package com.sun.j3d.loaders.lw3d;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.StreamTokenizer;
+
 import com.sun.j3d.loaders.ParsingErrorException;
 
 /**

@@ -47,7 +47,7 @@ package com.sun.j3d.loaders.lw3d;
 
 
 import java.util.Vector;
-import javax.media.j3d.Group;
+
 import javax.media.j3d.TransformGroup;
 
 /**

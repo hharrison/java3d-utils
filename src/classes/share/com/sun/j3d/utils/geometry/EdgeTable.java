@@ -46,8 +46,6 @@ package com.sun.j3d.utils.geometry;
 
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Set;
-import com.sun.j3d.utils.geometry.Edge;
 
 class EdgeTable {
 

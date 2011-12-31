@@ -46,10 +46,7 @@ package com.sun.j3d.loaders.lw3d;
 
 
 
-import java.io.*;
-import javax.vecmath.Matrix4d;
-import javax.vecmath.Vector3d;
-import javax.vecmath.Point3f;
+import java.io.StreamTokenizer;
 
 /**
  * This class represents one keyframe in an envelope sequence.

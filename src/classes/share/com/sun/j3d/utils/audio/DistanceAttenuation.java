@@ -51,10 +51,9 @@
 
 package com.sun.j3d.utils.audio;
 
-import java.io.* ;
-import javax.vecmath.* ;
-import java.lang.String;
-import javax.media.j3d.*;
+import javax.media.j3d.SoundException;
+import javax.vecmath.Point2f;
+
 import com.sun.j3d.internal.J3dUtilsI18N;
 
 public class DistanceAttenuation

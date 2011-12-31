@@ -44,27 +44,35 @@
 
 package com.sun.j3d.utils.scenegraph.io.state.javax.media.j3d;
 
-import java.io.DataOutput;
-import java.io.DataInput;
+import java.awt.Point;
+import java.awt.image.BufferedImage;
+import java.awt.image.ColorModel;
+import java.awt.image.ComponentColorModel;
+import java.awt.image.DataBuffer;
+import java.awt.image.DataBufferInt;
+import java.awt.image.DirectColorModel;
+import java.awt.image.Raster;
+import java.awt.image.SampleModel;
+import java.awt.image.SinglePixelPackedSampleModel;
+import java.awt.image.WritableRaster;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.DataInput;
 import java.io.DataInputStream;
+import java.io.DataOutput;
 import java.io.DataOutputStream;
+import java.io.IOException;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
-import java.io.IOException;
-import java.awt.Point;
-import java.awt.image.*;
+
 import javax.media.j3d.ImageComponent;
-import com.sun.j3d.utils.scenegraph.io.retained.Controller;
-import com.sun.j3d.utils.scenegraph.io.retained.SymbolTableData;
-import com.sun.j3d.utils.scenegraph.io.retained.SGIORuntimeException;
-import java.awt.color.ColorSpace;
-import java.awt.image.DataBuffer;
-import com.sun.image.codec.jpeg.JPEGImageEncoder;
-import com.sun.image.codec.jpeg.JPEGImageDecoder;
+
 import com.sun.image.codec.jpeg.JPEGCodec;
-import com.sun.image.codec.jpeg.JPEGEncodeParam;
+import com.sun.image.codec.jpeg.JPEGImageDecoder;
+import com.sun.image.codec.jpeg.JPEGImageEncoder;
+import com.sun.j3d.utils.scenegraph.io.retained.Controller;
+import com.sun.j3d.utils.scenegraph.io.retained.SGIORuntimeException;
+import com.sun.j3d.utils.scenegraph.io.retained.SymbolTableData;
 
 public abstract class ImageComponentState extends NodeComponentState {
 

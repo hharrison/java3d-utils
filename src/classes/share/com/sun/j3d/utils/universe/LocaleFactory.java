@@ -44,8 +44,8 @@
 
 package com.sun.j3d.utils.universe;
 
-import javax.media.j3d.Locale;
 import javax.media.j3d.HiResCoord;
+import javax.media.j3d.Locale;
 import javax.media.j3d.VirtualUniverse;
 
 /**

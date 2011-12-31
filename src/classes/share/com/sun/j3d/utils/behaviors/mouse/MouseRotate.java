@@ -44,11 +44,18 @@
 
 package com.sun.j3d.utils.behaviors.mouse;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.util.*;
-import javax.media.j3d.*;
-import javax.vecmath.*;
+import java.awt.AWTEvent;
+import java.awt.Component;
+import java.awt.event.MouseEvent;
+import java.util.Enumeration;
+
+import javax.media.j3d.Transform3D;
+import javax.media.j3d.TransformGroup;
+import javax.media.j3d.WakeupCriterion;
+import javax.media.j3d.WakeupOnAWTEvent;
+import javax.media.j3d.WakeupOnBehaviorPost;
+import javax.vecmath.Matrix4d;
+import javax.vecmath.Vector3d;
 
 /**
  * MouseRotate is a Java3D behavior object that lets users control the

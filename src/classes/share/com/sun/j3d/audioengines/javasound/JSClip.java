@@ -49,13 +49,12 @@
 
 package com.sun.j3d.audioengines.javasound;
 
-import java.applet.*;
-import java.util.*;
-import java.lang.String;
-import java.net.*;
-import java.io.*;
-import java.io.InputStream;
-import javax.sound.sampled.*;
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.DataLine;
+import javax.sound.sampled.LineEvent;
 
 /**
  * The JSClip Class defines an audio output methods that call JavaSound

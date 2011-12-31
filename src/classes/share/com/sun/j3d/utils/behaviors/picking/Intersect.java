@@ -44,9 +44,14 @@
 
 package com.sun.j3d.utils.behaviors.picking;
 
-import javax.media.j3d.*;
-import javax.vecmath.*;
-import java.lang.Math;
+import javax.media.j3d.PickPoint;
+import javax.media.j3d.PickRay;
+import javax.media.j3d.PickSegment;
+import javax.vecmath.Point3d;
+import javax.vecmath.Point3f;
+import javax.vecmath.Tuple3d;
+import javax.vecmath.Vector3d;
+
 import com.sun.j3d.internal.J3dUtilsI18N;
 
 /*

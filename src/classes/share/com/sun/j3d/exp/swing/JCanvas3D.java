@@ -44,7 +44,6 @@
 
 package com.sun.j3d.exp.swing;
 
-import com.sun.j3d.exp.swing.impl.AutoOffScreenCanvas3D;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.GraphicsConfigTemplate;
@@ -54,10 +53,13 @@ import java.awt.GraphicsEnvironment;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.lang.reflect.InvocationTargetException;
+
 import javax.media.j3d.Canvas3D;
 import javax.media.j3d.GraphicsConfigTemplate3D;
 import javax.swing.JPanel;
 import javax.swing.event.AncestorListener;
+
+import com.sun.j3d.exp.swing.impl.AutoOffScreenCanvas3D;
 
 
 /**

@@ -44,15 +44,9 @@
 
 package com.sun.j3d.loaders.lw3d;
 
-import javax.vecmath.*;
-import java.util.BitSet;
-import java.util.Enumeration;
-
 import javax.media.j3d.Alpha;
-import javax.media.j3d.Node;
-import javax.media.j3d.NodeReferenceTable;
-import javax.media.j3d.SceneGraphObject;
 import javax.media.j3d.Interpolator;
+
 import com.sun.j3d.internal.J3dUtilsI18N;
 
 /**

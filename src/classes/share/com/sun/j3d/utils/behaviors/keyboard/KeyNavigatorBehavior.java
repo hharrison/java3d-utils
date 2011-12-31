@@ -44,13 +44,22 @@
 
 package com.sun.j3d.utils.behaviors.keyboard;
 
-import java.awt.event.*;
 import java.awt.AWTEvent;
-import java.util.Enumeration;
 import java.awt.Component;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.util.Enumeration;
 import java.util.LinkedList;
-import javax.vecmath.*;
-import javax.media.j3d.*;
+
+import javax.media.j3d.Behavior;
+import javax.media.j3d.TransformGroup;
+import javax.media.j3d.WakeupCondition;
+import javax.media.j3d.WakeupCriterion;
+import javax.media.j3d.WakeupOnAWTEvent;
+import javax.media.j3d.WakeupOnBehaviorPost;
+import javax.media.j3d.WakeupOnElapsedFrames;
+import javax.media.j3d.WakeupOr;
+
 import com.sun.j3d.internal.J3dUtilsI18N;
 
 /**

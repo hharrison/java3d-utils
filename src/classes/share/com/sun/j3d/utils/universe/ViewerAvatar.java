@@ -44,8 +44,7 @@
 
 package com.sun.j3d.utils.universe;
 
-import javax.media.j3d.*;
-import javax.vecmath.*;
+import javax.media.j3d.BranchGroup;
 
 /**
  * This class holds geomtry that should be associated with the View's

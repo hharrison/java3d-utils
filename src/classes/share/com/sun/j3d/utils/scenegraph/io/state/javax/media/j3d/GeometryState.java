@@ -46,8 +46,6 @@ package com.sun.j3d.utils.scenegraph.io.state.javax.media.j3d;
 
 import com.sun.j3d.utils.scenegraph.io.retained.Controller;
 import com.sun.j3d.utils.scenegraph.io.retained.SymbolTableData;
-import javax.media.j3d.NodeComponent;
-import javax.media.j3d.Geometry;
 
 public abstract class GeometryState extends NodeComponentState {
 

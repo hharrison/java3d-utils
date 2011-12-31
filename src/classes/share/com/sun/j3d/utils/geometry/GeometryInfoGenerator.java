@@ -46,24 +46,33 @@ package com.sun.j3d.utils.geometry;
 
 import javax.media.j3d.GeometryArray;
 import javax.media.j3d.GeometryStripArray;
-import javax.media.j3d.TriangleFanArray;
-import javax.media.j3d.TriangleStripArray;
-import javax.media.j3d.TriangleArray;
-import javax.media.j3d.QuadArray;
 import javax.media.j3d.IndexedGeometryArray;
 import javax.media.j3d.IndexedGeometryStripArray;
 import javax.media.j3d.IndexedQuadArray;
 import javax.media.j3d.IndexedTriangleArray;
 import javax.media.j3d.IndexedTriangleFanArray;
 import javax.media.j3d.IndexedTriangleStripArray;
-import javax.vecmath.*;
-import com.sun.j3d.utils.geometry.GeometryInfo;
-import com.sun.j3d.internal.J3dUtilsI18N;
+import javax.media.j3d.J3DBuffer;
+import javax.media.j3d.QuadArray;
+import javax.media.j3d.TriangleArray;
+import javax.media.j3d.TriangleFanArray;
+import javax.media.j3d.TriangleStripArray;
+import javax.vecmath.Color3b;
+import javax.vecmath.Color3f;
+import javax.vecmath.Color4b;
+import javax.vecmath.Color4f;
+import javax.vecmath.Point3d;
+import javax.vecmath.Point3f;
+import javax.vecmath.TexCoord2f;
+import javax.vecmath.TexCoord3f;
+import javax.vecmath.TexCoord4f;
+import javax.vecmath.Vector3f;
+
 import com.sun.j3d.internal.BufferWrapper;
 import com.sun.j3d.internal.ByteBufferWrapper;
-import com.sun.j3d.internal.FloatBufferWrapper;
 import com.sun.j3d.internal.DoubleBufferWrapper;
-import javax.media.j3d.J3DBuffer;
+import com.sun.j3d.internal.FloatBufferWrapper;
+import com.sun.j3d.internal.J3dUtilsI18N;
 
 
 

@@ -45,6 +45,7 @@
 package com.sun.j3d.utils.compression;
 
 import java.io.IOException;
+
 import javax.media.j3d.CompressedGeometry;
 import javax.media.j3d.CompressedGeometryHeader;
 import javax.vecmath.Point3d;

@@ -44,26 +44,19 @@
 
 package com.sun.j3d.loaders.lw3d;
 
-import java.awt.Component;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
-import java.awt.image.DataBufferInt;
-import java.io.FileReader;
-import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.Vector;
-import java.util.Enumeration;
 import java.util.Hashtable;
-import javax.vecmath.Color3f;
-import javax.vecmath.Vector3f;
-import com.sun.j3d.utils.image.TextureLoader;
+
 import javax.media.j3d.Texture;
 import javax.media.j3d.Texture2D;
-import javax.media.j3d.ImageComponent;
-import javax.media.j3d.ImageComponent2D;
-import com.sun.j3d.loaders.lw3d.LWOBFileReader;
-import java.io.FileNotFoundException;
+import javax.vecmath.Color3f;
+import javax.vecmath.Vector3f;
+
 import com.sun.j3d.loaders.ParsingErrorException;
+import com.sun.j3d.utils.image.TextureLoader;
 
 /**
  * This class is responsible for parsing the binary data in an Object file

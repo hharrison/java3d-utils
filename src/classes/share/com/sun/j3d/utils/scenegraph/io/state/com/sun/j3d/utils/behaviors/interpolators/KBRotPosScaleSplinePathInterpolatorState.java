@@ -44,19 +44,18 @@
 
 package com.sun.j3d.utils.scenegraph.io.state.com.sun.j3d.utils.behaviors.interpolators;
 
-import java.io.IOException;
 import java.io.DataInput;
 import java.io.DataOutput;
+import java.io.IOException;
+
 import javax.media.j3d.SceneGraphObject;
 import javax.media.j3d.Transform3D;
 import javax.media.j3d.TransformGroup;
-import javax.vecmath.Point3f;
-import javax.vecmath.Quat4f;
+
+import com.sun.j3d.utils.behaviors.interpolators.KBKeyFrame;
+import com.sun.j3d.utils.behaviors.interpolators.KBRotPosScaleSplinePathInterpolator;
 import com.sun.j3d.utils.scenegraph.io.retained.Controller;
 import com.sun.j3d.utils.scenegraph.io.retained.SymbolTableData;
-import com.sun.j3d.utils.scenegraph.io.state.javax.media.j3d.InterpolatorState;
-import com.sun.j3d.utils.behaviors.interpolators.KBRotPosScaleSplinePathInterpolator;
-import com.sun.j3d.utils.behaviors.interpolators.KBKeyFrame;
 import com.sun.j3d.utils.scenegraph.io.state.javax.media.j3d.TransformInterpolatorState;
 
 public class KBRotPosScaleSplinePathInterpolatorState extends TransformInterpolatorState {

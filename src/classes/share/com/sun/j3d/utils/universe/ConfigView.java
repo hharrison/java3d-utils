@@ -44,9 +44,14 @@
 
 package com.sun.j3d.utils.universe ;
 
-import java.util.* ;
-import javax.media.j3d.* ;
-import javax.vecmath.* ;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
+
+import javax.media.j3d.PhysicalBody;
+import javax.media.j3d.PhysicalEnvironment;
+import javax.media.j3d.View;
+import javax.vecmath.Point3d;
 
 class ConfigView extends ConfigObject {
     /**

@@ -47,24 +47,26 @@ package com.sun.j3d.utils.scenegraph.io.state.com.sun.j3d.utils.universe;
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
-import java.util.Enumeration;
 import java.util.ArrayList;
-import javax.media.j3d.TransformGroup;
-import javax.media.j3d.Transform3D;
-import javax.media.j3d.HiResCoord;
-import javax.media.j3d.Locale;
+import java.util.Enumeration;
+
 import javax.media.j3d.BranchGroup;
 import javax.media.j3d.Canvas3D;
+import javax.media.j3d.HiResCoord;
+import javax.media.j3d.Locale;
+import javax.media.j3d.Transform3D;
+import javax.media.j3d.TransformGroup;
 import javax.vecmath.Matrix4d;
-import com.sun.j3d.utils.universe.MultiTransformGroup;
-import com.sun.j3d.utils.universe.ViewingPlatform;
-import com.sun.j3d.utils.universe.ViewerAvatar;
-import com.sun.j3d.utils.universe.PlatformGeometry;
+
 import com.sun.j3d.utils.scenegraph.io.retained.Controller;
 import com.sun.j3d.utils.scenegraph.io.retained.SymbolTableData;
 import com.sun.j3d.utils.scenegraph.io.state.javax.media.j3d.SceneGraphObjectState;
-import com.sun.j3d.utils.universe.SimpleUniverse;
 import com.sun.j3d.utils.universe.ConfiguredUniverse;
+import com.sun.j3d.utils.universe.MultiTransformGroup;
+import com.sun.j3d.utils.universe.PlatformGeometry;
+import com.sun.j3d.utils.universe.SimpleUniverse;
+import com.sun.j3d.utils.universe.ViewerAvatar;
+import com.sun.j3d.utils.universe.ViewingPlatform;
 
 public class SimpleUniverseState extends java.lang.Object {
 

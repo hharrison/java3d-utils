@@ -46,17 +46,14 @@ package com.sun.j3d.loaders.lw3d;
 
 
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.Vector;
-import java.util.Date;
+import java.net.URL;
 import java.util.Enumeration;
-import com.sun.j3d.loaders.lw3d.LWOBFileReader;
-import com.sun.j3d.internal.J3dUtilsI18N;
-import java.net.*;
-import com.sun.j3d.loaders.ParsingErrorException;
+import java.util.Vector;
+
 import com.sun.j3d.loaders.IncorrectFormatException;
+import com.sun.j3d.loaders.ParsingErrorException;
 
 
 /**

@@ -44,11 +44,12 @@
 
 package com.sun.j3d.utils.universe ;
 
-import java.text.DecimalFormat ;
-import java.text.FieldPosition ;
-import java.util.Collection ;
-import javax.vecmath.Matrix3d ;
-import javax.vecmath.Matrix4d ;
+import java.text.DecimalFormat;
+import java.text.FieldPosition;
+import java.util.Collection;
+
+import javax.vecmath.Matrix3d;
+import javax.vecmath.Matrix4d;
 
 /**
  * Contains the elements which compose a configuration file command,

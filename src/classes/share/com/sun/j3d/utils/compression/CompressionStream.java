@@ -44,14 +44,10 @@
 
 package com.sun.j3d.utils.compression;
 
-import com.sun.j3d.internal.BufferWrapper;
-import com.sun.j3d.internal.ByteBufferWrapper;
-import com.sun.j3d.internal.DoubleBufferWrapper;
-import com.sun.j3d.internal.FloatBufferWrapper;
-import com.sun.j3d.utils.geometry.GeometryInfo;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
+
 import javax.media.j3d.Appearance;
 import javax.media.j3d.CompressedGeometryHeader;
 import javax.media.j3d.Geometry;
@@ -80,6 +76,12 @@ import javax.vecmath.Point3d;
 import javax.vecmath.Point3f;
 import javax.vecmath.Point3i;
 import javax.vecmath.Vector3f;
+
+import com.sun.j3d.internal.BufferWrapper;
+import com.sun.j3d.internal.ByteBufferWrapper;
+import com.sun.j3d.internal.DoubleBufferWrapper;
+import com.sun.j3d.internal.FloatBufferWrapper;
+import com.sun.j3d.utils.geometry.GeometryInfo;
 
 /**
  * This class is used as input to a geometry compressor.  It collects elements

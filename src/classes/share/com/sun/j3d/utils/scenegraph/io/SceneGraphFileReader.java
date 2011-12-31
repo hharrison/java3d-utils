@@ -44,16 +44,14 @@
 
 package com.sun.j3d.utils.scenegraph.io;
 
-import java.io.File;
 import java.io.IOException;
 
-import javax.media.j3d.VirtualUniverse;
 import javax.media.j3d.BranchGroup;
-import javax.media.j3d.SceneGraphObject;
 import javax.media.j3d.Canvas3D;
-import com.sun.j3d.utils.universe.ConfiguredUniverse;
+import javax.media.j3d.SceneGraphObject;
 
 import com.sun.j3d.utils.scenegraph.io.retained.RandomAccessFileControl;
+import com.sun.j3d.utils.universe.ConfiguredUniverse;
 
 /**
  * Read Java3D BranchGraphs and/or Universe from a file. Individual branchgraphs or an

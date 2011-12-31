@@ -44,18 +44,30 @@
 
 package com.sun.j3d.utils.image;
 
-import javax.media.j3d.*;
-import java.awt.Image;
 import java.awt.Component;
+import java.awt.Image;
 import java.awt.Transparency;
 import java.awt.color.ColorSpace;
 import java.awt.geom.AffineTransform;
-import java.awt.image.*;
+import java.awt.image.BufferedImage;
+import java.awt.image.ColorModel;
+import java.awt.image.ComponentColorModel;
+import java.awt.image.DataBuffer;
+import java.awt.image.ImageObserver;
+import java.awt.image.PixelInterleavedSampleModel;
+import java.awt.image.RenderedImage;
+import java.awt.image.SampleModel;
+import java.awt.image.WritableRaster;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.lang.reflect.Method;
+
 import javax.imageio.ImageIO;
+import javax.media.j3d.Canvas3D;
+import javax.media.j3d.ImageComponent;
+import javax.media.j3d.ImageComponent2D;
+import javax.media.j3d.Texture;
+import javax.media.j3d.Texture2D;
 
 /**
  * This class is used for loading a texture from an Image or BufferedImage.

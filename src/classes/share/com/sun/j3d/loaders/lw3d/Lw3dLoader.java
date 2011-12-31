@@ -45,17 +45,33 @@
 package com.sun.j3d.loaders.lw3d;
 
 
-import com.sun.j3d.loaders.*;
-import java.awt.Component;
-import java.io.*;
-import java.util.Vector;
-import java.util.Enumeration;
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.io.StreamTokenizer;
 import java.net.URL;
-import java.net.MalformedURLException;
+import java.util.Enumeration;
+import java.util.Vector;
 
-import javax.media.j3d.*;
+import javax.media.j3d.AmbientLight;
+import javax.media.j3d.Background;
+import javax.media.j3d.Behavior;
+import javax.media.j3d.BoundingSphere;
+import javax.media.j3d.BranchGroup;
+import javax.media.j3d.Fog;
+import javax.media.j3d.TransformGroup;
 import javax.vecmath.Color3f;
 import javax.vecmath.Point3d;
+
+import com.sun.j3d.loaders.IncorrectFormatException;
+import com.sun.j3d.loaders.Loader;
+import com.sun.j3d.loaders.ParsingErrorException;
+import com.sun.j3d.loaders.Scene;
+import com.sun.j3d.loaders.SceneBase;
 
 
 /**

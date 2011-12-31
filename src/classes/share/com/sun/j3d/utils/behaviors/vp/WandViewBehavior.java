@@ -44,11 +44,42 @@
 
 package com.sun.j3d.utils.behaviors.vp ;
 
-import java.util.* ;
-import javax.vecmath.* ;
-import javax.media.j3d.* ;
-import com.sun.j3d.utils.universe.* ;
-import com.sun.j3d.utils.behaviors.sensor.* ;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.Map;
+
+import javax.media.j3d.Appearance;
+import javax.media.j3d.BadTransformException;
+import javax.media.j3d.BoundingSphere;
+import javax.media.j3d.BranchGroup;
+import javax.media.j3d.Group;
+import javax.media.j3d.Material;
+import javax.media.j3d.Sensor;
+import javax.media.j3d.Shape3D;
+import javax.media.j3d.Transform3D;
+import javax.media.j3d.TransformGroup;
+import javax.media.j3d.TransparencyAttributes;
+import javax.media.j3d.View;
+import javax.media.j3d.WakeupCondition;
+import javax.media.j3d.WakeupOnElapsedFrames;
+import javax.vecmath.AxisAngle4d;
+import javax.vecmath.Color3f;
+import javax.vecmath.Matrix3d;
+import javax.vecmath.Matrix4d;
+import javax.vecmath.Point3d;
+import javax.vecmath.Vector3d;
+
+import com.sun.j3d.utils.behaviors.sensor.SensorBeamEcho;
+import com.sun.j3d.utils.behaviors.sensor.SensorButtonListener;
+import com.sun.j3d.utils.behaviors.sensor.SensorEvent;
+import com.sun.j3d.utils.behaviors.sensor.SensorEventAgent;
+import com.sun.j3d.utils.behaviors.sensor.SensorGnomonEcho;
+import com.sun.j3d.utils.behaviors.sensor.SensorInputAdaptor;
+import com.sun.j3d.utils.behaviors.sensor.SensorReadListener;
+import com.sun.j3d.utils.universe.ConfiguredUniverse;
+import com.sun.j3d.utils.universe.SimpleUniverse;
+import com.sun.j3d.utils.universe.Viewer;
+import com.sun.j3d.utils.universe.ViewingPlatform;
 
 /**
  * Manipulates view platform transforms using a motion-tracked wand or mouse

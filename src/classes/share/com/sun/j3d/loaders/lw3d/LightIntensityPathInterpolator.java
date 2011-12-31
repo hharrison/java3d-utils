@@ -44,10 +44,9 @@
 
 package com.sun.j3d.loaders.lw3d;
 
-import java.util.*;
+import java.util.Enumeration;
 
 import javax.media.j3d.Alpha;
-import javax.media.j3d.Light;
 
 /**
  * This Interpolator object modifies the intensity of a Light object

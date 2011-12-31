@@ -44,10 +44,12 @@
 
 package com.sun.j3d.utils.geometry.compression;
 
-import com.sun.j3d.internal.J3dUtilsI18N;
+import javax.media.j3d.Canvas3D;
 import javax.media.j3d.J3DBuffer;
 import javax.media.j3d.Shape3D;
 import javax.vecmath.Point3d;
+
+import com.sun.j3d.internal.J3dUtilsI18N;
 
 /**
  * The compressed geometry object is used to store geometry in a

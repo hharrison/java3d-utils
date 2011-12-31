@@ -44,10 +44,12 @@
 
 package com.sun.j3d.utils.geometry.compression;
 
-import com.sun.j3d.internal.J3dUtilsI18N;
+import javax.media.j3d.CompressedGeometryHeader;
 import javax.vecmath.Color4f;
 import javax.vecmath.Point3f;
 import javax.vecmath.Vector3f;
+
+import com.sun.j3d.internal.J3dUtilsI18N;
 
 /**
  * This abstract class provides the base methods needed to create a geometry
