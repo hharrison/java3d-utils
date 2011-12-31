@@ -59,18 +59,18 @@ public abstract class FogState extends SceneGraphObjectState {
 
     protected int[] scopes;
     protected int boundingLeaf;
-    
+
     public FogState(SymbolTableData symbol,Controller control) {
         super(symbol, control);
     }
-    
-    public void writeObject( DataOutput out ) throws 
+
+    public void writeObject( DataOutput out ) throws
 							IOException {
 
         super.writeObject( out );
-        
-        control.writeBounds( out, ((Fog)node).getInfluencingBounds() );     
-        
+
+        control.writeBounds( out, ((Fog)node).getInfluencingBounds() );
+
         out.writeInt( ((Fog)node).numScopes() );
         for(int i=0; i<((Fog)node).numScopes(); i++)
             out.writeInt( control.getSymbolTable().addReference( ((Fog)node).getScope(i) ) );
@@ -79,7 +79,7 @@ public abstract class FogState extends SceneGraphObjectState {
 
         Color3f clr = new Color3f();
        ((Fog)node).getColor( clr );
-       
+
        control.writeColor3f( out, clr );
     }
 
@@ -91,11 +91,11 @@ public abstract class FogState extends SceneGraphObjectState {
        scopes = new int[ in.readInt() ];
        for(int i=0; i<scopes.length; i++)
            scopes[i] = in.readInt();
-       
+
        boundingLeaf = in.readInt();
        ((Fog)node).setColor( control.readColor3f(in) );
     }
-    
+
     public void buildGraph() {
         for(int i=0; i<scopes.length; i++)
             ((Fog)node).addScope( (Group)control.getSymbolTable().getJ3dNode( scopes[i] ) );

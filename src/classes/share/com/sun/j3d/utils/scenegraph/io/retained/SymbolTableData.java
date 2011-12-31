@@ -64,9 +64,9 @@ public class SymbolTableData extends java.lang.Object {
     public int branchGraphID;
     public long branchGraphFilePointer;
     public boolean graphBuilt = false;
-    
+
     /** Creates new SymbolTableData */
-    public SymbolTableData( int nodeID, 
+    public SymbolTableData( int nodeID,
                             SceneGraphObject j3dNode,
                             SceneGraphObjectState nodeState,
                             int branchGraphID ) {
@@ -86,7 +86,7 @@ public class SymbolTableData extends java.lang.Object {
         out.writeInt( branchGraphID );
         out.writeLong( branchGraphFilePointer );
     }
-    
+
     public void readObject( DataInput in ) throws IOException {
         nodeID = in.readInt();
         referenceCount = in.readInt();
@@ -95,39 +95,39 @@ public class SymbolTableData extends java.lang.Object {
         branchGraphID = in.readInt();
         branchGraphFilePointer = in.readLong();
     }
-    
+
     public final int getNodeID() {
         return nodeID;
     }
-    
+
     public final SceneGraphObjectState getNodeState() {
         return nodeState;
     }
-    
+
     public final void setNodeState( SceneGraphObjectState state ) {
         nodeState = state;
     }
-    
+
     public final SceneGraphObject getJ3dNode() {
         return j3dNode;
     }
-    
+
     public final long getFilePosition() {
         return filePosition;
     }
-    
+
     public final int getReferenceCount() {
         return referenceCount;
     }
-    
+
     public final void incrementReferenceCount() {
         referenceCount++;
     }
-    
+
     public final boolean isNodeComponent() {
         return isNodeComponent;
     }
-    
+
     public String toString() {
         return new String(nodeID +" "+ filePosition+"  "+j3dNode);
     }

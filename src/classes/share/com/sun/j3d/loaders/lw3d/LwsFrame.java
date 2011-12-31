@@ -137,7 +137,7 @@ class LwsFrame extends TextfileParser {
     }
 
     /**
-     * Using hermite interpolation construct a new frame that's 
+     * Using hermite interpolation construct a new frame that's
      * in-between two given frames. We also need to be given a
      * frame before the first frame and a frame after the second
      * frame. The calling function will make sure that we get the
@@ -146,8 +146,8 @@ class LwsFrame extends TextfileParser {
      * Ratio gives the interpolation value for how far in-between
      * the new frame should be.  (.5 is half-way, etc.)
      */
-    LwsFrame(LwsFrame prevFrame, LwsFrame frame1, 
-             LwsFrame frame2, LwsFrame nextFrame, double u, 
+    LwsFrame(LwsFrame prevFrame, LwsFrame frame1,
+             LwsFrame frame2, LwsFrame nextFrame, double u,
              double adj0, double adj1) {
 
         double h1, h2, h3, h4;
@@ -155,57 +155,57 @@ class LwsFrame extends TextfileParser {
 
         // pre-compute spline coefficients
         double u2, u3, z1;
-        u2 = u * u; 
+        u2 = u * u;
         u3 = u2 *u;
         z1 = 3.0f *u2 - u3 - u3;
-        h1 = 1.0f - z1; 
+        h1 = 1.0f - z1;
         h2 = z1;
         h3 = u3 - u2 - u2 + u;
         h4 = u3 - u2;
 
-        dd0a = (1.0f - frame1.tension) * (1.0f + frame1.continuity) 
+        dd0a = (1.0f - frame1.tension) * (1.0f + frame1.continuity)
                                        * (1.0f + frame1.bias);
 
-        dd0b = (1.0f - frame1.tension) * (1.0f - frame1.continuity) 
+        dd0b = (1.0f - frame1.tension) * (1.0f - frame1.continuity)
                                        * (1.0f - frame1.bias);
 
-        ds1a = (1.0f - frame2.tension) * (1.0f - frame2.continuity) 
+        ds1a = (1.0f - frame2.tension) * (1.0f - frame2.continuity)
                                        * (1.0f + frame2.bias);
 
-        ds1b = (1.0f - frame2.tension) * (1.0f + frame2.continuity) 
+        ds1b = (1.0f - frame2.tension) * (1.0f + frame2.continuity)
                                        * (1.0f - frame2.bias);
 
         double[] v = new double[4];
 
         // interpolate x, y, z
-        v[0] = prevFrame.x; v[1] = frame1.x; 
+        v[0] = prevFrame.x; v[1] = frame1.x;
         v[2] = frame2.x; v[3] = nextFrame.x;
-        x = computeInterpolation (v, dd0a, dd0b, ds1a, ds1b, 
-                                     adj0, adj1, h1, h2, h3, h4); 
-        v[0] = prevFrame.y; v[1] = frame1.y; 
+        x = computeInterpolation (v, dd0a, dd0b, ds1a, ds1b,
+                                     adj0, adj1, h1, h2, h3, h4);
+        v[0] = prevFrame.y; v[1] = frame1.y;
         v[2] = frame2.y; v[3] = nextFrame.y;
-        y = computeInterpolation (v, dd0a, dd0b, ds1a, ds1b, 
-                                     adj0, adj1, h1, h2, h3, h4); 
-        v[0] = prevFrame.z; v[1] = frame1.z; 
+        y = computeInterpolation (v, dd0a, dd0b, ds1a, ds1b,
+                                     adj0, adj1, h1, h2, h3, h4);
+        v[0] = prevFrame.z; v[1] = frame1.z;
         v[2] = frame2.z; v[3] = nextFrame.z;
-        z = computeInterpolation (v, dd0a, dd0b, ds1a, ds1b, 
-                                     adj0, adj1, h1, h2, h3, h4); 
+        z = computeInterpolation (v, dd0a, dd0b, ds1a, ds1b,
+                                     adj0, adj1, h1, h2, h3, h4);
 
-        // interpolate heading pitch and bank 
-        v[0] = prevFrame.heading; v[1] = frame1.heading; 
+        // interpolate heading pitch and bank
+        v[0] = prevFrame.heading; v[1] = frame1.heading;
         v[2] = frame2.heading ; v[3] = nextFrame.heading;
-        heading = computeInterpolation (v, dd0a, dd0b, ds1a, ds1b, 
-                                      adj0, adj1, h1, h2, h3, h4); 
+        heading = computeInterpolation (v, dd0a, dd0b, ds1a, ds1b,
+                                      adj0, adj1, h1, h2, h3, h4);
 
-        v[0] = prevFrame.pitch; v[1] = frame1.pitch; 
+        v[0] = prevFrame.pitch; v[1] = frame1.pitch;
         v[2] = frame2.pitch; v[3] = nextFrame.pitch;
-        pitch = computeInterpolation (v, dd0a, dd0b, ds1a, ds1b, 
-                                      adj0, adj1, h1, h2, h3, h4); 
+        pitch = computeInterpolation (v, dd0a, dd0b, ds1a, ds1b,
+                                      adj0, adj1, h1, h2, h3, h4);
 
-        v[0] = prevFrame.bank; v[1] = frame1.bank; 
+        v[0] = prevFrame.bank; v[1] = frame1.bank;
         v[2] = frame2.bank; v[3] = nextFrame.bank;
-        bank = computeInterpolation (v, dd0a, dd0b, ds1a, ds1b, 
-                                      adj0, adj1, h1, h2, h3, h4); 
+        bank = computeInterpolation (v, dd0a, dd0b, ds1a, ds1b,
+                                      adj0, adj1, h1, h2, h3, h4);
 
         // interpolate scale - scale interpolation is assumed to be linear
 	xScale = frame1.xScale + (frame2.xScale - frame1.xScale) * u;
@@ -220,33 +220,33 @@ class LwsFrame extends TextfileParser {
 	linearValue = frame2.linearValue;
 
         // We need to keep the spline smooth between knot points
-	tension = 0.0; 
-	continuity = 0.0; 
-	bias = 0.0; 
+	tension = 0.0;
+	continuity = 0.0;
+	bias = 0.0;
     }
 
-   
-    double computeInterpolation(double[] value, double dd0a, 
-                                double dd0b, double ds1a, 
-                                double ds1b, double adj0, 
+
+    double computeInterpolation(double[] value, double dd0a,
+                                double dd0b, double ds1a,
+                                double ds1b, double adj0,
                                 double adj1, double h1,
                                 double h2, double h3, double h4) {
 
         double dd0, ds1;
-        double delta = value[2] - value[1] ; 
+        double delta = value[2] - value[1] ;
         double result;
 
         // if adj != 0
-        if (adj0 < -0.0001 || adj0 > 0.0001) 
+        if (adj0 < -0.0001 || adj0 > 0.0001)
           dd0 = adj0 * (dd0a * (value[1] - value[0]) + dd0b * delta);
-        else 
-          dd0 = 0.5f * (dd0a + dd0b) * delta; 
+        else
+          dd0 = 0.5f * (dd0a + dd0b) * delta;
 
         // if adj != 0
-        if (adj1 < -0.0001 || adj1 > 0.0001) 
-          ds1 = adj1 * (ds1a * delta + ds1b * (value[3] - value[2])); 
-        else 
-          ds1 = 0.5f * (ds1a + ds1b) * delta; 
+        if (adj1 < -0.0001 || adj1 > 0.0001)
+          ds1 = adj1 * (ds1a * delta + ds1b * (value[3] - value[2]));
+        else
+          ds1 = 0.5f * (ds1a + ds1b) * delta;
 
         result = value[1] * h1 + value[2] * h2 + dd0 * h3 + ds1 * h4;
 
@@ -256,11 +256,11 @@ class LwsFrame extends TextfileParser {
     double getHeading() {
 	return heading;
     }
-    
+
     double getPitch() {
 	return pitch;
     }
-    
+
     double getBank() {
 	return bank;
     }
@@ -274,7 +274,7 @@ class LwsFrame extends TextfileParser {
 	mat.setTranslation(new Vector3d(x, y, z));
 	Matrix4d m = new Matrix4d();
 	m.setColumn(0, xScale, 0, 0, 0);  // setScale not yet implemented
-	m.setColumn(1, 0, yScale, 0, 0); 
+	m.setColumn(1, 0, yScale, 0, 0);
 	m.setColumn(2, 0, 0, zScale, 0);
 	m.setColumn(3, 0, 0, 0, 1);
 	mat.mul(m);
@@ -336,6 +336,6 @@ class LwsFrame extends TextfileParser {
 	debugOutputLn(VALUES, "         bias = " + bias);
     }
 
-}	
+}
 
 

@@ -57,18 +57,18 @@ import javax.vecmath.Color4f;
 import javax.vecmath.Point3f;
 
 public abstract class TextureState extends NodeComponentState {
-    
+
     private int[] imageComponents;
     protected int width;
     protected int height;
     protected int format;
     protected int mipMapMode;
     protected int boundaryWidth;
-    
-    
+
+
     public TextureState( SymbolTableData symbol, Controller control ) {
         super(symbol, control);
-        
+
         if (node!=null) {       // Node is null during a load
 	    if ( !(node instanceof TextureCubeMap) ) {
 		ImageComponent[] images = ((Texture)node).getImages();
@@ -78,9 +78,9 @@ public abstract class TextureState extends NodeComponentState {
 		}
 	    }
         }
-        
+
     }
-    
+
     public void writeConstructorParams( DataOutput out ) throws IOException {
         super.writeConstructorParams( out );
         out.writeInt( ((Texture)node).getMipMapMode() );
@@ -89,17 +89,17 @@ public abstract class TextureState extends NodeComponentState {
         out.writeInt( ((Texture)node).getFormat() );
         out.writeInt( ((Texture)node).getBoundaryWidth() );
     }
-    
+
     public void readConstructorParams( DataInput in ) throws IOException {
         super.readConstructorParams( in );
-        
+
         mipMapMode = in.readInt();
         width = in.readInt();
         height = in.readInt();
         format = in.readInt();
 	boundaryWidth = in.readInt();
     }
-    
+
     public void writeObject( DataOutput out ) throws IOException {
         super.writeObject( out );
         Texture attr = (Texture)node;
@@ -113,7 +113,7 @@ public abstract class TextureState extends NodeComponentState {
         out.writeInt( imageComponents.length );
         for(int i=0; i<imageComponents.length; i++)
             out.writeInt( imageComponents[i] );
-        
+
         out.writeInt( attr.getMagFilter() );
         out.writeInt( attr.getMinFilter() );
 	out.writeInt( attr.getBaseLevel() );
@@ -150,7 +150,7 @@ public abstract class TextureState extends NodeComponentState {
 	    }
 	}
     }
-    
+
     public void readObject( DataInput in ) throws IOException {
         super.readObject( in );
         Texture attr = (Texture)node;
@@ -162,7 +162,7 @@ public abstract class TextureState extends NodeComponentState {
         imageComponents = new int[ in.readInt() ];
         for(int i=0; i<imageComponents.length; i++)
             imageComponents[i] = in.readInt();
-        
+
         int mag = in.readInt();
         try {
             attr.setMagFilter( mag );
@@ -174,10 +174,10 @@ public abstract class TextureState extends NodeComponentState {
                 attr.setMagFilter( Texture.BASE_LEVEL_LINEAR );
             else if (mag==Texture.MULTI_LEVEL_POINT)
                 attr.setMagFilter( Texture.BASE_LEVEL_POINT );
-            else 
+            else
                 attr.setMagFilter( Texture.FASTEST );
         }
-        
+
         attr.setMinFilter( in.readInt() );
 
 	attr.setBaseLevel( in.readInt() );
@@ -208,14 +208,14 @@ public abstract class TextureState extends NodeComponentState {
 	    attr.setFilter4Func( weights );
 	}
     }
-    
+
     public void addSubReference() {
 	if ( !(node instanceof TextureCubeMap) ) {
 	    for( int i=0; i<imageComponents.length; i++)
 		control.getSymbolTable().incNodeComponentRefCount( imageComponents[i] );
 	}
     }
-    
+
     public void buildGraph() {
 	if ( !(node instanceof TextureCubeMap) ) {
 	    for(int i=0; i<imageComponents.length; i++) {
@@ -226,6 +226,6 @@ public abstract class TextureState extends NodeComponentState {
 
         super.buildGraph(); // Must be last call in method
     }
-    
+
 }
 

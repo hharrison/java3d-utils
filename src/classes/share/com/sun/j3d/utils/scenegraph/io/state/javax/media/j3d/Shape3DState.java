@@ -58,10 +58,10 @@ public class Shape3DState extends LeafState {
 
     private int[] geometry;
     private int appearance;
-    
+
     public Shape3DState( SymbolTableData symbol, Controller control ) {
         super( symbol, control );
-        
+
         if (node!=null) {
             appearance = control.getSymbolTable().addReference( ((Shape3D)node).getAppearance() );
             int length = ((Shape3D)node).numGeometries();
@@ -70,24 +70,24 @@ public class Shape3DState extends LeafState {
                geometry[i] = control.getSymbolTable().addReference( ((Shape3D)node).getGeometry(i) );
         }
     }
-    
+
     public void writeObject( DataOutput out ) throws IOException {
         super.writeObject( out );
-        
+
         control.writeBounds( out, ((Shape3D)node).getCollisionBounds() );
-        
+
         out.writeInt( appearance );
-        
+
         out.writeInt( geometry.length );
         for(int i=0; i<geometry.length; i++)
            out.writeInt( geometry[i] );
     }
-    
+
     public void readObject( DataInput in ) throws IOException {
         super.readObject( in );
         ((Shape3D)node).setCollisionBounds( control.readBounds( in ));
         appearance = in.readInt();
-        
+
         geometry = new int[ in.readInt() ];
         for(int i=0; i<geometry.length; i++) {
             geometry[i] = in.readInt();
@@ -102,17 +102,17 @@ public class Shape3DState extends LeafState {
     public void addSubReference() {
         control.getSymbolTable().incNodeComponentRefCount( appearance );
     }
-    
+
     public void buildGraph() {
         ((Shape3D)node).setAppearance( (Appearance)control.getSymbolTable().getJ3dNode( appearance ) );
-        
+
         ((Shape3D)node).setGeometry( (Geometry)control.getSymbolTable().getJ3dNode( geometry[0] ) );
         for(int i=1; i<geometry.length; i++) {
             ((Shape3D)node).addGeometry( (Geometry)control.getSymbolTable().getJ3dNode( geometry[i] ) );
         }
         super.buildGraph(); // Must be last call in method
     }
-    
+
     protected javax.media.j3d.SceneGraphObject createNode() {
         return new Shape3D();
     }

@@ -83,19 +83,19 @@ public class Text2D extends Shape3D {
 
     // This table caches FontMetrics objects to avoid the huge cost
     // of re-retrieving metrics for a font we've already seen.
-    private static Hashtable metricsTable = new Hashtable(); 
+    private static Hashtable metricsTable = new Hashtable();
     private float rectangleScaleFactor = 1f/256f;
-    
-    private boolean enableTextureWrite = false; 
+
+    private boolean enableTextureWrite = false;
 
     private Color3f   color = new Color3f();
     private String    fontName;
     private int       fontSize, fontStyle;
     private String text;
-    
+
     // max texture dimension, as some font size can be greater than
     // video card max texture size. 2048 is a conservative value.
-    private int MAX_TEXTURE_DIM = 2048; 
+    private int MAX_TEXTURE_DIM = 2048;
 
     // vWidth is the virtual width texture. Value set by setupImage()
     private int vWidth;
@@ -133,12 +133,12 @@ public class Text2D extends Shape3D {
 
     // issue 655
     private Text2D() {
-    	
+
 	    setCapability(Shape3D.ALLOW_GEOMETRY_WRITE);
 	    setCapability(Shape3D.ALLOW_APPEARANCE_READ);
 	    setCapability(Shape3D.ALLOW_APPEARANCE_WRITE);
     }
-    
+
     // issue 655
     public Node cloneNode(boolean forceDuplicate) {
         Text2D t2d = new Text2D();
@@ -152,7 +152,7 @@ public class Text2D extends Shape3D {
         t2d.duplicateNode(this, forceDuplicate);
         return t2d;
     }
-    
+
     /*
      * Changes text of this Text2D to 'text'. All other
      * parameters (color, fontName, fontSize, fontStyle
@@ -161,17 +161,17 @@ public class Text2D extends Shape3D {
      */
     public void setString(String text){
 	this.text = text;
-	
+
 	Texture tex = getAppearance().getTexture();
-	
+
 	// mcneillk: JAVA3D-657
 	if (tex == null) {
 		tex = getAppearance().getTextureUnitState(0).getTexture();
 	}
-	
+
 	int width = tex.getWidth();
-	int height = tex.getHeight();	
-    int oldVW = vWidth; 
+	int height = tex.getHeight();
+    int oldVW = vWidth;
     int oldVH = vHeight;
 
         ImageComponent imageComponent = setupImage(text, color, fontName,
@@ -182,12 +182,12 @@ public class Text2D extends Shape3D {
 	} else {
 	    Texture2D newTex = setupTexture(imageComponent);
 	    // Copy texture attributes except those related to
-	    // mipmap since Texture only set base imageComponent. 
+	    // mipmap since Texture only set base imageComponent.
 
 	    newTex.setBoundaryModeS(tex.getBoundaryModeS());
 	    newTex.setBoundaryModeT(tex.getBoundaryModeT());
 	    newTex.setMinFilter(tex.getMinFilter());
-	    newTex.setMagFilter(tex.getMagFilter());      
+	    newTex.setMagFilter(tex.getMagFilter());
 	    newTex.setEnable(tex.getEnable());
 	    newTex.setAnisotropicFilterMode(tex.getAnisotropicFilterMode());
 	    newTex.setAnisotropicFilterDegree(tex.getAnisotropicFilterDegree());
@@ -199,14 +199,14 @@ public class Text2D extends Shape3D {
 	    }
 	    Color4f c = new Color4f();
 	    tex.getBoundaryColor(c);
-	    newTex.setBoundaryColor(c);      
+	    newTex.setBoundaryColor(c);
 	    newTex.setUserData(tex.getUserData());
-	    
+
 	    // mcneillk: JAVA3D-657
 	    if (getAppearance().getTexture() != null) {
-		    getAppearance().setTexture(newTex);			
+		    getAppearance().setTexture(newTex);
 		} else {
-			getAppearance().getTextureUnitState(0).setTexture(newTex);					
+			getAppearance().getTextureUnitState(0).setTexture(newTex);
 		}
 	}
 	// Does the new text requires a new geometry ?
@@ -251,7 +251,7 @@ public class Text2D extends Shape3D {
     public float getRectangleScaleFactor() {
 	return rectangleScaleFactor;
     }
-    
+
     /**
      * Create the ImageComponent and Texture object.
      */
@@ -268,9 +268,9 @@ public class Text2D extends Shape3D {
 	t2d.setCapability(Texture.ALLOW_SIZE_READ);
 	t2d.setCapability(Texture.ALLOW_ENABLE_READ);
 	t2d.setCapability(Texture.ALLOW_BOUNDARY_MODE_READ);
-	t2d.setCapability(Texture.ALLOW_FILTER_READ); 
-	t2d.setCapability(Texture.ALLOW_BOUNDARY_COLOR_READ); 
-	t2d.setCapability(Texture.ALLOW_ANISOTROPIC_FILTER_READ); 
+	t2d.setCapability(Texture.ALLOW_FILTER_READ);
+	t2d.setCapability(Texture.ALLOW_BOUNDARY_COLOR_READ);
+	t2d.setCapability(Texture.ALLOW_ANISOTROPIC_FILTER_READ);
 	t2d.setCapability(Texture.ALLOW_FILTER4_READ);
 	return t2d;
     }
@@ -331,16 +331,16 @@ public class Text2D extends Shape3D {
 	offscreenGraphics.setColor(myTextColor);
 	offscreenGraphics.drawString(text, 0, height - descent);
 	offscreenGraphics.dispose();
-	//store virtual size	
+	//store virtual size
 	vWidth = width;
 	vHeight = height;
 	// rescale down big images
     if(width > MAX_TEXTURE_DIM || height > MAX_TEXTURE_DIM){
-    	bImage = rescaleImage(bImage);    	
+    	bImage = rescaleImage(bImage);
     }
 
 	ImageComponent imageComponent =
-	    new ImageComponent2D(ImageComponent.FORMAT_RGBA, 
+	    new ImageComponent2D(ImageComponent.FORMAT_RGBA,
 				 bImage);
 
 	imageComponent.setCapability(ImageComponent.ALLOW_SIZE_READ);
@@ -351,19 +351,19 @@ public class Text2D extends Shape3D {
     private BufferedImage rescaleImage(BufferedImage bImage){
     	int width = bImage.getWidth();
     	int height = bImage.getHeight();
-    	
+
     	float sx = (width > MAX_TEXTURE_DIM) ? (float) MAX_TEXTURE_DIM / (float)width  : 1.0f;
     	float sy = (height > MAX_TEXTURE_DIM)? (float) MAX_TEXTURE_DIM / (float)height : 1.0f;
-    	    	    	
+
     	width = Math.round((float) width * sx);
     	height = Math.round((float)height * sy);
-    	
+
     	Image scaledImage = bImage.getScaledInstance(width, height, Image.SCALE_AREA_AVERAGING);
     	bImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
     	Graphics2D g = bImage.createGraphics();
     	g.drawImage(scaledImage, 0,0, null);
     	g.dispose();
-    	
+
     	return  bImage;
     }
 
@@ -388,12 +388,12 @@ public class Text2D extends Shape3D {
 	    (-1f), 0f,
 	    (-1f), -1f
 	};
-	
+
 	QuadArray rect = new QuadArray(4, QuadArray.COORDINATES |
 				       QuadArray.TEXTURE_COORDINATE_2);
 	rect.setCoordinates(0, verts1);
 	rect.setTextureCoordinates(0, 0, texCoords);
-	
+
 	return rect;
     }
 
@@ -406,7 +406,7 @@ public class Text2D extends Shape3D {
      */
     private Appearance setupAppearance(Texture2D t2d) {
     Appearance appearance = getAppearance();
-    
+
     if (appearance == null) {
 	TransparencyAttributes transp = new TransparencyAttributes();
 	transp.setTransparencyMode(TransparencyAttributes.BLENDED);
@@ -421,10 +421,10 @@ public class Text2D extends Shape3D {
 			appearance.setCapability(Appearance.ALLOW_TEXTURE_WRITE);
 			appearance.setCapability(Appearance.ALLOW_TEXTURE_READ);
 			appearance.setCapabilityIsFrequent(Appearance.ALLOW_TEXTURE_READ);
-		}else{			
+		}else{
 			appearance.setTexture(t2d);
 		}
-	
+
 	return appearance;
     }
 
@@ -463,7 +463,7 @@ public class Text2D extends Shape3D {
     public int getFontSize() {
 	return fontSize;
     }
-    
+
     /**
      * Returns the font style
      *
@@ -472,7 +472,7 @@ public class Text2D extends Shape3D {
     public int getFontStyle() {
 	return fontStyle;
     }
-    
+
 }
 
 

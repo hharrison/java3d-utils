@@ -152,7 +152,7 @@ class ObjectFileParser extends StreamTokenizer {
      *
      *	Gets a number from the stream.  Note that we don't recognize
      *	numbers in the tokenizer automatically because numbers might be in
-     *	scientific notation, which isn't processed correctly by 
+     *	scientific notation, which isn't processed correctly by
      *	StreamTokenizer.  The number is returned in nval.
      */
     void getNumber() throws ParsingErrorException {

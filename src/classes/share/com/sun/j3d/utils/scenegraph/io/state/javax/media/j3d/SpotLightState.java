@@ -81,9 +81,9 @@ public class SpotLightState extends LightState {
 	}
 
 	public void readObject(DataInput in) throws IOException {
-		
+
 		super.readObject(in);
-		
+
 		// issue 654: add missing attributes, since we should really inherit
 		// from PointLightState
 		if (control.getCurrentFileVersion() >= 5) {

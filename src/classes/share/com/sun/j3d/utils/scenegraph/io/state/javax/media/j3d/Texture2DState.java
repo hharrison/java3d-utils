@@ -56,7 +56,7 @@ import javax.media.j3d.ImageComponent2D;
 public class Texture2DState extends TextureState {
 
     private int detailImage=0;
-    
+
     public Texture2DState( SymbolTableData symbol, Controller control ) {
         super(symbol, control);
 
@@ -118,7 +118,7 @@ public class Texture2DState extends TextureState {
 	t.setDetailImage( (ImageComponent2D)control.getSymbolTable().getJ3dNode( detailImage ) );
 	super.buildGraph();  // Must be last call in method
     }
-       
+
     public SceneGraphObject createNode( Class j3dClass ) {
         return createNode( j3dClass, new Class[] { Integer.TYPE,
                                                    Integer.TYPE,
@@ -131,10 +131,10 @@ public class Texture2DState extends TextureState {
                                                     new Integer( height ),
 						    new Integer( boundaryWidth ) } );
     }
-    
+
     protected javax.media.j3d.SceneGraphObject createNode() {
         return new Texture2D( mipMapMode, format, width, height, boundaryWidth );
     }
 
-    
+
 }

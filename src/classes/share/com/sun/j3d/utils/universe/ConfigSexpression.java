@@ -120,7 +120,7 @@ class ConfigSexpression {
 	    // A close paren finishes the scan.
 	    if (tok == ')')
 		break ;
-	    
+
 	    // Check for too many arguments.
 	    if (i >= 20)
 		syntaxError(st, file, "Too many arguments") ;
@@ -202,7 +202,7 @@ class ConfigSexpression {
 	if (elements.get(0) instanceof Double) {
 	    if (elements.size() == 1)
 		syntaxError(st, file, "Can't have single-element vector") ;
-	    
+
 	    // Point2D
 	    if (elements.size() == 2) {
 		if (!(elements.get(1) instanceof Double))
@@ -358,7 +358,7 @@ class ConfigSexpression {
     /**
      * This method gets called from the s-expression parser to evaluate a
      * built-in command.
-     * 
+     *
      * @param elements tokenized list of sexp elements
      * @return object representing result of evaluation
      */
@@ -395,10 +395,10 @@ class ConfigSexpression {
 
     /**
      * Processes the built-in command (Translate x y z).
-     * 
+     *
      * @param elements ArrayList containing Doubles wrapping x, y, and z
      * translation components at indices 1, 2, and 3 respectively
-     * 
+     *
      * @return matrix that translates by the given x, y, and z components
      */
     private Matrix4d makeTranslate(ArrayList elements) {
@@ -424,13 +424,13 @@ class ConfigSexpression {
 
     /**
      * Processes the (Rotate x y z) built-in command.
-     * 
+     *
      * @param elements ArrayList containing Doubles wrapping x, y, and z Euler
      * angles at indices 1, 2, and 3 respectively
-     * 
+     *
      * @return matrix that rotates by the given Euler angles around static X,
      * Y, and Z basis vectors: first about X, then Y, and then Z
-     * 
+     *
      * @see Transform3D#setEuler()
      */
     private Matrix4d makeRotate(ArrayList elements) {
@@ -464,10 +464,10 @@ class ConfigSexpression {
      * (Concatenate m1 m2) built-in commands. Although these do exactly the
      * same thing, using the appropriate command is recommended in order to
      * explicitly describe the sequence of transforms and their intent.
-     * 
+     *
      * @param elements ArrayList containing Matrix4d objects m1 and m2 at
      * indices 1 and 2 respectively
-     * 
+     *
      * @return matrix that concatenates m1 and m2 in that order: if a point is
      * transformed by the resulting matrix, then in effect the points are
      * first transformed by m1 and then m2
@@ -499,11 +499,11 @@ class ConfigSexpression {
     /**
      * Processes the built-in command (BoundingSphere center radius).
      * This is used when configuring behaviors.
-     * 
+     *
      * @param elements ArrayList containing Point3d at index 1 for the sphere
      * center and Double at index 2 wrapping the sphere radius, or the String
      * "infinite" at index 2.
-     * 
+     *
      * @return BoundingSphere with the given center and radius
      */
     private BoundingSphere makeBoundingSphere(ArrayList elements) {

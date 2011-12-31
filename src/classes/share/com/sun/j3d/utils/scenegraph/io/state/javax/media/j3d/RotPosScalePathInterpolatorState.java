@@ -61,14 +61,14 @@ public class RotPosScalePathInterpolatorState extends PathInterpolatorState {
     private Point3f[] positions;
     private Quat4f[] quats;
     private float[] scales;
-    
+
     public RotPosScalePathInterpolatorState(SymbolTableData symbol,Controller control) {
         super( symbol, control );
     }
-    
+
     public void writeConstructorParams( DataOutput out ) throws IOException {
         super.writeConstructorParams( out );
-        
+
         positions = new Point3f[ knots.length ];
         quats = new Quat4f[ knots.length ];
         scales = new float[ knots.length ];
@@ -86,10 +86,10 @@ public class RotPosScalePathInterpolatorState extends PathInterpolatorState {
             out.writeFloat( scales[i] );
         }
     }
-    
+
     public void readConstructorParams( DataInput in ) throws IOException {
         super.readConstructorParams( in );
-        
+
         positions = new Point3f[ knots.length ];
         quats = new Quat4f[ knots.length ];
         scales = new float[ knots.length ];
@@ -99,7 +99,7 @@ public class RotPosScalePathInterpolatorState extends PathInterpolatorState {
             scales[i] = in.readFloat();
         }
     }
-    
+
     public SceneGraphObject createNode( Class j3dClass ) {
         return createNode( j3dClass, new Class[] { javax.media.j3d.Alpha.class,
                                                     TransformGroup.class,
@@ -115,9 +115,9 @@ public class RotPosScalePathInterpolatorState extends PathInterpolatorState {
                                                      quats,
                                                      positions,
                                                      scales } );
-                                                    
+
     }
-    
+
     protected javax.media.j3d.SceneGraphObject createNode() {
         return new RotPosScalePathInterpolator( null, null, new Transform3D(), knots, quats, positions, scales );
     }

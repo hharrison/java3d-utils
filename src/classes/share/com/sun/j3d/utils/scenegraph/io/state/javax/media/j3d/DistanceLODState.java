@@ -54,55 +54,55 @@ import javax.media.j3d.DistanceLOD;
 import javax.vecmath.Point3f;
 
 public class DistanceLODState extends LODState {
-    
+
     private int numDistances;
-    
+
     public DistanceLODState(SymbolTableData symbol,Controller control) {
         super(symbol, control);
     }
-    
+
     public void writeObject( DataOutput out ) throws IOException {
         super.writeObject( out );
-        
-        for(int i=0; i<numDistances; i++) 
+
+        for(int i=0; i<numDistances; i++)
             out.writeDouble( ((DistanceLOD)node).getDistance(i) );
-        
+
         Point3f pos = new Point3f();
         ((DistanceLOD)node).getPosition( pos );
         control.writePoint3f( out, pos );
     }
-    
+
     public void readObject( DataInput in ) throws IOException {
         super.readObject( in );
-        
+
         for(int i=0; i<numDistances; i++)
             ((DistanceLOD)node).setDistance( i, in.readDouble() );
-        
+
         ((DistanceLOD)node).setPosition( control.readPoint3f(in ));
     }
-    
+
     public void writeConstructorParams( DataOutput out ) throws IOException {
         super.writeConstructorParams( out );
         numDistances = ((DistanceLOD)node).numDistances();
         out.writeInt( numDistances );
     }
-    
+
     public void readConstructorParams( DataInput in ) throws IOException {
         super.readConstructorParams( in );
         numDistances = in.readInt();
     }
-    
+
     public SceneGraphObject createNode( Class j3dClass ) {
         float[] distances = new float[ numDistances ];
-        
+
         return createNode( j3dClass, new Class[] { distances.getClass() },
         new Object[] { distances } );
     }
-    
+
     protected javax.media.j3d.SceneGraphObject createNode() {
         return new DistanceLOD( new float[ numDistances ] );
     }
 
-        
+
 }
 

@@ -56,12 +56,12 @@ import javax.vecmath.*;
 import com.sun.j3d.audioengines.*;
 
 /**
- * The PostionalSample Class defines the data and methods associated with a 
+ * The PostionalSample Class defines the data and methods associated with a
  * PointSound sample played thru the AudioDevice.
  */
 
 class JSPositionalSample extends JSSample
-{ 
+{
 
     // maintain fields for stereo channel rendering
     float     leftGain    = 1.0f;  // scale factor
@@ -79,18 +79,18 @@ class JSPositionalSample extends JSSample
      * are allocated, one each for the left and right channels, played at
      * a different (delayed) time and with a different gain value.
      */
-    int     secondIndex = NULL_SAMPLE; 
+    int     secondIndex = NULL_SAMPLE;
     /**
      * A third sample for control of reverb of the stream/clip is openned
      * and maintained for all directional/positional sounds.
-     * For now, even if no aural attributes (using reverb) are active, 
-     * a reverb channel is always started with the other two. A sound could 
+     * For now, even if no aural attributes (using reverb) are active,
+     * a reverb channel is always started with the other two. A sound could
      * be started without reverb and then reverb added later, but since there
      * is no way to offset properly into all sounds (considering non-cached
      * and nconsistent rate-changes during playing) this third sound is
      * always allocated and started.
      */
-    int     reverbIndex = NULL_SAMPLE; 
+    int     reverbIndex = NULL_SAMPLE;
 
     /**
      * Save ear positions transformed into VirtualWorld coords from Head coords
@@ -118,13 +118,13 @@ class JSPositionalSample extends JSSample
      * sound was last processed.
      * Process delta distance and time as part of Doppler calculations.
      */
-    static    int    MAX_DISTANCES = 4; 
-    int       numDistances = 0; 
+    static    int    MAX_DISTANCES = 4;
+    int       numDistances = 0;
 // TODO: time is based on changes to position!!! only
 // TODO: must shap shot when either Position OR ear changes!!!
 // TODO: must grab all changes to VIEW parameters (could change ear)!!!
 //          not just when pointer to View changes!!
-    long[]    times = new long[MAX_DISTANCES]; 
+    long[]    times = new long[MAX_DISTANCES];
     Point3f[] positions = new Point3f[MAX_DISTANCES];  // xformed sound source positions
     Point3f[] centerEars = new Point3f[MAX_DISTANCES];  // xformed center ear positions
     /*
@@ -134,14 +134,14 @@ class JSPositionalSample extends JSSample
     int firstIndex = 0;
     int lastIndex  = 0;
     int currentIndex  = 0;
- 
+
     /*
      * Allow changes in Doppler rate only small incremental values otherwise
      * you hear skips in the pitch of a sound during playback.
      * When playback is faster, allow delta changes:
-     *   (diff in Factor for octave (1.0))/(12 1/2-steps))*(1/4) of half-step 
+     *   (diff in Factor for octave (1.0))/(12 1/2-steps))*(1/4) of half-step
      * When playback is slower, allow delta changes:
-     *   (diff in Factor for octave (0.5))/(12 1/2-steps))*(1/4) of half-step 
+     *   (diff in Factor for octave (0.5))/(12 1/2-steps))*(1/4) of half-step
      */
     double   lastRequestedDopplerRateRatio = -1.0f;
     double   lastActualDopplerRateRatio    = -1.0f;
@@ -155,13 +155,13 @@ class JSPositionalSample extends JSSample
 
     /*
      * Process request for Filtering fields
-     */  
+     */
     boolean   filterFlag = false;
     float     filterFreq = -1.0f;
 
     /*
      * Construct a new audio device Sample object
-     */  
+     */
     public JSPositionalSample() {
         super();
         if (debugFlag)
@@ -178,7 +178,7 @@ class JSPositionalSample extends JSSample
     // TODO: get/set reverbChannel to JSStream/Clip/MIDI
     /*
      * Process request for Filtering fields
-     */  
+     */
     boolean  getFilterFlag() {
         return filterFlag;
     }
@@ -186,11 +186,11 @@ class JSPositionalSample extends JSSample
         return filterFreq;
     }
 
-    
+
     /**
-     * Clears the fields associated with sample data for this sound, and 
+     * Clears the fields associated with sample data for this sound, and
      * frees any device specific data associated with this sample.
-     */  
+     */
     public void clear() {
         if (debugFlag)
             debugPrint("JSPositionalSample.clear() enter");
@@ -212,9 +212,9 @@ class JSPositionalSample extends JSSample
     }
 
     /**
-     * Reset time and count based fields associated with sample data 
+     * Reset time and count based fields associated with sample data
      * for this sound
-     */  
+     */
     void reset() {
         if (debugFlag)
             debugPrint("JSPositionalSample.reset() enter");
@@ -224,7 +224,7 @@ class JSPositionalSample extends JSSample
         sourcePositionChange = -1.0;
         headPositionChange = -1.0;
         rateRatio = 1.0f;
-        numDistances = 0; 
+        numDistances = 0;
         averageDistances = false;
         if (debugFlag)
             debugPrint("JSPositionalSample.reset() exit");
@@ -258,7 +258,7 @@ class JSPositionalSample extends JSSample
             currentIndex %= MAX_DISTANCES;
             lastIndex %= MAX_DISTANCES;
             firstIndex %= MAX_DISTANCES;
-        } 
+        }
     }
 
     // Not only do we transform position but delta time is calculated and
@@ -272,7 +272,7 @@ class JSPositionalSample extends JSSample
         Point3f newPosition = new Point3f();
         if (debugFlag)
             debugPrint("*** setXformedPosition");
-        // xform Position 
+        // xform Position
         if (getVWrldXfrmFlag()) {
             if (debugFlag)
                 debugPrint("    Transform set so transform pos");
@@ -294,30 +294,30 @@ class JSPositionalSample extends JSSample
 
         incrementIndices();
         // store new transformed position
-        times[currentIndex] = System.currentTimeMillis(); 
+        times[currentIndex] = System.currentTimeMillis();
 	positions[currentIndex].set(newPosition);
         if (debugFlag)
             debugPrint("           xform(sound)Position -" +
                       " positions[" + currentIndex + "] = (" +
-                        positions[currentIndex].x + ", " + 
+                        positions[currentIndex].x + ", " +
                         positions[currentIndex].y + ", " +
                         positions[currentIndex].z + ")");
-      
+
         // since this is a change to the sound position and not the
         // head save the last head position into the current element
         if (numDistances > 1)
             centerEars[currentIndex].set(centerEars[lastIndex]);
 
-    } 
+    }
 
     /**
-     * Set Doppler effect Rate 
+     * Set Doppler effect Rate
      *
      * Calculate the rate of change in for the head and sound
      * between the two time stamps (last two times position or
      * VirtualWorld transform was updated).
-     * First determine if the head and sound source are moving 
-     * towards each other (distance between them is decreasing), 
+     * First determine if the head and sound source are moving
+     * towards each other (distance between them is decreasing),
      * moving away from each other (distance between them is
      * increasing), or no change (distance is the same, not moving
      * or moving the same speed/direction).
@@ -335,9 +335,9 @@ class JSPositionalSample extends JSSample
      *         |  speedOfSound*rollOff  +   velocityOfHead*velocityScaleFactor  |
      *         |  ------------------------------------------------------------- |
      *         |  speedOfSound*rollOff  -  velocityOfSource*velocityScaleFactor |
-     * 
+     *
      *     For head and sound moving away from each other, velocityRatio (< 1.0) is:
-     * 
+     *
      *         |  speedOfSound*rollOff  -   velocityOfHead*velocityScaleFactor  |
      *         |  ------------------------------------------------------------- |
      *         |  speedOfSound*rollOff  +  velocityOfSource*velocityScaleFactor |
@@ -345,13 +345,13 @@ class JSPositionalSample extends JSSample
      * where frequencyScaleFactor, rollOff, velocityScaleFactor all come from
      * the active AuralAttributes parameters.
      * The following special cases must be test for AuralAttribute parameters:
-     *   rolloff  
+     *   rolloff
      *       Value MUST be > zero for any sound to be heard!
      *       If value is zero, all sounds affected by AuralAttribute region are silent.
-     *   velocityScaleFactor 
+     *   velocityScaleFactor
      *      Value MUST be > zero for any sound to be heard!
      *      If value is zero, all sounds affected by AuralAttribute region are paused.
-     *   frequencyScaleFactor 
+     *   frequencyScaleFactor
      *      Value of zero disables Doppler calculations:
      *         Sfreq' = Sfreq * frequencyScaleFactor
      *
@@ -378,7 +378,7 @@ class JSPositionalSample extends JSSample
         Point3f  xformCenterEar;
         float    averagedSoundDistances = 0.0f;
         float    averagedEarsDistances = 0.0f;
-    
+
         /*
          *  Average the differences between the last MAX_DISTANCE
          *  sound positions and head positions
@@ -428,7 +428,7 @@ class JSPositionalSample extends JSSample
             // can't calculate change in direction
             return 0.0f; // sample rate ratio is zero
         }
-           
+
         deltaTime = times[currentIndex] - times[firstIndex];
         for (int i=0; i<(MAX_DISTANCES-1); i++) {
                 averagedSoundDistances += positions[i+1].distance(positions[i]);
@@ -442,12 +442,12 @@ class JSPositionalSample extends JSSample
                 debugPrint("                                      " +
                     "delta time = " + deltaTime );
                 debugPrint("                                      " +
-                    "soundPosition delta = " + 
+                    "soundPosition delta = " +
                     xformPosition.distance(lastXformPosition));
                 debugPrint("                                      " +
                     "soundVelocity = " + soundVelocity);
                 debugPrint("                                      " +
-                    "headPosition delta = " + 
+                    "headPosition delta = " +
                     xformCenterEar.distance(lastXformCenterEar));
                 debugPrint("                                      " +
                     "headVelocity = " + headVelocity);
@@ -467,7 +467,7 @@ class JSPositionalSample extends JSSample
                     headVelocity *= velocityScaleFactor;
                     if (dopplerFlag) {
                         debugPrint("                                      " +
-                            "attrib velocity scale factor = " + 
+                            "attrib velocity scale factor = " +
                              velocityScaleFactor );
                         debugPrint("                                      " +
                             "new soundVelocity = " + soundVelocity);
@@ -485,7 +485,7 @@ class JSPositionalSample extends JSSample
                 numerator = speedOfSound + headVelocity;
                 denominator = speedOfSound - soundVelocity;
         }
-        else { 
+        else {
                 // sound and head moving away from each other
                 //    note: no change in distance case covered above
                 if (dopplerFlag)
@@ -503,7 +503,7 @@ class JSPositionalSample extends JSSample
         }
         else if (denominator <= 0.0) {
                 if (dopplerFlag)
-                    debugPrint("JSPositionalSample.calculateDoppler: " + 
+                    debugPrint("JSPositionalSample.calculateDoppler: " +
                                "BOOM!! - velocity of sound source negative");
                 return -1.0f;
         }
@@ -547,7 +547,7 @@ class JSPositionalSample extends JSSample
                 debugPrint("    No change in ear, so don't reset");
             return;
         }
-        // store xform Ear 
+        // store xform Ear
         incrementIndices();
         times[currentIndex] = System.currentTimeMillis();
         centerEars[currentIndex].set(xformCenterEar);
@@ -565,14 +565,14 @@ class JSPositionalSample extends JSSample
 
         // TODO: check dirty flags coming in
         //     For now, recalculate ear positions by forcing earsXformed false
-        boolean  earsXformed = false;  
-        if (!earsXformed) { 
+        boolean  earsXformed = false;
+        if (!earsXformed) {
               if (view != null) {
                 PhysicalBody body = view.getPhysicalBody();
                 if (body != null) {
 
                     // Get Head Coord. to Virtual World transform
-		    // TODO: re-enable this when userHeadToVworld is 
+		    // TODO: re-enable this when userHeadToVworld is
                     //     implemented correctly!!!
                     Transform3D headToVwrld = new Transform3D();
                     view.getUserHeadToVworld(headToVwrld);
@@ -608,20 +608,20 @@ class JSPositionalSample extends JSSample
 
                     // calculate the new (current) mid-point between the ears
                     // find the mid point between left and right ear positions
-                    xformCenterEar.x = xformLeftEar.x + 
+                    xformCenterEar.x = xformLeftEar.x +
                          ((xformRightEar.x - xformLeftEar.x)*0.5f);
-                    xformCenterEar.y = xformLeftEar.y + 
+                    xformCenterEar.y = xformLeftEar.y +
                          ((xformRightEar.y - xformLeftEar.y)*0.5f);
-                    xformCenterEar.z = xformLeftEar.z + 
+                    xformCenterEar.z = xformLeftEar.z +
                          ((xformRightEar.z - xformLeftEar.z)*0.5f);
                     // TODO: when head changes earDirty should be set!
                     // earDirty = false;
                     if (debugFlag) {
                         debugPrint("           earXformed CALCULATED");
-                        debugPrint("           xformCenterEar = " + 
+                        debugPrint("           xformCenterEar = " +
                                     xformCenterEar.x + " " +
                                     xformCenterEar.y + " " +
-                                    xformCenterEar.z ); 
+                                    xformCenterEar.z );
                     }
                     earsXformed = true;
                 } // end of body NOT null
@@ -635,19 +635,19 @@ class JSPositionalSample extends JSSample
             // uses the default head position of (0.0, -0.03, 0.095)
             if (debugFlag)
                 debugPrint("           earXformed NOT calculated");
-        } 
+        }
         return earsXformed;
     }
 
-    /**  
+    /**
      * Render this sample
      *
      * Calculate the audiodevice parameters necessary to spatially play this
      * sound.
-     */  
+     */
     public void render(int dirtyFlags, View view, AuralParameters attribs) {
         if (debugFlag)
-            debugPrint("JSPositionalSample.render"); 
+            debugPrint("JSPositionalSample.render");
         updateEar(dirtyFlags, view);
 
         /*
@@ -658,7 +658,7 @@ class JSPositionalSample extends JSSample
          *     are silent.
          * FrequencyScaleFactor value MUST be > zero for any sound to be heard!
          *     since Sfreq' = Sfreq * frequencyScaleFactor.
-         *     If FrequencyScaleFactor is zero, all sounds affected by 
+         *     If FrequencyScaleFactor is zero, all sounds affected by
          *     AuralAttribute region are paused.
          * VelocityScaleFactor value of zero disables Doppler calculations.
          *
@@ -707,7 +707,7 @@ class JSPositionalSample extends JSSample
                         // error returned by calculateDoppler
                         if (debugFlag) {
                             debugPrint("JSPositionalSample: render: " +
-                                       "dopplerRatio returned = " + 
+                                       "dopplerRatio returned = " +
                                        dopplerRatio + "< 0");
                         }
                         // TODO: Make sound silent
@@ -732,10 +732,10 @@ class JSPositionalSample extends JSSample
             }
             else  { // auralAttributes not null but velocityFactor <= 0
               // Doppler is disabled
-              rateRatio = frequencyScaleFactor * getRateScaleFactor(); 
+              rateRatio = frequencyScaleFactor * getRateScaleFactor();
             }
         }
-        /* 
+        /*
          * since aural attributes undefined, default values are used,
          *   thus no Doppler calculated
          */
@@ -746,31 +746,31 @@ class JSPositionalSample extends JSSample
         }
 
         this.panSample(attribs);
-    }    
+    }
 
     /* *****************
-     *   
+     *
      *  Calculate Angular Gain
-     *   
+     *
      * *****************/
-    /*   
+    /*
      *  Calculates the Gain scale factor applied to the overall gain for
      *  a sound based on angle between a sound's projected direction and the
      *  vector between the sounds position and center ear.
      *
      *  For Point Sounds this value is always 1.0f.
-     */  
+     */
     float calculateAngularGain() {
         return(1.0f);
     }
 
     /* *****************
-     *   
+     *
      *  Calculate Filter
-     *   
+     *
      * *****************/
-    /*   
-     *  Calculates the low-pass cutoff frequency filter value applied to the 
+    /*
+     *  Calculates the low-pass cutoff frequency filter value applied to the
      *  a sound based on both:
      *      Distance Filter (from Aural Attributes) based on distance
      *         between the sound and the listeners position
@@ -779,7 +779,7 @@ class JSPositionalSample extends JSSample
      *         vector between the sounds position and center ear.
      *  The lowest of these two filter is used.
      *  This filter value is stored into the sample's filterFreq field.
-     */  
+     */
     void calculateFilter(float distance, AuralParameters attribs) {
         // setting filter cutoff freq to 44.1kHz which, in this
         // implementation, is the same as not performing filtering
@@ -799,7 +799,7 @@ class JSPositionalSample extends JSSample
                 for (int i=0; i<arrayLength; i++)
                     debugPrint((float)(distanceArray[i]) + ", " + cutoffArray[i]);
             }
-            distanceFilter = findFactor((double)distance, 
+            distanceFilter = findFactor((double)distance,
                    distanceArray, cutoffArray);
             if (distanceFilter < 0.0f)
                 distanceFilterFound = false;
@@ -820,15 +820,15 @@ class JSPositionalSample extends JSSample
 
         filterFlag = distanceFilterFound || angularFilterFound;
         filterFreq = distanceFilter;
-        if (debugFlag) 
+        if (debugFlag)
             debugPrint("    calculateFilter flag,freq = " + filterFlag +
            "," + filterFreq );
     }
 
     /* *****************
-     *   
+     *
      *  Find Factor
-     *   
+     *
      * *****************/
     /*
      *  Interpolates the correct output factor given a 'distance' value
@@ -840,12 +840,12 @@ class JSPositionalSample extends JSSample
      *  pair the input distance argument is between distanceArray[index] and
      *  distanceArray[index+1].
      *  The index is used to get factorArray[index] and factorArray[index+1].
-     *  Then the ratio of the 'distance' between this pair of distanceArray 
+     *  Then the ratio of the 'distance' between this pair of distanceArray
      *  values is used to scale the two found factorArray values proportionally.
      *  The resulting factor is returned, unless there is an error, then -1.0
      *  is returned.
-     */  
-    float findFactor(double distance, 
+     */
+    float findFactor(double distance,
                      double[] distanceArray, float[] factorArray) {
         int     index, lowIndex, highIndex, indexMid;
 
@@ -873,7 +873,7 @@ class JSPositionalSample extends JSSample
          */
         if (distance >= distanceArray[largestIndex]) {
             if (debugFlag) {
-                debugPrint("   findFactor: distance > " + 
+                debugPrint("   findFactor: distance > " +
                                   distanceArray[largestIndex]);
                 debugPrint("   distanceArray length = "+ arrayLength);
             }
@@ -884,7 +884,7 @@ class JSPositionalSample extends JSSample
                 debugPrint("   findFactor: distance < " +
                                     distanceArray[0]);
             return factorArray[0];
-        } 
+        }
         /*
          * Distance between points within attenuation array.
          * Use binary halfing of distance array
@@ -896,11 +896,11 @@ class JSPositionalSample extends JSSample
                 debugPrint("   while loop to find index: ");
             while (lowIndex < (highIndex-1)) {
                 if (debugFlag) {
-                    debugPrint("       lowIndex " + lowIndex + 
+                    debugPrint("       lowIndex " + lowIndex +
                        ", highIndex " + highIndex);
-                    debugPrint("       d.A. pair for lowIndex " + 
+                    debugPrint("       d.A. pair for lowIndex " +
                        distanceArray[lowIndex] +  ", " + factorArray[lowIndex] );
-                    debugPrint("       d.A. pair for highIndex " + 
+                    debugPrint("       d.A. pair for highIndex " +
                        distanceArray[highIndex] +  ", " + factorArray[highIndex] );
                 }
                 /*
@@ -917,7 +917,7 @@ class JSPositionalSample extends JSSample
                     if (debugFlag) {
                         debugPrint( "       index == distanceGain " +
                            lowIndex);
-                        debugPrint("        findFactor returns [LOW=" + 
+                        debugPrint("        findFactor returns [LOW=" +
                            lowIndex + "] " + factorArray[lowIndex]);
                     }
                     // take value of scale factor directly from factorArray
@@ -932,13 +932,13 @@ class JSPositionalSample extends JSSample
                     if (debugFlag) {
                         debugPrint( "       index == distanceGain " +
                            highIndex);
-                        debugPrint("        findFactor returns [HIGH=" + 
+                        debugPrint("        findFactor returns [HIGH=" +
                            highIndex + "] " + factorArray[highIndex]);
                     }
                     // take value of scale factor directly from factorArray
                     return factorArray[highIndex];
                 }
-                if (distance > distanceArray[lowIndex] && 
+                if (distance > distanceArray[lowIndex] &&
                     distance < distanceArray[highIndex] ) {
                     indexMid = lowIndex + ((highIndex - lowIndex) / 2);
                     if (distance <= distanceArray[indexMid])
@@ -950,7 +950,7 @@ class JSPositionalSample extends JSSample
             } /* of while */
 
             /*
-             * ratio: distance from listener to sound source 
+             * ratio: distance from listener to sound source
              *        between lowIndex and highIndex times
              *        attenuation value between lowIndex and highIndex
              * gives linearly interpolationed attenuation value
@@ -958,27 +958,27 @@ class JSPositionalSample extends JSSample
             if (debugFlag) {
                 debugPrint( "   ratio calculated using lowIndex " +
                        lowIndex + ", highIndex " + highIndex);
-                debugPrint( "   d.A. pair for lowIndex " + 
+                debugPrint( "   d.A. pair for lowIndex " +
                         distanceArray[lowIndex]+", "+factorArray[lowIndex] );
-                debugPrint( "   d.A. pair for highIndex " + 
+                debugPrint( "   d.A. pair for highIndex " +
                         distanceArray[highIndex]+", "+factorArray[highIndex] );
             }
 
-            float outputFactor = 
+            float outputFactor =
                    ((float)(((distance - distanceArray[lowIndex])/
                     (distanceArray[highIndex] - distanceArray[lowIndex]) ) ) *
                     (factorArray[highIndex] - factorArray[lowIndex]) ) +
-                   factorArray[lowIndex] ; 
+                   factorArray[lowIndex] ;
             if (debugFlag)
                 debugPrint("    findFactor returns " + outputFactor);
             return outputFactor;
-        }  
+        }
     }
 
     /**
      * CalculateDistanceAttenuation
      *
-     * Simply calls generic (for PointSound) 'findFactor()' with 
+     * Simply calls generic (for PointSound) 'findFactor()' with
      * a single set of attenuation distance and gain scale factor arrays.
      */
     float calculateDistanceAttenuation(float distance) {
@@ -992,11 +992,11 @@ class JSPositionalSample extends JSSample
     }
 
     /* ******************
-     *   
+     *
      *  Pan Sample
-     *   
+     *
      * ******************/
-    /*  
+    /*
      *  Sets pan and delay for a single sample associated with this Sound.
      *  Front and Back quadrants are treated the same.
      */
@@ -1046,7 +1046,7 @@ class JSPositionalSample extends JSSample
 
         float    distanceGain = 1.0f;
         float    allGains = this.gain; // product of gain scale factors
-  
+
         Point3f  workingPosition = new Point3f();
         Point3f  workingCenterEar = new Point3f();
 
@@ -1085,7 +1085,7 @@ class JSPositionalSample extends JSSample
         sourceToLeftEar.z = xformLeftEar.z - workingPosition.z;
 
         /*
-         * get distances from SoundSource to 
+         * get distances from SoundSource to
          *    (i)   head origin
          *    (ii)  right ear
          *    (iii) left ear
@@ -1118,7 +1118,7 @@ class JSPositionalSample extends JSSample
                  xformHeadZAxis.length());
         }
 
-        // Dot Product 
+        // Dot Product
         double dotProduct = (double)(
                     (sourceToCenterEar.dot(xformHeadZAxis))/
                     (sourceToCenterEar.length() * xformHeadZAxis.length()));
@@ -1146,10 +1146,10 @@ class JSPositionalSample extends JSSample
         if (debugFlag)
             debugPrint( "           gamma " + gamma );
 
-        rightEarClosest = 
+        rightEarClosest =
             (distanceSourceToRightEar>distanceSourceToLeftEar) ? false : true ;
         /*
-         * Determine the quadrant sound is in 
+         * Determine the quadrant sound is in
          */
         if (rightEarClosest) {
             if (debugFlag)
@@ -1184,14 +1184,14 @@ class JSPositionalSample extends JSSample
             debugPrint( "           partial distance from edge of head to source = "
                       + distanceSourceToCenterEar);
         if (rightEarClosest) {
-            distanceSourceToLeftEar = 
+            distanceSourceToLeftEar =
                 DISTANCE + radiusOfHead * (halfPi+alpha-gamma);
             if (debugFlag)
                 debugPrint("           new distance from left ear to source = "
                       + distanceSourceToLeftEar);
-        } 
+        }
         else {
-            distanceSourceToRightEar = 
+            distanceSourceToRightEar =
                 DISTANCE + radiusOfHead * (halfPi+alpha-gamma);
             if (debugFlag)
                 debugPrint("           new distance from right ear to source = "
@@ -1207,16 +1207,16 @@ class JSPositionalSample extends JSSample
             if (debugFlag)
                 debugPrint("           closest path is also indirect ");
             // Path of sound to closest ear is indirect
- 
+
             if (rightEarClosest) {
-                distanceSourceToRightEar = 
+                distanceSourceToRightEar =
                     DISTANCE + radiusOfHead * (halfPi-alpha-gamma);
                 if (debugFlag)
                     debugPrint("           new distance from right ear to source = "
                       + distanceSourceToRightEar);
             }
             else {
-                distanceSourceToLeftEar = 
+                distanceSourceToLeftEar =
                     DISTANCE + radiusOfHead * (halfPi-alpha-gamma);
                 if (debugFlag)
                     debugPrint("           new distance from left ear to source = "
@@ -1240,11 +1240,11 @@ class JSPositionalSample extends JSSample
 
         /**
          * Short-cut taken.  Rather than using actual delays from source
-         * (where the overall distances would be taken into account in 
+         * (where the overall distances would be taken into account in
          * determining delay) the difference in the left and right delay
          * are applied.
          * This approach will be preceptibly wrong for sound sources that
-         * are very far away from the listener so both ears would have 
+         * are very far away from the listener so both ears would have
          * large delay.
          */
         sampleRate = channel.rateInHz * (0.001f); // rate in milliseconds
@@ -1307,7 +1307,7 @@ class JSPositionalSample extends JSSample
         if (debugFlag)
             debugPrint("panSample:                 quadrant " + quadrant);
         switch (quadrant) {
-           case 1: 
+           case 1:
               // Sound from front, right of center of head
            case 4:
               // Sound from back, right of center of head
@@ -1329,7 +1329,7 @@ class JSPositionalSample extends JSSample
 
         // Combines distance and angular filter to set this sample's current
         // frequency cutoff value
-        calculateFilter(distanceSourceToCenterEar, attribs); 
+        calculateFilter(distanceSourceToCenterEar, attribs);
 
     }  /* panSample() */
 

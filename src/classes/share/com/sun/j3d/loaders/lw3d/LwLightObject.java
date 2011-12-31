@@ -62,7 +62,7 @@ class LwLightObject {
     float intensity;
     Color3f color;
     Light theLight;
-    
+
     LwLightObject(Light theLight, float intensity, Color3f color) {
 	this.intensity = intensity;
 	this.color = color;
@@ -96,5 +96,5 @@ class LwLightObject {
 	    theLight.setColor(newLightColor);
     }
 }
-    
-    
+
+

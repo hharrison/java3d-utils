@@ -71,7 +71,7 @@ public abstract class LoaderBase implements Loader {
      */
     public LoaderBase() {
     }
-    
+
     /**
      * Constructs a Loader with the specified flags word.
      */
@@ -108,7 +108,7 @@ public abstract class LoaderBase implements Loader {
     }
 
     /**
-     * Returns the current base URL setting. 
+     * Returns the current base URL setting.
      */
     public URL getBaseUrl() {
 	return baseUrl;
@@ -120,7 +120,7 @@ public abstract class LoaderBase implements Loader {
     public String getBasePath() {
 	return basePath;
     }
-    
+
     /**
      * This method sets the load flags for the file.  The flags should
      * equal 0 by default (which tells the loader to only load geometry).
@@ -135,13 +135,13 @@ public abstract class LoaderBase implements Loader {
     public int getFlags() {
 	return loadFlags;
     }
-    
+
 }
 
-    
-    
-    
-    
-	    
 
-    
+
+
+
+
+
+

@@ -59,43 +59,43 @@ import com.sun.j3d.utils.scenegraph.io.retained.SymbolTableData;
 public class SwitchValueInterpolatorState extends InterpolatorState {
 
     private int target;
-    
+
     public SwitchValueInterpolatorState(SymbolTableData symbol,Controller control) {
         super( symbol, control );
-        
+
         if (node!=null)
             target = control.getSymbolTable().addReference( ((SwitchValueInterpolator)node).getTarget() );
     }
-    
+
     public void writeObject( DataOutput out ) throws IOException {
         super.writeObject( out );
-        
+
         out.writeInt( target );
         out.writeInt( ((SwitchValueInterpolator)node).getFirstChildIndex() );
         out.writeInt( ((SwitchValueInterpolator)node).getLastChildIndex() );
     }
-    
+
     public void readObject( DataInput in ) throws IOException {
         super.readObject( in );
-                        
+
         target = in.readInt();
         ((SwitchValueInterpolator)node).setFirstChildIndex( in.readInt() );
         ((SwitchValueInterpolator)node).setLastChildIndex( in.readInt() );
     }
-    
-    
+
+
     public void buildGraph() {
         ((SwitchValueInterpolator)node).setTarget( (Switch)control.getSymbolTable().getJ3dNode( target ));
         super.buildGraph(); // Must be last call in method
     }
-    
+
     public SceneGraphObject createNode( Class j3dClass ) {
         return createNode( j3dClass, new Class[] { javax.media.j3d.Alpha.class,
                                                     javax.media.j3d.Switch.class },
                                       new Object[] { null,
                                                      null } );
     }
-    
+
     protected javax.media.j3d.SceneGraphObject createNode() {
         return new SwitchValueInterpolator( null, null );
     }

@@ -61,17 +61,17 @@ public class TriangleStripArrayState extends GeometryStripArrayState {
     public TriangleStripArrayState( SymbolTableData symbol, Controller control ) {
         super( symbol, control );
     }
-    
+
     public void writeObject( DataOutput out ) throws IOException {
         super.writeObject( out );
     }
-    
-    
+
+
     public void readObject( DataInput in ) throws IOException {
         super.readObject( in );
     }
-    
-    
+
+
     public SceneGraphObject createNode( Class j3dClass ) {
         return createNode( j3dClass, new Class[] {
                                             Integer.TYPE,
@@ -79,14 +79,14 @@ public class TriangleStripArrayState extends GeometryStripArrayState {
                                             Integer.TYPE,
                                             texCoordSetMap.getClass(),
                                             stripVertexCounts.getClass()
-                                        }, 
+                                        },
                                         new Object[] { new Integer( vertexCount ),
                                                      new Integer( vertexFormat ),
                                                      new Integer( texCoordSetCount ),
                                                      texCoordSetMap,
                                                      stripVertexCounts } );
     }
-    
+
     protected javax.media.j3d.SceneGraphObject createNode() {
         return new TriangleStripArray( vertexCount, vertexFormat, texCoordSetCount, texCoordSetMap, stripVertexCounts );
     }

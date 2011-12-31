@@ -105,7 +105,7 @@ class LwsObject extends TextfileParser implements LwsPrimitive {
 	      int firstFrame, int totalFrames, float totalTime,
 	      Lw3dLoader loader, int debugVals)
 	      throws java.io.FileNotFoundException,
-		  ParsingErrorException {      
+		  ParsingErrorException {
 	debugPrinter.setValidOutput(debugVals);
 	parent = -1;
 
@@ -203,10 +203,10 @@ class LwsObject extends TextfileParser implements LwsPrimitive {
 		    pivotTransGroup = new TransformGroup(pivotTransform);
 		    pivotTransGroup.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
 		}
-		    
+
 		else if (isCurrentToken(st, "ObjDissolve")) {
 		    // Just handle it for now, don't care about value
-		    EnvelopeHandler env = 
+		    EnvelopeHandler env =
 			new EnvelopeHandler(st, totalFrames, totalTime);
 		}
 		st.nextToken();
@@ -237,13 +237,13 @@ class LwsObject extends TextfileParser implements LwsPrimitive {
      *
      * If the filename is absolute, it will use the path information from
      * the filename first, then the path information from the lws file.
-     * If the file can not be found in these locations, the local directory 
+     * If the file can not be found in these locations, the local directory
      * will be searched.
-     * In addition, it will look for filenames converted to lowercase to 
+     * In addition, it will look for filenames converted to lowercase to
      * make it easier to use between Windows and Unix.
      */
 
-  String getQualifiedFilename(String pathname, String filename) 
+  String getQualifiedFilename(String pathname, String filename)
       throws java.io.FileNotFoundException {
 
     int index;
@@ -261,7 +261,7 @@ class LwsObject extends TextfileParser implements LwsPrimitive {
 	  return null; // something out of the ordinary happened
       }
     }
-    
+
     // See if we can find the file
     // ---------------------------
 
@@ -274,39 +274,39 @@ class LwsObject extends TextfileParser implements LwsPrimitive {
     catch (NullPointerException ex) {
 	ex.printStackTrace();
     }
-    // Try lowercase filename 
+    // Try lowercase filename
     if (new File(pathname2 + filename.toLowerCase()).exists()) {
       return (pathname2 + filename.toLowerCase());
     }
 
-    // Try original pathname 
+    // Try original pathname
     if (new File(pathname + filename).exists()) {
       return (pathname + filename);
     }
-    // Try lowercase filename 
+    // Try lowercase filename
     if (new File(pathname + filename.toLowerCase()).exists()) {
       return (pathname + filename.toLowerCase());
     }
 
-    // Finally, let's check the local directory 
+    // Finally, let's check the local directory
     if (new File(filename).exists()) {
       return (filename);
     }
-    // Try lowercase filename 
+    // Try lowercase filename
     if (new File(filename.toLowerCase()).exists()) {
       return (filename.toLowerCase());
     }
 
-    // Conditions that determine when we give up on the recursive search 
-    if ((pathname.equals(File.separator)) || 
+    // Conditions that determine when we give up on the recursive search
+    if ((pathname.equals(File.separator)) ||
 	(pathname == null) ||
 	(pathname.equals(""))) {
-	
+
 	throw new java.io.FileNotFoundException(filename);
     }
 
-    // Try to find the file in the upper directories 
-    // Chop off the last directory from pathname and recurse 
+    // Try to find the file in the upper directories
+    // Chop off the last directory from pathname and recurse
     StringBuffer newPathName = new StringBuffer(128);
     StringTokenizer st = new StringTokenizer(pathname, File.separator);
     int tokenCount = st.countTokens() - 1;
@@ -324,7 +324,7 @@ class LwsObject extends TextfileParser implements LwsPrimitive {
 
   URL getQualifiedURL(String path, String file)
       throws MalformedURLException {
-      
+
     URL url = null;
 
     // try the path and the file -- this is the lightwave spec
@@ -363,7 +363,7 @@ class LwsObject extends TextfileParser implements LwsPrimitive {
 	throw new MalformedURLException(path + file);
     }
   }
-  
+
     /**
      * Returns parent object
      */
@@ -413,7 +413,7 @@ class LwsObject extends TextfileParser implements LwsPrimitive {
 	Matrix4d mat = new Matrix4d();
 	mat.setIdentity();
 	// Set the node's transform matrix according to the first frame
-	// of the object's motion 
+	// of the object's motion
 	LwsFrame firstFrame = motion.getFirstFrame();
 	firstFrame.setMatrix(mat);
 	Transform3D t1 = new Transform3D();
@@ -439,7 +439,7 @@ class LwsObject extends TextfileParser implements LwsPrimitive {
 	// standard than on some proprietary hack of our own.
 
 	if (fileName != null && fileName.indexOf(seqToken) != -1) { // Tloop
-	   
+
 	    int index = fileName.indexOf(seqToken);
 	    index += seqToken.length();
 	    String seqFilename = fileName.substring(index);
@@ -462,7 +462,7 @@ class LwsObject extends TextfileParser implements LwsPrimitive {
 		objectBehavior = sr.getObjectBehaviors();
 
 		return;
-            }	
+            }
 	}
 
 	// Okay, now that that hack is out of the way, let's get on with
@@ -567,4 +567,4 @@ class LwsObject extends TextfileParser implements LwsPrimitive {
 	debugOutputLn(VALUES, "   objName = " + objName);
 	motion.printVals();
     }
-}	
+}

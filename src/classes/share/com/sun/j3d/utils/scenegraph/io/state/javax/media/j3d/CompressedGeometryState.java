@@ -55,43 +55,43 @@ import com.sun.j3d.utils.scenegraph.io.retained.Controller;
 import com.sun.j3d.utils.scenegraph.io.retained.SymbolTableData;
 
 public class CompressedGeometryState extends GeometryState {
-    
+
     private byte[] bytes;
     private boolean isByReference;
     private CompressedGeometryHeader header;
-    
+
     public CompressedGeometryState(SymbolTableData symbol,Controller control) {
         super( symbol, control );
-        
+
     }
-    
+
     public void writeConstructorParams( DataOutput out ) throws IOException {
         super.writeConstructorParams( out );
-        
+
         out.writeBoolean( ((CompressedGeometry)node).isByReference() );
-        
+
         int size = ((CompressedGeometry)node).getByteCount();
         out.writeInt( size );
         bytes = new byte[ size ];
         ((CompressedGeometry)node).getCompressedGeometry( bytes );
         out.write( bytes );
-        
+
         header = new CompressedGeometryHeader();
         ((CompressedGeometry)node).getCompressedGeometryHeader( header );
         writeCompressedGeometryHeader( out );
     }
-    
+
     public void readConstructorParams( DataInput in ) throws IOException {
         super.readConstructorParams( in );
-        
+
         isByReference = in.readBoolean();
         bytes = new byte[ in.readInt() ];
         in.readFully( bytes );
-        
+
         header = new CompressedGeometryHeader();
         readCompressedGeometryHeader( in );
     }
-    
+
     private void writeCompressedGeometryHeader( DataOutput out ) throws IOException {
         out.writeInt( header.majorVersionNumber );
         out.writeInt( header.minorVersionNumber );
@@ -111,7 +111,7 @@ public class CompressedGeometryState extends GeometryState {
 	    control.writePoint3d( out, header.upperBound );
 	}
     }
-    
+
     private void readCompressedGeometryHeader( DataInput in ) throws IOException {
         header.majorVersionNumber = in.readInt();
         header.minorVersionNumber = in.readInt();
@@ -133,9 +133,9 @@ public class CompressedGeometryState extends GeometryState {
 	    header.upperBound = null;
 	}
     }
-     
+
     public SceneGraphObject createNode( Class j3dClass ) {
-        
+
         return createNode( j3dClass, new Class[] { CompressedGeometryHeader.class,
                                                     bytes.getClass(),
                                                     Boolean.TYPE },
@@ -143,7 +143,7 @@ public class CompressedGeometryState extends GeometryState {
                                                      bytes,
                                                      new Boolean(isByReference) } );
     }
-    
+
     protected SceneGraphObject createNode() {
         return new CompressedGeometry( header, bytes, isByReference );
     }

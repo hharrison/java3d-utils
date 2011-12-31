@@ -57,18 +57,18 @@ public class NodeState extends SceneGraphObjectState {
     public NodeState( SymbolTableData symbol, Controller control ) {
         super(symbol, control);
     }
-    
-    public void writeObject( DataOutput out ) throws 
+
+    public void writeObject( DataOutput out ) throws
 							IOException {
 
         super.writeObject( out );
-        
+
         control.writeBounds( out, ((Node)node).getBounds() );
 
 	out.writeBoolean( ((Node)node).getPickable() );
 	out.writeBoolean( ((Node)node).getCollidable() );
 	out.writeBoolean( ((Node)node).getBoundsAutoCompute() );
-        
+
     }
 
     public void readObject( DataInput in ) throws
@@ -76,13 +76,13 @@ public class NodeState extends SceneGraphObjectState {
        super.readObject(in);
 
        ((Node)node).setBounds( control.readBounds(in) );
-       
+
        ((Node)node).setPickable( in.readBoolean() );
        ((Node)node).setCollidable( in.readBoolean() );
        ((Node)node).setBoundsAutoCompute( in.readBoolean() );
     }
-    
 
-    
+
+
 }
 

@@ -105,7 +105,7 @@ class EdgeTable {
       Iterator list = edgeTable.keySet().iterator();
       while (list.hasNext()) {
         Edge edge = (Edge)list.next();
-        System.out.println("  (" + edge.v1 + ", " + edge.v2 + ") = " + 
+        System.out.println("  (" + edge.v1 + ", " + edge.v2 + ") = " +
           get(edge.v1, edge.v2));
       }
     }

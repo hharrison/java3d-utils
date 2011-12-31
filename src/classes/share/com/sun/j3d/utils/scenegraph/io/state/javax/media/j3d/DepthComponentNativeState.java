@@ -53,7 +53,7 @@ import javax.media.j3d.SceneGraphObject;
 import javax.media.j3d.DepthComponentNative;
 
 /**
- * We have no access to the data inside a DepthComponentNative and 
+ * We have no access to the data inside a DepthComponentNative and
  * it doesn't really make sense anyway, so we're going to save the
  * width and height and not save/restore any of the data.
  */
@@ -61,7 +61,7 @@ public class DepthComponentNativeState extends NodeComponentState {
 
     private int height;
     private int width;
-    
+
     public DepthComponentNativeState ( SymbolTableData symbol, Controller control ) {
         super(symbol, control);
     }
@@ -85,10 +85,10 @@ public class DepthComponentNativeState extends NodeComponentState {
 				     new Object[] { new Integer( width ),
 						    new Integer( height ) } );
     }
-    
+
     protected javax.media.j3d.SceneGraphObject createNode() {
         return new DepthComponentNative( width, height );
     }
 
-    
+
 }

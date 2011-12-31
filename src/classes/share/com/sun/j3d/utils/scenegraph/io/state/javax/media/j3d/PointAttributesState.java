@@ -53,29 +53,29 @@ import javax.media.j3d.SceneGraphObject;
 import javax.media.j3d.PointAttributes;
 
 public class PointAttributesState extends NodeComponentState {
-    
+
     public PointAttributesState( SymbolTableData symbol, Controller control ) {
         super(symbol, control);
     }
-    
+
     public void writeObject( DataOutput out ) throws IOException {
         super.writeObject( out );
         PointAttributes attr = (PointAttributes)node;
         out.writeBoolean( attr.getPointAntialiasingEnable() );
         out.writeFloat( attr.getPointSize() );
     }
-    
+
     public void readObject( DataInput in ) throws IOException {
         super.readObject( in );
         PointAttributes attr = (PointAttributes)node;
         attr.setPointAntialiasingEnable( in.readBoolean() );
         attr.setPointSize( in.readFloat() );
     }
-    
+
     protected javax.media.j3d.SceneGraphObject createNode() {
         return new PointAttributes();
     }
 
-    
+
 }
 

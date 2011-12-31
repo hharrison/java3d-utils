@@ -58,7 +58,7 @@ import com.sun.j3d.loaders.ParsingErrorException;
  * instantiates an LwsMotion object to create any associated
  * animations.
  */
-	
+
 class LwsLight extends TextfileParser implements LwsPrimitive {
 
     // data from the file
@@ -72,8 +72,8 @@ class LwsLight extends TextfileParser implements LwsPrimitive {
     int              type;
     Point3f          attenuation = new Point3f(1.0f, 0.0f, 0.0f);
     float            spotConeAngle = (float)(Math.PI);
-    // Meta object, used for holding light and 
-    LwLightObject    lwLight;  
+    // Meta object, used for holding light and
+    LwLightObject    lwLight;
     // light parameters
     LwsEnvelopeLightIntensity intensityEnvelope = null;
     Light            light = null;
@@ -82,7 +82,7 @@ class LwsLight extends TextfileParser implements LwsPrimitive {
     /**
      * Constructor: parses stream and creates data structures for all
      * light parameters currently handled by the loader
-     */    
+     */
     LwsLight(StreamTokenizer st, int totalFrames, float totalTime,
 	     int debugVals) throws ParsingErrorException {
 
@@ -91,7 +91,7 @@ class LwsLight extends TextfileParser implements LwsPrimitive {
 	debugOutput(TRACE, "LwsLight()");
 	color = new Color3f(1f, 1f, 1f);
 	lwLight = new LwLightObject(null, 0.0f, null);
-	
+
 	parent = -1;
 	debugOutputLn(LINE_TRACE, "about to get LightName");
 	getAndCheckString(st, "LightName");
@@ -104,12 +104,12 @@ class LwsLight extends TextfileParser implements LwsPrimitive {
 	debugOutputLn(LINE_TRACE, "got LightMotion");
 	motion = new LwsMotion(st, totalFrames, totalTime);
 	debugOutputLn(LINE_TRACE, "got motions");
-	
+
 	// TODO: buggy way to stop processing the light.  Should actually
 	// process required/optional fields in order and stop when there's
 	// no more.  However, spec says "ShadowCasing" but the files say
 	// "ShadowType".
-	
+
 	while (!isCurrentToken(st, "ShowCamera") &&
 	       !isCurrentToken(st, "AddLight")) {
 	    // TODO:
@@ -120,7 +120,7 @@ class LwsLight extends TextfileParser implements LwsPrimitive {
 	    // "concentration" value, so it's left out for now.
 
 	    debugOutputLn(LINE_TRACE, "currentToken = " + st.sval);
-	    
+
 	    if (isCurrentToken(st, "ParentObject")) {
 		parent = (int)getNumber(st);
 	    }
@@ -139,7 +139,7 @@ class LwsLight extends TextfileParser implements LwsPrimitive {
 		    packageName = "";
 		else
 		    packageName = className.substring(0, classIndex) + ".";
-		EnvelopeHandler env = 
+		EnvelopeHandler env =
 		    new EnvelopeHandler(st, totalFrames, totalTime,
 			    packageName + "LwsEnvelopeLightIntensity");
 		if (env.hasValue) {
@@ -150,7 +150,7 @@ class LwsLight extends TextfileParser implements LwsPrimitive {
 		    lwLight.setIntensity(intensity);
 		}
 		else {
-		    intensityEnvelope = 
+		    intensityEnvelope =
 			    (LwsEnvelopeLightIntensity)env.theEnvelope;
 		}
 	    }
@@ -195,7 +195,7 @@ class LwsLight extends TextfileParser implements LwsPrimitive {
 	objectTransform.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
 	Vector3f defaultDir = new Vector3f(0f, 0f, -1f);
 	Point3f defaultPos = new Point3f(0f, 0f, 0f);
-	
+
 	switch (type) {
 	case DIRECTIONAL:
 	    light = new DirectionalLight(color, defaultDir);
@@ -216,7 +216,7 @@ class LwsLight extends TextfileParser implements LwsPrimitive {
 	light.setCapability(Light.ALLOW_COLOR_WRITE);
 	if (light != null)  {
 	  lwLight.setLight(light);
-	  BoundingSphere bounds = 
+	  BoundingSphere bounds =
 		    new BoundingSphere(new Point3d(0.0,0.0,0.0), 100000.0);
 	  light.setInfluencingBounds(bounds);
 	  objectTransform.addChild(light);
@@ -227,14 +227,14 @@ class LwsLight extends TextfileParser implements LwsPrimitive {
 	    Behavior b;
 	    b = null;
 	    motion.createJava3dBehaviors(objectTransform);
-	    b = motion.getBehaviors(); 
+	    b = motion.getBehaviors();
 	    if (b != null)
 	      objectBehavior.addElement(b);
 
 	    if (intensityEnvelope != null) {
 	      b = null;
 	      intensityEnvelope.createJava3dBehaviors(lwLight);
-	      b = intensityEnvelope.getBehaviors(); 
+	      b = intensityEnvelope.getBehaviors();
 	      if (b != null)
 		objectBehavior.addElement(b);
 	    }
@@ -250,14 +250,14 @@ class LwsLight extends TextfileParser implements LwsPrimitive {
     Light getLight() {
 	return light;
     }
-    
+
     public Vector getObjectBehaviors()
 	{
 	    debugOutputLn(TRACE, "getObjectBehaviors()");
 	    return objectBehavior;
 	}
 
-    
+
     void printVals()
 	{
 	    debugOutputLn(VALUES, "  LIGHT vals: ");
@@ -265,5 +265,5 @@ class LwsLight extends TextfileParser implements LwsPrimitive {
 	    motion.printVals();
 	}
 
-    
-}	
+
+}

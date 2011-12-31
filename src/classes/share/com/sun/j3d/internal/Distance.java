@@ -86,9 +86,9 @@ public class Distance {
    * @param segend Segment end point
    * @return the square of the minimum distance from the ray to the segment
    */
-  static public double rayToSegment (Point3d rayorig, 
+  static public double rayToSegment (Point3d rayorig,
 				     Vector3d raydir,
-				     Point3d segstart, 
+				     Point3d segstart,
 				     Point3d segend) {
     return rayToSegment (rayorig, raydir, segstart, segend, null, null, null);
   }
@@ -119,9 +119,9 @@ public class Distance {
    * @return the square of the minimum distance from the ray to the
    * segment
    */
-  static public double rayToSegment (Point3d rayorig, 
+  static public double rayToSegment (Point3d rayorig,
 				     Vector3d raydir,
-				     Point3d segstart, 
+				     Point3d segstart,
 				     Point3d segend,
 				     Point3d rayint,
 				     Point3d segint,
@@ -165,7 +165,7 @@ public class Distance {
 	    return DIST(s*(A*s+B*t+2*D)+t*(B*s+C*t+2*E)+F);
 	  }
 	  else {  // region 1
-		  
+
 	    t = 1;
 	    if (D >= 0) {
 	      s = 0;
@@ -347,11 +347,11 @@ public class Distance {
    * @param ray0dir Direction of ray 0
    * @param ray1orig Origin of ray 1
    * @param ray1dir Direction of ray 1
-   * @return the square of the minimum distance from the ray to the segment    
+   * @return the square of the minimum distance from the ray to the segment
    */
-  static public double rayToRay (Point3d ray0orig, 
+  static public double rayToRay (Point3d ray0orig,
 				 Vector3d ray0dir,
-				 Point3d ray1orig, 
+				 Point3d ray1orig,
 				 Vector3d ray1dir) {
     return rayToRay (ray0orig, ray0dir, ray1orig, ray1dir, null, null, null);
   }
@@ -381,9 +381,9 @@ public class Distance {
    *
    * @return the square of the minimum distance from the ray to the segment
    */
-  static public double rayToRay (Point3d ray0orig, 
+  static public double rayToRay (Point3d ray0orig,
 				 Vector3d ray0dir,
-				 Point3d ray1orig, 
+				 Point3d ray1orig,
 				 Vector3d ray1dir,
 				 Point3d ray0int,
 				 Point3d ray1int,
@@ -538,8 +538,8 @@ public class Distance {
    * @param raydir Direction of the ray
    * @return the square of the minimum distance between the point and the ray
    */
-  static public double pointToRay (Point3d pt, 
-				   Point3d rayorig, 
+  static public double pointToRay (Point3d pt,
+				   Point3d rayorig,
 				   Vector3d raydir) {
     return pointToRay (pt, rayorig, raydir, null, null);
   }
@@ -563,8 +563,8 @@ public class Distance {
    *
    * @return the square of the minimum distance between the point and the ray
    */
-  static public double pointToRay (Point3d pt, 
-				   Point3d rayorig, 
+  static public double pointToRay (Point3d pt,
+				   Point3d rayorig,
 				   Vector3d raydir,
 				   Point3d rayint,
 				   double[] param) {
@@ -591,8 +591,8 @@ public class Distance {
   /**
    * Minimum pt to segment distance. Returns the square of the distance.
    */
-  static public double pointToSegment (Point3d pt, 
-				       Point3d segstart, 
+  static public double pointToSegment (Point3d pt,
+				       Point3d segstart,
 				       Point3d segend) {
     return pointToSegment (pt, segstart, segend, null, null);
   }
@@ -600,8 +600,8 @@ public class Distance {
   /**
    * Minimum pt to segment distance. Returns the square of the distance.
    */
-  static public double pointToSegment (Point3d pt, 
-				       Point3d segstart, 
+  static public double pointToSegment (Point3d pt,
+				       Point3d segstart,
 				       Point3d segend,
 				       Point3d segint,
 				       double[] param) {
@@ -617,7 +617,7 @@ public class Distance {
       t = 0.0f;
       if (segint != null) segint.set (segstart);
       if (param != null) { param[0] = t; }
-    } 
+    }
     else {
       double mDotm = segdir.dot (segdir); //Dot(seg.m,seg.m);
       if (t >= mDotm) {
@@ -643,13 +643,13 @@ public class Distance {
    * @param seg0end the end of segment 0
    * @param seg1start the start of segment 1
    * @param seg1end the end of segment 1
-   * @return the square of the minimum distance from segment to segment    
+   * @return the square of the minimum distance from segment to segment
    */
   static public double segmentToSegment (Point3d seg0start,
 					 Point3d seg0end,
-					 Point3d seg1start, 
+					 Point3d seg1start,
 					 Point3d seg1end) {
-    return segmentToSegment (seg0start, seg0end, seg1start, seg1end, 
+    return segmentToSegment (seg0start, seg0end, seg1start, seg1end,
 			     null, null, null);
   }
 
@@ -680,7 +680,7 @@ public class Distance {
    */
   static public double segmentToSegment (Point3d seg0start,
 					 Point3d seg0end,
-					 Point3d seg1start, 
+					 Point3d seg1start,
 					 Point3d seg1end,
 					 Point3d seg0int,
 					 Point3d seg1int,
@@ -689,7 +689,7 @@ public class Distance {
 
     Vector3d diff = new Vector3d();
     diff.sub (seg0start,seg1start);
-    
+
     Vector3d seg0dir = new Vector3d();
     seg0dir.sub (seg0end, seg0start);
     Vector3d seg1dir = new Vector3d();
@@ -710,7 +710,7 @@ public class Distance {
       E = -seg1dir.dot (diff); //-Dot(seg1dir,diff);
       s = B*E-C*D;
       t = B*D-A*E;
-        
+
       if (s >= 0) {
 	if (s <= det) {
 	  if (t >= 0) {

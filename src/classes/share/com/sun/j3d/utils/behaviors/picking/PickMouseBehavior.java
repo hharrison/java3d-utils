@@ -65,7 +65,7 @@ import javax.vecmath.*;
  */
 
 public abstract class PickMouseBehavior extends Behavior {
-  
+
   /**
    * Portion of the scene graph to operate picking on.
    */
@@ -78,8 +78,8 @@ public abstract class PickMouseBehavior extends Behavior {
   protected TransformGroup currGrp;
   protected static final boolean debug = false;
   protected MouseEvent mevent;
-  
-  /** 
+
+  /**
    * Creates a PickMouseBehavior given current canvas, root of the tree to
    * operate on, and the bounds.
    */
@@ -101,7 +101,7 @@ public abstract class PickMouseBehavior extends Behavior {
 
     wakeupOn(wakeupCondition);
   }
-  
+
   private void processMouseEvent(MouseEvent evt) {
     buttonPress = false;
 
@@ -114,7 +114,7 @@ public abstract class PickMouseBehavior extends Behavior {
       // Process mouse move event
     }
   }
-  
+
   public void processStimulus (Enumeration criteria) {
     WakeupCriterion wakeup;
     AWTEvent[] evt = null;
@@ -125,7 +125,7 @@ public abstract class PickMouseBehavior extends Behavior {
       if (wakeup instanceof WakeupOnAWTEvent)
 	evt = ((WakeupOnAWTEvent)wakeup).getAWTEvent();
     }
-    
+
     if (evt[0] instanceof MouseEvent){
       mevent = (MouseEvent) evt[0];
 
@@ -135,17 +135,17 @@ public abstract class PickMouseBehavior extends Behavior {
       xpos = mevent.getPoint().x;
       ypos = mevent.getPoint().y;
     }
-    
+
     if (debug)
       System.out.println("mouse position " + xpos + " " + ypos);
-    
+
     if (buttonPress){
       updateScene(xpos, ypos);
     }
     wakeupOn (wakeupCondition);
   }
 
-  /** Subclasses shall implement this update function 
+  /** Subclasses shall implement this update function
    */
   public abstract void updateScene(int xpos, int ypos);
 }

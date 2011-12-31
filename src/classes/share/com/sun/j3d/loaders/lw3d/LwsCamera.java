@@ -58,7 +58,7 @@ import com.sun.j3d.loaders.ParsingErrorException;
  * creates Java3D TransformGroup that holds the data for positioning
  * and orienting the view according to the camera specifications.
  */
-	
+
 class LwsCamera extends TextfileParser implements LwsPrimitive {
 
     // data from the file
@@ -83,14 +83,14 @@ class LwsCamera extends TextfileParser implements LwsPrimitive {
 	getAndCheckString(st, "CameraMotion");
 	motion = new LwsMotion(st, firstFrame, totalFrames, totalTime,
 			       debugPrinter.getValidOutput());
-	
+
 	// TODO: buggy way to stop processing the camera.  Should actually
 	// process required/optional fields in order and stop when there's
-	// no more.  
-	
+	// no more.
+
 	while (!isCurrentToken(st, "DepthOfField")) {
 	    debugOutputLn(LINE_TRACE, "currentToken = " + st.sval);
-	    
+
 	    if (isCurrentToken(st, "ParentObject")) {
 		parent = (int)getNumber(st);
 	    }
@@ -129,7 +129,7 @@ class LwsCamera extends TextfileParser implements LwsPrimitive {
 	    Matrix4d m = new Matrix4d();
 	    double scale = .1;
 	    m.setColumn(0, scale, 0, 0, 0);  // setScale not yet implemented
-	    m.setColumn(1, 0, scale, 0, 0); 
+	    m.setColumn(1, 0, scale, 0, 0);
 	    m.setColumn(2, 0, 0, scale, 0);
 	    m.setColumn(3, 0, 0, 0, 1);
 	    Transform3D scaleTrans = new Transform3D(m);
@@ -143,10 +143,10 @@ class LwsCamera extends TextfileParser implements LwsPrimitive {
         objectBehavior = new Vector();;
         if (loadBehaviors != 0) {
  	  motion.createJava3dBehaviors(objectTransform);
-          Behavior b = motion.getBehaviors(); 
+          Behavior b = motion.getBehaviors();
           if (b != null)
 	    objectBehavior.addElement(b);
-        }  
+        }
     }
 
     /**
@@ -175,5 +175,5 @@ class LwsCamera extends TextfileParser implements LwsPrimitive {
 	System.out.println("   objName = " + objName);
 	motion.printVals();
     }
-    
-}	
+
+}

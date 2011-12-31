@@ -57,24 +57,24 @@ public class LinearFogState extends FogState {
     public LinearFogState(SymbolTableData symbol,Controller control) {
         super( symbol, control );
     }
-    
+
     public void writeObject( DataOutput out ) throws IOException {
         super.writeObject( out );
-                
+
         out.writeDouble( ((LinearFog)node).getBackDistance() );
         out.writeDouble( ((LinearFog)node).getFrontDistance() );
     }
-    
+
     public void readObject( DataInput in ) throws IOException {
         super.readObject( in );
-        
+
         ((LinearFog)node).setBackDistance( in.readDouble() );
         ((LinearFog)node).setFrontDistance( in.readDouble() );
     }
-    
+
     protected javax.media.j3d.SceneGraphObject createNode() {
         return new LinearFog();
     }
 
-    
+
 }

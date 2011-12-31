@@ -61,12 +61,12 @@ public class TriangleFanArrayState extends GeometryStripArrayState {
     public TriangleFanArrayState(SymbolTableData symbol,Controller control) {
         super( symbol, control );
     }
-    
+
     public void writeObject( DataOutput out ) throws IOException {
         super.writeObject( out );
     }
-    
-    
+
+
     public void readObject( DataInput in ) throws IOException {
         super.readObject( in );
     }
@@ -78,14 +78,14 @@ public class TriangleFanArrayState extends GeometryStripArrayState {
                                             Integer.TYPE,
                                             texCoordSetMap.getClass(),
                                             stripVertexCounts.getClass()
-                                        }, 
+                                        },
                                         new Object[] { new Integer( vertexCount ),
                                                      new Integer( vertexFormat ),
                                                      new Integer( texCoordSetCount ),
                                                      texCoordSetMap,
                                                      stripVertexCounts } );
     }
-    
+
     protected javax.media.j3d.SceneGraphObject createNode() {
         return new TriangleFanArray( vertexCount, vertexFormat, texCoordSetCount, texCoordSetMap, stripVertexCounts );
     }

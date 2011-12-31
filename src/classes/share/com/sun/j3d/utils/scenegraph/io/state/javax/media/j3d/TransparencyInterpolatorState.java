@@ -59,25 +59,25 @@ import com.sun.j3d.utils.scenegraph.io.retained.SymbolTableData;
 public class TransparencyInterpolatorState extends InterpolatorState {
 
     private int target;
-    
+
     public TransparencyInterpolatorState(SymbolTableData symbol,Controller control) {
         super( symbol, control );
-        
+
         if (node!=null)
             target = control.getSymbolTable().addReference( ((TransparencyInterpolator)node).getTarget() );
     }
-    
+
     public void writeObject( DataOutput out ) throws IOException {
         super.writeObject( out );
-        
+
         out.writeInt( target );
         out.writeFloat( ((TransparencyInterpolator)node).getMinimumTransparency() );
         out.writeFloat( ((TransparencyInterpolator)node).getMaximumTransparency() );
     }
-    
+
     public void readObject( DataInput in ) throws IOException {
         super.readObject( in );
-                        
+
         target = in.readInt();
         ((TransparencyInterpolator)node).setMinimumTransparency( in.readFloat() );
         ((TransparencyInterpolator)node).setMaximumTransparency( in.readFloat() );
@@ -91,19 +91,19 @@ public class TransparencyInterpolatorState extends InterpolatorState {
     public void addSubReference() {
         control.getSymbolTable().incNodeComponentRefCount( target );
     }
-    
+
     public void buildGraph() {
         ((TransparencyInterpolator)node).setTarget( (TransparencyAttributes)control.getSymbolTable().getJ3dNode( target ));
         super.buildGraph(); // Must be last call in method
     }
-    
+
     public SceneGraphObject createNode( Class j3dClass ) {
         return createNode( j3dClass, new Class[] { javax.media.j3d.Alpha.class,
                                                     javax.media.j3d.TransparencyAttributes.class },
                                       new Object[] { null,
                                                      null } );
     }
-    
+
     protected javax.media.j3d.SceneGraphObject createNode() {
         return new TransparencyInterpolator( null, null );
     }

@@ -56,7 +56,7 @@ import com.sun.j3d.audioengines.*;
 import javax.vecmath.*;
 
 /**
- * The PostionalSample Class defines the data and methods associated with a 
+ * The PostionalSample Class defines the data and methods associated with a
  * PointSound sample played through the AudioDevice.
  */
 
@@ -67,7 +67,7 @@ class JSDirectionalSample extends JSPositionalSample
 
     public JSDirectionalSample() {
         super();
-        if (debugFlag) 
+        if (debugFlag)
             debugPrintln("JSDirectionalSample constructor");
     }
 
@@ -91,21 +91,21 @@ class JSDirectionalSample extends JSPositionalSample
 
 
     /* ***********************************
-     *   
+     *
      *  Intersect ray to head with Ellipse
-     *   
+     *
      * ***********************************/
     /*
      * An ellipse is defined using:
      *    (1) the ConeSound's direction vector as the major axis of the ellipse;
      *    (2) the max parameter (a front distance attenuation value) along the
-     *        cone's position axis; and 
+     *        cone's position axis; and
      *    (3) the min parameter (a back distance attenuation value) along the
      *        cone's negative axis
-     * This method calculates the distance from the sound source to the 
+     * This method calculates the distance from the sound source to the
      * Intersection of the Ellipse with the ray from the sound source to the
      * listener's head.
-     * This method returns the resulting distance. 
+     * This method returns the resulting distance.
      * If an error occurs, -1.0 is returned.
      *
      * A calculation are done in 'Cone' space:
@@ -121,7 +121,7 @@ class JSDirectionalSample extends JSPositionalSample
      *         H'(x,y) = (cos @, sin @) * | H |
      * where @ is the angle between the X-axis and the ray to H.
      * Using the equation of the line thru the origin and H', and the
-     * equation of ellipse defined with min and max, find the 
+     * equation of ellipse defined with min and max, find the
      * intersection by solving for x and then y.
      *
      *    (I) The equation of the line thru the origin and H', and the
@@ -164,9 +164,9 @@ class JSDirectionalSample extends JSPositionalSample
      *      x**2 | -------------- + -------------------------------- | = 1
      *           | [(max+min)]**2               min*max              |
      *
-     *              |                                         | 
+     *              |                                         |
      *              |                   1                     |
-     *              |                                         | 
+     *              |                                         |
      *      x**2 =  | --------------------------------------- |
      *              |  |       4          [sin @/cos @]**2 |  |
      *              |  | -------------- + ---------------- |  |
@@ -177,7 +177,7 @@ class JSDirectionalSample extends JSPositionalSample
      *
      * Then solve for y by plugging x into Eq.(I).
      *
-     * Return the distance from the origin in Cone space to this intersection 
+     * Return the distance from the origin in Cone space to this intersection
      * point: square_root(x**2 + y**2).
      *
      */
@@ -226,9 +226,9 @@ class JSDirectionalSample extends JSPositionalSample
              debugPrint( "           X = " + x );
          /*
           * Solve for y, given the result for x:
-          *          | H'(y) |       | sin @ | 
+          *          | H'(y) |       | sin @ |
           *     y  = | ----- | x  =  | ----- | x
-          *          | H'(x) |       | cos @ | 
+          *          | H'(x) |       | cos @ |
           */
          double y = tangent * x;
          if (debugFlag)
@@ -245,13 +245,13 @@ class JSDirectionalSample extends JSPositionalSample
     }
 
     /* *****************
-     *   
+     *
      *  Find Factor
-     *   
+     *
      * *****************/
     /*
      *  Interpolates the correct attenuation scale factor given a 'distance'
-     *  value.  This version used both front and back attenuation distance 
+     *  value.  This version used both front and back attenuation distance
      *  and scale factor arrays (if non-null) in its calculation of the
      *  the distance attenuation.
      *  If the back attenuation arrays are null then this executes the
@@ -259,13 +259,13 @@ class JSDirectionalSample extends JSPositionalSample
      *  This method finds the intesection of the ray from the sound source
      *  to the center-ear, with the ellipses defined by the two sets (front
      *  and back) of distance attenuation arrays.
-     *  This method looks at pairs of intersection distance values to find 
+     *  This method looks at pairs of intersection distance values to find
      *  which pair the input distance argument is between:
      *     [intersectionDistance[index] and intersectionDistance[index+1]
      *  The index is used to get factorArray[index] and factorArray[index+1].
      *  Then the ratio of the 'distance' between this pair of intersection
      *  values is used to scale the two found factorArray values proportionally.
-     */  
+     */
     float findFactor(double distanceToHead,
                     double[] maxDistanceArray, float[] maxFactorArray,
                     double[] minDistanceArray, float[] minFactorArray) {
@@ -311,12 +311,12 @@ class JSDirectionalSample extends JSPositionalSample
          */
         if (distanceToHead >= maxDistanceArray[largestIndex]) {
             if (debugFlag)
-                debugPrint("    findFactor: distance > " + 
+                debugPrint("    findFactor: distance > " +
                                   maxDistanceArray[largestIndex]);
             if (debugFlag)
-                debugPrint("    maxDistanceArray length = " + 
+                debugPrint("    maxDistanceArray length = " +
                                   maxDistanceArray.length);
-            if (debugFlag)   
+            if (debugFlag)
                 debugPrint("    findFactor returns ****** " +
                                maxFactorArray[largestIndex] + " ******");
             return maxFactorArray[largestIndex];
@@ -330,12 +330,12 @@ class JSDirectionalSample extends JSPositionalSample
             if (debugFlag)
                 debugPrint("    findFactor: distance < " +
                                     maxDistanceArray[0]);
-            if (debugFlag)   
+            if (debugFlag)
                 debugPrint("    findFactor returns ****** " +
                                minFactorArray[0] + " ******");
             return minFactorArray[0];
         }
- 
+
         /*
          * distanceToHead is between points within attenuation arrays.
          * Use binary halfing of distance attenuation arrays.
@@ -350,11 +350,11 @@ class JSDirectionalSample extends JSPositionalSample
             boolean intersectionOnEllipse = false;
             int factorIndex = -1;
 
-            /* 
+            /*
              * Using binary halving to find the two index values in the
-             * front and back distance arrays that the distanceToHead 
+             * front and back distance arrays that the distanceToHead
              * parameter (from sound source position to head) fails between.
-             * Changing the the current low and high index values 
+             * Changing the the current low and high index values
              * calculate the intesection of ellipses (defined by this
              * min/max distance values) with the ray (sound source to
              * head).  Put the resulting value into the distanceArray.
@@ -388,12 +388,12 @@ class JSDirectionalSample extends JSPositionalSample
                          * Error in ellipse intersection calculation.  Use
                          * average of max/min difference for intersection value.
                          */
-                        distanceArray[lowIndex] = (minDistanceArray[lowIndex] + 
+                        distanceArray[lowIndex] = (minDistanceArray[lowIndex] +
                                    maxDistanceArray[lowIndex])*0.5;
                         if (internalErrors)
                             debugPrint(
                                "Internal Error in intersectEllipse; use " +
-                               distanceArray[lowIndex] + 
+                               distanceArray[lowIndex] +
                                " for intersection value " );
                         // Rather than aborting, just use average and go on...
                         intersectionCalculated[lowIndex] = true;
@@ -416,7 +416,7 @@ class JSDirectionalSample extends JSPositionalSample
                         if (internalErrors)
                             debugPrint(
                                "Internal Error in intersectEllipse; use " +
-                               distanceArray[highIndex] +  
+                               distanceArray[highIndex] +
                                " for intersection value " );
                         // Rather than aborting, just use average and go on...
                         intersectionCalculated[highIndex] = true;
@@ -429,10 +429,10 @@ class JSDirectionalSample extends JSPositionalSample
                  * return factor value directly from array
                  */
                 if (distanceArray[lowIndex] >= distanceToHead) {
-                    if ((lowIndex != 0) && 
+                    if ((lowIndex != 0) &&
                             (distanceToHead < distanceArray[lowIndex])) {
                         if (internalErrors)
-                            debugPrint( 
+                            debugPrint(
                                 "Internal Error: binary halving in " +
                                 "findFactor failed; distance < low " +
                                 "index value");
@@ -447,7 +447,7 @@ class JSDirectionalSample extends JSPositionalSample
                     break;
                 }
                 else if (distanceArray[highIndex] <= distanceToHead) {
-                    if ((highIndex != largestIndex) && 
+                    if ((highIndex != largestIndex) &&
                              (distanceToHead > distanceArray[highIndex])) {
                         if (internalErrors)
                             debugPrint(
@@ -479,31 +479,31 @@ class JSDirectionalSample extends JSPositionalSample
             /*
              * First check to see if distanceToHead is beyond min or max
              * ellipses, or on an ellipse.
-             * If so, factor is calculated using the distance Ratio 
+             * If so, factor is calculated using the distance Ratio
              *    (distanceToHead - min) / (max-min)
-             * where max = maxDistanceArray[factorIndex], and 
+             * where max = maxDistanceArray[factorIndex], and
              *       min = minDistanceArray[factorIndex]
              */
             if (intersectionOnEllipse  && factorIndex >= 0) {
-                if (debugFlag) { 
+                if (debugFlag) {
                     debugPrint( "    ratio calculated using factorIndex " +
                         factorIndex);
                     debugPrint( "    d.A. max pair for factorIndex " +
-                        maxDistanceArray[factorIndex] + ", " + 
+                        maxDistanceArray[factorIndex] + ", " +
                         maxFactorArray[factorIndex]);
                     debugPrint( "    d.A. min pair for lowIndex " +
-                        minDistanceArray[factorIndex] + ", " + 
+                        minDistanceArray[factorIndex] + ", " +
                         minFactorArray[factorIndex]);
                 }
                 returnValue =  (
-                    ( (distanceArray[factorIndex] - 
+                    ( (distanceArray[factorIndex] -
                               minDistanceArray[factorIndex]) /
-                          (maxDistanceArray[factorIndex] - 
+                          (maxDistanceArray[factorIndex] -
                               minDistanceArray[factorIndex]) ) *
-                      (maxFactorArray[factorIndex] - 
+                      (maxFactorArray[factorIndex] -
                               minFactorArray[factorIndex]) ) +
                     minFactorArray[factorIndex] ;
-                if (debugFlag)   
+                if (debugFlag)
                     debugPrint("    findFactor returns ****** " +
                                returnValue + " ******");
                 return (float)returnValue;
@@ -515,22 +515,22 @@ class JSDirectionalSample extends JSPositionalSample
              * the other by highIndex min/max factor arrays.  Then the
              * distance Ratio (defined above) is applied, using these
              * two factor values, to get the final return value.
-             */ 
+             */
 	    double highFactorValue = 1.0;
             double lowFactorValue  = 0.0;
-            highFactorValue = 
+            highFactorValue =
                 ( ((distanceArray[highIndex] - minDistanceArray[highIndex]) /
                    (maxDistanceArray[highIndex]-minDistanceArray[highIndex])) *
                   (maxFactorArray[highIndex] - minFactorArray[highIndex]) ) +
                 minFactorArray[highIndex] ;
-            if (debugFlag) { 
+            if (debugFlag) {
                 debugPrint( "    highFactorValue calculated w/ highIndex " +
                         highIndex);
                 debugPrint( "    d.A. max pair for highIndex " +
-                        maxDistanceArray[highIndex] + ", " + 
+                        maxDistanceArray[highIndex] + ", " +
                         maxFactorArray[highIndex]);
                 debugPrint( "    d.A. min pair for lowIndex " +
-                        minDistanceArray[highIndex] + ", " + 
+                        minDistanceArray[highIndex] + ", " +
                         minFactorArray[highIndex]);
                 debugPrint( "    highFactorValue " + highFactorValue);
             }
@@ -539,14 +539,14 @@ class JSDirectionalSample extends JSPositionalSample
                    (maxDistanceArray[lowIndex] - minDistanceArray[lowIndex])) *
                   (maxFactorArray[lowIndex] - minFactorArray[lowIndex]) ) +
                 minFactorArray[lowIndex] ;
-            if (debugFlag) { 
+            if (debugFlag) {
                 debugPrint( "    lowFactorValue calculated w/ lowIndex " +
                         lowIndex);
                 debugPrint( "    d.A. max pair for lowIndex " +
-                        maxDistanceArray[lowIndex] + ", " + 
+                        maxDistanceArray[lowIndex] + ", " +
                         maxFactorArray[lowIndex]);
                 debugPrint( "    d.A. min pair for lowIndex " +
-                        minDistanceArray[lowIndex] + ", " + 
+                        minDistanceArray[lowIndex] + ", " +
                         minFactorArray[lowIndex]);
                 debugPrint( "    lowFactorValue " + lowFactorValue);
             }
@@ -560,7 +560,7 @@ class JSDirectionalSample extends JSPositionalSample
              *        attenuation value between lowIndex and highIndex
              * gives linearly interpolationed attenuation value
              */
-            if (debugFlag) { 
+            if (debugFlag) {
                 debugPrint( "    ratio calculated using distanceArray" +
                        lowIndex + ", highIndex " + highIndex);
                 debugPrint( "    calculated pair for lowIndex " +
@@ -568,27 +568,27 @@ class JSDirectionalSample extends JSPositionalSample
                 debugPrint( "    calculated pair for highIndex " +
                         distanceArray[highIndex]+", "+ highFactorValue );
             }
- 
+
             returnValue =
                 ( ( (distanceToHead - distanceArray[lowIndex]) /
                     (distanceArray[highIndex] - distanceArray[lowIndex]) ) *
                   (highFactorValue - lowFactorValue) ) +
                 factorArray[lowIndex] ;
-            if (debugFlag)   
-                debugPrint("    findFactor returns ******" + 
+            if (debugFlag)
+                debugPrint("    findFactor returns ******" +
                            returnValue + " ******");
             return (float)returnValue;
-        } 
+        }
 
     }
 
     /**
-     * CalculateDistanceAttenuation  
-     * 
-     * Simply calls ConeSound specific 'findFactor()' with 
+     * CalculateDistanceAttenuation
+     *
+     * Simply calls ConeSound specific 'findFactor()' with
      * both front and back attenuation linear distance and gain scale factor
-     * arrays. 
-     */  
+     * arrays.
+     */
     float calculateDistanceAttenuation(float distance) {
         float factor = findFactor(distance, this.attenuationDistance,
                        this.attenuationGain, this.backAttenuationDistance,
@@ -599,11 +599,11 @@ class JSDirectionalSample extends JSPositionalSample
             return factor;
     }
     /**
-     * CalculateAngularGain  
-     *   
-     * Simply calls generic (for PointSound) 'findFactor()' with 
+     * CalculateAngularGain
+     *
+     * Simply calls generic (for PointSound) 'findFactor()' with
      * a single set of angular attenuation distance and gain scalefactor arrays.
-     */  
+     */
     float calculateAngularGain() {
         float angle = findAngularOffset();
         float factor = findFactor(angle, this.angularDistance, this.angularGain);
@@ -611,14 +611,14 @@ class JSDirectionalSample extends JSPositionalSample
             return 1.0f;
         else
             return factor;
-    } 
+    }
 
      /* *****************
-     *   
+     *
      *  Find Angular Offset
-     *   
+     *
      * *****************/
-    /*   
+    /*
      *  Calculates the angle from the sound's direction axis and the ray from
      *  the sound origin to the listener'center ear.
      *  For Cone Sounds this value is the arc cosine of dot-product between
@@ -627,7 +627,7 @@ class JSDirectionalSample extends JSPositionalSample
      *  Center ear position is in Virtual World coordinates.
      *  Assumes that calculation done in VWorld Space...
      *  Assumes that xformPosition is already calculated...
-     */  
+     */
     float findAngularOffset() {
         Vector3f unitToEar = new Vector3f();
         Vector3f unitDirection = new Vector3f();
@@ -635,10 +635,10 @@ class JSDirectionalSample extends JSPositionalSample
         Point3f  xformCenterEar = centerEars[currentIndex];
         float   dotProduct;
         float   angle;
-        /* 
+        /*
          * TODO: (Question) is assumption that xformed values available O.K.
          * TODO: (Performance) save this angular offset and only recalculate
-         *          if centerEar or sound position have changed. 
+         *          if centerEar or sound position have changed.
          */
         unitToEar.x = xformCenterEar.x - xformPosition.x;
         unitToEar.y = xformCenterEar.y - xformPosition.y;
@@ -653,11 +653,11 @@ class JSDirectionalSample extends JSPositionalSample
     }
 
      /************
-     *   
+     *
      *  Calculate Filter
-     *   
+     *
      * *****************/
-    /*   
+    /*
      *  Calculates the low-pass cutoff frequency filter value applied to the
      *  a sound based on both:
      *      Distance Filter (from Aural Attributes) based on distance
@@ -667,7 +667,7 @@ class JSDirectionalSample extends JSPositionalSample
      *         vector between the sounds position and center ear.
      *  The lowest of these two filter is used.
      *  This filter value is stored into the sample's filterFreq field.
-     */  
+     */
     void calculateFilter(float distance, AuralParameters attribs) {
         // setting filter cutoff freq to 44.1kHz which, in this
         // implementation, is the same as not performing filtering
@@ -690,7 +690,7 @@ class JSDirectionalSample extends JSPositionalSample
             }
 
             // Calculate angle from direction axis towards listener
-            float angle = findAngularOffset(); 
+            float angle = findAngularOffset();
             distanceFilter = findFactor((double)angle,
                    angularDistance, angularFilterCutoff);
             if (distanceFilter < 0.0f)
@@ -702,10 +702,10 @@ class JSDirectionalSample extends JSPositionalSample
             distanceFilterFound = false;
             distanceFilter = -1.0f;
         }
- 
+
         if (debugFlag)
             debugPrint("    calculateFilter arrayLength = " + arrayLength);
- 
+
         // Angular filter of directional sound sources.
         arrayLength = angularDistance.length;
         filterType = angularFilterType;
@@ -720,7 +720,7 @@ class JSDirectionalSample extends JSPositionalSample
         else  {
             angularFilterFound = false;
             angularFilter = -1.0f;
-        } 
+        }
 
         filterFlag = distanceFilterFound || angularFilterFound;
         if (distanceFilter < 0.0f)

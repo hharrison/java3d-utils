@@ -106,7 +106,7 @@ class RgbFile extends BufferedInputStream {
 
 	if (storage != 0)
 	    throw new IOException("RLE Compressed files not supported");
-    
+
 	byte bpc = getByte();
 	dimension = getShort();
 	xSize = getShort();
@@ -141,7 +141,7 @@ class RgbFile extends BufferedInputStream {
 
 	    int[] nBits = {8};
 	    cm = new ComponentColorModel(cs, nBits, false, false,
-					 Transparency.OPAQUE, 
+					 Transparency.OPAQUE,
 					 DataBuffer.TYPE_BYTE);
 
 	} else if (zSize == 2) {

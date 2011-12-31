@@ -81,7 +81,7 @@ class JSChannel {
 
     /**
      * Debug print mechanism for Sound nodes
-     */ 
+     */
     static final boolean debugFlag = false;
 
     static void debugPrint(String message) {
@@ -113,7 +113,7 @@ class JSChannel {
              if (debugFlag) {
                  debugPrint("JSChannel: Internal Error initAudioInputStream ");
                  debugPrintln("input stream given is null");
-             }   
+             }
              this.inputStream = null;
              return null;
          }
@@ -140,7 +140,7 @@ class JSChannel {
 /******
 // QUESTION: HOW do I figure out the data type of the file/url/inputStream????
          if (ais instanceof AudioMidiInputStream ||
-             ais instanceof AudioRmfInputStream ) 
+             ais instanceof AudioRmfInputStream )
              // QUESTION: can non-cached MIDI files ever be supported ?
 *******/
          return ais;
@@ -156,7 +156,7 @@ class JSChannel {
              if (debugFlag) {
                  debugPrint("JSChannel: Internal Error initAudioInputStream ");
                  debugPrintln("URL given is null");
-             }   
+             }
              this.url = null;
              return null;
          }
@@ -179,7 +179,7 @@ class JSChannel {
          inputStream = null;
          return ais;
      }  // initAudioInputStream
- 
+
 
     AudioInputStream reinitAudioInputStream(URL path) {
 /*****
@@ -187,7 +187,7 @@ class JSChannel {
              if (debugFlag) {
                  debugPrint("JSChannel: Internal Error reinitAudioInputStream ");
                  debugPrintln("URL given is null");
-             }   
+             }
              return null;
          }
          try {
@@ -199,7 +199,7 @@ class JSChannel {
              if (debugFlag) {
                  debugPrint("JSChannel: Internal Error reinitAudioInputStream ");
                  debugPrintln("get stream failed");
-             }   
+             }
 	     e.printStackTrace();
              return null;
          }
@@ -217,7 +217,7 @@ class JSChannel {
              if (debugFlag) {
                  debugPrint("JSChannel: Internal Error reinitAudioInputStream ");
                  debugPrintln("InputStream given is null");
-             }   
+             }
              return null;
          }
          try {
@@ -234,7 +234,7 @@ class JSChannel {
              if (debugFlag) {
                  debugPrint("JSChannel: Internal Error reinitAudioInputStream ");
                  debugPrintln("get stream failed");
-             }   
+             }
 	     e.printStackTrace();
              return null;
          }
@@ -259,11 +259,11 @@ class JSChannel {
          if (debugFlag)
              debugPrintln("JSChannel:getDuration");
 
-         if (ais == null || audioFormat == null ) { 
-             if (debugFlag) 
-                 debugPrintln("JSChannel: Internal Error getDuration"); 
+         if (ais == null || audioFormat == null ) {
+             if (debugFlag)
+                 debugPrintln("JSChannel: Internal Error getDuration");
              return (long)Sample.DURATION_UNKNOWN;
-         } 
+         }
          // Otherwise we'll assume that we can calculate this duration
 
          // get "duration" of audio stream (wave file)
@@ -280,7 +280,7 @@ class JSChannel {
              debugPrintln("           rate in Frames = " + rateInFrames);
          if (numFrames <= 0)
              return (long)Sample.DURATION_UNKNOWN;
-         long duration = (long)((float)numFrames/rateInFrames); 
+         long duration = (long)((float)numFrames/rateInFrames);
          if (debugFlag)
              debugPrintln("           duration(based on ais) = " + duration);
          return duration;
@@ -289,7 +289,7 @@ class JSChannel {
      /**
       * Start TWO Samples
       */
-     boolean  startSamples(int loopCount, float leftGain, float rightGain, 
+     boolean  startSamples(int loopCount, float leftGain, float rightGain,
                               int leftDelay, int rightDelay) {
          if (debugFlag)
              debugPrint("JSChannel: startSamples must be overridden");
@@ -354,10 +354,10 @@ class JSChannel {
      void  scaleSampleRate(float scaleFactor) {
          /**
           * Change rate for Doppler affect or pitch shifting.
-          * Engine maximum sample rate is 48kHz so clamp to that 
+          * Engine maximum sample rate is 48kHz so clamp to that
           * max value.
           */
-         if (debugFlag)  
+         if (debugFlag)
              debugPrintln("JSChannel: scaleSampleRate");
          if (ais == null) {
              if (debugFlag) {
@@ -366,7 +366,7 @@ class JSChannel {
              }
              return;
          }
- 
+
          AudioFormat audioFormat = ais.getFormat();
          float rate = audioFormat.getSampleRate();
 
@@ -380,7 +380,7 @@ class JSChannel {
 // need to set FloatControl.Type(SAMPLE_RATE) to new value somehow...
 
          if (debugFlag) {
-             debugPrintln("JSChannel: scaleSampleRate: new rate = " + 
+             debugPrintln("JSChannel: scaleSampleRate: new rate = " +
                      rate * scaleFactor);
              debugPrintln("              >>>>>>>>>>>>>>>  using scaleFactor = " +
                      scaleFactor);
@@ -397,14 +397,14 @@ class JSChannel {
      }
 
      int  pauseSample() {
-         /** 
+         /**
           * Pause playing a sample
-          */ 
+          */
 // TODO: Notify thread
          return 0;
-     }   
+     }
 
-     int  unpauseSamples() { 
+     int  unpauseSamples() {
          /**
           * Resume playing samples
           */
@@ -412,10 +412,10 @@ class JSChannel {
          return 0;
      }
 
-     int  unpauseSample() { 
-         /** 
+     int  unpauseSample() {
+         /**
           * Resume playing a sample
-          */ 
+          */
 // TODO: Notify thread
          return 0;
      }

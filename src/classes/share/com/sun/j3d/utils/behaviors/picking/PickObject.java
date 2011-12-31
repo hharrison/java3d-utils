@@ -107,76 +107,76 @@ import javax.vecmath.*;
 public class PickObject extends Object {
 
   // Have to rethink what to support. Is this complete.
-  
+
   /**
    * A flag to indicate to the pickNode method to return a
-   * <code>Shape3D</code> node from 
-   * a given <code>SceneGraphPath</code>. 
+   * <code>Shape3D</code> node from
+   * a given <code>SceneGraphPath</code>.
    *
-   * @see PickObject#pickNode 
+   * @see PickObject#pickNode
    */
   public static final int SHAPE3D = 0x1;
 
   /**
    * A flag to indicate to the pickNode method to return a
-   * <code>Morph</code> node from 
-   * a given <code>SceneGraphPath</code>. 
+   * <code>Morph</code> node from
+   * a given <code>SceneGraphPath</code>.
    *
-   * @see PickObject#pickNode 
+   * @see PickObject#pickNode
    */
   public static final int MORPH = 0x2;
 
   /**
    * A flag to indicate to the pickNode method to return a
-   * <code>Primitive</code> node 
-   * from a given <code>SceneGraphPath</code>. 
+   * <code>Primitive</code> node
+   * from a given <code>SceneGraphPath</code>.
    *
-   * @see PickObject#pickNode 
+   * @see PickObject#pickNode
    */
   public static final int PRIMITIVE = 0x4;
 
   /**
    * A flag to indicate to the pickNode method to return a
-   * <code>Link</code> node from 
-   * a given <code>SceneGraphPath</code>. 
+   * <code>Link</code> node from
+   * a given <code>SceneGraphPath</code>.
    *
-   * @see PickObject#pickNode 
+   * @see PickObject#pickNode
    */
   public static final int LINK = 0x8;
 
   /**
    * A flag to indicate to the pickNode method to return a
-   * <code>Group</code> node from 
-   * a given <code>SceneGraphPath</code>. 
+   * <code>Group</code> node from
+   * a given <code>SceneGraphPath</code>.
    *
-   * @see PickObject#pickNode 
+   * @see PickObject#pickNode
    */
   public static final int GROUP = 0x10;
-  
+
   /**
    * A flag to indicate to the pickNode method to return a
-   * <code>TransformGroup</code> 
-   * node from a given <code>SceneGraphPath</code>. 
+   * <code>TransformGroup</code>
+   * node from a given <code>SceneGraphPath</code>.
    *
-   * @see PickObject#pickNode 
+   * @see PickObject#pickNode
    */
   public static final int TRANSFORM_GROUP = 0x20;
- 
+
   /**
    * A flag to indicate to the pickNode method to return a
-   * <code>BranchGroup</code> 
-   * node from a given <code>SceneGraphPath</code>. 
+   * <code>BranchGroup</code>
+   * node from a given <code>SceneGraphPath</code>.
    *
-   * @see PickObject#pickNode 
+   * @see PickObject#pickNode
    */
   public static final int BRANCH_GROUP = 0x40;
 
   /**
    * A flag to indicate to the pickNode method to return a
-   * <code>Switch</code> node from 
-   * a given <code>SceneGraphPath</code>. 
+   * <code>Switch</code> node from
+   * a given <code>SceneGraphPath</code>.
    *
-   * @see PickObject#pickNode 
+   * @see PickObject#pickNode
    */
   public static final int SWITCH = 0x80;
 
@@ -191,14 +191,14 @@ public class PickObject extends Object {
    * Set this flag if you want to pick by bounds.
    */
   public static final int USE_BOUNDS = 0x200;
-  
+
   BranchGroup pickRoot;
   Canvas3D canvas;
   Point3d origin = new Point3d();
   Vector3d direction = new Vector3d();
   PickRay pickRay = new PickRay();
-  SceneGraphPath sceneGraphPath = null;  
-  SceneGraphPath sceneGraphPathArr[] = null;  
+  SceneGraphPath sceneGraphPath = null;
+  SceneGraphPath sceneGraphPathArr[] = null;
   int pickBy;    // To pick by Bounds or Geometry.
 
   static final boolean debug = false;
@@ -211,11 +211,11 @@ public class PickObject extends Object {
    *
    * @see BranchGroup
    * @see Canvas3D
-   */ 
+   */
   public PickObject(Canvas3D c, BranchGroup root)
     {
       pickRoot = root;
-      canvas = c;      
+      canvas = c;
     }
 
   /**
@@ -225,15 +225,15 @@ public class PickObject extends Object {
    * @param xpos The value along the x-axis.
    * @param ypos The value along the y-axis.
    * @return A PickShape object that is the constructed PickRay.
-   */ 
+   */
   public PickShape generatePickRay(int xpos, int ypos)
     {
-            
+
       Transform3D motion=new Transform3D();
       Point3d eyePosn = new Point3d();
       Point3d mousePosn = new Point3d();
       Vector3d mouseVec=new Vector3d();
-      
+
       canvas.getCenterEyeInImagePlate(eyePosn);
       canvas.getPixelLocationInImagePlate(xpos,ypos,mousePosn);
       if (canvas.getView().getProjectionPolicy() ==
@@ -251,28 +251,28 @@ public class PickObject extends Object {
 	System.out.println("mouse position " + xpos + " " + ypos);
 	System.out.println("before, mouse " + mousePosn + " eye " + eyePosn);
       }
-      
+
       motion.transform(eyePosn);
       motion.transform(mousePosn);
       mouseVec.sub(mousePosn, eyePosn);
       mouseVec.normalize();
-      
+
       if (debug) {
 	System.out.println(motion + "\n");
-	System.out.println("after, mouse " + mousePosn + " eye " + eyePosn + 
+	System.out.println("after, mouse " + mousePosn + " eye " + eyePosn +
 			   " mouseVec " + mouseVec);
       }
 
       pickRay.set(eyePosn, mouseVec);
-            
-      return (PickShape) pickRay;      
-      
+
+      return (PickShape) pickRay;
+
     }
-  
+
   /**
    * Returns an array referencing all the items that are pickable below the
    * <code>BranchGroup</code> (specified in the PickObject constructor) that
-   * intersect with a ray that starts at the 
+   * intersect with a ray that starts at the
    * viewer position and points into the scene in the direction of (xpos, ypos)
    * specified in window space. The resultant array is unordered.
    *
@@ -283,20 +283,20 @@ public class PickObject extends Object {
    * If no pickable object is found <code>null</code> is returned..
    *
    * @see SceneGraphPath
-   */  
+   */
   public SceneGraphPath[] pickAll(int xpos, int ypos)
     {
       pickRay = (PickRay) generatePickRay(xpos, ypos);
       sceneGraphPathArr = pickRoot.pickAll(pickRay);
       return sceneGraphPathArr;
     }
-  
+
   /**
    * Returns a sorted array of references to all the Pickable items below the
    * <code>BranchGroup</code> (specified in the PickObject constructor) that
-   * intersect with the ray that starts at the viewer 
-   * position and points into the scene in the direction of (xpos, ypos) 
-   * in the window space. 
+   * intersect with the ray that starts at the viewer
+   * position and points into the scene in the direction of (xpos, ypos)
+   * in the window space.
    * Element [0] references the item closest to viewer.
    *
    * @param xpos The value along the x-axis.
@@ -318,8 +318,8 @@ public class PickObject extends Object {
   /**
    * Returns a reference to any item that is Pickable below the specified
    * <code>BranchGroup</code> (specified in the PickObject constructor) which
-   *  intersects with the ray that starts at the viewer 
-   * position and points into the scene in the direction of (xpos, ypos) in 
+   *  intersects with the ray that starts at the viewer
+   * position and points into the scene in the direction of (xpos, ypos) in
    * window space.
    *
    * @param xpos The value along the x-axis.
@@ -340,7 +340,7 @@ public class PickObject extends Object {
   /**
    * Returns a reference to the item that is closest to the viewer and is
    * Pickable below the <code>BranchGroup</code> (specified in the PickObject
-   * constructor) which intersects with the ray that starts at 
+   * constructor) which intersects with the ray that starts at
    * the viewer position and points into the scene in the direction of
    * (xpos, ypos) in the window space.
    *
@@ -362,7 +362,7 @@ public class PickObject extends Object {
   /**
    * Returns an array referencing all the items that are pickable below the
    * <code>BranchGroup</code> (specified in the PickObject constructor) that
-   * intersect with a ray that starts at the 
+   * intersect with a ray that starts at the
    * viewer position and points into the scene in the direction of (xpos, ypos)
    * specified in window space. The resultant array is unordered.
    *
@@ -374,26 +374,26 @@ public class PickObject extends Object {
    * If no pickable object is found <code>null</code> is returned..
    *
    * @see SceneGraphPath
-   */  
+   */
   public SceneGraphPath[] pickAll(int xpos, int ypos, int flag)
     {
 
       if(flag == USE_BOUNDS) {
 	return pickAll(xpos, ypos);
       }
-      else if(flag == USE_GEOMETRY) {   
+      else if(flag == USE_GEOMETRY) {
 	return pickGeomAll(xpos, ypos);
       }
-      else 
+      else
 	return null;
     }
-  
+
   /**
    * Returns a sorted array of references to all the Pickable items below the
    * <code>BranchGroup</code> (specified in the PickObject constructor) that
-   * intersect with the ray that starts at the viewer 
-   * position and points into the scene in the direction of (xpos, ypos) 
-   * in the window space. 
+   * intersect with the ray that starts at the viewer
+   * position and points into the scene in the direction of (xpos, ypos)
+   * in the window space.
    * Element [0] references the item closest to viewer.
    *
    * @param xpos The value along the x-axis.
@@ -412,10 +412,10 @@ public class PickObject extends Object {
       if(flag == USE_BOUNDS) {
 	return pickAllSorted(xpos, ypos);
       }
-      else if(flag == USE_GEOMETRY) {   
+      else if(flag == USE_GEOMETRY) {
 	return pickGeomAllSorted(xpos, ypos);
       }
-      else 
+      else
 	return null;
 
     }
@@ -423,8 +423,8 @@ public class PickObject extends Object {
   /**
    * Returns a reference to any item that is Pickable below the specified
    * <code>BranchGroup</code> (specified in the PickObject constructor) which
-   *  intersects with the ray that starts at the viewer 
-   * position and points into the scene in the direction of (xpos, ypos) in 
+   *  intersects with the ray that starts at the viewer
+   * position and points into the scene in the direction of (xpos, ypos) in
    * window space.
    *
    * @param xpos The value along the x-axis.
@@ -442,17 +442,17 @@ public class PickObject extends Object {
       if(flag == USE_BOUNDS) {
 	return pickAny(xpos, ypos);
       }
-      else if(flag == USE_GEOMETRY) {   
+      else if(flag == USE_GEOMETRY) {
 	return pickGeomAny(xpos, ypos);
       }
-      else 
+      else
 	return null;
     }
 
   /**
    * Returns a reference to the item that is closest to the viewer and is
    * Pickable below the <code>BranchGroup</code> (specified in the PickObject
-   * constructor) which intersects with the ray that starts at 
+   * constructor) which intersects with the ray that starts at
    * the viewer position and points into the scene in the direction of
    * (xpos, ypos) in the window space.
    *
@@ -470,10 +470,10 @@ public class PickObject extends Object {
       if(flag == USE_BOUNDS) {
 	return pickClosest(xpos, ypos);
       }
-      else if(flag == USE_GEOMETRY) {   
+      else if(flag == USE_GEOMETRY) {
 	return pickGeomClosest(xpos, ypos);
       }
-      else 
+      else
 	return null;
     }
 
@@ -484,25 +484,25 @@ public class PickObject extends Object {
 
       pickRay = (PickRay) generatePickRay(xpos, ypos);
       sceneGraphPathArr = pickRoot.pickAll(pickRay);
-      
+
       if(sceneGraphPathArr == null)
 	return null;
-      
+
       boolean found[] = new boolean[sceneGraphPathArr.length];
 
       for(i=0; i<sceneGraphPathArr.length; i++) {
         obj = sceneGraphPathArr[i].getObject();
 	if(obj instanceof Shape3D) {
-	  found[i] = ((Shape3D) obj).intersect(sceneGraphPathArr[i], 
-					       (PickShape) pickRay);	  
+	  found[i] = ((Shape3D) obj).intersect(sceneGraphPathArr[i],
+					       (PickShape) pickRay);
 	} else if(obj instanceof Morph) {
-	  found[i] = ((Morph) obj).intersect(sceneGraphPathArr[i], 
-					     (PickShape) pickRay); 
+	  found[i] = ((Morph) obj).intersect(sceneGraphPathArr[i],
+					     (PickShape) pickRay);
 	}
 	if(found[i] == true)
-	  cnt++;	
+	  cnt++;
       }
-      
+
       if(cnt == 0)
 	return null;
 
@@ -513,7 +513,7 @@ public class PickObject extends Object {
 	if(found[i] == true)
 	  newSceneGraphPathArr[cnt++] = sceneGraphPathArr[i];
       }
-      
+
       return newSceneGraphPathArr;
     }
 
@@ -528,28 +528,28 @@ public class PickObject extends Object {
       // System.out.print("In pickGeomAllSorted\n");
       pickRay = (PickRay) generatePickRay(xpos, ypos);
       sceneGraphPathArr = pickRoot.pickAll(pickRay);
-      
+
       if(sceneGraphPathArr == null)
 	return null;
-      
+
       boolean found[] = new boolean[sceneGraphPathArr.length];
       double distArr[] = new double[sceneGraphPathArr.length];
 
       for(i=0; i<sceneGraphPathArr.length; i++) {
         obj = sceneGraphPathArr[i].getObject();
 	if(obj instanceof Shape3D) {
-	  found[i] = ((Shape3D) obj).intersect(sceneGraphPathArr[i], 
+	  found[i] = ((Shape3D) obj).intersect(sceneGraphPathArr[i],
 					       pickRay, dist);
 	  distArr[i] = dist[0];
 	} else if(obj instanceof Morph) {
-	  found[i] = ((Morph) obj).intersect(sceneGraphPathArr[i], 
+	  found[i] = ((Morph) obj).intersect(sceneGraphPathArr[i],
 					     pickRay, dist);
 	  distArr[i] = dist[0];
 	}
 	if(found[i] == true)
-	  cnt++;	
+	  cnt++;
       }
-      
+
       if(cnt == 0)
 	return null;
 
@@ -563,19 +563,19 @@ public class PickObject extends Object {
 	  distance[cnt++] = distArr[i];
 	}
       }
-      
+
       return sort(newSceneGraphPathArr);
     }
 
-  
+
   private SceneGraphPath pickGeomClosest(int xpos, int ypos)
     {
       SceneGraphPath sgpArr[] = pickGeomAllSorted(xpos, ypos);
-      
+
       if (sgpArr == null)
 	return null;
-      
-      return sgpArr[0];    
+
+      return sgpArr[0];
     }
 
 
@@ -596,7 +596,7 @@ public class PickObject extends Object {
 	    return sceneGraphPathArr[i];
 	}
       }
-      
+
       return null;
     }
 
@@ -611,52 +611,52 @@ public class PickObject extends Object {
    *
    * Initial implementation is a Quick Sort
    */
-  
+
   private int position[];
-  
+
   private SceneGraphPath[] sort(SceneGraphPath sgpArr[]) {
-    
-    if (sgpArr == null) 
+
+    if (sgpArr == null)
       return null;
-    
+
     SceneGraphPath sorted[] = new SceneGraphPath[sgpArr.length];
     position = new int[sgpArr.length];
-        	
+
     for(int i=0; i<sgpArr.length; i++) {
       position[i]=i;
     }
-    
-    
+
+
     /*
       System.out.println("Before Sort :");
       for(int i=0; i<distance.length; i++) {
-      System.out.println("pos " + position[i] +" dist "+ distance[i] + 
+      System.out.println("pos " + position[i] +" dist "+ distance[i] +
       " sgp "+ sgpArr[i]);
       }
       */
 
     quicksort( 0, distance.length-1 );
-    
+
     for(int i=0; i<distance.length; i++) {
       sorted[i]= sgpArr[position[i]];
     }
 
-    /*    
+    /*
 	  System.out.println("\nAfter Sort :");
 	  for(int i=0; i<distance.length; i++) {
-	  System.out.println("pos " + position[i] +" dist "+ distance[i] + 
+	  System.out.println("pos " + position[i] +" dist "+ distance[i] +
 	  " sorted sgp "+ sorted[i]);
 	  }
 	  */
 
     return sorted;
   }
-  
-  
+
+
   private final void quicksort( int l, int r ) {
     int p,i,j;
     double tmp,k;
-    
+
     i = l;
     j = r;
     k = distance[(l+r) / 2];
@@ -667,7 +667,7 @@ public class PickObject extends Object {
 	tmp = distance[i];
 	distance[i] =distance[j];
 	distance[j] = tmp;
-	
+
 	p=position[i];
 	position[i]=position[j];
 	position[j]=p;
@@ -675,7 +675,7 @@ public class PickObject extends Object {
 	j--;
       }
     } while (i<=j);
-    
+
     if (l<j) quicksort(l,j);
     if (l<r) quicksort(i,r);
   }
@@ -691,29 +691,29 @@ public class PickObject extends Object {
    * @param sgPath the SceneGraphPath to be traversed.
    * @param flags the Node types interested in picking.
    * @return the first occurrence of the specified Node type
-   * starting from the terminal node of SceneGraphPath. 
-   * If no pickable object is found of the  specifed types, 
+   * starting from the terminal node of SceneGraphPath.
+   * If no pickable object is found of the  specifed types,
    * <code>null</code> is returned.
    */
   public Node pickNode(SceneGraphPath sgPath, int flags)
     {
-      
-      if (sgPath != null) {	
+
+      if (sgPath != null) {
 	Node pickedNode = sgPath.getObject();
-	
+
 	if ((pickedNode instanceof Shape3D) && ((flags & SHAPE3D) != 0)){
 	  if (debug) System.out.println("Shape3D found");
 	  return pickedNode;
-	} 
+	}
 	else if ((pickedNode instanceof Morph) && ((flags & MORPH) != 0)){
-	  if (debug) System.out.println("Morph found"); 
+	  if (debug) System.out.println("Morph found");
 	  return pickedNode;
 	}
-	else {	  
+	else {
 	  for (int j=sgPath.nodeCount()-1; j>=0; j--){
-	    pickedNode = sgPath.getNode(j); 
+	    pickedNode = sgPath.getNode(j);
 	    if (debug) System.out.println("looking at node " + pickedNode);
-	    
+
 	    if ((pickedNode instanceof Primitive) &&
 		((flags & PRIMITIVE) != 0)){
 	      if (debug) System.out.println("Primitive found");
@@ -740,17 +740,17 @@ public class PickObject extends Object {
 	    else if ((pickedNode instanceof Group) && ((flags & GROUP) != 0)){
 	      if (debug) System.out.println("Group found");
 	      return pickedNode;
-	    }	     
+	    }
 	  }
-	  
+
 	  if (pickedNode == null)
 	    if (debug) System.out.println("ERROR: null SceneGraphPath");
 	}
 
       }
-      
+
       return null;
-      
+
     }
 
 
@@ -768,32 +768,32 @@ public class PickObject extends Object {
    * 1 means to return the first occurrence of that object type (the object
    * closest to the Locale).
    * @return the nth <code>occurrence</code> of a Node
-   * of type <code>flags</code>, starting from the Locale. If no pickable object is 
+   * of type <code>flags</code>, starting from the Locale. If no pickable object is
    * found, <code>null</code> is returned.
-   */  
+   */
   public Node pickNode(SceneGraphPath sgPath, int flags, int occurrence)
     {
       int curCnt=0;
-      
-      if (sgPath != null) {	
+
+      if (sgPath != null) {
 	Node pickedNode = sgPath.getObject();
-	
+
 	// Shape3D and Morph are leaf nodes and have no children. It doesn't
         // make sense to do occurrence check here. We'll just return it for now.
 	if ((pickedNode instanceof Shape3D) && ((flags & SHAPE3D) != 0)){
 	  if (debug) System.out.println("Shape3D found");
 	  return pickedNode;
 	} else if ((pickedNode instanceof Morph) && ((flags & MORPH) != 0)){
-	  if (debug) System.out.println("Morph found"); 
+	  if (debug) System.out.println("Morph found");
 	  return pickedNode;
 	}
-	else {	  
+	else {
 	  for (int j = 0; j < sgPath.nodeCount(); j++){
 	    pickedNode = sgPath.getNode(j);
 	    if (debug) System.out.println("looking at node " + pickedNode);
-	    
+
 	    if ((pickedNode instanceof Group) && ((flags & GROUP) != 0)){
-	      if (debug) System.out.println("Group found"); 
+	      if (debug) System.out.println("Group found");
 	      curCnt++;
 	      if(curCnt == occurrence)
 		return pickedNode;
@@ -803,7 +803,7 @@ public class PickObject extends Object {
 	      if (debug) System.out.println("Branch group found");
 	      curCnt++;
 	      if(curCnt == occurrence)
-		return pickedNode;	      
+		return pickedNode;
 	    }
 	    else if ((pickedNode instanceof TransformGroup) &&
                     ((flags & TRANSFORM_GROUP) != 0)){
@@ -821,20 +821,20 @@ public class PickObject extends Object {
 	    }
 	    else if ((pickedNode instanceof Link) && ((flags & LINK) != 0)){
 	      if (debug) System.out.println("Link found");
-	      curCnt++;	
+	      curCnt++;
 	      if(curCnt == occurrence)
 		return pickedNode;
 	    }
 	  }
-	  
+
 	  if (pickedNode == null)
 	    if (debug) System.out.println("ERROR: null SceneGraphPath");
 	}
 
       }
-      
+
       return null;
-      
+
     }
 
 }

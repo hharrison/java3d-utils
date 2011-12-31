@@ -63,7 +63,7 @@ import com.sun.j3d.utils.scenegraph.io.retained.RandomAccessFileControl;
 public class SceneGraphFileReader extends java.lang.Object {
 
     private RandomAccessFileControl fileControl;
-    
+
     /**
      * Creates new SceneGraphFileReader.
      */
@@ -87,7 +87,7 @@ public class SceneGraphFileReader extends java.lang.Object {
         return fileControl.readUniverse( attachBranchGraphs, null );
     }
 
-    /** 
+    /**
       * Set the ClassLoader used to load the scene graph objects and
       * deserialize user data
       */
@@ -95,14 +95,14 @@ public class SceneGraphFileReader extends java.lang.Object {
         fileControl.setClassLoader( classLoader );
     }
 
-    /** 
+    /**
       * Get the ClassLoader used to load the scene graph objects and
       * deserialize user data
       */
     public ClassLoader getClassLoader() {
         return fileControl.getClassLoader();
     }
-    
+
     /**
      * Create and return a ConfiguredUniverse with the PlatformGeometry, ViewerAvatar,
      * and Locales saved in the file.  The MultiTransformGroup between the ViewingPlatform
@@ -117,28 +117,28 @@ public class SceneGraphFileReader extends java.lang.Object {
 					   Canvas3D canvas) throws IOException {
         return fileControl.readUniverse( attachBranchGraphs, canvas );
     }
-    
+
     /**
      * Get the UserData in the File header
      */
     public Object readUserData() throws IOException {
         return fileControl.getUserData();
     }
-    
+
     /**
      * Get the Description of this file's contents
      */
     public String readDescription() throws IOException {
         return fileControl.readFileDescription();
     }
-    
+
     /**
      * Return the number of BranchGraphs in the file
      */
     public int getBranchGraphCount() {
         return fileControl.getBranchGraphCount();
     }
-    
+
     /**
      * Read the BranchGraph at index in the file. If the graph
      * contains references to nodes in other BranchGraphs that have not already been
@@ -156,14 +156,14 @@ public class SceneGraphFileReader extends java.lang.Object {
     public BranchGroup[] readBranchGraph(int index) throws IOException {
         return fileControl.readBranchGraph( index );
     }
-    
+
     /**
      * Read and return all the branchgraphs in the file
      */
     public BranchGroup[] readAllBranchGraphs() throws IOException {
         return fileControl.readAllBranchGraphs();
     }
-    
+
     /**
      * Remove the IO system's reference to this branchgraph and all its nodes.<p>
      *
@@ -177,7 +177,7 @@ public class SceneGraphFileReader extends java.lang.Object {
     public void dereferenceBranchGraph( BranchGroup graph ) {
         throw new RuntimeException("Not implemented");
     }
-    
+
     /**
      * Given a BranchGraph that has been loaded return the index of the
      * graph in the file.  The the Branchgroup isn't found, -1 is returned.
@@ -185,7 +185,7 @@ public class SceneGraphFileReader extends java.lang.Object {
     public int getBranchGraphPosition( BranchGroup graph ) {
 	return fileControl.getBranchGraphPosition( graph );
     }
-    
+
     /**
      * Read the userdata for the branchgraph at 'index' in the file
      *
@@ -194,16 +194,16 @@ public class SceneGraphFileReader extends java.lang.Object {
     public Object readBranchGraphUserData( int index ) throws IOException {
         return fileControl.readBranchGraphUserData( index );
     }
-    
+
     /**
      * Return the names of all the named objects
      */
     public String[] getNames() {
         return fileControl.getNames();
     }
-    
+
     /**
-     * Return the named object. 
+     * Return the named object.
      *
      * @param name The name of the object
      *
@@ -213,12 +213,12 @@ public class SceneGraphFileReader extends java.lang.Object {
     public SceneGraphObject getNamedObject( String name ) throws NamedObjectException, ObjectNotLoadedException {
         return fileControl.getNamedObject( name );
     }
-    
+
     /**
      * Close the file and cleanup internal data structures
      */
     public void close() throws IOException {
         fileControl.close();
     }
-    
+
 }

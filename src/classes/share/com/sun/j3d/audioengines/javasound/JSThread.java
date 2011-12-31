@@ -67,7 +67,7 @@ class JSThread extends com.sun.j3d.audioengines.AudioEngineThread {
      */
     int totalChannels = 0;
     /**
-     * flags denoting if dynamic gain or rate interpolation is to be performed 
+     * flags denoting if dynamic gain or rate interpolation is to be performed
      */
     boolean rampGain = false;
 
@@ -104,7 +104,7 @@ class JSThread extends com.sun.j3d.audioengines.AudioEngineThread {
 
     /**
      * This method performs one iteration of pending work to do
-     * 
+     *
      * Wildly "garbled" sounds was caused by unequal changes in delta
      * time verses delta distances (resulting in jumps in rate factors
      * calculated for Doppler.  This work thread is meant to smoothly
@@ -127,7 +127,7 @@ can keep my own loop count for streams??? not really
             // QUESTION: will size ever get smaller after get performed???
             int numSamples = audioEngine.getSampleListSize();
             JSSample sample = null;
-            int numRateRamps = 0;            
+            int numRateRamps = 0;
             for (int index = 0; index < numSamples; index++) {
                 // loop thru samples looking for ones needing rate incremented
                 sample = (JSSample)audioEngine.getSample(index);
@@ -166,7 +166,7 @@ runMonitor(RUN, 0, null);
 
     /**
      * Gradually change rate scale factor
-     * 
+     *
      * If the rate change is too great suddenly, it sounds like a
      * jump, so we need to change gradually over time.
      * Since an octive delta change up is 2.0 but down is 0.5, forced
@@ -202,7 +202,7 @@ runMonitor(RUN, 0, null);
                     }
                     endOfRamp = false; // target value not reached
                 }
-                /* 
+                /*
                  * otherwise delta change is within tolerance
                  *    so use requested RateRatio as calculated w/out change
                  */
@@ -328,7 +328,7 @@ leftGain, rightGain
 ******/
     }
 
-    void setSampleDelay(JSSample sample, JSAuralParameters attribs) { 
+    void setSampleDelay(JSSample sample, JSAuralParameters attribs) {
 /******
         // take fields as already set in sample and updates delay
         // called after sample.render performed
@@ -408,7 +408,7 @@ leftDelay, rightDelay
         // take fields as already set in sample and updates rate
         // called after sample.render performed
         this.setSampleRate(sample, rateScaleFactor);
-        // disables rate from being gradually increased or decreased 
+        // disables rate from being gradually increased or decreased
         // don't set global thread flat rampRate false just because
         // one sample's rate is set to a specific value.
         sample.setRampRateFlag(false);
@@ -441,7 +441,7 @@ leftDelay, rightDelay
             com.sun.j3d.audio.J3DHaeClip.setSampleGain(index, gain);
         }
         else {
-            // dataType==JSAuralParameters.STREAMING_MIDI_DATA 
+            // dataType==JSAuralParameters.STREAMING_MIDI_DATA
             // dataType==JSAuralParameters.BUFFERED_MIDI_DATA
             com.sun.j3d.audio.J3DHaeMidi.setSampleGain(index, gain);
         }
@@ -490,7 +490,7 @@ leftDelay, rightDelay
         }
 ***********/
         sample.setCurrentRateRatio(scaleFactor);
-    }    
+    }
 
     boolean startSample(JSSample sample) {
 /**********
@@ -558,7 +558,7 @@ leftDelay, rightDelay
                 int reverbRtrnVal = JSClip.startSample(
                         ((JSPositionalSample)sample).getReverbIndex(),
                         loopCount, reverbGain);
- 
+
                 if (debugFlag)
                     debugPrint("JSThread                    " +
                       "start stream positionalSound with gain " + leftGain
@@ -583,7 +583,7 @@ leftDelay, rightDelay
                 // TODO: positional MIDI sounds not supported.
                 //     The above startSamples really just start on sample
                 //     Don't bother with reverb channel for now.
- 
+
                 //
                 // start up reverb channel w/out delay even if reverb not on now                //
                 float reverbGain = 0.0f;
@@ -668,7 +668,7 @@ leftDelay, rightDelay
 ************/
         return true;
     }
-  
+
 
     void pauseSample(JSSample sample) {
 /**********
@@ -740,7 +740,7 @@ leftDelay, rightDelay
                       ((JSPositionalSample)sample).getSecondIndex());
                 returnValue = JSStream.unpauseSample(
                       ((JSPositionalSample)sample).getReverbIndex());
-            }   
+            }
             else
                 returnValue = JSStream.unpauseSample(sample);
         }
@@ -751,7 +751,7 @@ leftDelay, rightDelay
                       ((JSPositionalSample)sample).getSecondIndex());
                 returnValue = JSClip.unpauseSample(
                       ((JSPositionalSample)sample).getReverbIndex());
-            }   
+            }
             else
                 returnValue = JSClip.unpauseSample(sample);
         }
@@ -780,14 +780,14 @@ leftDelay, rightDelay
             if (debugFlag)
                 debugPrint( "JSThread: Internal Error unpauseSample " +
                    "for sample " + sample + " failed");
- 
+
         }
 // QUESTION: return value or not???
         return;
 *************/
     }
 
-// TODO: 
+// TODO:
     void muteSample(JSSample sample) {
         // is this already muted? if so don't do anytning
 
@@ -795,7 +795,7 @@ leftDelay, rightDelay
         // as a stop, advance restart...
     }
 
-// TODO: 
+// TODO:
     void unmuteSample(JSSample sample) {
         if (debugFlag)
             debugPrint( "JSThread.unmuteSample not implemented");
@@ -834,7 +834,7 @@ leftDelay, rightDelay
     /**
      * Code to close the device
      * @return flag: true is closed sucessfully, false if error
-     */  
+     */
     boolean close() {
         // TODO: for now do nothing
         return false;

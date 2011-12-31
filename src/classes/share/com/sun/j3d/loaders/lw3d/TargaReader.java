@@ -142,7 +142,7 @@ class TargaReader extends ParserObject {
 	    boolean bottomToTop = ((flags & 0x20) == 0);
 	    boolean leftToRight = ((flags & 0x10) == 0);
 	    bufferedReader.skip(idLength);
-	    
+
 	    // Check on the file parameters to see whether we should punt
 	    if ((colormapPresent == 1) ||
 		imageType != 2 ||

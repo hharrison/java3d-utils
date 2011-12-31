@@ -51,11 +51,11 @@ import java.util.ArrayList;
 
 /**
  * The AudioEngine3DL2 Class defines an audio output device that generates
- * sound 'image' from high-level sound parameters passed to it during 
+ * sound 'image' from high-level sound parameters passed to it during
  * scene graph.
  *
  * <P>
- * The methods in this class are meant to be optionally overridden by an 
+ * The methods in this class are meant to be optionally overridden by an
  * extended class.  This extended class would provice device specific code.
  *
  * <P>
@@ -73,14 +73,14 @@ public abstract class AudioEngine3DL2 extends AudioEngine3D implements AudioDevi
      * Construct a new AudioEngine3DL2 with the specified PhysicalEnvironment.
      * @param physicalEnvironment the physical environment object where we
      * want access to this device.
-     */  
+     */
     public AudioEngine3DL2(PhysicalEnvironment physicalEnvironment ) {
         super(physicalEnvironment);
     }
 
     /*
      *
-     * Methods that affect AudioEngine3DLD fields that are NOT associated 
+     * Methods that affect AudioEngine3DLD fields that are NOT associated
      * with a specific sound sample
      *
      */
@@ -105,7 +105,7 @@ public abstract class AudioEngine3DL2 extends AudioEngine3D implements AudioDevi
      * Set overall gain control of all sounds playing on the audio device.
      * @param scaleFactor scale factor applied to calculated amplitudes for
      * all sounds playing on this device
-     */  
+     */
     public abstract void setGain(float scaleFactor);
 
     /*
@@ -123,7 +123,7 @@ public abstract class AudioEngine3DL2 extends AudioEngine3D implements AudioDevi
      * Changes (scales) the playback rate of a sound independent of
      * Doppler rate changes.
      * @param index device specific reference to device driver sample
-     * @param scaleFactor non-negative factor applied to calculated 
+     * @param scaleFactor non-negative factor applied to calculated
      * amplitudes for all sounds playing on this device
      * @see Sound#setRateScaleFactor
      */
@@ -151,7 +151,7 @@ public abstract class AudioEngine3DL2 extends AudioEngine3D implements AudioDevi
      * This parameter, along with the early reflection coefficient, defines
      * the reflective/absorptive characteristic of the surfaces in the
      * current listening region.
-     * @param coefficient late reflection attenuation factor 
+     * @param coefficient late reflection attenuation factor
      * @see AuralAttributes#setReverbCoefficient
      */
     public void setReverbCoefficient(float coefficient) {
@@ -160,14 +160,14 @@ public abstract class AudioEngine3DL2 extends AudioEngine3D implements AudioDevi
     }
 
 
-    /**  
+    /**
      * Sets the early reflection delay time.
      * In this form,  the parameter specifies the delay time between each order
      * of reflection (while reverberation is being rendered) explicitly given
-     * in milliseconds. 
+     * in milliseconds.
      * @param reflectionDelay time between each order of early reflection
      * @see AuralAttributes#setReflectionDelay
-     */ 
+     */
     public void  setReflectionDelay(float reflectionDelay) {
         attribs.reflectionDelay = reflectionDelay;
         return;
@@ -188,7 +188,7 @@ public abstract class AudioEngine3DL2 extends AudioEngine3D implements AudioDevi
      * Set reverb decay filter.
      * This provides for frequencies above the given cutoff frequency to be
      * attenuated during reverb decay at a different rate than frequencies
-     * below this value.  Thus, defining a different reverb decay curve for 
+     * below this value.  Thus, defining a different reverb decay curve for
      * frequencies above the cutoff value.
      * @param frequencyCutoff value of frequencies in Hertz above which a
      * low-pass filter is applied.
@@ -204,7 +204,7 @@ public abstract class AudioEngine3DL2 extends AudioEngine3D implements AudioDevi
      * This defines the echo dispersement (also referred to as 'echo density').
      * The value of this reverb parameter is expressed as a percent of the
      * audio device's minimum-to-maximum values.
-     * @param diffusion percentage expressed within the range of 0.0 and 1.0 
+     * @param diffusion percentage expressed within the range of 0.0 and 1.0
      * @see AuralAttributes#setDiffusion
      */
     public void setDiffusion(float diffusion) {
@@ -214,12 +214,12 @@ public abstract class AudioEngine3DL2 extends AudioEngine3D implements AudioDevi
 
     /**
      * Set reverb density.
-     * This defines the modal density (also referred to as 'spectral 
+     * This defines the modal density (also referred to as 'spectral
      * coloration').
      * The value of this parameter is expressed as a percent of the audio
      * device's minimum-to-maximum values for this reverb parameter.
      * @param density reverb density expressed as a percentage,
-     * within the range of 0.0 and 1.0 
+     * within the range of 0.0 and 1.0
      * @see AuralAttributes#setDensity
      */
     public void setDensity(float density)  {
@@ -253,7 +253,7 @@ public abstract class AudioEngine3DL2 extends AudioEngine3D implements AudioDevi
      * There is no corresponding Core AuralAttributes method at this time.
      * @param index device specific reference to device driver sample
      * @param frequencyCutoff value of frequencies in Hertz above which a
-     * low-pass filter is applied. 
+     * low-pass filter is applied.
      */
 
     public void setObstructionFilter(int index, float frequencyCutoff) {
@@ -288,7 +288,7 @@ public abstract class AudioEngine3DL2 extends AudioEngine3D implements AudioDevi
      * There is no corresponding Core AuralAttributes method at this time.
      * @param index device specific reference to device driver sample
      * @param frequencyCutoff value of frequencies in Hertz above which a
-     * low-pass filter is applied. 
+     * low-pass filter is applied.
      */
     public void  setOcclusionFilter(int index, float frequencyCutoff) {
         Sample sample = (Sample)getSample(index);

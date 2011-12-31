@@ -51,35 +51,35 @@ import javax.media.j3d.*;
 import javax.vecmath.*;
 import java.math.*;
 
-/** 
- * GeomBuffer allows OpenGL-like input of geometry data. It outputs 
+/**
+ * GeomBuffer allows OpenGL-like input of geometry data. It outputs
  * Java 3D geometry array objects. This utility is to simplify porting
- * of OpenGL programs to Java 3D. 
+ * of OpenGL programs to Java 3D.
  *<p>
  *    Here is a sample code that use this utility to create some quads.
  *  <P><blockquote><pre>
- * 
+ *
  *     GeomBuffer gbuf = new GeomBuffer(100);
  *     gbuf.begin(GeomBuffer.QUADS);
  *
  *     for (int i = 0; i < 5; i++){
  *       gbuf.normal3d(0.0, 1.0, 0.0);
  *       gbuf.vertex3d(1.0, 1.0, 0.0);
- * 
+ *
  *       gbuf.normal3d(0.0, 1.0, 0.0);
  *       gbuf.vertex3d(0.0, 1.0, 0.0);
- * 
+ *
  *       gbuf.normal3d(0.0, 1.0, 0.0);
  *       gbuf.vertex3d(0.0, 0.0, 0.0);
- * 
+ *
  *       gbuf.normal3d(0.0, 1.0, 0.0);
  *       gbuf.vertex3d(1.0, 0.0, 0.0);
  *     }
  *     gbuf.end();
  *     Shape3D shape = new Shape3D(gbuf.getGeom(GeomBuffer.GENERATE_NORMALS));
  * </pre></blockquote>
- *     Notice, that you only need to specify some upperbound on the number of 
- *     points you'll use at the beginning (100 in this case). 
+ *     Notice, that you only need to specify some upperbound on the number of
+ *     points you'll use at the beginning (100 in this case).
  * <p>
  *     Currently, you are limited to one primitive type per geom buffer. Future
  *     versions will add support for mixed primitive types.
@@ -93,7 +93,7 @@ class GeomBuffer extends Object{
   static final int TRIANGLES = 0x02;
   static final int QUADS = 0x04;
   static final int TRIANGLE_FAN = 0x10;
-  static final int TRIANGLE_STRIP = 0x20;  
+  static final int TRIANGLE_STRIP = 0x20;
 
   private int flags;
 
@@ -114,8 +114,8 @@ class GeomBuffer extends Object{
 
   static final int debug = 0;
 
-  /** Creates a geometry buffer of given number of vertices 
-   * @param numVerts total number of vertices to allocate by this buffer. 
+  /** Creates a geometry buffer of given number of vertices
+   * @param numVerts total number of vertices to allocate by this buffer.
    *        This is an upper bound estimate.
    */
   GeomBuffer(int numVerts, int numTexUnit)
@@ -132,12 +132,12 @@ class GeomBuffer extends Object{
     currPrimCnt = 0;
 
     texCoordSetMap = new int[numTexUnit];
-    for (int i = 0; i < numTexUnit; i++) 
+    for (int i = 0; i < numTexUnit; i++)
 	texCoordSetMap[i] = 0;
 
   }
 
-  GeomBuffer(int numVerts) 
+  GeomBuffer(int numVerts)
   {
     this(numVerts, 1);
   }
@@ -148,7 +148,7 @@ class GeomBuffer extends Object{
    *
    * @param format vertex format.
    */
-  
+
   GeometryArray getGeom(int format)
   {
     GeometryArray obj = null;
@@ -182,7 +182,7 @@ class GeomBuffer extends Object{
   }
 
 
-  /** 
+  /**
    * Begins a new primitive given the primitive type.
    *
    * @param prim the primitive type (listed above).
@@ -197,7 +197,7 @@ class GeomBuffer extends Object{
   }
 
 
-  /** 
+  /**
    * End of primitive.
    *
    *
@@ -208,17 +208,17 @@ class GeomBuffer extends Object{
     currPrimEndVertex[currPrimCnt] = currVertCnt;
     currPrimCnt++;
   }
-  
+
   void vertex3d(double x, double y, double z)
   {
 
     if (debug >= 2) System.out.println("v " + x + " " +
-				       y + " " +  
+				       y + " " +
 				       z);
     pts[currVertCnt] = new Point3f((float)x, (float)y, (float)z);
     currVertCnt++;
   }
-  
+
   void normal3d(double x, double y, double z)
   {
     if (debug >= 2) System.out.println("n " + x + " " +
@@ -228,8 +228,8 @@ class GeomBuffer extends Object{
       if (debug >= 2) System.out.println("normalizing");
       double root = Math.sqrt(sum);
       if (root > 0.000001) {
-	x /= root; 
-	y /= root; 
+	x /= root;
+	y /= root;
 	z /= root;
       } else {
 	y = z = 0.0; x = 1.0;
@@ -237,20 +237,20 @@ class GeomBuffer extends Object{
     }
     normals[currVertCnt] = new Vector3f((float)x, (float)y, (float)z);
   }
-  
+
   void texCoord2d(double s, double t)
   {
-    if (debug >= 2) System.out.println("t " + 
+    if (debug >= 2) System.out.println("t " +
 				       s + " " +
 				       t);
     tcoords[currVertCnt] = new TexCoord2f((float)s, (float)t);
   }
-  
+
   // Return a reference to the texture coordinates of this geom buffer.
   TexCoord2f[] getTexCoords() {
       return tcoords;
   }
-  
+
   /**
    * Returns the Java 3D geometry gotten from calling getGeom.
    *
@@ -260,17 +260,17 @@ class GeomBuffer extends Object{
   {
     return geometry;
   }
-    
+
   int getNumTris()
-  { 
+  {
     return numTris;
   }
 
   int getNumVerts()
-  { 
+  {
     return numVerts;
   }
-  
+
 
   private GeometryArray processQuadStrips()
   {
@@ -294,7 +294,7 @@ class GeomBuffer extends Object{
 	 tsaFlags |= TriangleStripArray.TEXTURE_COORDINATE_2;
 
     // Create GeometryArray to pass back
-    obj = new TriangleStripArray(totalVerts, tsaFlags, 
+    obj = new TriangleStripArray(totalVerts, tsaFlags,
 			1, texCoordSetMap, stripCounts);
 
     // Allocate space to store new vertex info
@@ -302,7 +302,7 @@ class GeomBuffer extends Object{
     Vector3f[] newnormals = new Vector3f[totalVerts];
     TexCoord2f[] newtcoords = new TexCoord2f[totalVerts];
     int currVert = 0;
-    
+
     // Repeat for each Quad Strip
     for (i = 0; i < currPrimCnt; i++){
       // Output order for these quad arrays same as java 3d triangle strips
@@ -341,24 +341,24 @@ class GeomBuffer extends Object{
     if (((flags & Primitive.GENERATE_NORMALS) != 0) &&
 	((flags & Primitive.GENERATE_TEXTURE_COORDS) != 0)){
       obj = new QuadArray(totalVerts,
-			  QuadArray.COORDINATES | 
+			  QuadArray.COORDINATES |
 			  QuadArray.NORMALS |
-			  QuadArray.TEXTURE_COORDINATE_2, 
+			  QuadArray.TEXTURE_COORDINATE_2,
 			  1, texCoordSetMap);
     }
-    else 
+    else
       if (((flags & Primitive.GENERATE_NORMALS) == 0) &&
 	  ((flags & Primitive.GENERATE_TEXTURE_COORDS) != 0)){
 	obj = new QuadArray(totalVerts,
-			    QuadArray.COORDINATES | 
-			    QuadArray.TEXTURE_COORDINATE_2, 
+			    QuadArray.COORDINATES |
+			    QuadArray.TEXTURE_COORDINATE_2,
 			    1, texCoordSetMap);
       }
-    else 
+    else
       if (((flags & Primitive.GENERATE_NORMALS) != 0) &&
 	  ((flags & Primitive.GENERATE_TEXTURE_COORDS) == 0)){
 	obj = new QuadArray(totalVerts,
-			    QuadArray.COORDINATES | 
+			    QuadArray.COORDINATES |
 			    QuadArray.NORMALS);
       }
       else {
@@ -374,7 +374,7 @@ class GeomBuffer extends Object{
     if (debug > 1) System.out.println("total prims " + currPrimCnt);
 
     for (i = 0; i < currPrimCnt; i++){
-      if (debug > 1) System.out.println("start " + currPrimStartVertex[i] + 
+      if (debug > 1) System.out.println("start " + currPrimStartVertex[i] +
 					" end " + currPrimEndVertex[i]);
       for (int j = currPrimStartVertex[i]; j < currPrimEndVertex[i] - 3;j+=4){
 	outVertex(newpts, newnormals, newtcoords, currVert++,
@@ -415,24 +415,24 @@ class GeomBuffer extends Object{
     if (((flags & Primitive.GENERATE_NORMALS) != 0) &&
 	((flags & Primitive.GENERATE_TEXTURE_COORDS) != 0)){
       obj = new TriangleArray(totalVerts,
-			  TriangleArray.COORDINATES | 
+			  TriangleArray.COORDINATES |
 			  TriangleArray.NORMALS |
 			  TriangleArray.TEXTURE_COORDINATE_2,
 			  1, texCoordSetMap);
     }
-    else 
+    else
       if (((flags & Primitive.GENERATE_NORMALS) == 0) &&
 	  ((flags & Primitive.GENERATE_TEXTURE_COORDS) != 0)){
 	obj = new TriangleArray(totalVerts,
-			    TriangleArray.COORDINATES | 
+			    TriangleArray.COORDINATES |
 			    TriangleArray.TEXTURE_COORDINATE_2,
 			  1, texCoordSetMap);
       }
-    else 
+    else
       if (((flags & Primitive.GENERATE_NORMALS) != 0) &&
 	  ((flags & Primitive.GENERATE_TEXTURE_COORDS) == 0)){
 	obj = new TriangleArray(totalVerts,
-			    TriangleArray.COORDINATES | 
+			    TriangleArray.COORDINATES |
 			    TriangleArray.NORMALS);
       }
       else {
@@ -444,7 +444,7 @@ class GeomBuffer extends Object{
     Vector3f[] newnormals = new Vector3f[totalVerts];
     TexCoord2f[] newtcoords = new TexCoord2f[totalVerts];
     int currVert = 0;
-    
+
     for (i = 0; i < currPrimCnt; i++){
       for (int j = currPrimStartVertex[i]; j < currPrimEndVertex[i] - 2;j+=3){
 	outVertex(newpts, newnormals, newtcoords, currVert++,
@@ -507,7 +507,7 @@ class GeomBuffer extends Object{
     // repeat for each fan
     for (i = 0; i < currPrimCnt; i++) {
       for (int j = currPrimStartVertex[i]; j < currPrimEndVertex[i]; j++) {
-	outVertex(newpts, newnormals, newtcoords, currVert++, pts, 
+	outVertex(newpts, newnormals, newtcoords, currVert++, pts,
 		  normals, tcoords, j);
       }
     }
@@ -517,7 +517,7 @@ class GeomBuffer extends Object{
     }
 
     numVerts = currVert;
-    numTris = totalVerts - currPrimCnt * 2;    
+    numTris = totalVerts - currPrimCnt * 2;
 
     // set the coordinates on the GeometryArray
     obj.setCoordinates(0, newpts);
@@ -541,7 +541,7 @@ class GeomBuffer extends Object{
 		 int sloc)
   {
     if (debug >= 1) System.out.println("v " + spts[sloc].x + " " +
-				       spts[sloc].y + " " + 
+				       spts[sloc].y + " " +
 				       spts[sloc].z);
 
     // PSP: Do we really need new points here?

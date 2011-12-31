@@ -61,25 +61,25 @@ public class QuadArrayState extends GeometryArrayState {
     public void writeObject( DataOutput out ) throws IOException {
         super.writeObject( out );
     }
-    
-    
+
+
     public void readObject( DataInput in ) throws IOException {
         super.readObject( in );
     }
-    
+
     public SceneGraphObject createNode( Class j3dClass ) {
         return createNode( j3dClass, new Class[] {
                                             Integer.TYPE,
                                             Integer.TYPE,
                                             Integer.TYPE,
                                             texCoordSetMap.getClass()
-                                        }, 
+                                        },
                                             new Object[] { new Integer( vertexCount ),
                                                      new Integer( vertexFormat ),
                                                      new Integer( texCoordSetCount ),
                                                      texCoordSetMap } );
     }
-    
+
     protected javax.media.j3d.SceneGraphObject createNode() {
         return new QuadArray(vertexCount, vertexFormat, texCoordSetCount, texCoordSetMap );
     }

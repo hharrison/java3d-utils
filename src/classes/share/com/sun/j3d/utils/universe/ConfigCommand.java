@@ -268,7 +268,7 @@ class ConfigCommand {
 
     /**
      * Sets the given Java system property if allowed by the security manager.
-     * 
+     *
      * @param key property name
      * @param value property value
      * @return previous property value if any
@@ -284,7 +284,7 @@ class ConfigCommand {
 
     /**
      * Evaluates the specified Java property string if allowed by the security
-     * manager. 
+     * manager.
      *
      * @param key string containing a Java property name
      * @return string containing the Java property valaue
@@ -382,7 +382,7 @@ class ConfigCommand {
 
     /**
      * Returns the String representation of this command.
-     * 
+     *
      * @return string representing this command
      */
     public String toString() {
@@ -410,7 +410,7 @@ class ConfigCommand {
 		sb.append(argv[i].toString()) ;
 	    }
 	}
-	
+
 	sb.append(")") ;
 	return sb.toString() ;
     }

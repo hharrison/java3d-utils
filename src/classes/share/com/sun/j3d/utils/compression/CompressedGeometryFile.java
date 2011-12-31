@@ -269,7 +269,7 @@ public class CompressedGeometryFile {
     public CompressedGeometryFile(RandomAccessFile file) throws IOException {
 	// Copy the file reference.
 	cgFile = file ;
-	
+
 	// Set up the file fields.
 	initialize() ;
     }
@@ -281,7 +281,7 @@ public class CompressedGeometryFile {
      * must be removed manually before it can be rewritten.  The close()
      * method must be called sometime after invoking clear() in order to write
      * out the new directory structure.
-     * 
+     *
      * @exception IOException if clear fails
      */
     public void clear() throws IOException {
@@ -364,7 +364,7 @@ public class CompressedGeometryFile {
      * index is incremented by 1 after the read.  When the last object is read
      * the index becomes invalid and an immediately subsequent call to
      * readNext() returns null.
-     * 
+     *
      * @return a CompressedGeometry node component, or null if the last object
      * has been read
      * @exception IOException if read fails
@@ -384,7 +384,7 @@ public class CompressedGeometryFile {
     public CompressedGeometry[] read() throws IOException {
 	long startTime = 0 ;
 	CompressedGeometry cg[] = new CompressedGeometry[objectCount] ;
-	
+
 	if (benchmark)
 	    startTime = System.currentTimeMillis() ;
 
@@ -477,7 +477,7 @@ public class CompressedGeometryFile {
 					  (cgh.size+BLOCK_HEADER_SIZE) +
 					  " bytes") ;
 	}
-	
+
 	cg.getCompressedGeometry(cgBuffer) ;
 	write(cgh, cgBuffer) ;
     }
@@ -505,7 +505,7 @@ public class CompressedGeometryFile {
 					  (cgh.size+BLOCK_HEADER_SIZE) +
 					  " bytes") ;
 	}
-	
+
 	// Assuming backward compatibility, the version number of the file
 	// should be the maximum of all individual compressed object versions.
 	if ((cgh.majorVersionNumber > majorVersionNumber)
@@ -557,12 +557,12 @@ public class CompressedGeometryFile {
 	if (objectCount == directory.length) {
 	    long newDirectory[] = new long[2*objectCount] ;
 	    int newObjectSizes[] = new int[2*objectCount] ;
-	    
+
 	    System.arraycopy(directory, 0,
 			     newDirectory, 0, objectCount) ;
 	    System.arraycopy(objectSizes, 0,
 			     newObjectSizes, 0, objectCount) ;
-	    
+
 	    directory = newDirectory ;
 	    objectSizes = newObjectSizes ;
 
@@ -660,7 +660,7 @@ public class CompressedGeometryFile {
 	// Reset number of objects that can be read sequentially from cache.
 	bufferNextObjectCount = 0 ;
     }
-    
+
     //
     // Initialize directory, object size array, read/write buffer, and the
     // shared compressed geometry header.
@@ -740,7 +740,7 @@ public class CompressedGeometryFile {
 
     //
     // Read the file header.
-    // 
+    //
     void readFileHeader() throws IOException {
 	byte header[] = new byte[HEADER_SIZE] ;
 
@@ -817,7 +817,7 @@ public class CompressedGeometryFile {
 	}
 	catch (IOException e) {
 	    throw new IOException
-		(e.getMessage() + 
+		(e.getMessage() +
 		 "\ncould not write file header for " + fileName) ;
 	}
     }
@@ -844,7 +844,7 @@ public class CompressedGeometryFile {
 	}
 
 	for (int i = 0 ; i < directory.length ; i++) {
-	    directory[i] = 
+	    directory[i] =
 		((long)(buff[i*8+0] & 0xff) << 56) |
 		((long)(buff[i*8+1] & 0xff) << 48) |
 		((long)(buff[i*8+2] & 0xff) << 40) |
@@ -881,7 +881,7 @@ public class CompressedGeometryFile {
 	    }
 	    directoryOffset += 8-directoryAlign ;
 	}
-	
+
 	try {
 	    for (int i = 0 ; i < objectCount ; i++)
 		cgFile.writeLong(directory[i]) ;
@@ -899,7 +899,7 @@ public class CompressedGeometryFile {
     //
     // Get the next compressed object in the file, either from the read-ahead
     // cache or from the file itself.
-    // 
+    //
     CompressedGeometry readNext(int bufferReadLimit)
 	throws IOException {
 	if (objectIndex == objectCount)
@@ -926,7 +926,7 @@ public class CompressedGeometryFile {
 	    }
 	    catch (IOException e) {
 		throw new IOException
-		    (e.getMessage() + 
+		    (e.getMessage() +
 		     "\nfailed to read " + curSize +
 		     " bytes, object " + objectIndex + " in file " + fileName) ;
 	    }
@@ -970,7 +970,7 @@ public class CompressedGeometryFile {
 	return newCG(geomSize, geomStart, geomDataType) ;
     }
 
-    
+
     //
     // Construct and return a compressed geometry node.
     //
@@ -986,17 +986,17 @@ public class CompressedGeometryFile {
 	    cgh.bufferType = CompressedGeometryHeader.LINE_BUFFER ;
 	else if ((geomDataType & TYPE_MASK) == TYPE_TRIANGLE)
 	    cgh.bufferType = CompressedGeometryHeader.TRIANGLE_BUFFER ;
-		
+
 	cgh.bufferDataPresent = 0 ;
 
 	if ((geomDataType & NORMAL_PRESENT_MASK) != 0)
 	    cgh.bufferDataPresent |=
 		CompressedGeometryHeader.NORMAL_IN_BUFFER ;
-	
+
 	if ((geomDataType & COLOR_PRESENT_MASK) != 0)
 	    cgh.bufferDataPresent |=
 		CompressedGeometryHeader.COLOR_IN_BUFFER ;
-	
+
 	if ((geomDataType & ALPHA_PRESENT_MASK) != 0)
 	    cgh.bufferDataPresent |=
 		CompressedGeometryHeader.ALPHA_IN_BUFFER ;

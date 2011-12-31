@@ -57,7 +57,7 @@ class CompressionStreamColor extends CompressionStreamElement {
     private boolean color3 ;
     private boolean color4 ;
     private float colorR, colorG, colorB, colorA ;
-	    
+
     int rAbsolute, gAbsolute, bAbsolute, aAbsolute ;
 
     /**
@@ -96,7 +96,7 @@ class CompressionStreamColor extends CompressionStreamElement {
      * Quantize a floating point color to fixed point integer components of
      * the specified number of bits.  The bit length can range from a maximum
      * of 16 to a minimum of 2 bits since negative colors are not defined.<p>
-     * 
+     *
      * The bit length is the total number of bits in the signed version of the
      * fixed point representation of the input color, which is assumed to
      * be normalized into the [0..1) range.  With the maximum bit length of
@@ -109,7 +109,7 @@ class CompressionStreamColor extends CompressionStreamElement {
      */
     void quantize(CompressionStream stream, HuffmanTable huffmanTable) {
 	// Clamp quantization.
-	int quant = 
+	int quant =
 	    (stream.colorQuant < 2? 2 :
 	     (stream.colorQuant > 16? 16 : stream.colorQuant)) ;
 
@@ -142,7 +142,7 @@ class CompressionStreamColor extends CompressionStreamElement {
 	G = (G > 32767? 32767: (G < 0? 0: G)) ;
 	B = (B > 32767? 32767: (B < 0? 0: B)) ;
 	A = (A > 32767? 32767: (A < 0? 0: A)) ;
-	    
+
 	// Compute quantized values.
 	R &= quantizationMask[quant] ;
 	G &= quantizationMask[quant] ;
@@ -173,11 +173,11 @@ class CompressionStreamColor extends CompressionStreamElement {
 
 	else if (color4)
 	    computeLengthShift(R, G, B, A) ;
-	
+
 	// 0-length components are allowed only for normals.
 	if (length == 0)
 	    length = 1 ;
-	
+
 	// Add this element to the Huffman table associated with this stream.
 	huffmanTable.addColorEntry(length, shift, absolute) ;
     }
@@ -206,7 +206,7 @@ class CompressionStreamColor extends CompressionStreamElement {
     }
 
     //
-    // Output the final compressed bits to the output command stream.  
+    // Output the final compressed bits to the output command stream.
     //
     private void outputColor(HuffmanTable table, CommandStream output,
 			     int header, int headerLength) {
@@ -228,7 +228,7 @@ class CompressionStreamColor extends CompressionStreamElement {
 	G = (G >> t.shift) & (int)lengthMask[componentLength] ;
 	B = (B >> t.shift) & (int)lengthMask[componentLength] ;
 
-	long colorSubcommand = 
+	long colorSubcommand =
 	    (((long)t.tag) << (3 * componentLength)) |
 	    (((long)R)     << (2 * componentLength)) |
 	    (((long)G)     << (1 * componentLength)) |

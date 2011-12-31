@@ -56,7 +56,7 @@ import java.net.*;
 import java.io.*;
 import java.io.InputStream;
 import javax.sound.sampled.*;
- 
+
 /**
  * The JSClip Class defines an audio output methods that call JavaSound
  * Hae mixer methods.
@@ -86,7 +86,7 @@ class JSClip extends JSChannel {
              debugPrintln("JSClip: initDataLine(" + ais + ")");
 
          try {
-             if (debugFlag) 
+             if (debugFlag)
                  debugPrintln("JSClip: loadSample - try getting new line ");
              /*
               * From the AudioInputStream fetch information about the format
@@ -104,7 +104,7 @@ class JSClip extends JSChannel {
 
 		 AudioFormat tmp =
 		     new AudioFormat(
-				     AudioFormat.Encoding.PCM_SIGNED, 
+				     AudioFormat.Encoding.PCM_SIGNED,
 				     audioFormat.getSampleRate(),
 				     audioFormat.getSampleSizeInBits() * 2,
 				     audioFormat.getChannels(),
@@ -115,7 +115,7 @@ class JSClip extends JSChannel {
 		 audioFormat = tmp;
 	     }
 
-             /* 
+             /*
               * ask JavaSound for outline with a format suitable for our
               * AudioInputStream.  In order to ask for a line, a Info object
               * with the desired properties must be constructed.
@@ -134,7 +134,7 @@ class JSClip extends JSChannel {
 // TODO: JSClip can't be a listener (do we need to do this in the thread?)
              if (debugFlag)
                  debugPrintln("JSClip: addLineListener for clip");
-             line.addLineListener(this);  
+             line.addLineListener(this);
 ******/
 
              if (debugFlag)
@@ -169,7 +169,7 @@ class JSClip extends JSChannel {
       * actual Java Sound start methods called are as immediate (without
       * delay between as possible.
       */
-     boolean startSamples(int loopCount, float leftGain, float rightGain, 
+     boolean startSamples(int loopCount, float leftGain, float rightGain,
                               int leftDelay, int rightDelay) {
          // loop count is ignored for Stream and MIDI
          // TODO: loop count isn't implemented for MIDI yet
@@ -178,10 +178,10 @@ class JSClip extends JSChannel {
          if (debugFlag) {
              debugPrint("JSClip: startSamples ");
              debugPrintln("start stream for Left called with ");
-             debugPrintln("       gain = " + leftGain + 
+             debugPrintln("       gain = " + leftGain +
                           " delay = " + leftDelay);
              debugPrintln("start stream for Right called with ");
-             debugPrintln("       gain = " + rightGain + 
+             debugPrintln("       gain = " + rightGain +
                           " delay = " + rightDelay);
          }
 
@@ -218,7 +218,7 @@ for now just care about the left
              return false;
          }
 ************/
- 
+
          // we know that were processing TWO channels
          double ZERO_EPS = 0.0039;  // approx 1/256 - twice MIDI precision
          double leftVolume = (double)leftGain;
@@ -226,10 +226,10 @@ for now just care about the left
 
 // TODO: if not reading/writing done for Clips then I can't do
 //     stereo trick (reading mono file and write to stereo buffer)
-         // Save time sound started, only in left 
+         // Save time sound started, only in left
          startTime = System.currentTimeMillis();
          if (debugFlag)
-             debugPrintln("*****start Stream with new start time " + 
+             debugPrintln("*****start Stream with new start time " +
                          startTime);
          try {
              // QUESTION: Offset clip is done how???
@@ -242,7 +242,7 @@ set reverb
          boolean reverbLeft = false; // off; reverb has it own channel
          boolean reverbRight = reverbLeft;
 
-                 if (leftDelay < rightDelay) { 
+                 if (leftDelay < rightDelay) {
 XXXX                 audioLeftStream.start(leftVolume, panLeft, reverbLeft);
 XXXX                 audioRightStream.start(rightVolume, panRight, reverbRight);
                  }
@@ -265,7 +265,7 @@ XXXX                 audioLeftStream.start(leftVolume, panLeft, reverbLeft);
 	     return false;
          }
 
-         if (debugFlag) 
+         if (debugFlag)
              debugPrintln("JSClip: startSamples returns");
          return true;
      }  // end of startSamples
@@ -275,7 +275,7 @@ XXXX                 audioLeftStream.start(leftVolume, panLeft, reverbLeft);
       * This method is called specifically for BackgroundSounds.
       * There is exactly ONE sample (mono or stereo) associated with
       * this type of sound.  Consequently, delay is not applicable.
-      * Since the sound has no auralAttributes applied to it reverb 
+      * Since the sound has no auralAttributes applied to it reverb
       * is not applied to the sample.
       */
      boolean  startSample(int loopCount, float gain, int delay) {

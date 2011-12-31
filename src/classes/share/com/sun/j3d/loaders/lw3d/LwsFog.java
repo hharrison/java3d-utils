@@ -68,15 +68,15 @@ class LwsFog extends TextfileParser {
 
     /**
      * Constructor: parses stream and stores fog data
-     */ 
+     */
     LwsFog(StreamTokenizer st, int debugVals) throws ParsingErrorException {
 	debugPrinter.setValidOutput(debugVals);
 	debugOutput(TRACE, "LwsFog()");
 	color = new Color3f(0f, 0f, 0f);
-	
+
 	while (!isCurrentToken(st, "DitherIntensity")) {
 	    debugOutputLn(LINE_TRACE, "currentToken = " + st.sval);
-	    
+
 	    if (isCurrentToken(st, "FogMinDist")) {
 		minDist = (float)getNumber(st);
 	    }
@@ -139,5 +139,5 @@ class LwsFog extends TextfileParser {
 	debugOutputLn(VALUES, "  FOG vals: ");
     }
 
-    
-}	
+
+}

@@ -54,42 +54,42 @@ import javax.media.j3d.Switch;
 import javax.media.j3d.LOD;
 
 public abstract class LODState extends BehaviorState {
-    
+
     private int[] switches;
-    
+
     public LODState(SymbolTableData symbol,Controller control) {
         super(symbol, control);
-        
+
         if (node!=null) {
             switches = new int[ ((LOD)node).numSwitches() ];
             for( int i=0; i<switches.length; i++)
                 switches[i] = control.getSymbolTable().addReference( ((LOD)node).getSwitch(i) );
         }
     }
-    
+
     public void writeObject( DataOutput out ) throws IOException {
         super.writeObject( out );
-        
+
         out.writeInt( switches.length );
         for( int i=0; i<switches.length; i++)
             out.writeInt( switches[i] );
     }
-    
+
     public void readObject( DataInput in ) throws IOException {
         super.readObject( in );
         LOD attr = (LOD)node;
-        
+
         switches = new int[ in.readInt() ];
         for( int i=0; i<switches.length; i++)
             switches[i] = in.readInt();
     }
-    
+
     public void buildGraph() {
         LOD attr = (LOD)node;
         for(int i=0; i<switches.length; i++)
             attr.addSwitch( (Switch)control.getSymbolTable().getJ3dNode( switches[i] ) );
         super.buildGraph(); // Must be last call in method
     }
-    
+
 }
 

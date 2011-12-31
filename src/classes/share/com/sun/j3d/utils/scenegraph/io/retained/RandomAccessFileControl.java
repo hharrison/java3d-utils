@@ -61,18 +61,18 @@ import com.sun.j3d.utils.universe.SimpleUniverse;
 import com.sun.j3d.utils.universe.ConfiguredUniverse;
 
 public class RandomAccessFileControl extends Controller {
-        
+
     protected String FILE_IDENT = new String( "j3dff" );
-    
+
     private long user_data;
     private long universe_config;
-    
+
     private long symbol_table;
-    
+
     private RandomAccessFile raf;
-    
+
     private int branchGraphCount=0;
-    
+
     private boolean writeMode = false;
     private Object userData;
 
@@ -81,7 +81,7 @@ public class RandomAccessFileControl extends Controller {
         super();
         symbolTable = new SymbolTable(this);
     }
-    
+
     /**
      * Create the file and write the inital header information
      */
@@ -92,25 +92,25 @@ public class RandomAccessFileControl extends Controller {
                             java.io.Serializable userData ) throws IOException,
                                                             UnsupportedUniverseException,
                                                             CapabilityNotSetException {
-                       
+
         raf = new RandomAccessFile( file, "rw" );
         writeMode = true;
-        
+
         raf.seek(0);
         raf.writeUTF( FILE_IDENT );
-        
+
         raf.seek(20);
         raf.writeInt( outputFileVersion );
-        
+
         raf.seek( BRANCH_GRAPH_COUNT );
         raf.writeInt( 0 );          // Place holder to branch graph count
-        
+
         raf.seek( FILE_DESCRIPTION );
-        
+
         if (description==null)
             description="";
         raf.writeUTF( description );
-        
+
         try {
             writeSerializedData( raf, userData );
 
@@ -120,64 +120,64 @@ public class RandomAccessFileControl extends Controller {
             throw new IOException( e.getMessage() );
         }
     }
-    
+
     /**
      * Open the file for reading
      */
     public void openFile( java.io.File file ) throws IOException {
         raf = new RandomAccessFile( file, "r" );
         writeMode = false;
-        
+
         raf.seek(0);
         String ident = raf.readUTF();
-        
-        if ( ident.equals("demo_j3f") ) 
+
+        if ( ident.equals("demo_j3f") )
             throw new IOException(
 		"Use Java 3D Fly Through I/O instead of Java 3D Scenegraph I/O" );
-        
-        if ( !ident.equals("j3dff") ) 
+
+        if ( !ident.equals("j3dff") )
             throw new IOException(
 		"This is a Stream - use SceneGraphStreamReader instead");
-        
+
         raf.seek(20);
         currentFileVersion = raf.readInt();
-        
+
 	if ( currentFileVersion > outputFileVersion ) {
             throw new IOException("Unsupported file version. This file was written using a new version of the SceneGraph IO API, please update your installtion to the latest version");
 	}
-        
+
         // readFileDescription sets user_data
         String description = readFileDescription();
-        
+
         raf.seek( BRANCH_GRAPH_COUNT );
         branchGraphCount = raf.readInt();
         //System.out.println("BranchGraph count : "+branchGraphCount );
-        
+
         raf.seek( UNIVERSE_CONFIG_PTR );
         universe_config = raf.readLong();
 
         raf.seek( SYMBOL_TABLE_PTR );
         symbol_table = raf.readLong();
-        
+
         ConfiguredUniverse universe;
-        
+
         raf.seek( symbol_table );
         symbolTable.readTable( raf, false );
-        raf.seek(user_data);       
+        raf.seek(user_data);
 
         userData = readSerializedData(raf);
     }
-    
+
     public ConfiguredUniverse readUniverse( boolean attachBranchGraphs,
 					    Canvas3D canvas) throws IOException {
         raf.seek( universe_config );
         return readUniverse( raf, attachBranchGraphs, canvas );
     }
-    
+
     public Object getUserData() {
         return userData;
     }
-        
+
     /**
      * Read the set of branchgraps.
      *
@@ -191,14 +191,14 @@ public class RandomAccessFileControl extends Controller {
             readBranchGraph( graphs[i] );
         }
     }
-    
+
     /**
      * Return the number of branchgraphs in the file
      */
     public int getBranchGraphCount() {
         return symbolTable.getBranchGraphCount();
     }
-    
+
     public void writeBranchGraph( BranchGroup bg, java.io.Serializable userData ) throws IOException {
         long filePointer = raf.getFilePointer();
         raf.writeInt( 0 );          // Node count
@@ -214,14 +214,14 @@ public class RandomAccessFileControl extends Controller {
                 symbol.branchGraphID = -1;          // This is a new BranchGraph so set the ID to -1
             }                                       // which will cause setBranchGraphRoot to assign a new ID.
 
-            symbolTable.setBranchGraphRoot( symbol, filePointer );        
+            symbolTable.setBranchGraphRoot( symbol, filePointer );
 
             symbolTable.startUnsavedNodeComponentFrame();
             SceneGraphObjectState state = createState( bg, symbol );
             //System.out.println(state);
             try {
                 writeObject( raf, state );
-                writeNodeComponents( raf );            
+                writeNodeComponents( raf );
             } catch( IOException e ) {
                 e.printStackTrace();
             }
@@ -229,9 +229,9 @@ public class RandomAccessFileControl extends Controller {
         } catch( SGIORuntimeException e ) {
             throw new IOException( e.getMessage() );
         }
-        
+
     }
-    
+
     public BranchGroup[] readBranchGraph( int graphID ) throws IOException {
         //System.out.print("Loading graph "+graphID+" : ");   // TODO - remove
         try {
@@ -259,13 +259,13 @@ public class RandomAccessFileControl extends Controller {
             }
 
             symbolTable.clearUnshared();            // Remove all unshared symbols
-            
+
             return ret;
         } catch( SGIORuntimeException e ) {
             throw new IOException( e.getMessage() );
-        }        
+        }
     }
-    
+
     /**
      * Read and return all the graphs in the file
      */
@@ -273,7 +273,7 @@ public class RandomAccessFileControl extends Controller {
         int size = getBranchGraphCount();
         BranchGroupState[] states  = new BranchGroupState[ size ];
         BranchGroup[] ret = new BranchGroup[ size ];
-               
+
         try {
             for( int i=0; i<size; i++) {
                 states[i] = readSingleBranchGraph( i );
@@ -291,7 +291,7 @@ public class RandomAccessFileControl extends Controller {
         } catch( SGIORuntimeException e ) {
             throw new IOException( e.getMessage() );
         }
-        
+
         return ret;
     }
 
@@ -300,16 +300,16 @@ public class RandomAccessFileControl extends Controller {
      */
     private BranchGroupState readSingleBranchGraph( int graphID ) throws IOException {
         SymbolTableData symbol = symbolTable.getBranchGraphRoot( graphID );
-        
+
         if (symbol.nodeState!=null) {
             return (BranchGroupState)symbol.nodeState;
         }
-        
+
         raf.seek( symbolTable.getBranchGraphFilePosition( graphID ) );
-         
+
         return readNextBranchGraph();
-    }    
-    
+    }
+
     /**
      * Read the next userData and BranchGraph structure in the file
      * at the current position
@@ -321,27 +321,27 @@ public class RandomAccessFileControl extends Controller {
         BranchGroupState state=null;
         try {
             state = (BranchGroupState)readObject( raf );
-            
+
             readNodeComponents( raf );
-            
+
         } catch( IOException e ) {
             e.printStackTrace();
         }
-        
+
         return state;
     }
-                
+
     public Object readBranchGraphUserData( int graphID ) throws IOException {
         try {
             raf.seek( symbolTable.getBranchGraphFilePosition( graphID ) );
 
             int nodeCount = raf.readInt();
-            return readSerializedData( raf );        
+            return readSerializedData( raf );
         } catch( SGIORuntimeException e ) {
             throw new IOException( e.getMessage() );
         }
     }
-    
+
     /**
      * Write all the unsaved NodeComponents and SharedGroups to DataOutput.
      * Mark all the NodeComponents as saved.
@@ -359,22 +359,22 @@ public class RandomAccessFileControl extends Controller {
 	    out.writeInt( symbol.nodeID );
 	    ptrLoc = raf.getFilePointer();
 	    out.writeLong( 0L );            // Pointer to next NodeComponent
-            
+
             writeObject( out, symbol.getNodeState() );
-            
+
 	    long ptr = raf.getFilePointer();
 	    raf.seek( ptrLoc );
 	    out.writeLong( ptr );
 	    raf.seek( ptr );
         }
     }
-    
+
     /**
-     * Read in all the node components in this block 
+     * Read in all the node components in this block
      */
     protected void readNodeComponents( DataInput in ) throws IOException {
         int count = in.readInt();
-        
+
 	for(int i=0; i<count; i++) {
 	    int nodeID = in.readInt();
 	    long nextNC = in.readLong();
@@ -387,11 +387,11 @@ public class RandomAccessFileControl extends Controller {
 		}
 	    }
     }
-    
+
     //static java.util.LinkedList objSizeTracker = new java.util.LinkedList();
-    
+
     public void writeObject( DataOutput out, SceneGraphObjectState obj ) throws IOException {
-        symbolTable.setFilePosition( raf.getFilePointer(), obj );  
+        symbolTable.setFilePosition( raf.getFilePointer(), obj );
         try {
             // These commented out lines will display the size of each object
             // as it's written to the file
@@ -411,20 +411,20 @@ public class RandomAccessFileControl extends Controller {
             //System.out.println( name.substring( name.lastIndexOf('.')+1, name.length() )+" size "+size);
 
             //objSizeTracker.addLast( new Long( size ));
-        
+
         } catch( SGIORuntimeException e ) {
             throw new IOException( e.getMessage() );
         }
 }
-        
+
     public String readFileDescription() throws IOException {
         raf.seek( FILE_DESCRIPTION );
         String ret = raf.readUTF();
-        
+
         user_data = raf.getFilePointer();
         return ret;
     }
-    
+
     /**
      * Used by SymbolTable to load a node component that is not in current
      * graph
@@ -435,9 +435,9 @@ public class RandomAccessFileControl extends Controller {
             readObject( raf );
         } catch( SGIORuntimeException e ) {
             throw new IOException( e.getMessage() );
-        }        
+        }
     }
-    
+
     /**
      * Loads the specified SharedGroup
      */
@@ -447,32 +447,32 @@ public class RandomAccessFileControl extends Controller {
             readObject( raf );
         } catch( SGIORuntimeException e ) {
             throw new IOException( e.getMessage() );
-        }        
+        }
     }
-            
+
     public void close() throws IOException {
         try {
             if (writeMode)
-                writeClose();       
+                writeClose();
 
             //System.out.println("File size at close "+raf.length() );
             raf.close();
             super.reset();
         } catch( SGIORuntimeException e ) {
             throw new IOException( e.getMessage() );
-        }        
-            
+        }
+
     }
-    
+
     /**
      * Write all the pointers etc
      */
-    private void writeClose() throws IOException {       
+    private void writeClose() throws IOException {
         symbol_table = raf.getFilePointer();
         super.getSymbolTable().writeTable( raf );
-        
+
         //System.out.println("Symbol table size "+(raf.getFilePointer()-symbol_table));
-        
+
         raf.seek( UNIVERSE_CONFIG_PTR );
         raf.writeLong( universe_config );
         raf.seek( SYMBOL_TABLE_PTR );
@@ -480,7 +480,7 @@ public class RandomAccessFileControl extends Controller {
         raf.seek( BRANCH_GRAPH_COUNT );
         raf.writeInt( symbolTable.getBranchGraphCount() );
     }
-    
+
     public long getFilePointer() {
         try {
             return raf.getFilePointer();

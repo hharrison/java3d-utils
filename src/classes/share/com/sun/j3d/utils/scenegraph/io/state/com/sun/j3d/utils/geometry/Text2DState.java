@@ -60,16 +60,16 @@ public class Text2DState extends LeafState {
     // the Shape3DState class to save the geometry or appearance data
     // so this class is a subclass of LeafState and we handle
     // the CollisionBounds in the read/write Object methods.
-    
+
     private String text;
     private Color3f color;
     private String fontName;
     private int fontSize;
     private int fontStyle;
-    
+
     public Text2DState(SymbolTableData symbol,Controller control) {
 	super( symbol, control );
-        
+
         if (node!=null) {
             Text2D t = (Text2D)node;
             text = t.getString();
@@ -89,10 +89,10 @@ public class Text2DState extends LeafState {
        super.readObject(in);
         ((Shape3D)node).setCollisionBounds( control.readBounds( in ));
     }
-    
+
     public void writeConstructorParams( DataOutput out ) throws IOException {
 	super.writeConstructorParams( out );
-        
+
         out.writeUTF( text );
         control.writeColor3f( out, color );
         out.writeUTF( fontName );
@@ -102,7 +102,7 @@ public class Text2DState extends LeafState {
 
     public void readConstructorParams( DataInput in ) throws IOException {
        super.readConstructorParams(in);
-       
+
        text = in.readUTF();
        color = control.readColor3f( in );
        fontName = in.readUTF();
@@ -126,10 +126,10 @@ public class Text2DState extends LeafState {
                                                 new Integer( fontSize ),
                                                 new Integer( fontStyle )
                                                 } );
-                                                
+
         return text2D;
     }
-    
+
     protected javax.media.j3d.SceneGraphObject createNode() {
         return new Text2D( text, color, fontName, fontSize, fontStyle );
     }

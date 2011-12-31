@@ -66,13 +66,13 @@ import javax.imageio.ImageIO;
  * Methods are provided to retrieve the Texture object and the associated
  * ImageComponent object or a scaled version of the ImageComponent object.
  *
- * Default format is RGBA. Other legal formats are: RGBA, RGBA4, RGB5_A1, 
+ * Default format is RGBA. Other legal formats are: RGBA, RGBA4, RGB5_A1,
  * RGB, RGB4, RGB5, R3_G3_B2, LUM8_ALPHA8, LUM4_ALPHA4, LUMINANCE and ALPHA
  */
 public class TextureLoader extends Object {
 
     /**
-     * Optional flag - specifies that mipmaps are generated for all levels 
+     * Optional flag - specifies that mipmaps are generated for all levels
      */
     public static final int GENERATE_MIPMAP =  0x01;
 
@@ -83,7 +83,7 @@ public class TextureLoader extends Object {
      * @since Java 3D 1.2
      */
     public static final int BY_REFERENCE = 0x02;
-    
+
     /**
      * Optional flag - specifies that the ImageComponent2D will
      * have a y-orientation of y up, meaning the origin of the image is the
@@ -113,7 +113,7 @@ public class TextureLoader extends Object {
     /*
      * Private declaration for BufferedImage allocation
      */
-    private static ColorSpace cs = ColorSpace.getInstance(ColorSpace.CS_sRGB); 
+    private static ColorSpace cs = ColorSpace.getInstance(ColorSpace.CS_sRGB);
     private static int[] nBits = {8, 8, 8, 8};
     private static int[] bandOffset = { 0, 1, 2, 3};
     private static ComponentColorModel colorModel = new ComponentColorModel(cs, nBits, true, false, Transparency.TRANSLUCENT, 0);
@@ -129,9 +129,9 @@ public class TextureLoader extends Object {
     private boolean forcePowerOfTwo = true;
 
     /**
-     * Contructs a TextureLoader object using the specified BufferedImage 
+     * Contructs a TextureLoader object using the specified BufferedImage
      * and default format RGBA
-     * @param bImage The BufferedImage used for loading the texture 
+     * @param bImage The BufferedImage used for loading the texture
      *
      * @exception NullPointerException if bImage is null
      */
@@ -140,9 +140,9 @@ public class TextureLoader extends Object {
     }
 
     /**
-     * Contructs a TextureLoader object using the specified BufferedImage 
+     * Contructs a TextureLoader object using the specified BufferedImage
      * and format
-     * @param bImage The BufferedImage used for loading the texture 
+     * @param bImage The BufferedImage used for loading the texture
      * @param format The format specifies which channels to use
      *
      * @exception NullPointerException if bImage is null
@@ -165,8 +165,8 @@ public class TextureLoader extends Object {
 
     /**
      * Contructs a TextureLoader object using the specified BufferedImage,
-     * format and option flags 
-     * @param bImage The BufferedImage used for loading the texture 
+     * format and option flags
+     * @param bImage The BufferedImage used for loading the texture
      * @param format The format specifies which channels to use
      * @param flags The flags specify what options to use in texture loading (generate mipmap etc)
      *
@@ -182,7 +182,7 @@ public class TextureLoader extends Object {
 	bufferedImage = bImage;
         if (format==null)
             chooseFormat(bufferedImage);
-        
+
 	if ((flags & BY_REFERENCE) != 0) {
 	    byRef = true;
 	}
@@ -195,7 +195,7 @@ public class TextureLoader extends Object {
     }
 
     /**
-     * Contructs a TextureLoader object using the specified Image 
+     * Contructs a TextureLoader object using the specified Image
      * and default format RGBA
      * @param image The Image used for loading the texture
      * @param observer The associated image observer
@@ -208,9 +208,9 @@ public class TextureLoader extends Object {
     }
 
     /**
-     * Contructs a TextureLoader object using the specified Image 
+     * Contructs a TextureLoader object using the specified Image
      * and format
-     * @param image The Image used for loading the texture 
+     * @param image The Image used for loading the texture
      * @param format The format specifies which channels to use
      * @param observer The associated image observer
      *
@@ -222,9 +222,9 @@ public class TextureLoader extends Object {
     }
 
     /**
-     * Contructs a TextureLoader object using the specified Image 
+     * Contructs a TextureLoader object using the specified Image
      * flags and default format RGBA
-     * @param image The Image used for loading the texture 
+     * @param image The Image used for loading the texture
      * @param flags The flags specify what options to use in texture loading (generate mipmap etc)
      * @param observer The associated image observer
      *
@@ -234,11 +234,11 @@ public class TextureLoader extends Object {
     public TextureLoader(Image image, int flags, Component observer) {
 	this(image, null, flags, observer);
     }
- 
+
     /**
-     * Contructs a TextureLoader object using the specified Image 
-     * format and option flags 
-     * @param image The Image used for loading the texture 
+     * Contructs a TextureLoader object using the specified Image
+     * format and option flags
+     * @param image The Image used for loading the texture
      * @param format The format specifies which channels to use
      * @param flags The flags specify what options to use in texture loading (generate mipmap etc)
      * @param observer The associated image observer
@@ -246,7 +246,7 @@ public class TextureLoader extends Object {
      * @exception NullPointerException if image is null
      * @exception ImageException if there is a problem loading the image
      */
-    public TextureLoader(Image image, String format, int flags, 
+    public TextureLoader(Image image, String format, int flags,
                          Component observer) {
 
         if (image == null) {
@@ -267,7 +267,7 @@ public class TextureLoader extends Object {
 
         if (format==null)
             chooseFormat(bufferedImage);
-        
+
 	if ((flags & BY_REFERENCE) != 0) {
 	    byRef = true;
 	}
@@ -280,7 +280,7 @@ public class TextureLoader extends Object {
     }
 
     /**
-     * Contructs a TextureLoader object using the specified file 
+     * Contructs a TextureLoader object using the specified file
      * and default format RGBA
      * @param fname The file that specifies an Image to load the texture with
      * @param observer The associated image observer
@@ -293,7 +293,7 @@ public class TextureLoader extends Object {
 
     /**
      * Contructs a TextureLoader object using the specified file,
-     * and format 
+     * and format
      * @param fname The file that specifies an Image to load the texture with
      * @param format The format specifies which channels to use
      * @param observer The associated image observer
@@ -305,7 +305,7 @@ public class TextureLoader extends Object {
     }
 
     /**
-     * Contructs a TextureLoader object using the specified file, 
+     * Contructs a TextureLoader object using the specified file,
      * option flags and default format RGBA
      * @param fname The file that specifies an Image to load the texture with
      * @param flags The flags specify what options to use in texture loading (generate mipmap etc)
@@ -318,8 +318,8 @@ public class TextureLoader extends Object {
     }
 
     /**
-     * Contructs a TextureLoader object using the specified file, 
-     * format and option flags 
+     * Contructs a TextureLoader object using the specified file,
+     * format and option flags
      * @param fname The file that specifies an Image to load the texture with
      * @param format The format specifies which channels to use
      * @param flags The flags specify what options to use in texture loading (generate mipmap etc)
@@ -369,7 +369,7 @@ public class TextureLoader extends Object {
     }
 
     /**
-     * Contructs a TextureLoader object using the specified URL 
+     * Contructs a TextureLoader object using the specified URL
      * and default format RGBA
      * @param url The URL that specifies an Image to load the texture with
      * @param observer The associated image observer
@@ -382,7 +382,7 @@ public class TextureLoader extends Object {
 
     /**
      * Contructs a TextureLoader object using the specified URL,
-     * and format 
+     * and format
      * @param url The URL that specifies an Image to load the texture with
      * @param format The format specifies which channels to use
      * @param observer The associated image observer
@@ -394,7 +394,7 @@ public class TextureLoader extends Object {
     }
 
     /**
-     * Contructs a TextureLoader object using the specified URL, 
+     * Contructs a TextureLoader object using the specified URL,
      * option flags and default format RGBA
      * @param url The URL that specifies an Image to load the texture with
      * @param flags The flags specify what options to use in texture loading (generate mipmap etc)
@@ -406,8 +406,8 @@ public class TextureLoader extends Object {
         this(url, null, flags, observer);
     }
     /**
-     * Contructs a TextureLoader object using the specified URL, 
-     * format and option flags 
+     * Contructs a TextureLoader object using the specified URL,
+     * format and option flags
      * @param url The url that specifies an Image to load the texture with
      * @param format The format specifies which channels to use
      * @param flags The flags specify what options to use in texture loading (generate mipmap etc)
@@ -459,29 +459,29 @@ public class TextureLoader extends Object {
 
     /**
      * Returns the associated ImageComponent2D object
-     *   
+     *
      * @return The associated ImageComponent2D object
-     */  
+     */
     public ImageComponent2D getImage() {
-	if (imageComponent == null) 
-            imageComponent = new ImageComponent2D(imageComponentFormat, 
+	if (imageComponent == null)
+            imageComponent = new ImageComponent2D(imageComponentFormat,
 						  bufferedImage, byRef, yUp);
         return imageComponent;
     }
 
     /**
      * Returns the scaled ImageComponent2D object
-     *   
+     *
      * @param xScale The X scaling factor
      * @param yScale The Y scaling factor
      *
      * @return The scaled ImageComponent2D object
-     */  
+     */
     public ImageComponent2D getScaledImage(float xScale, float yScale) {
 	if (xScale == 1.0f && yScale == 1.0f)
 	    return getImage();
 	else
-	    return(new ImageComponent2D(imageComponentFormat, 
+	    return(new ImageComponent2D(imageComponentFormat,
 					getScaledImage(bufferedImage,
 						       xScale, yScale),
 					byRef, yUp));
@@ -489,7 +489,7 @@ public class TextureLoader extends Object {
 
     /**
      * Returns the scaled ImageComponent2D object
-     *   
+     *
      * @param width The desired width
      * @param height The desired height
      *
@@ -497,11 +497,11 @@ public class TextureLoader extends Object {
      */
     public ImageComponent2D getScaledImage(int width, int height) {
 
-	if (bufferedImage.getWidth() == width && 
-	    	bufferedImage.getHeight() == height) 
+	if (bufferedImage.getWidth() == width &&
+	    	bufferedImage.getHeight() == height)
 	    return getImage();
-        else 
-	    return(new ImageComponent2D(imageComponentFormat, 
+        else
+	    return(new ImageComponent2D(imageComponentFormat,
 					getScaledImage(bufferedImage,
 						       width, height),
 					byRef, yUp));
@@ -509,7 +509,7 @@ public class TextureLoader extends Object {
 
     /**
      * Returns the associated Texture object.
-     *   
+     *
      * @return The associated Texture object
      */
     public Texture getTexture() {
@@ -529,7 +529,7 @@ public class TextureLoader extends Object {
 	  }
 
 	  if ((flags & GENERATE_MIPMAP) != 0) {
-      
+
 	    BufferedImage origImage = bufferedImage;
 	    int newW = width;
 	    int newH = height;
@@ -544,7 +544,7 @@ public class TextureLoader extends Object {
                 scaledImageComponents[i] =  new ImageComponent2D(
 			imageComponentFormat, scaledBufferedImages[i],
 			byRef, yUp);
-	
+
                 tex.setImage(i, scaledImageComponents[i]);
 		if (forcePowerOfTwo) {
 		    if (newW > 1) newW >>= 1;
@@ -565,7 +565,7 @@ public class TextureLoader extends Object {
 	    scaledBufferedImages = new BufferedImage[1];
 
             // Create texture from image
-            scaledBufferedImages[0] = getScaledImage(bufferedImage, 
+            scaledBufferedImages[0] = getScaledImage(bufferedImage,
 			width, height);
             scaledImageComponents[0] = new ImageComponent2D(
 			imageComponentFormat, scaledBufferedImages[0],
@@ -587,7 +587,7 @@ public class TextureLoader extends Object {
                                               Component observer) {
 
 	int status;
-	
+
         observer.prepareImage(image, null);
         while(true) {
 	    status = observer.checkImage(image, null);
@@ -595,25 +595,25 @@ public class TextureLoader extends Object {
                 return null;
             } else if ((status & ImageObserver.ALLBITS) != 0) {
                 break;
-            } 
+            }
             try {
                 Thread.sleep(100);
             } catch (InterruptedException e) {}
         }
 
         int width = image.getWidth(observer);
-        int height = image.getHeight(observer);      
-        
+        int height = image.getHeight(observer);
+
 	WritableRaster wr =
             java.awt.image.Raster.createInterleavedRaster(DataBuffer.TYPE_BYTE,
                                            width, height,
                                            width * 4, 4,
                                            bandOffset, null);
 	BufferedImage bImage = new BufferedImage(colorModel, wr, false, null);
-	
+
    	java.awt.Graphics g = bImage.getGraphics();
    	g.drawImage(image, 0, 0, observer);
-	
+
 	return bImage;
     }
 
@@ -623,14 +623,14 @@ public class TextureLoader extends Object {
      */
     private void chooseFormat(BufferedImage image) {
         switch (image.getType()) {
-            case BufferedImage.TYPE_4BYTE_ABGR :  
+            case BufferedImage.TYPE_4BYTE_ABGR :
             case BufferedImage.TYPE_INT_ARGB :
                 imageComponentFormat = ImageComponent.FORMAT_RGBA;
                 textureFormat = Texture.RGBA;
                 break;
             case BufferedImage.TYPE_3BYTE_BGR :
             case BufferedImage.TYPE_INT_BGR:
-            case BufferedImage.TYPE_INT_RGB:                
+            case BufferedImage.TYPE_INT_RGB:
                 imageComponentFormat = ImageComponent.FORMAT_RGB;
                 textureFormat = Texture.RGB;
                 break;
@@ -655,7 +655,7 @@ public class TextureLoader extends Object {
                 textureFormat = Texture.RGBA;
                 break;
         }
-    }   
+    }
 
     private boolean is4ByteRGBAOr3ByteRGB(RenderedImage ri) {
         boolean value = false;
@@ -673,7 +673,7 @@ public class TextureLoader extends Object {
             if (sm.getDataType() == DataBuffer.TYPE_BYTE) {
                 if (cm instanceof ComponentColorModel &&
                     sm instanceof PixelInterleavedSampleModel) {
-                    PixelInterleavedSampleModel csm = 
+                    PixelInterleavedSampleModel csm =
 				(PixelInterleavedSampleModel) sm;
                     int[] offs = csm.getBandOffsets();
                     ComponentColorModel ccm = (ComponentColorModel)cm;
@@ -701,7 +701,7 @@ public class TextureLoader extends Object {
         }
         return value;
     }
-    
+
      private int getImageType(RenderedImage ri) {
         int imageType = BufferedImage.TYPE_CUSTOM;
         int i;
@@ -731,7 +731,7 @@ public class TextureLoader extends Object {
             if (sm.getDataType() == DataBuffer.TYPE_BYTE) {
                 if (cm instanceof ComponentColorModel &&
                     sm instanceof PixelInterleavedSampleModel) {
-                    PixelInterleavedSampleModel csm = 
+                    PixelInterleavedSampleModel csm =
 				(PixelInterleavedSampleModel) sm;
                     int[] offs = csm.getBandOffsets();
                     ComponentColorModel ccm = (ComponentColorModel)cm;
@@ -761,25 +761,25 @@ public class TextureLoader extends Object {
         }
         return imageType;
     }
-         
+
     // initialize appropriate format for ImageComponent and Texture
     private void parseFormat(String format) {
          if (format==null)
             return;
-         
+
         if (format.equals("RGBA")) {
             imageComponentFormat = ImageComponent.FORMAT_RGBA;
             textureFormat = Texture.RGBA;
 
-        } else if (format.equals("RGBA4")) {                                  
+        } else if (format.equals("RGBA4")) {
             imageComponentFormat = ImageComponent.FORMAT_RGBA4;
             textureFormat = Texture.RGBA;
 
-        } else if (format.equals("RGB5_A1")) {                                 
+        } else if (format.equals("RGB5_A1")) {
             imageComponentFormat = ImageComponent.FORMAT_RGB5_A1;
             textureFormat = Texture.RGBA;
 
-        } else if (format.equals("RGB")) { 
+        } else if (format.equals("RGB")) {
             imageComponentFormat = ImageComponent.FORMAT_RGB;
             textureFormat = Texture.RGB;
 
@@ -787,14 +787,14 @@ public class TextureLoader extends Object {
             imageComponentFormat = ImageComponent.FORMAT_RGB4;
             textureFormat = Texture.RGB;
 
-        } else if (format.equals("RGB5")) {                                  
+        } else if (format.equals("RGB5")) {
             imageComponentFormat = ImageComponent.FORMAT_RGB5;
             textureFormat = Texture.RGB;
 
-        } else if (format.equals("R3_G3_B2")) {                              
+        } else if (format.equals("R3_G3_B2")) {
             imageComponentFormat = ImageComponent.FORMAT_R3_G3_B2;
             textureFormat = Texture.RGB;
- 
+
         } else if (format.equals("LUM8_ALPHA8")) {
             imageComponentFormat = ImageComponent.FORMAT_LUM8_ALPHA8;
             textureFormat = Texture.LUMINANCE_ALPHA;
@@ -802,11 +802,11 @@ public class TextureLoader extends Object {
         } else if (format.equals("LUM4_ALPHA4")) {
             imageComponentFormat = ImageComponent.FORMAT_LUM4_ALPHA4;
             textureFormat = Texture.LUMINANCE_ALPHA;
-       
+
         } else if (format.equals("LUMINANCE")) {
             imageComponentFormat = ImageComponent.FORMAT_CHANNEL8;
             textureFormat = Texture.LUMINANCE;
- 
+
         } else if (format.equals("ALPHA")) {
             imageComponentFormat = ImageComponent.FORMAT_CHANNEL8;
             textureFormat = Texture.ALPHA;
@@ -854,14 +854,14 @@ public class TextureLoader extends Object {
                     bandOffset[ii] = ii;
                     nBits[ii] = 8;
                 }
-                
+
                 wr = java.awt.image.Raster.createInterleavedRaster(DataBuffer.TYPE_BYTE,
                         scaleW, scaleH,
                         scaleW * numComponents, numComponents,
                         bandOffset, null);
 
                 int imageType;
-                
+
                 switch (numComponents) {
                     case 1:
                         imageType = BufferedImage.TYPE_BYTE_GRAY;
@@ -874,12 +874,12 @@ public class TextureLoader extends Object {
                         break;
                     default:
                         throw new ImageException("Illegal number of bands : " + numComponents);
-                        
+
                 }
-                
+
                 scaledImage = new BufferedImage(scaleW, scaleH, imageType);
             }
-            
+
             scaledImage.setData(wr);
             java.awt.Graphics2D g2 = scaledImage.createGraphics();
             AffineTransform at = AffineTransform.getScaleInstance(xScale,
@@ -896,7 +896,7 @@ public class TextureLoader extends Object {
 
         if (value == 0) return -1;
         for (;;) {
-            if (value == 1) 
+            if (value == 1)
                 return i;
             value >>= 1;
 	    i++;
@@ -907,7 +907,7 @@ public class TextureLoader extends Object {
 
 	if (value < 1)
 	    return value;
-	
+
 	int powerValue = 1;
 	for (;;) {
 	    powerValue *= 2;

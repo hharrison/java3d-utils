@@ -67,30 +67,30 @@ public class ImageComponent2DURLState extends ImageComponentState {
 
     private static ImageComponent2DURLIOListener listener = new DefaultListener();
     private java.net.URL url;
-    
+
     public ImageComponent2DURLState(SymbolTableData symbol,Controller control) {
 	super( symbol, control );
     }
 
-    public void writeConstructorParams( DataOutput out ) throws 
+    public void writeConstructorParams( DataOutput out ) throws
 							IOException {
-        super.writeConstructorParams( out );    
-        
-        out.writeUTF( ((ImageComponent2DURL)node).getURL().toExternalForm() );        
+        super.writeConstructorParams( out );
+
+        out.writeUTF( ((ImageComponent2DURL)node).getURL().toExternalForm() );
     }
 
     public void readConstructorParams( DataInput in ) throws
 							IOException {
 
-       super.readConstructorParams( in ); 
-       
+       super.readConstructorParams( in );
+
        String urlString = (String)in.readUTF();
-       
+
        try {
            url = new java.net.URL(urlString);
        } catch( java.net.MalformedURLException e ) {
            throw new RuntimeException("Bad URL in ImageComponent2DURL "+urlString);
-       }       
+       }
     }
 
     protected SceneGraphObject createNode( Class j3dClass ) {
@@ -98,8 +98,8 @@ public class ImageComponent2DURLState extends ImageComponentState {
         //Thread.dumpStack();
         return listener.createImageComponent( format, width, height, byReference, yUp, url );
     }
-    
-    
+
+
     protected javax.media.j3d.SceneGraphObject createNode() {
         return listener.createImageComponent( format, width, height, byReference, yUp, url );
     }

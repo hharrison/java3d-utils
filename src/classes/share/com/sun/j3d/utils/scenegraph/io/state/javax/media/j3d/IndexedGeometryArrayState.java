@@ -56,18 +56,18 @@ import com.sun.j3d.utils.scenegraph.io.retained.SymbolTableData;
 public abstract class IndexedGeometryArrayState extends GeometryArrayState {
 
     protected int indexCount;
-    
+
     public IndexedGeometryArrayState(SymbolTableData symbol,Controller control) {
 	super( symbol, control );
     }
 
     public void writeObject( DataOutput out ) throws IOException {
         super.writeObject( out );
-        
+
         int[] indices = new int[ ((IndexedGeometryArray)node).getIndexCount() ];
 
 	boolean coordOnly = (vertexFormat & GeometryArray.USE_COORD_INDEX_ONLY) !=0;
-        
+
 	if ( (((vertexFormat & GeometryArray.COLOR_3)!=0) ||
               ((vertexFormat & GeometryArray.COLOR_4)!=0)) && !coordOnly ) {
 	    ((IndexedGeometryArray)node).getColorIndices( 0, indices );
@@ -86,7 +86,7 @@ public abstract class IndexedGeometryArrayState extends GeometryArrayState {
 
 	if ( (((vertexFormat & GeometryArray.TEXTURE_COORDINATE_2)!=0) ||
 	      ((vertexFormat & GeometryArray.TEXTURE_COORDINATE_3)!=0) ||
-              ((vertexFormat & GeometryArray.TEXTURE_COORDINATE_4)!=0)) && !coordOnly ) {            
+              ((vertexFormat & GeometryArray.TEXTURE_COORDINATE_4)!=0)) && !coordOnly ) {
             for(int i=0; i<((IndexedGeometryArray)node).getTexCoordSetCount(); i++) {
 	        ((IndexedGeometryArray)node).getTextureCoordinateIndices( i, 0, indices );
 	        writeIntArray( out, indices );
@@ -101,11 +101,11 @@ public abstract class IndexedGeometryArrayState extends GeometryArrayState {
 
     public void readObject( DataInput in ) throws IOException {
         super.readObject( in );
-      
+
         int[] indices = new int[indexCount];
 
 	boolean coordOnly = (vertexFormat & GeometryArray.USE_COORD_INDEX_ONLY) != 0;
-	  
+
 	if ( (((vertexFormat & GeometryArray.COLOR_3)!=0) ||
 	      ((vertexFormat & GeometryArray.COLOR_4)!=0)) && !coordOnly ) {
 	    readIntArray( in, indices );
@@ -148,7 +148,7 @@ public abstract class IndexedGeometryArrayState extends GeometryArrayState {
         super.readConstructorParams( in );
         indexCount = in.readInt();
     }
-    
+
     protected void writeIntArray( DataOutput out, int[] array ) throws IOException {
         ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
         DataOutputStream dataOut = new DataOutputStream( byteStream );
@@ -156,20 +156,20 @@ public abstract class IndexedGeometryArrayState extends GeometryArrayState {
         for(int i=0; i<array.length; i++)
             dataOut.writeInt( array[i] );
         dataOut.close();
-        
+
         out.writeInt( byteStream.size() );
         out.write( byteStream.toByteArray() );
     }
-    
+
     private void readIntArray( DataInput in, int[] array ) throws IOException {
         byte[] buffer = new byte[ in.readInt() ];
         in.readFully( buffer );
         ByteArrayInputStream byteStream = new ByteArrayInputStream( buffer );
         DataInputStream dataIn = new DataInputStream( byteStream );
-        
+
         for(int i=0; i<array.length; i++)
             array[i] = dataIn.readInt();
-        
+
         dataIn.close();
     }
 

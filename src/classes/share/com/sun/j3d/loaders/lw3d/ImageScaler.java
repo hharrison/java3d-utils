@@ -59,7 +59,7 @@ class ImageScaler {
 
     int origW, origH;
     Image origImage;
-    
+
     ImageScaler(Image image, int w, int h) {
 	origImage = image;
 	origW = w;
@@ -74,12 +74,12 @@ class ImageScaler {
 
 	/**
 	* Utility method to return closes poser of 2 to the given integer
-	*/    
+	*/
     int getClosestPowerOf2(int value) {
 
 	if (value < 1)
 	    return value;
-	
+
 	int powerValue = 1;
 	for (int i = 1; i < 20; ++i) {
 	    powerValue *= 2;
@@ -96,11 +96,11 @@ class ImageScaler {
 	// shouldn't reach here...
 	return 1;
     }
-	 
+
 	/**
 	* Returns an Image that has been scaled from the original image to
 	* the closest power of 2
-	*/   
+	*/
     Image getScaledImage() {
 	int newWidth = getClosestPowerOf2(origW);
 	int newHeight = getClosestPowerOf2(origH);
@@ -111,7 +111,7 @@ class ImageScaler {
 	    return origImage;
 
 	Image scaledImage = null;
-	
+
 	if (origImage instanceof BufferedImage) {
 		// If BufferedImage, then we have some work to do
 	    BufferedImage origImageB = (BufferedImage)origImage;
@@ -130,7 +130,7 @@ class ImageScaler {
 					  (int)((float)(row)*
 						heightScale + .5f));
 		    int oldColumn =
-			Math.min(origW-1, 
+			Math.min(origW-1,
 				 (int)((float)column*widthScale + .5f));
 		    newPixels[row*newWidth + column] =
 			origPixels[oldRow*origW + oldColumn];

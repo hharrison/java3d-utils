@@ -53,7 +53,7 @@ import java.util.ArrayList ;
  * configuration parameters for a target object, which is instantiated after
  * the configuration file is parsed.  The ConfigObject then applies its
  * configuration properties to the target object.<p>
- * 
+ *
  * Generic base implementations are provided for the initialize(),
  * setProperty(), and processProperties() methods.  These implementations
  * assume target objects that are unknown and thus instantiated via
@@ -75,13 +75,13 @@ class ConfigObject {
      * base name.
      */
     String baseName = null ;
-    
+
     /**
      * The instance name of this object, as specified in the configuration
      * file.
      */
     String instanceName = null ;
-    
+
     /**
      * The corresponding target object which this ConfigObject is configuring.
      */
@@ -107,7 +107,7 @@ class ConfigObject {
      * The ConfigContainer in which this ConfigObject is contained.
      */
     ConfigContainer configContainer = null ;
-     
+
     /**
      * The command that created this class.
      */
@@ -127,7 +127,7 @@ class ConfigObject {
      * List of alias Strings for this object if it's not an alias itself.
      */
     List aliases = new ArrayList() ;
-    
+
     protected ClassLoader classLoader;
 
     /**
@@ -137,7 +137,7 @@ class ConfigObject {
     void setClassLoader( ClassLoader classLoader ) {
         this.classLoader = classLoader;
     }
-    
+
     /**
      * The base initialize() implementation.  This takes a ConfigCommand with
      * three arguments:  the command name, the instance name, and the name of
@@ -145,7 +145,7 @@ class ConfigObject {
      * configuration file should have the form:<p>
      *
      * (New{configType} {instanceName} {className})<p>
-     * 
+     *
      * For example, (NewDevice tracker com.sun.j3d.input.LogitechTracker) will
      * first cause ConfigDevice to be instantiated, which will then be
      * initialized with this method.  After all the properties are collected,
@@ -159,7 +159,7 @@ class ConfigObject {
      * ConfigPhysicalBody, and ConfigPhysicalEnvironment) target a concrete
      * core Java 3D class and will instantiate them directly, so they override
      * this method.
-     * 
+     *
      * @param c the command that created this ConfigObject
      */
     protected void initialize(ConfigCommand c) {
@@ -179,7 +179,7 @@ class ConfigObject {
 
 	targetClassName = (String)c.argv[2] ;
     }
-    
+
     /**
      * The base setProperty() implementation.  This implementation assumes the
      * property needs to be set by introspection on the property name as a
@@ -187,17 +187,17 @@ class ConfigObject {
      * configuration file is of the form:<p>
      *
      * ({type}Property {instance name} {method name} {arg0} ... {argn})<p>
-     * 
+     *
      * For example, (DeviceProperty tracker SerialPort "/dev/ttya") will
      * invoke the method named "SerialPort" in the object referenced by
      * "tracker" with an array of 1 Object containing the String
-     * "/dev/ttya".<p> 
-     * 
+     * "/dev/ttya".<p>
+     *
      * The property is stored as the original ConfigCommand and is evaluated
      * after the configuration file has been parsed.  It is overridden by
      * subclasses that instantiate concrete core Java 3D classes with known
      * method names.
-     * 
+     *
      * @param c the command that invoked this method
      */
     protected void setProperty(ConfigCommand c) {
@@ -232,7 +232,7 @@ class ConfigObject {
     }
 
     /**
-     * Return the class for the specified class name string.  
+     * Return the class for the specified class name string.
      *
      * @param className the name of the class
      * @return the object representing the class
@@ -257,7 +257,7 @@ class ConfigObject {
 
     /**
      * Return an instance of the class specified by the given class object.
-     * 
+     *
      * @param objectClass the object representing the class
      * @return a new instance of the class
      */
@@ -290,7 +290,7 @@ class ConfigObject {
     }
 
     /**
-     * Evaluate properties for the the given class instance.  
+     * Evaluate properties for the the given class instance.
      *
      * @param objectClass the class object representing the given class
      * @param objectInstance the class instance whose methods will be invoked
@@ -303,7 +303,7 @@ class ConfigObject {
 	// Holds the single parameter passed to the class instance methods.
 	Object[] parameters = new Object[1] ;
 
-	// Specifies the class of the single method parameter.  
+	// Specifies the class of the single method parameter.
 	Class[] parameterTypes = new Class[1] ;
 
 	// All property methods use Object[] as their single parameter, which
@@ -330,7 +330,7 @@ class ConfigObject {
 	    parameters[0] = argv ;
 
 	    try {
-		Method objectMethod = 
+		Method objectMethod =
 		    objectClass.getMethod(methodName, parameterTypes) ;
 
 		objectMethod.invoke(objectInstance, parameters) ;
@@ -375,7 +375,7 @@ class ConfigObject {
 
     /**
      * Check if the argument is a name string.
-     * 
+     *
      * @param o the object to be checked
      * @return true if the object is an instance of String
      */

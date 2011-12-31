@@ -51,11 +51,11 @@ import java.util.ArrayList;
 
 /**
  * The AudioEngine3D Class defines an audio output device that generates
- * sound 'image' from high-level sound parameters passed to it during 
+ * sound 'image' from high-level sound parameters passed to it during
  * scene graph.
  *
  * <P>
- * The methods in this class are meant to be optionally overridden by an 
+ * The methods in this class are meant to be optionally overridden by an
  * extended class.  This extended class would provice device specific code.
  *
  * <P>
@@ -72,12 +72,12 @@ public abstract class AudioEngine3D extends AudioEngine implements AudioDevice3D
     /*
      *  Identifiers of sample associated with sound source
      *  This array grows as the AudioDevice3D implementation requires it larger.
-     */  
+     */
     protected ArrayList samples = new ArrayList(64);
 
     /**
      *  Current View sound is being rendered
-     */  
+     */
     protected View  currentView = (View)null;
 
     /*
@@ -89,14 +89,14 @@ public abstract class AudioEngine3D extends AudioEngine implements AudioDevice3D
      * Construct a new AudioEngine with the specified PhysicalEnvironment.
      * @param physicalEnvironment the physical environment object where we
      * want access to this device.
-     */  
+     */
     public AudioEngine3D(PhysicalEnvironment physicalEnvironment ) {
         super(physicalEnvironment);
     }
 
     /*
      *
-     * Methods that affect AudioEngine3D fields that are NOT associated 
+     * Methods that affect AudioEngine3D fields that are NOT associated
      * with a specific sound sample
      *
      */
@@ -131,7 +131,7 @@ public abstract class AudioEngine3D extends AudioEngine implements AudioDevice3D
      * @param soundType denotes type of sound: Background, Point or Cone
      * @param soundData descrition of sound source data
      * @return index into sample vector of Sample object for sound
-     */  
+     */
     public int   prepareSound(int soundType, MediaContainer soundData) {
         // This method must be overridden by device specific implementation
         return Sample.NULL_SAMPLE;
@@ -141,7 +141,7 @@ public abstract class AudioEngine3D extends AudioEngine implements AudioDevice3D
      * Clear Sound.
      * Removes/clears associated sound data with this sound source node
      * @param index device specific reference number to device driver sample
-     */  
+     */
     public abstract void clearSound(int index);
 
     /**
@@ -170,7 +170,7 @@ public abstract class AudioEngine3D extends AudioEngine implements AudioDevice3D
     public abstract int stopSample(int index);
 
     /**
-     * Update sample. 
+     * Update sample.
      * Implies that some parameters affecting rendering have been modified.
      * @param index device specific reference number to device driver sample
      */
@@ -178,29 +178,29 @@ public abstract class AudioEngine3D extends AudioEngine implements AudioDevice3D
     public abstract void updateSample(int index);
 
     /**
-     * Mute sample. 
+     * Mute sample.
      * @param index device specific reference number to device driver sample
      */
     public abstract void muteSample(int index);
 
     /**
-     * Unmute sample. 
+     * Unmute sample.
      * @param index device specific reference number to device driver sample
      */
     public abstract void unmuteSample(int index);
 
     /**
-     * Pause sample. 
+     * Pause sample.
      * @param index device specific reference number to device driver sample
      */
     public abstract void pauseSample(int index);
 
     /**
-     * Unpause sample. 
+     * Unpause sample.
      * @param index device specific reference number to device driver sample
      */
     public abstract void unpauseSample(int index);
-    
+
     /*
      *
      *  Methods that affect fields associated with the sound sample
@@ -208,25 +208,25 @@ public abstract class AudioEngine3D extends AudioEngine implements AudioDevice3D
      *
      */
     /**
-     * Set gain scale factor applied to sample. 
+     * Set gain scale factor applied to sample.
      * @param index device specific reference number to device driver sample
      * @param scaleFactor floating point multiplier applied to sample amplitude
      */
     public void  setSampleGain(int index, float scaleFactor) {
         Sample sample = (Sample)getSample(index);
-        if (sample != null) 
+        if (sample != null)
             sample.setGain(scaleFactor);
         return;
     }
 
-    /** 
+    /**
      * Set number of times sample is looped.
      * @param index device specific reference number to device driver sample
      * @param count number of times sample is repeated
      */
     public void   setLoop(int index, int count) {
         Sample sample = (Sample)getSample(index);
-        if (sample != null) 
+        if (sample != null)
             sample.setLoopCount(count);
         return;
     }
@@ -238,7 +238,7 @@ public abstract class AudioEngine3D extends AudioEngine implements AudioDevice3D
      */
     public void  setPosition(int index, Point3d position) {
         Sample sample = (Sample)getSample(index);
-        if (sample != null)  
+        if (sample != null)
             sample.setPosition(position);
         return;
     }
@@ -252,12 +252,12 @@ public abstract class AudioEngine3D extends AudioEngine implements AudioDevice3D
      * thru which ellipses pass
      * @param backAttenuationScaleFactor gain scale factors
      */
-    public void setDistanceGain(int index, 
+    public void setDistanceGain(int index,
               double[] frontDistance, float[] frontAttenuationScaleFactor,
               double[] backDistance, float[] backAttenuationScaleFactor) {
         Sample sample = (Sample)getSample(index);
-        if (sample != null)  
-            sample.setDistanceGain(frontDistance, frontAttenuationScaleFactor, 
+        if (sample != null)
+            sample.setDistanceGain(frontDistance, frontAttenuationScaleFactor,
                                    backDistance, backAttenuationScaleFactor);
         return;
     }
@@ -269,7 +269,7 @@ public abstract class AudioEngine3D extends AudioEngine implements AudioDevice3D
      */
     public void setDirection(int index, Vector3d direction) {
         Sample sample = (Sample)getSample(index);
-        if (sample != null)  
+        if (sample != null)
             sample.setDirection(direction);
         return;
     }
@@ -285,11 +285,11 @@ public abstract class AudioEngine3D extends AudioEngine implements AudioDevice3D
      * @param filterCutoff array containing filter cutoff frequencies.
      * The filter values for each tuples can be set to Sound.NO_FILTER.
      */
-    public void setAngularAttenuation(int index, int filterType, 
+    public void setAngularAttenuation(int index, int filterType,
           double[] angle, float[] attenuationScaleFactor, float[] filterCutoff) {
         Sample sample = (Sample)getSample(index);
-        if (sample != null)  
-            sample.setAngularAttenuation(filterType, angle, 
+        if (sample != null)
+            sample.setAngularAttenuation(filterType, angle,
                        attenuationScaleFactor, filterCutoff);
         return;
     }
@@ -315,7 +315,7 @@ public abstract class AudioEngine3D extends AudioEngine implements AudioDevice3D
     }
 
     /**
-     * Set reverberation delay time for current aural attribute applied to 
+     * Set reverberation delay time for current aural attribute applied to
      * all samples.
      * @param reverbDelay amount of time in millisecond between each
      * iteration of reverb processing.
@@ -326,7 +326,7 @@ public abstract class AudioEngine3D extends AudioEngine implements AudioDevice3D
     }
 
     /**
-     * Set reverberation order for current aural attribute applied to all 
+     * Set reverberation order for current aural attribute applied to all
      * samples.
      * @param reverbOrder number of times reverb process loop is iterated.
      */
@@ -341,14 +341,14 @@ public abstract class AudioEngine3D extends AudioEngine implements AudioDevice3D
      * to all sample based on distance between listener and sound.
      * @param dist is an attenuation array of distance and low-pass filter values.
      */
-    public void setDistanceFilter(int filterType, 
+    public void setDistanceFilter(int filterType,
               double[] dist, float[]  filterCutoff) {
         attribs.setDistanceFilter(filterType, dist, filterCutoff);
         return;
     }
 
     /**
-     * Set frequency scale factor for current aural attribute applied to all 
+     * Set frequency scale factor for current aural attribute applied to all
      * samples.
      * @param scaleFactor frequency scale factor applied to samples normal
      * playback rate.
@@ -358,7 +358,7 @@ public abstract class AudioEngine3D extends AudioEngine implements AudioDevice3D
         return;
     }
     /**
-     * Set velocity scale factor for current aural attribute applied to all 
+     * Set velocity scale factor for current aural attribute applied to all
      * samples when Doppler is calculated.
      * @param scaleFactor scale factor applied to postional samples'
      * listener-to-soundSource velocity.
@@ -377,7 +377,7 @@ public abstract class AudioEngine3D extends AudioEngine implements AudioDevice3D
     public int    getNumberOfChannelsUsed(int index) {
         // This method must be overridden by device specific implementation
         Sample sample = (Sample)getSample(index);
-        if (sample != null)  
+        if (sample != null)
             return (sample.getNumberOfChannelsUsed());
         else
             return 0;
@@ -396,7 +396,7 @@ public abstract class AudioEngine3D extends AudioEngine implements AudioDevice3D
     public int    getNumberOfChannelsUsed(int index, boolean muteFlag) {
         // This method must be overridden by device specific implementation
         Sample sample = (Sample)getSample(index);
-        if (sample != null)  
+        if (sample != null)
             return (sample.getNumberOfChannelsUsed());
         else
             return 0;
@@ -409,7 +409,7 @@ public abstract class AudioEngine3D extends AudioEngine implements AudioDevice3D
      */
     public long  getSampleDuration(int index) {
         Sample sample = (Sample)getSample(index);
-        if (sample != null)  
+        if (sample != null)
             return (sample.getDuration());
         else
             return 0L;
@@ -422,7 +422,7 @@ public abstract class AudioEngine3D extends AudioEngine implements AudioDevice3D
      */
     public long  getStartTime(int index) {
         Sample sample = (Sample)getSample(index);
-        if (sample != null)  
+        if (sample != null)
             return (sample.getStartTime());
         else
             return 0L;
@@ -450,7 +450,7 @@ public abstract class AudioEngine3D extends AudioEngine implements AudioDevice3D
      * @return reference to sample; returns null if index out of range.
      *
      * @since Java 3D 1.2.1
-     */  
+     */
     public Sample getSample(int index) {
         synchronized(samples) {
             if ((index >= 0) && (index < samples.size())) {

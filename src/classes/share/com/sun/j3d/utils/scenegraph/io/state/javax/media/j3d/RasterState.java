@@ -61,10 +61,10 @@ public class RasterState extends GeometryState {
 
     int image;
     int depthComponent;
-    
+
     public RasterState(SymbolTableData symbol,Controller control) {
         super( symbol, control );
-        
+
 	// Set up references during save
         if ( node!=null ) {
 	    image = control.getSymbolTable().addReference( ((Raster)node).getImage() );
@@ -72,7 +72,7 @@ public class RasterState extends GeometryState {
 		control.getSymbolTable().addReference( ((Raster)node).getDepthComponent() );
         }
     }
-    
+
     public void writeObject( DataOutput out ) throws IOException {
         super.writeObject( out );
 
@@ -100,7 +100,7 @@ public class RasterState extends GeometryState {
 	out.writeInt( offset.x );
 	out.writeInt( offset.y );
     }
-    
+
     public void readObject( DataInput in ) throws IOException {
         super.readObject( in );
 
@@ -124,7 +124,7 @@ public class RasterState extends GeometryState {
         control.getSymbolTable().incNodeComponentRefCount( image );
         control.getSymbolTable().incNodeComponentRefCount( depthComponent );
     }
-    
+
     // Set up references during load
     public void buildGraph() {
 	((Raster)node).setImage( (ImageComponent2D)control.getSymbolTable().getJ3dNode( image ) );
@@ -132,7 +132,7 @@ public class RasterState extends GeometryState {
 	    (DepthComponent)control.getSymbolTable().getJ3dNode( depthComponent ) );
 	super.buildGraph(); // Must be last call in method
     }
-    
+
     protected javax.media.j3d.SceneGraphObject createNode() {
         return new Raster();
     }

@@ -46,13 +46,13 @@ package com.sun.j3d.utils.behaviors.sensor ;
 
 /**
  * This defines the interface for handling a sensor's button events in
- * conjunction with a <code>SensorEventAgent</code> instance. 
+ * conjunction with a <code>SensorEventAgent</code> instance.
  * <p>
  * The events passed to this listener's methods are <i>ephemeral</i>; they
  * are only valid until the listener has returned.  If a listener needs to
  * retain the event it must be copied using the
  * <code>SensorEvent(SensorEvent)</code> constructor.
- * 
+ *
  * @see SensorEvent
  * @see SensorEventAgent
  * @see SensorReadListener
@@ -61,14 +61,14 @@ package com.sun.j3d.utils.behaviors.sensor ;
 public interface SensorButtonListener {
     /**
      * This method is called when a sensor's button is pressed.
-     * 
+     *
      * @param e the sensor event
      */
     public void pressed(SensorEvent e) ;
 
     /**
      * This method is called when a sensor's button is released.
-     * 
+     *
      * @param e the sensor event
      */
     public void released(SensorEvent e) ;
@@ -79,7 +79,7 @@ public interface SensorButtonListener {
      * if any button bound to the listener is down and has not changed
      * state since the last invocation.  The sensor value has not
      * necessarily changed from the last drag event.
-     * 
+     *
      * @param e the sensor event
      */
     public void dragged(SensorEvent e) ;

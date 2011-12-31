@@ -80,14 +80,14 @@ abstract public class ViewPlatformBehavior extends Behavior {
      * Sets the ViewingPlatform for this behavior.  This method is called by
      * the ViewingPlatform.  If a sub-calls overrides this method, it must
      * call super.setViewingPlatform(vp).<p>
-     * 
-     * NOTE: Applications should <i>not</i> call this method.    
+     *
+     * NOTE: Applications should <i>not</i> call this method.
      *
      * @param vp the target ViewingPlatform for this behavior
      */
     public void setViewingPlatform(ViewingPlatform vp) {
 	this.vp = vp;
-        
+
         if (vp!=null)
 	    targetTG = vp.getViewPlatformTransform();
         else
@@ -105,7 +105,7 @@ abstract public class ViewPlatformBehavior extends Behavior {
     /**
      * Copies the given Transform3D into the "home" transform, used to
      * position and reorient the ViewingPlatform to a known point of interest.
-     * 
+     *
      * @param home source transform to be copied
      * @since Java 3D 1.3
      */
@@ -118,7 +118,7 @@ abstract public class ViewPlatformBehavior extends Behavior {
 
     /**
      * Returns the behaviors "home" transform.
-     * 
+     *
      * @param home transform to be returned
      * @since Java 3D 1.3
      */

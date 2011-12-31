@@ -70,7 +70,7 @@ class ConfigSensor extends ConfigObject {
     /**
      * Handles the command
      * (NewSensor {instanceName} {inputDeviceName} {indexInInputDevice})
-     * 
+     *
      * @param command the command that invoked this method
      */
     protected void initialize(ConfigCommand command) {
@@ -103,7 +103,7 @@ class ConfigSensor extends ConfigObject {
      * Handles the commands
      * (SensorAttribute {instanceName} {attributeName} {attributeValue}) and
      * (SensorProperty  {instanceName} {attributeName} {attributeValue}).
-     * 
+     *
      * @param command the command that invoked this method
      */
     protected void setProperty(ConfigCommand command) {
@@ -141,7 +141,7 @@ class ConfigSensor extends ConfigObject {
 	    if (! isName(argv[3])) {
 		syntaxError("Predictor must be a name") ;
 	    }
-	    
+
 	    String predictorName = (String)argv[3] ;
 	    if (predictorName.equals("PREDICT_NONE")) {
 		predictor = Sensor.PREDICT_NONE ;
@@ -158,7 +158,7 @@ class ConfigSensor extends ConfigObject {
 	    if (! isName(argv[3])) {
 		syntaxError("PredictionPolicy must be a name") ;
 	    }
-	    
+
 	    String predictionPolicyName = (String)argv[3] ;
 	    if (predictionPolicyName.equals("NO_PREDICTOR")) {
 		predictionPolicy = Sensor.NO_PREDICTOR ;

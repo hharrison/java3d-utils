@@ -54,13 +54,13 @@ public class J3fInputStream implements java.io.DataInput {
 
     private PositionInputStream positionInputStream;
     private DataInputStream dataInputStream;
-    
+
     /** Creates new J3fInputStream */
     public J3fInputStream( java.io.InputStream stream ) {
         positionInputStream = new PositionInputStream( stream );
         dataInputStream = new DataInputStream( positionInputStream );
     }
-    
+
     /**
      * Move the file pointer to the specified position.
      * The position MUST be greater or equal to the current position
@@ -68,7 +68,7 @@ public class J3fInputStream implements java.io.DataInput {
     public void seekForward( long position ) throws IOException {
         positionInputStream.seekForward( position );
     }
-    
+
     public long getFilePointer() {
         return positionInputStream.getFilePointer();
     }
@@ -76,61 +76,61 @@ public class J3fInputStream implements java.io.DataInput {
     public int readUnsignedShort() throws java.io.IOException {
         return dataInputStream.readUnsignedShort();
     }
-    
+
     public void readFully(byte[] p1) throws java.io.IOException {
         dataInputStream.readFully(p1);
     }
-    
+
     public char readChar() throws java.io.IOException {
         return dataInputStream.readChar();
     }
-    
+
     public int readUnsignedByte() throws java.io.IOException {
         return dataInputStream.readUnsignedByte();
     }
-    
+
     public int readInt() throws java.io.IOException {
         return dataInputStream.readInt();
     }
-    
+
     public short readShort() throws java.io.IOException {
         return dataInputStream.readShort();
     }
-    
+
     public float readFloat() throws java.io.IOException {
         return dataInputStream.readFloat();
     }
-    
+
     public void readFully(byte[] p1,int p2,int p3) throws java.io.IOException {
         dataInputStream.readFully( p1, p2, p3 );
     }
-    
+
     public boolean readBoolean() throws java.io.IOException {
         return dataInputStream.readBoolean();
     }
-    
+
     public int skipBytes(int p1) throws java.io.IOException {
         return dataInputStream.skipBytes(p1);
     }
-    
+
     public double readDouble() throws java.io.IOException {
         return dataInputStream.readDouble();
     }
-    
+
     public long readLong() throws java.io.IOException {
         return dataInputStream.readLong();
     }
-    
+
     public java.lang.String readLine() throws java.io.IOException {
         return dataInputStream.readLine();
     }
-    
+
     public byte readByte() throws java.io.IOException {
         return dataInputStream.readByte();
     }
-    
+
     public java.lang.String readUTF() throws java.io.IOException {
         return dataInputStream.readUTF();
     }
-    
+
 }

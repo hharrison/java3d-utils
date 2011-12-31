@@ -68,29 +68,29 @@ class JSSample extends com.sun.j3d.audioengines.Sample
      *       with each sound.
      */
 
-    /** 
+    /**
      *  Sound Data Types
-     *  
+     *
      *  Samples can be processed as streaming or buffered data.
      *  Fully spatializing sound sources may require data to be buffered.
-     * 
+     *
      *  Sound data specified as Streaming is not copied by the AudioDevice
      *  driver implementation.  It is up the application to ensure that
      *  this data is continuously accessible during sound rendering.
      *  Futhermore, full sound spatialization may not be possible, for
      *  all AudioDevice implementations on unbuffered sound data.
-     */ 
+     */
     static final int STREAMING_AUDIO_DATA = 1;
-    /** 
+    /**
      *  Sound data specified as Buffered is copied by the AudioDevice
      *  driver implementation.
-     */ 
+     */
     static final int BUFFERED_AUDIO_DATA = 2;
-    /** 
-     *  MIDI data 
+    /**
+     *  MIDI data
      *  TODO: differentiate between STREAMING and BUFFERED MIDI data
      *      right now all MIDI data is buffered
-     */ 
+     */
     static final int STREAMING_MIDI_DATA = 3;
     static final int BUFFERED_MIDI_DATA = 3;
     static final int UNSUPPORTED_DATA_TYPE = -1;
@@ -99,19 +99,19 @@ class JSSample extends com.sun.j3d.audioengines.Sample
 
     /**
      *  sound data types: BUFFERED (cached) or STREAMING (non-cached)
-     */  
+     */
     int   dataType = BUFFERED_AUDIO_DATA;
 
     JSChannel channel = null;
 
     /**
      *  Offset pointer within currently playing sample data
-     */  
+     */
     long      dataOffset = 0;
 
     /*
      * Maintain continuously playing silent sound sources.
-     */  
+     */
     long      timeDeactivated = 0;
     long      positionDeactivated   = 0;
 
@@ -128,7 +128,7 @@ class JSSample extends com.sun.j3d.audioengines.Sample
 
     public JSSample() {
         super();
-        if (debugFlag) 
+        if (debugFlag)
             debugPrintln("JSSample constructor");
     }
 
@@ -153,19 +153,19 @@ class JSSample extends com.sun.j3d.audioengines.Sample
             else
                 rateRatio = currentRateRatio * freqScaleFactor;
         }
-        else 
-            rateRatio = currentRateRatio; 
+        else
+            rateRatio = currentRateRatio;
     }
 
     /**
      * Clears/re-initialize fields associated with sample data for
      * this sound,
      * and frees any device specific data associated with this sample.
-     */  
+     */
     public void clear() {
         super.clear();
         if (debugFlag)
-            debugPrintln("JSSample.clear() entered"); 
+            debugPrintln("JSSample.clear() entered");
         // TODO: unload sound data at device
 //     null out samples element that points to this?
 //     would this cause samples list size to shrink?
@@ -183,7 +183,7 @@ class JSSample extends com.sun.j3d.audioengines.Sample
         rateRatio = 1.0f;
         channel = null;
         if (debugFlag)
-            debugPrintln("JSSample.clear() exited"); 
+            debugPrintln("JSSample.clear() exited");
     }
 
     // @return error true if error occurred
@@ -203,11 +203,11 @@ class JSSample extends com.sun.j3d.audioengines.Sample
         // TODO: How do we determine if the file is a MIDI file???
         //     for now set dataType to BUFFERED_ or STREAMING_AUDIO_DATA
         // used to test for ais instanceof AudioMidiInputStream ||
-        //                  ais instanceof AudioRmfInputStream ) 
+        //                  ais instanceof AudioRmfInputStream )
         //     then set dataType = JSSample.BUFFERED_MIDI_DATA;
         // QUESTION: can non-cached MIDI files ever be supported ?
         /****************
-        // TODO: when we have a way to determine data type use code below 
+        // TODO: when we have a way to determine data type use code below
         if (dataType==UNSUPPORTED_DATA_TYPE OR error_occurred)
             clearSound(index);
             if (debugFlag)
@@ -222,10 +222,10 @@ class JSSample extends com.sun.j3d.audioengines.Sample
             dataType = STREAMING_AUDIO_DATA;
 
         if ((url == null) && (inputStream == null) && (path == null)) {
-            if (debugFlag) 
+            if (debugFlag)
                 debugPrint("JavaSoundMixer.loadSound null data - return error");
            return true;
-        } 
+        }
 
         // get ais
         if (path != null)  {
@@ -244,10 +244,10 @@ class JSSample extends com.sun.j3d.audioengines.Sample
 
         // get DataLine channel based on data type
         if (dataType == BUFFERED_AUDIO_DATA) {
-            if (debugFlag) 
+            if (debugFlag)
                 debugPrintln("JSSample.load dataType = BUFFERED ");
             channel = new JSClip();
-            if (debugFlag) 
+            if (debugFlag)
                 debugPrintln(" calls JSClip.initAudioInputStream");
             if (url != null)
                 ais = channel.initAudioInputStream(url, cacheFlag);
@@ -259,15 +259,15 @@ class JSSample extends com.sun.j3d.audioengines.Sample
                              "initAudioInputStream() failed");
                 return true;
             }
-            if (debugFlag) 
+            if (debugFlag)
                 debugPrintln(" calls JSClip.initDataLine");
             dataLine = channel.initDataLine(ais);
         }
         else if (dataType == STREAMING_AUDIO_DATA) {
-            if (debugFlag) 
+            if (debugFlag)
                 debugPrintln("JSSample.load dataType = STREAMING ");
             channel = new JSStream();
-            if (debugFlag) 
+            if (debugFlag)
                 debugPrintln(" calls JSStream.initAudioInputStream");
             if (url != null)
                 ais = channel.initAudioInputStream(url, cacheFlag);
@@ -279,14 +279,14 @@ class JSSample extends com.sun.j3d.audioengines.Sample
                              "initAudioInputStream() failed");
                 return true;
             }
-            if (debugFlag) 
+            if (debugFlag)
                 debugPrintln(" calls JSStream.initDataLine");
             dataLine = channel.initDataLine(ais);
         }
         else {
             if (debugFlag)
-                debugPrintln("JSSample.load doesn't support MIDI yet"); 
-        } 
+                debugPrintln("JSSample.load doesn't support MIDI yet");
+        }
         if (dataLine == null) {
             if (debugFlag)
                 debugPrint("JSSample.load initDataLine failed ");
@@ -315,47 +315,47 @@ class JSSample extends com.sun.j3d.audioengines.Sample
         rateRatio = 1.0f;
     }
 
-// TODO: NEED methods for any field accessed by both JSThread and 
-//          JavaSoundMixer so that we can make these MT safe?? 
+// TODO: NEED methods for any field accessed by both JSThread and
+//          JavaSoundMixer so that we can make these MT safe??
     /*
      * Process request for Filtering fields
-     */  
-    boolean  getFilterFlag() { 
+     */
+    boolean  getFilterFlag() {
         return false;
     }
-    float  getFilterFreq() { 
+    float  getFilterFreq() {
         return -1.0f;
     }
 
-    void  setCurrentRateRatio(float ratio) { 
+    void  setCurrentRateRatio(float ratio) {
         currentRateRatio = ratio;
     }
 
-    float  getCurrentRateRatio() { 
+    float  getCurrentRateRatio() {
         return currentRateRatio;
     }
 
-    void  setTargetRateRatio(float ratio) { 
+    void  setTargetRateRatio(float ratio) {
         targetRateRatio = ratio;
     }
 
-    float  getTargetRateRatio() { 
+    float  getTargetRateRatio() {
         return targetRateRatio;
     }
 
-    void  setRampRateFlag(boolean flag) { 
+    void  setRampRateFlag(boolean flag) {
         rampRateFlag = flag;
     }
 
-    boolean  getRampRateFlag() { 
+    boolean  getRampRateFlag() {
         return rampRateFlag;
     }
 
-    void  setDataType(int type) { 
+    void  setDataType(int type) {
         dataType = type;
     }
 
-    int  getDataType() { 
+    int  getDataType() {
         return dataType;
     }
 

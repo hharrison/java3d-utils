@@ -67,7 +67,7 @@ public abstract class AudioEngine implements AudioDevice {
      * HEADPHONE, MONO_SPEAKER, STEREO_SPEAKERS
      */
     int audioPlaybackType = HEADPHONES;
- 
+
     /*
      * Distance from center ear (midpoint between ears) to physical speaker.
      * Default reflects distance for headphones.
@@ -75,8 +75,8 @@ public abstract class AudioEngine implements AudioDevice {
      * distance from the listener and that
      */
     float distanceToSpeaker = 0.0f;
- 
-    /*   
+
+    /*
      * Angle between the vector from center ear parallel to head coordiate
      * Z axis and the vector from the center ear to the speaker.
      * For two speakers it is assumed that the speakers are placed at the
@@ -115,14 +115,14 @@ public abstract class AudioEngine implements AudioDevice {
      */
     public abstract boolean close();
 
-    /*  
+    /*
      * Audio Playback Methods
-     */ 
+     */
     /**
      * Set Type of Audio Playback physical transducer(s) sound is output to.
      *     Valid types are HEADPHONE, MONO_SPEAKER, STEREO_SPEAKERS
      * @param type of audio output device
-     */ 
+     */
     public void setAudioPlaybackType(int type) {
         audioPlaybackType = type;
     }
@@ -130,7 +130,7 @@ public abstract class AudioEngine implements AudioDevice {
     /**
      * Get Type of Audio Playback Output Device
      * returns audio playback type to which sound is currently output
-     */ 
+     */
     public int getAudioPlaybackType() {
         return audioPlaybackType;
     }
@@ -138,7 +138,7 @@ public abstract class AudioEngine implements AudioDevice {
     /**
      * Set Distance from the Center Ear to a Speaker
      * @param distance from the center ear and to the speaker
-     */ 
+     */
     public void setCenterEarToSpeaker(float distance) {
         distanceToSpeaker = distance;
     }
@@ -146,32 +146,32 @@ public abstract class AudioEngine implements AudioDevice {
     /**
      * Get Distance from Ear to Speaker
      * returns value set as distance from listener's ear to speaker
-     */ 
+     */
     public float getCenterEarToSpeaker() {
         return distanceToSpeaker;
     }
- 
+
     /**
      * Set Angle Offset To Speaker
-     * @param angle in radian between head coordinate Z axis and vector to speaker   */ 
+     * @param angle in radian between head coordinate Z axis and vector to speaker   */
     public void setAngleOffsetToSpeaker(float angle) {
         angleOffsetToSpeaker = angle;
-    }   
- 
+    }
+
     /**
      * Get Angle Offset To Speaker
      * returns value set as angle between vector to speaker and Z head axis
-     */ 
+     */
     public float getAngleOffsetToSpeaker() {
         return angleOffsetToSpeaker;
-    }   
+    }
 
     /**
      * Query total number of channels available for sound rendering
      * for this audio device.
      * returns number of maximum sound channels you can run with this
-     * library/device-driver. 
-     */  
+     * library/device-driver.
+     */
     public int getTotalChannels() {
         // this method should be overridden by a device specific implementation
         return (totalChannels);
@@ -181,7 +181,7 @@ public abstract class AudioEngine implements AudioDevice {
      * Query number of channels currently available for use by the
      * returns number of sound channels currently available (number
      * not being used by active sounds.
-     */  
+     */
     public int getChannelsAvailable() {
         return (channelsAvailable);
     }
@@ -192,7 +192,7 @@ public abstract class AudioEngine implements AudioDevice {
      * @param sound refenence to sound node that query to be performed on
      * returns number of sound channels used by a specific Sound node
      * @deprecated This method is now part of the Sound class
-     */  
+     */
     public int getChannelsUsedForSound(Sound sound) {
         if (sound != null)
             return sound.getNumberOfChannelsUsed();

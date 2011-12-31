@@ -56,12 +56,12 @@ import com.sun.j3d.utils.scenegraph.io.retained.SymbolTableData;
 public class BehaviorState extends LeafState {
 
     private int boundingLeaf;
-    
+
     public BehaviorState(SymbolTableData symbol,Controller control) {
         super( symbol, control );
-        
+
     }
-    
+
     protected SceneGraphObject createNode( String className ) {
         SceneGraphObject ret;
         try {
@@ -69,7 +69,7 @@ public class BehaviorState extends LeafState {
         } catch( com.sun.j3d.utils.scenegraph.io.retained.SGIORuntimeException e ) {
             ret = new com.sun.j3d.utils.scenegraph.io.UnresolvedBehavior();
         }
-        
+
         return ret;
     }
 
@@ -79,25 +79,25 @@ public class BehaviorState extends LeafState {
 
         out.writeBoolean( beh.getEnable() );
         out.writeInt( control.getSymbolTable().addReference( beh.getSchedulingBoundingLeaf() ) );
-        
+
         control.writeBounds( out, beh.getSchedulingBounds() );
-        
+
 	// We had a lot of dicussion about this - may want to expand support
 	// in future versions, but for now just save and restore scheduling
 	// interval
 	out.writeInt( beh.getSchedulingInterval() );
     }
-    
+
     public void readObject( DataInput in ) throws IOException {
         super.readObject( in );
         Behavior beh = (Behavior)node;
-        
+
         beh.setEnable( in.readBoolean() );
         boundingLeaf = in.readInt();
         beh.setSchedulingBounds( control.readBounds( in ) );
 	beh.setSchedulingInterval( in.readInt() );
     }
-    
+
     public void buildGraph() {
         ((Behavior)node).setSchedulingBoundingLeaf( (BoundingLeaf)control.getSymbolTable().getJ3dNode( boundingLeaf ));
         super.buildGraph(); // Must be last call in method

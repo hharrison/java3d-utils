@@ -111,7 +111,7 @@ import com.sun.j3d.utils.timer.J3DTimer ;
  * constructor.
  * <p>
  * It is safe to add and remove listeners in response to a callback.
- * 
+ *
  * @see SensorEvent
  * @see SensorButtonListener
  * @see SensorReadListener
@@ -134,7 +134,7 @@ public class SensorEventAgent {
     /**
      * Create a <code>SensorEventAgent</code> to generate and dispatch
      * sensor events to registered listeners.
-     * 
+     *
      * @param source reference to the originating object for inclusion in
      *  generated <code>SensorEvents</code>; intended to refer to the
      *  instantiating Behavior but may be any reference, or null
@@ -186,7 +186,7 @@ public class SensorEventAgent {
 		    ((SensorReadListener)readBindingsList.get(i)) + "\n" ;
 	    return s ;
 	}
-    }       
+    }
 
     /**
      * This class contains an array of SensorButtonListener
@@ -241,7 +241,7 @@ public class SensorEventAgent {
     /**
      * Creates a binding of the specified sensor button to the given
      * <code>SensorButtonListener</code> implementation.
-     * 
+     *
      * @param sensor the sensor with the button to be bound
      * @param button the index of the button to be bound on the specified
      *  sensor; may range from 0 to
@@ -286,7 +286,7 @@ public class SensorEventAgent {
      * they occur.  This allows actions to be bound to combinations of
      * button presses, but is also convenient for listeners that don't
      * care which button was pressed.
-     * 
+     *
      * @param sensor the sensor to be bound
      * @param buttonListener the <code>SensorButtonListener</code>
      *  implementation that will be called for all button events
@@ -327,7 +327,7 @@ public class SensorEventAgent {
      * among the listeners specified in the array.  If multiple sensor
      * buttons are held down at the same time, callbacks are invoked only
      * for the button that was depressed first.
-     * 
+     *
      * @param sensor the sensor to be bound
      * @param buttonListeners array of implementations of
      *  <code>SensorButtonListener</code>; array entries may be null or
@@ -361,7 +361,7 @@ public class SensorEventAgent {
     /**
      * Gets the <code>SensorButtonListener</code> implementations bound to
      * the given sensor and button.
-     * 
+     *
      * @param sensor the sensor of interest
      * @param button the button of interest
      * @return array of <code>SensorButtonListener</code> implementations
@@ -424,13 +424,13 @@ public class SensorEventAgent {
     /**
      * Remove the given <code>SensorButtonListener</code> binding from the
      * specified sensor.
-     * 
+     *
      * @param sensor the sensor from which to remove the listener
      * @param listener the listener to be removed
      */
     public synchronized void removeSensorButtonListener
 	(Sensor sensor, SensorButtonListener listener) {
-        
+
 	if (sensor == null)
 	    throw new NullPointerException("\nsensor is null") ;
 
@@ -448,7 +448,7 @@ public class SensorEventAgent {
 
     /**
      * Remove the given <code>SensorButtonListener</code> from all sensors.
-     * 
+     *
      * @param listener the listener to remove
      */
     public synchronized void removeSensorButtonListener
@@ -472,7 +472,7 @@ public class SensorEventAgent {
      * <code>SensorReadListener</code>.  The read listener is invoked
      * every time <code>dispatchEvents</code> is called and a button
      * listener is <i>not</i> invoked.
-     * 
+     *
      * @param sensor the sensor to be bound
      * @param readListener the <code>SensorReadListener</code>
      *  implementation
@@ -495,7 +495,7 @@ public class SensorEventAgent {
     /**
      * Gets the <code>SensorReadListeners</code> bound to the specified
      * sensor.
-     * 
+     *
      * @param sensor the sensor of interest
      * @return array of <code>SensorReadListeners</code> bound to the
      *  given sensor, or null
@@ -531,13 +531,13 @@ public class SensorEventAgent {
     /**
      * Remove the given <code>SensorReadListener</code> binding from the
      * specified sensor.
-     * 
+     *
      * @param sensor the sensor from which to remove the listener
      * @param listener the listener to be removed
      */
     public synchronized void removeSensorReadListener
 	(Sensor sensor, SensorReadListener listener) {
-        
+
 	if (sensor == null)
 	    throw new NullPointerException("\nsensor is null") ;
 
@@ -555,7 +555,7 @@ public class SensorEventAgent {
 
     /**
      * Remove the given <code>SensorReadListener</code> from all sensors.
-     * 
+     *
      * @param listener the listener to remove
      */
     public synchronized void removeSensorReadListener
@@ -608,7 +608,7 @@ public class SensorEventAgent {
     /**
      * Copies binding lists to arrays for event dispatch.  This allows
      * listeners to add or remove themselves or other listeners safely.
-     */ 
+     */
     private synchronized void updateArrays() {
 	bindings = (SensorBinding[])bindingsList.toArray
 	    (new SensorBinding[bindingsList.size()]) ;
@@ -628,7 +628,7 @@ public class SensorEventAgent {
     public void dispatchEvents() {
 	long t1 = t0 ;
 	t0 = J3DTimer.getValue() ;
-        
+
 	if (listsDirty) {
 	    updateArrays() ;
 	    listsDirty = false ;

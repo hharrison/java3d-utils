@@ -64,7 +64,7 @@ public class ByteBufferWrapper extends BufferWrapper {
     private ByteBuffer buffer = null;
 
     /**
-     * Constructor initializes buffer with a 
+     * Constructor initializes buffer with a
      * java.nio.ByteBuffer object.
      */
     public ByteBufferWrapper(ByteBuffer buffer) {
@@ -81,7 +81,7 @@ public class ByteBufferWrapper extends BufferWrapper {
 
     /**
      * Allocate a direct ByteBuffer with the given capacity.
-     * @return New ByteBufferWrapper containing the 
+     * @return New ByteBufferWrapper containing the
      * new buffer.
      */
     public static ByteBufferWrapper allocateDirect(int capacity) {
@@ -110,7 +110,7 @@ public class ByteBufferWrapper extends BufferWrapper {
 
     /**
      * Reads the byte at this buffer's current position,
-     * and then increments the position. 
+     * and then increments the position.
      */
     public byte get() {
 	return buffer.get();
@@ -123,7 +123,7 @@ public class ByteBufferWrapper extends BufferWrapper {
 	return buffer.get(index);
     }
 
-    /** 
+    /**
      * Bulk <i>get</i> method.  Transfers <code>dst.length</code>
      * bytes from
      * the buffer to the destination array and increments the
@@ -133,9 +133,9 @@ public class ByteBufferWrapper extends BufferWrapper {
 	buffer.get(dst);
 	return this;
     }
-    
+
     /**
-     * Bulk <i>get</i> method.  Transfers <i>length</i> bytes 
+     * Bulk <i>get</i> method.  Transfers <i>length</i> bytes
      * from the buffer starting at position <i>offset</i> into
      * the destination array.
      */
@@ -153,7 +153,7 @@ public class ByteBufferWrapper extends BufferWrapper {
     }
 
     /**
-     * Modifies this buffer's byte order. 
+     * Modifies this buffer's byte order.
      */
     public ByteBufferWrapper order(ByteOrderWrapper bo)
     {
@@ -162,7 +162,7 @@ public class ByteBufferWrapper extends BufferWrapper {
 	return this;
     }
 
-    /** 
+    /**
      * Creates a view of this ByteBufferWrapper as a
      * FloatBufferWrapper.  Uses the correct
      */
@@ -170,7 +170,7 @@ public class ByteBufferWrapper extends BufferWrapper {
 	return new FloatBufferWrapper( buffer.asFloatBuffer() );
     }
 
-    /** 
+    /**
      * Creates a view of this ByteBufferWrapper as a
      * DoubleBufferWrapper.
      */

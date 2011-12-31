@@ -66,7 +66,7 @@ class CompressionStreamVertex extends CompressionStreamElement {
     int xAbsolute, yAbsolute, zAbsolute ;
     CompressionStreamColor color = null ;
     CompressionStreamNormal normal = null ;
-	    
+
     /**
      * Create a CompressionStreamVertex with the given parameters.
      *
@@ -133,7 +133,7 @@ class CompressionStreamVertex extends CompressionStreamElement {
 
 	stream.byteCount += 12 ;
 	stream.vertexCount++ ;
-		
+
 	if (p.x < stream.mcBounds[0].x) stream.mcBounds[0].x = p.x ;
 	if (p.y < stream.mcBounds[0].y) stream.mcBounds[0].y = p.y ;
 	if (p.z < stream.mcBounds[0].z) stream.mcBounds[0].z = p.z ;
@@ -158,7 +158,7 @@ class CompressionStreamVertex extends CompressionStreamElement {
 	double px, py, pz ;
 
 	// Clamp quantization.
-	int quant = 
+	int quant =
 	    (stream.positionQuant < 1? 1 :
 	     (stream.positionQuant > 16? 16 : stream.positionQuant)) ;
 
@@ -227,7 +227,7 @@ class CompressionStreamVertex extends CompressionStreamElement {
 	// 0-length components are allowed only for normals.
 	if (length == 0)
 	    length = 1 ;
-	
+
 	// Add this element to the Huffman table associated with this stream.
 	huffmanTable.addPositionEntry(length, shift, absolute) ;
 
@@ -271,12 +271,12 @@ class CompressionStreamVertex extends CompressionStreamElement {
 	Y = (Y >> t.shift) & (int)lengthMask[componentLength] ;
 	Z = (Z >> t.shift) & (int)lengthMask[componentLength] ;
 
-	long positionSubcommand = 
+	long positionSubcommand =
 	    (((long)t.tag) << (3 * componentLength)) |
 	    (((long)X)     << (2 * componentLength)) |
 	    (((long)Y)     << (1 * componentLength)) |
 	    (((long)Z)     << (0 * componentLength)) ;
-	    
+
 	if (subcommandLength < 6) {
 	    // The header will have some empty bits.  The Huffman tag
 	    // computation will prevent this if necessary.
@@ -316,7 +316,7 @@ class CompressionStreamVertex extends CompressionStreamElement {
 	    "fixed point " + d + + X + " " + Y + " " + Z + "\n" +
 	    "length " + length + " shift " + shift +
 	    (absolute? " absolute" : " relative") + "\n" +
-	    "strip flag " + stripFlag + " mesh flag " + meshFlag + 
+	    "strip flag " + stripFlag + " mesh flag " + meshFlag +
 	    c + n ;
     }
 }

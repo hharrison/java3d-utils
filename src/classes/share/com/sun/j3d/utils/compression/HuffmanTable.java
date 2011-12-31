@@ -56,7 +56,7 @@ import java.util.ListIterator;
  * HuffmanNode objects.  A HuffmanNode contains a tag describing the
  * associated token's data length, right shift value, and absolute/relative
  * status.<p>
- * 
+ *
  * The tags are computed using Huffman's algorithm to build a binary tree with
  * a minimal total weighted path length.  The frequency of each token is
  * used as its node's weight when building the tree. The path length from the
@@ -82,7 +82,7 @@ class HuffmanTable {
 	// lookup tables are therefore 2*17*16=544 entries in length to
 	// account for all possible combinations of data lengths, shifts,
 	// and relative or absolute status.
-	// 
+	//
 	colors = new HuffmanNode[544] ;
 	positions = new HuffmanNode[544] ;
 
@@ -264,7 +264,7 @@ class HuffmanTable {
 	getEntries(normals, nodeList) ;
 	computeTags(nodeList, 2) ;
     }
-	
+
     //
     // Compute tags for a list of Huffman tokens.
     //
@@ -305,7 +305,7 @@ class HuffmanTable {
 		// Tokens need to be merged and the tree rebuilt with the new
 		// combined frequencies.
 		merge(nodes) ;
-		
+
 	    } else {
 		// Increase tag length + data length if they're too small.
 		expand(nodes, minComponentCount) ;
@@ -390,7 +390,7 @@ class HuffmanTable {
     //
     private void addNodeInOrder(LinkedList l, HuffmanNode node, Comparator c) {
 	ListIterator i = l.listIterator(0) ;
-	
+
 	while (i.hasNext()) {
 	    HuffmanNode n = (HuffmanNode)i.next() ;
 	    if (c.compare(n, node) > 0) {
@@ -423,7 +423,7 @@ class HuffmanTable {
 
     //
     // Output a setTable command for each unique token.
-    // 
+    //
     private void outputCommands(Collection nodes,
 				CommandStream output, int tableId) {
 

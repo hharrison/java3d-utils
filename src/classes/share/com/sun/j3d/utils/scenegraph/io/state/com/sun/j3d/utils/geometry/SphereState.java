@@ -56,10 +56,10 @@ public class SphereState extends PrimitiveState {
     private float radius;
     private int divisions;
     private int bodyAppearance;
-    
+
     public SphereState( SymbolTableData symbol, Controller control ) {
 	super( symbol, control );
-        
+
         if (node!=null) {
             bodyAppearance = control.getSymbolTable().addReference( ((Sphere)node).getShape( Sphere.BODY ).getAppearance() );
         }
@@ -67,26 +67,26 @@ public class SphereState extends PrimitiveState {
 
     public void writeObject( DataOutput out ) throws IOException {
 	super.writeObject( out );
-        
+
         out.writeInt( bodyAppearance );
     }
 
     public void readObject( DataInput in ) throws IOException {
        super.readObject(in);
-       
+
        bodyAppearance = in.readInt();
     }
-    
+
     public void writeConstructorParams( DataOutput out ) throws IOException {
 	super.writeConstructorParams( out );
-        
+
         out.writeFloat( ((Sphere)node).getRadius() );
-        out.writeInt( ((Sphere)node).getDivisions() );        
+        out.writeInt( ((Sphere)node).getDivisions() );
     }
 
     public void readConstructorParams( DataInput in ) throws IOException {
        super.readConstructorParams(in);
-       
+
        radius = in.readFloat();
        divisions = in.readInt();
     }
@@ -95,7 +95,7 @@ public class SphereState extends PrimitiveState {
         ((Sphere)node).setAppearance( (Appearance)control.getSymbolTable().getJ3dNode( bodyAppearance ));
         super.buildGraph(); // This must be the last call in the method
     }
-    
+
     public SceneGraphObject createNode( Class j3dClass ) {
         // Create the node with a null appearance, we will add the appearance
         // during build graph
@@ -109,10 +109,10 @@ public class SphereState extends PrimitiveState {
                                                 new Integer( primflags ),
                                                 new Integer( divisions ),
                                                 null } );
-                                                
+
         return sphere;
     }
-    
+
     protected javax.media.j3d.SceneGraphObject createNode() {
         return new Sphere( radius, primflags, divisions, null );
     }

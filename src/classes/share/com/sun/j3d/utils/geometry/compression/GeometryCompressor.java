@@ -72,7 +72,7 @@ public class GeometryCompressor {
     private long startTime ;
 
     public GeometryCompressor() {
-	// Create a compressed geometry header. 
+	// Create a compressed geometry header.
 	cgHeader = new CompressedGeometryData.Header() ;
 
 	// v1.0.0 - pre-FCS
@@ -85,8 +85,8 @@ public class GeometryCompressor {
 
     /**
      * Compress a stream into a CompressedGeometryData node component.
-     * 
-     * 
+     *
+     *
      * @param stream CompressionStream containing the geometry to be compressed
      * @return a CompressedGeometryData node component
      */
@@ -153,11 +153,11 @@ public class GeometryCompressor {
 	if (stream.vertexNormals)
 	    cgHeader.bufferDataPresent |=
 		CompressedGeometryData.Header.NORMAL_IN_BUFFER ;
-			       
+
 	if (stream.vertexColor3 || stream.vertexColor4)
 	    cgHeader.bufferDataPresent |=
 		CompressedGeometryData.Header.COLOR_IN_BUFFER ;
-			       
+
 	if (stream.vertexColor4)
 	    cgHeader.bufferDataPresent |=
 		CompressedGeometryData.Header.ALPHA_IN_BUFFER ;
@@ -176,20 +176,20 @@ public class GeometryCompressor {
 	int totalVertices = meshReferenceCount + vertexCount ;
 	float meshPercent = 100f * meshReferenceCount/(float)totalVertices ;
 
-	float compressionRatio = 
+	float compressionRatio =
 	    stream.getByteCount() / ((float)outputBuffer.getByteCount()) ;
 
-	int vertexBytes = 
+	int vertexBytes =
 	    12 + (stream.vertexColor3 ? 12 : 0) +
 	    (stream.vertexColor4 ? 16 : 0) + (stream.vertexNormals ? 12 : 0) ;
 
 	float compressedVertexBytes =
 	    outputBuffer.getByteCount() / (float)totalVertices ;
-	
+
 	System.out.println
 	    ("\nGeometryCompressor:\n" + totalVertices + " total vertices\n" +
 	     vertexCount + " streamed vertices\n" + meshReferenceCount +
-	     " mesh buffer references (" + meshPercent + "%)\n" + 
+	     " mesh buffer references (" + meshPercent + "%)\n" +
 	     stream.getByteCount() + " bytes streamed geometry compressed to " +
 	     outputBuffer.getByteCount() + " in " + (t/1000f) + " sec\n" +
 	     (stream.getByteCount()/(float)t) + " kbytes/sec, " +

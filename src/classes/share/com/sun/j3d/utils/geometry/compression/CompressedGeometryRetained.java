@@ -123,7 +123,7 @@ class CompressedGeometryRetained extends Object {
 	geoBounds.setUpper( 1.0, 1.0, 1.0) ;
 	geoBounds.setLower(-1.0,-1.0,-1.0) ;
     }
-  
+
     /**
      * Return true if the data access mode is by-reference.
      */
@@ -137,7 +137,7 @@ class CompressedGeometryRetained extends Object {
 	// GL_SUNX_geometry_compression extension.  The header is unnecessary
 	// if only the newer GL_SUN_geometry_compression API needs support.
 	compressedGeometry = new byte[HEADER_LENGTH + this.size] ;
-	
+
 	compressedGeometry[HEADER_MAJOR_VERSION_OFFSET] =
 	    (byte)this.majorVersionNumber ;
 
@@ -152,7 +152,7 @@ class CompressedGeometryRetained extends Object {
 
 	compressedGeometry[HEADER_BUFFER_DATA_OFFSET] =
 	    (byte)this.bufferContents ;
-	
+
 	System.arraycopy(geometry, this.offset,
 			 compressedGeometry, HEADER_LENGTH, this.size) ;
 
@@ -231,7 +231,7 @@ class CompressedGeometryRetained extends Object {
 	if ((bufferContents & CompressedGeometryData.Header.NORMAL_IN_BUFFER) != 0) {
 	    vertexFormat |= GeometryArray.NORMALS;
         }
-	
+
 	if ((bufferContents & CompressedGeometryData.Header.COLOR_IN_BUFFER) != 0) {
             if ((bufferContents & CompressedGeometryData.Header.ALPHA_IN_BUFFER) != 0) {
                 vertexFormat |= GeometryArray.COLOR_4;

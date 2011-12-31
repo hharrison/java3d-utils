@@ -55,7 +55,7 @@ import javax.vecmath.*;
 
 /**
  * A mouse behavior that allows user to pick and rotate scene graph objects.
- * Common usage: 
+ * Common usage:
  * <p>
  * 1. Create your scene graph.
  * <p>
@@ -79,7 +79,7 @@ public class PickRotateBehavior extends PickMouseBehavior implements MouseBehavi
 
     /**
      * Creates a pick/rotate behavior that waits for user mouse events for
-     * the scene graph. This method has its pickMode set to BOUNDS picking. 
+     * the scene graph. This method has its pickMode set to BOUNDS picking.
      * @param root   Root of your scene graph.
      * @param canvas Java 3D drawing canvas.
      * @param bounds Bounds of your scene.
@@ -100,11 +100,11 @@ public class PickRotateBehavior extends PickMouseBehavior implements MouseBehavi
      * @param root   Root of your scene graph.
      * @param canvas Java 3D drawing canvas.
      * @param bounds Bounds of your scene.
-     * @param pickMode specifys PickTool.PICK_BOUNDS or PickTool.PICK_GEOMETRY.  
+     * @param pickMode specifys PickTool.PICK_BOUNDS or PickTool.PICK_GEOMETRY.
      * @see PickTool#setMode
      **/
 
-    public PickRotateBehavior(BranchGroup root, Canvas3D canvas, Bounds bounds, 
+    public PickRotateBehavior(BranchGroup root, Canvas3D canvas, Bounds bounds,
 			      int pickMode){
 	super(canvas, root, bounds);
 	rotate = new MouseRotate(MouseRotate.MANUAL_WAKEUP);
@@ -117,32 +117,32 @@ public class PickRotateBehavior extends PickMouseBehavior implements MouseBehavi
 
 
     /**
-     * Update the scene to manipulate any nodes. This is not meant to be 
-     * called by users. Behavior automatically calls this. You can call 
+     * Update the scene to manipulate any nodes. This is not meant to be
+     * called by users. Behavior automatically calls this. You can call
      * this only if you know what you are doing.
-     * 
+     *
      * @param xpos Current mouse X pos.
      * @param ypos Current mouse Y pos.
      **/
     public void updateScene(int xpos, int ypos) {
 	TransformGroup tg = null;
-    
+
 	if (!mevent.isMetaDown() && !mevent.isAltDown()){
 
 	    // System.out.println("PickRotateBeh : using pickfast pkg : PickInfo ...");
 	    pickCanvas.setFlags(PickInfo.NODE | PickInfo.SCENEGRAPHPATH);
-      
+
 	    pickCanvas.setShapeLocation(xpos, ypos);
 	    PickInfo pickInfo = pickCanvas.pickClosest();
 	    if(pickInfo != null) {
 		// System.out.println("Intersected!");
 		tg = (TransformGroup) pickCanvas.getNode(pickInfo, PickTool.TYPE_TRANSFORM_GROUP);
 		if((tg != null) &&
-		   (tg.getCapability(TransformGroup.ALLOW_TRANSFORM_READ)) && 
+		   (tg.getCapability(TransformGroup.ALLOW_TRANSFORM_READ)) &&
 		   (tg.getCapability(TransformGroup.ALLOW_TRANSFORM_WRITE))) {
 		    rotate.setTransformGroup(tg);
 		    rotate.wakeup();
-		    currentTG = tg;	  
+		    currentTG = tg;
 		}
 	    } else if (callback!=null)
 		callback.transformChanged( PickingCallback.NO_PICK, null );
@@ -156,7 +156,7 @@ public class PickRotateBehavior extends PickMouseBehavior implements MouseBehavi
     public void transformChanged( int type, Transform3D transform ) {
 	callback.transformChanged( PickingCallback.ROTATE, currentTG );
     }
- 
+
     /**
      * Register the class @param callback to be called each
      * time the picked object moves

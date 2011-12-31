@@ -87,7 +87,7 @@ class EnvelopeHandler extends TextfileParser {
 	* Constructor: This constructor is called with the name of a class
 	* that can handle the encountered envelope.  This is done so that this
 	* EnvelopeHandler class can generically call the given class to handle
-	* the envelope, whether it results in parsing/ignoring the data or 
+	* the envelope, whether it results in parsing/ignoring the data or
 	* in actually using the data
 	*/
     EnvelopeHandler(StreamTokenizer st,

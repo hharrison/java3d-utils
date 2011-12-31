@@ -52,10 +52,10 @@ import javax.vecmath.Vector3f ;
 /**
  * This class provides basic behavior for a 6DOF mouse sensor.  It
  * generates a visible 3D cursor echo in the virtual world which tracks the
- * position and orientation of the 6DOF mouse in the physical world.  It 
+ * position and orientation of the 6DOF mouse in the physical world.  It
  * can be extended to provide other functions by accessing its
- * SensorEventAgent. 
- * 
+ * SensorEventAgent.
+ *
  * @see SensorEventAgent
  * @since Java 3D 1.3
  */
@@ -73,7 +73,7 @@ public class Mouse6DPointerBehavior extends Behavior {
      * The default echo is a solid 6-pointed star where each point is aligned
      * with the axes of the local coordinate system of the sensor, and with
      * the center of the star at the location of the sensor hotspot.
-     * 
+     *
      * @param sensor a 6 degree of freedom Sensor which generates position
      *  and orientation relative to the tracker base.
      * @param size the physical width of the echo in centimeters.
@@ -134,7 +134,7 @@ public class Mouse6DPointerBehavior extends Behavior {
     /**
      *  Gets the echo used by this behavior.
      *
-     *  @return the TransformGroup parenting this behavior's echo geometry 
+     *  @return the TransformGroup parenting this behavior's echo geometry
      */
     public TransformGroup getEcho() {
 	return echoTransformGroup ;
@@ -160,7 +160,7 @@ public class Mouse6DPointerBehavior extends Behavior {
     }
 
     /**
-     * Processes a stimulus meant for this behavior. 
+     * Processes a stimulus meant for this behavior.
      * NOTE: Applications should not call this method. It is called by the
      * Java 3D behavior scheduler.
      */

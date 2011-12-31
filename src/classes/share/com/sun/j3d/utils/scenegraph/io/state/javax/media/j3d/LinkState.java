@@ -56,7 +56,7 @@ public class LinkState extends LeafState {
 
     private int sharedGroup;
     private SymbolTableData sharedGroupSymbol;
-    
+
     /** Creates new BranchGroupState */
     public LinkState(SymbolTableData symbol,Controller control) {
         super( symbol, control );
@@ -66,10 +66,10 @@ public class LinkState extends LeafState {
             sharedGroupSymbol = control.getSymbolTable().getSymbol( sharedGroup );
         }
     }
-    
+
     public void writeObject( DataOutput out ) throws IOException {
         super.writeObject( out );
-        
+
         if (sharedGroupSymbol.nodeState==null) {
             out.writeInt( -1 );
             SharedGroup sg = ((Link)node).getSharedGroup();
@@ -78,23 +78,23 @@ public class LinkState extends LeafState {
             out.writeInt( sharedGroupSymbol.nodeID );
         }
     }
-    
+
     public void readObject( DataInput in ) throws IOException {
         super.readObject( in );
         sharedGroup = in.readInt();
-        
+
         if (sharedGroup==-1) {
             sharedGroup = control.readSharedGroup( in );
         }
     }
-    
+
     public void buildGraph() {
         sharedGroupSymbol = control.getSymbolTable().getSymbol( sharedGroup );
         ((SharedGroupState)sharedGroupSymbol.nodeState).buildGraph();
         ((Link)node).setSharedGroup( (SharedGroup)sharedGroupSymbol.j3dNode );
         super.buildGraph(); // Must be last call in method
     }
-    
+
     protected javax.media.j3d.SceneGraphObject createNode() {
         return new Link();
     }

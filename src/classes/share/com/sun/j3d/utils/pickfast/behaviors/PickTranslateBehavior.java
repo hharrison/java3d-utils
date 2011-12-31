@@ -55,7 +55,7 @@ import javax.vecmath.*;
 /**
  * A mouse behavior that allows user to pick and translate scene graph objects.
  * Common usage: 1. Create your scene graph. 2. Create this behavior with
- * the root and canvas. See PickRotateBehavior for more details. 
+ * the root and canvas. See PickRotateBehavior for more details.
  */
 
 public class PickTranslateBehavior extends PickMouseBehavior implements MouseBehaviorCallback {
@@ -65,7 +65,7 @@ public class PickTranslateBehavior extends PickMouseBehavior implements MouseBeh
 
     /**
      * Creates a pick/translate behavior that waits for user mouse events for
-     * the scene graph. 
+     * the scene graph.
      * @param root   Root of your scene graph.
      * @param canvas Java 3D drawing canvas.
      * @param bounds Bounds of your scene.
@@ -82,7 +82,7 @@ public class PickTranslateBehavior extends PickMouseBehavior implements MouseBeh
 
     /**
      * Creates a pick/translate behavior that waits for user mouse events for
-     * the scene graph. 
+     * the scene graph.
      * @param root   Root of your scene graph.
      * @param canvas Java 3D drawing canvas.
      * @param bounds Bounds of your scene.
@@ -102,40 +102,40 @@ public class PickTranslateBehavior extends PickMouseBehavior implements MouseBeh
 
 
     /**
-     * Update the scene to manipulate any nodes. This is not meant to be 
-     * called by users. Behavior automatically calls this. You can call 
+     * Update the scene to manipulate any nodes. This is not meant to be
+     * called by users. Behavior automatically calls this. You can call
      * this only if you know what you are doing.
-     * 
+     *
      * @param xpos Current mouse X pos.
      * @param ypos Current mouse Y pos.
      **/
     public void updateScene(int xpos, int ypos){
 	TransformGroup tg = null;
-        
+
 	if(!mevent.isAltDown() && mevent.isMetaDown()){
-      
+
 	    pickCanvas.setShapeLocation(xpos, ypos);
 
 	    // System.out.println("PickTranslateBeh : using pickfast pkg : PickInfo ...");
 
 	    pickCanvas.setFlags(PickInfo.NODE | PickInfo.SCENEGRAPHPATH);
 	    PickInfo pickInfo = pickCanvas.pickClosest();
-      
+
 	    if(pickInfo != null) {
 		// System.out.println("Intersected!");
 		tg = (TransformGroup) pickCanvas.getNode(pickInfo, PickTool.TYPE_TRANSFORM_GROUP);
 		if((tg != null) &&
-		   (tg.getCapability(TransformGroup.ALLOW_TRANSFORM_READ)) && 
+		   (tg.getCapability(TransformGroup.ALLOW_TRANSFORM_READ)) &&
 		   (tg.getCapability(TransformGroup.ALLOW_TRANSFORM_WRITE))) {
 		    translate.setTransformGroup(tg);
 		    translate.wakeup();
-		    currentTG = tg;	  
+		    currentTG = tg;
 		}
 	    } else if (callback!=null)
 		callback.transformChanged( PickingCallback.NO_PICK, null );
-      
+
 	}
-    
+
     }
 
     /**

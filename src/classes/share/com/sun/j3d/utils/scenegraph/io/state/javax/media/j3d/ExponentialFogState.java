@@ -57,22 +57,22 @@ public class ExponentialFogState extends FogState {
     public ExponentialFogState(SymbolTableData symbol,Controller control) {
         super( symbol, control );
     }
-    
+
     public void writeObject( DataOutput out ) throws IOException {
         super.writeObject( out );
-                
+
         out.writeFloat( ((ExponentialFog)node).getDensity() );
     }
-    
+
     public void readObject( DataInput in ) throws IOException {
         super.readObject( in );
-        
+
         ((ExponentialFog)node).setDensity( in.readFloat() );
     }
-    
+
     protected javax.media.j3d.SceneGraphObject createNode() {
         return new ExponentialFog();
     }
 
-    
+
 }

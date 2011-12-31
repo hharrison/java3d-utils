@@ -60,14 +60,14 @@ public class RotPosPathInterpolatorState extends PathInterpolatorState {
 
     private Point3f[] positions;
     private Quat4f[] quats;
-    
+
     public RotPosPathInterpolatorState(SymbolTableData symbol,Controller control) {
         super( symbol, control );
     }
-    
+
     public void writeConstructorParams( DataOutput out ) throws IOException {
         super.writeConstructorParams( out );
-        
+
         positions = new Point3f[ knots.length ];
         quats = new Quat4f[ knots.length ];
         for(int i=0; i<positions.length; i++) {
@@ -82,10 +82,10 @@ public class RotPosPathInterpolatorState extends PathInterpolatorState {
             control.writeQuat4f( out, quats[i] );
         }
     }
-    
+
     public void readConstructorParams( DataInput in ) throws IOException {
         super.readConstructorParams( in );
-        
+
         positions = new Point3f[ knots.length ];
         quats = new Quat4f[ knots.length ];
         for(int i=0; i<positions.length; i++) {
@@ -107,9 +107,9 @@ public class RotPosPathInterpolatorState extends PathInterpolatorState {
                                                      knots,
                                                      quats,
                                                      positions } );
-                                                    
+
     }
-    
+
     protected javax.media.j3d.SceneGraphObject createNode() {
         return new RotPosPathInterpolator( null, null, new Transform3D(), knots, quats, positions );
     }

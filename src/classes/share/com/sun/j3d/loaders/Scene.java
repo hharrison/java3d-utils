@@ -63,7 +63,7 @@ import javax.media.j3d.Sound;
  */
 public interface Scene {
 
-    
+
     /**
      * This method returns the BranchGroup containing the overall
      * scene loaded by the loader.  All enabled items will be loaded
@@ -88,7 +88,7 @@ public interface Scene {
 
     /**
      * This method returns an array of floats with the horizontal field
-     * of view. The entries in the array will correspond to those in the 
+     * of view. The entries in the array will correspond to those in the
      * array returned by the method getViewGroups. The entries from these
      * two arrays together provide all the information needed to recreate
      * the viewing parameters associated with a scene graph.
@@ -123,7 +123,7 @@ public interface Scene {
     public Fog[] getFogNodes();
 
     /**
-     * This method returns an array of all the behavior nodes   
+     * This method returns an array of all the behavior nodes
      * in the scene.  If no Behavior nodes are defined, null is returned.
      */
     public Behavior[] getBehaviorNodes();
@@ -143,6 +143,6 @@ public interface Scene {
 }
 
 
-    
 
-    
+
+

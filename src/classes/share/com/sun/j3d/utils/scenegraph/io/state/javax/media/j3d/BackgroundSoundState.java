@@ -57,17 +57,17 @@ public class BackgroundSoundState extends SoundState {
 
     public BackgroundSoundState(SymbolTableData symbol,Controller control) {
         super( symbol, control );
-        
+
     }
-    
+
     public void writeObject( DataOutput out ) throws IOException {
         super.writeObject( out );
     }
-    
+
     public void readObject( DataInput in ) throws IOException {
         super.readObject( in );
     }
-    
+
     protected SceneGraphObject createNode() {
         return new BackgroundSound();
     }

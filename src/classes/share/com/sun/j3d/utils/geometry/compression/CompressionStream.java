@@ -280,7 +280,7 @@ public class CompressionStream {
      * At 0 bits of quantization normals are represented only as 6 bit
      * sextant/octant pairs and 14 specially encoded normals (the 6 axis
      * normals and the 8 octant midpoint normals); since U and V can only be 0
-     * at the minimum quantization, the totally number of unique normals is 
+     * at the minimum quantization, the totally number of unique normals is
      * 12 + 14 = 26.
      */
     int normalQuant ;
@@ -423,7 +423,7 @@ public class CompressionStream {
     /**
      * Creates a new CompressionStream for the specified geometry type and
      * vertex format.<p>
-     * 
+     *
      * @param streamType type of data in this stream, either
      * CompressedGeometryData.Header.POINT_BUFFER,
      * CompressedGeometryData.Header.LINE_BUFFER, or
@@ -528,7 +528,7 @@ public class CompressionStream {
      * whenever possible.  Each geometric element is mapped to a HuffmanNode
      * object containing its resulting bit length, right shift (trailing 0
      * count), and absolute or relative status.<p>
-     * 
+     *
      * Positions are normalized to span a unit cube via an offset and a
      * uniform scale factor that maps the midpoint of the object extents along
      * each dimension to the origin, and the longest dimension of the object to
@@ -537,7 +537,7 @@ public class CompressionStream {
      * position quantization of 6 bits, an object would be normalized so that
      * its most negative dimension is at (-1 + 1/64) and the most positive is
      * at (1 - 1/64).<p>
-     * 
+     *
      * Normals are assumed to be of unit length.  Color components are clamped
      * to the [0..1) range, where the right endpoint is one quantum less
      * than 1.0.<p>
@@ -698,7 +698,7 @@ public class CompressionStream {
     }
 
     /**
-     * Retrieve the number of mesh buffer references created for this stream. 
+     * Retrieve the number of mesh buffer references created for this stream.
      * @return mesh buffer reference count
      */
     int getMeshReferenceCount() {
@@ -1000,7 +1000,7 @@ public class CompressionStream {
     void addVertex(Point3f pos, Vector3f norm,
 		   Object color, int stripFlag, int meshFlag) {
 
-	if (vertexColor3) 
+	if (vertexColor3)
 	    stream.add(new CompressionStreamVertex
 		       (this, pos, norm, (Color3f)color, stripFlag, meshFlag)) ;
 	else
@@ -1079,16 +1079,16 @@ public class CompressionStream {
     /**
      * Interface to access GeometryArray vertex components and add them to the
      * compression stream.
-     * 
+     *
      * A processVertex() implementation retrieves vertex components using the
      * appropriate access semantics of a particular GeometryArray, and adds
      * them to the compression stream.
-     * 
+     *
      * The implementation always pushes vertices into the mesh buffer unless
      * they match ones already there; if they do, it generates mesh buffer
      * references instead.  This reduces the number of vertices when
      * non-stripped abutting facets are added to the stream.
-     * 
+     *
      * Note: Level II geometry compression semantics allow the mesh buffer
      * normals to be substituted with the value of an immediately
      * preceding SetNormal command, but this is unavailable in Level I.
@@ -1231,7 +1231,7 @@ public class CompressionStream {
 
     /**
      * Class which holds indices for a specific vertex of an
-     * IndexedGeometryArray. 
+     * IndexedGeometryArray.
      */
     private static class VertexIndices {
 	int pi, ni, ci ;
@@ -1285,7 +1285,7 @@ public class CompressionStream {
 
 		if (vertexColor3 && vi.ci != meshBuffer.getColorIndex(r))
 		    addColor(colors3[vi.ci]) ;
-			
+
 		else if (vertexColor4 && vi.ci != meshBuffer.getColorIndex(r))
 		    addColor(colors4[vi.ci]) ;
 
@@ -1296,7 +1296,7 @@ public class CompressionStream {
 
     //
     // NOTE: For now, copies are made of all GeometryArray vertex components
-    // even when by-reference access is available.  
+    // even when by-reference access is available.
     //
     private static class VertexCopy {
 	Object c = null ;
@@ -1320,7 +1320,7 @@ public class CompressionStream {
 	    if (vertexNormals && !noMeshNormalSubstitution &&
 		(! vc.n.equals(meshBuffer.getNormal(r))))
 		addNormal(vc.n) ;
-		
+
 	    if (vertexColor3 && (! vc.c3.equals(meshBuffer.getColor3(r))))
 		addColor(vc.c3) ;
 
@@ -1351,7 +1351,7 @@ public class CompressionStream {
 
 	    if (vertexColor3 && vi.ci != meshBuffer.getColorIndex(r))
 		addColor(vc.c3) ;
-			
+
 	    else if (vertexColor4 && vi.ci != meshBuffer.getColorIndex(r))
 		addColor(vc.c4) ;
 
@@ -1413,7 +1413,7 @@ public class CompressionStream {
      */
     private class InterleavedGeometryFloat extends InterleavedGeometry {
 	float[] vdata = null ;
-	
+
 	InterleavedGeometryFloat(GeometryArray ga) {
 	    super(ga) ;
 	    vdata = ga.getInterleavedVertices() ;
@@ -1473,7 +1473,7 @@ public class CompressionStream {
     }
 
     /**
-     * This class implements the GeometryAccessor interface for 
+     * This class implements the GeometryAccessor interface for
      * interleaved NIO geometry arrays.
      */
     private class InterleavedGeometryNIO extends InterleavedGeometry {
@@ -1599,7 +1599,7 @@ public class CompressionStream {
 		if (normals == null)
 		    throw new UnsupportedOperationException
 			("\nby-reference access to Normal3f array") ;
-		
+
 		initialNormalIndex = ga.getInitialNormalIndex() ;
 	    }
 	}
@@ -1726,7 +1726,7 @@ public class CompressionStream {
 	    if (vertexColors) {
 		buffer = ga.getColorRefBuffer() ;
 		initialColorIndex = ga.getInitialColorIndex() ;
-		
+
 		switch (BufferWrapper.getBufferType(buffer)) {
 		case BufferWrapper.TYPE_BYTE:
 		    colorsB = new ByteBufferWrapper(buffer) ;
@@ -1952,7 +1952,7 @@ public class CompressionStream {
 	}
 	else if (ga instanceof TriangleFanArray ||
 		 ga instanceof IndexedTriangleFanArray) {
-	    
+
 	    strips = true ;
 	    replaceCode = REPLACE_MIDDLE ;
 	    if (debug) System.out.println("fans") ;
@@ -2291,8 +2291,8 @@ public class CompressionStream {
     /**
      * Get the original bounds of the coordinate data, in modeling coordinates.
      * Coordinate data is positioned and scaled to a normalized cube after
-     * compression.  
-     * 
+     * compression.
+     *
      * @return Point3d array of length 2, where the 1st Point3d is the lower
      * bounds and the 2nd Point3d is the upper bounds.
      * @since Java 3D 1.3
@@ -2307,7 +2307,7 @@ public class CompressionStream {
     /**
      * Get the bounds of the compressed object in normalized coordinates.
      * These have an maximum bounds by [-1.0 .. +1.0] across each axis.
-     * 
+     *
      * @return Point3d array of length 2, where the 1st Point3d is the lower
      * bounds and the 2nd Point3d is the upper bounds.
      * @since Java 3D 1.3

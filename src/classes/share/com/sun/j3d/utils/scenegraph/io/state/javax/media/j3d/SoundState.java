@@ -59,21 +59,21 @@ public abstract class SoundState extends LeafState {
 
     private int boundingLeaf;
     private int mediaContainer;
-    
+
     public SoundState(SymbolTableData symbol,Controller control) {
         super( symbol, control );
-        
+
         if (node!=null) {
             boundingLeaf = control.getSymbolTable().addReference( ((Sound)node).getSchedulingBoundingLeaf() );
             mediaContainer = control.getSymbolTable().addReference( ((Sound)node).getSoundData() );
         }
     }
-    
+
     public void writeObject( DataOutput out ) throws IOException {
         super.writeObject( out );
-        
+
         Sound sound = (Sound)node;
-        
+
         out.writeBoolean( sound.getContinuousEnable() );
         out.writeBoolean( sound.getEnable() );
         out.writeFloat( sound.getInitialGain() );
@@ -87,12 +87,12 @@ public abstract class SoundState extends LeafState {
 	out.writeBoolean( sound.getPause() );
 	out.writeFloat( sound.getRateScaleFactor() );
     }
-    
+
     public void readObject( DataInput in ) throws IOException {
         super.readObject( in );
-                        
+
         Sound sound = (Sound)node;
-        
+
         sound.setContinuousEnable( in.readBoolean() );
         sound.setEnable( in.readBoolean() );
         sound.setInitialGain( in.readFloat() );
@@ -106,7 +106,7 @@ public abstract class SoundState extends LeafState {
 	sound.setPause( in.readBoolean() );
 	sound.setRateScaleFactor( in.readFloat() );
     }
-    
+
     /**
      * Called when this component reference count is incremented.
      * Allows this component to update the reference count of any components
@@ -115,13 +115,13 @@ public abstract class SoundState extends LeafState {
     public void addSubReference() {
         control.getSymbolTable().incNodeComponentRefCount( mediaContainer );
     }
-    
+
     public void buildGraph() {
-        
+
         ((Sound)node).setSchedulingBoundingLeaf( (BoundingLeaf)control.getSymbolTable().getJ3dNode( boundingLeaf ));
         ((Sound)node).setSoundData( (MediaContainer)control.getSymbolTable().getJ3dNode( mediaContainer ));
         super.buildGraph(); // Must be last call in method
     }
-    
+
 
 }

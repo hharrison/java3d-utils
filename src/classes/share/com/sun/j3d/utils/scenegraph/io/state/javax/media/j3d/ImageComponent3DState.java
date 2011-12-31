@@ -65,12 +65,12 @@ import java.awt.*;
 public class ImageComponent3DState extends ImageComponentState {
 
     private BufferedImage[] bufferedImages;
-    
+
     public ImageComponent3DState(SymbolTableData symbol,Controller control) {
 	super( symbol, control );
     }
 
-    public void writeConstructorParams( DataOutput out ) throws 
+    public void writeConstructorParams( DataOutput out ) throws
 							IOException {
         super.writeConstructorParams( out );
 
@@ -96,12 +96,12 @@ public class ImageComponent3DState extends ImageComponentState {
     public void readConstructorParams( DataInput in ) throws
 							IOException {
 
-        super.readConstructorParams( in );  
-       
+        super.readConstructorParams( in );
+
         bufferedImages = new BufferedImage[ in.readInt() ];
         for(int i=0; i<bufferedImages.length; i++)
             bufferedImages[i] = readBufferedImage( in );
-       
+
        /*
 	// Debug code to show the original images
 	JFrame f = new JFrame();
@@ -129,8 +129,8 @@ public class ImageComponent3DState extends ImageComponentState {
                                                            new Boolean( byReference ),
                                                            new Boolean( yUp ) } );
     }
-    
-    
+
+
     protected javax.media.j3d.SceneGraphObject createNode() {
         return new ImageComponent3D( format, bufferedImages, byReference, yUp );
     }

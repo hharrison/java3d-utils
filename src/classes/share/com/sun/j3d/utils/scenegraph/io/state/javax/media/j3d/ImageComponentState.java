@@ -75,16 +75,16 @@ public abstract class ImageComponentState extends NodeComponentState {
     protected boolean yUp;
 
     private static final int DIRECT_COLOR_MODEL = 1;
-    
+
     private static final int SINGLE_PIXEL_PACKED_SAMPLE_MODEL = 1;
-    
+
     private static final int DATA_BUFFER_INT = 1;
-    
+
     /**
      * Do not compress the images
      */
     public static final byte NO_COMPRESSION = 0;
-    
+
     /**
      * Use GZIP to compress images.
      *
@@ -101,7 +101,7 @@ public abstract class ImageComponentState extends NodeComponentState {
      * imageio in Java 1.4
      */
     public static final byte JPEG_COMPRESSION = 2;
-    
+
     public ImageComponentState( SymbolTableData symbol, Controller control ) {
 	super( symbol, control );
     }
@@ -126,14 +126,14 @@ public abstract class ImageComponentState extends NodeComponentState {
         byReference = in.readBoolean();
         yUp = in.readBoolean();
     }
-    
+
     protected void writeBufferedImage( DataOutput out,
 				       BufferedImage image ) throws IOException {
 
         int compressionType = control.getImageCompression();
-        
+
         out.writeByte( compressionType );
-        
+
         if (compressionType==NO_COMPRESSION)
             writeBufferedImageNoCompression( out, image );
         else if (compressionType==GZIP_COMPRESSION)
@@ -141,12 +141,12 @@ public abstract class ImageComponentState extends NodeComponentState {
         else if (compressionType==JPEG_COMPRESSION)
             writeBufferedImageJpegCompression( out, image );
     }
-    
+
     private void writeBufferedImageNoCompression( DataOutput out, BufferedImage image ) throws IOException {
         ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
         DataOutputStream dataOut = new DataOutputStream( byteStream );
         ColorModel colorModel = (ColorModel) image.getColorModel();
-        
+
         if (colorModel instanceof ComponentColorModel) {
             ComponentColorModel cm = (ComponentColorModel) colorModel;
             int numComponents = cm.getNumComponents();
@@ -160,62 +160,62 @@ public abstract class ImageComponentState extends NodeComponentState {
                     break;
                 default:
                     throw new SGIORuntimeException("Unsupported ColorModel "+colorModel.getClass().getName() );
-                    
+
             }
-            
+
             BufferedImage tmpBuf = new BufferedImage(image.getWidth(), image.getHeight(), type);
             WritableRaster dstRaster = tmpBuf.getRaster();
-            Raster srcRaster = image.getRaster();  
-            dstRaster.setRect(srcRaster);           
+            Raster srcRaster = image.getRaster();
+            dstRaster.setRect(srcRaster);
            image = tmpBuf;
         }
-                   
-        writeColorModel( dataOut, image.getColorModel() );      
+
+        writeColorModel( dataOut, image.getColorModel() );
         writeWritableRaster( dataOut, image.getRaster() );
         dataOut.writeBoolean( image.isAlphaPremultiplied() );
-        
+
         dataOut.close();
-        
+
         byte[] buffer = byteStream.toByteArray();
         out.writeInt( buffer.length );
         out.write( buffer );
     }
-    
+
     private void writeBufferedImageGzipCompression( DataOutput out, BufferedImage image ) throws IOException {
         ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
         GZIPOutputStream gzipStream = new GZIPOutputStream( byteStream );
         DataOutputStream dataOut = new DataOutputStream( gzipStream );
-        
+
         writeColorModel( dataOut, image.getColorModel() );
         writeWritableRaster( dataOut, image.getRaster() );
         dataOut.writeBoolean( image.isAlphaPremultiplied() );
-        
+
         dataOut.flush();
         gzipStream.finish();
-        
-        
+
+
         byte[] buffer = byteStream.toByteArray();
-        
+
         out.writeInt( buffer.length );
         out.write( buffer);
-        dataOut.close();        
+        dataOut.close();
     }
-    
+
     private void writeBufferedImageJpegCompression( DataOutput out, BufferedImage image ) throws IOException {
         ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
         JPEGImageEncoder encoder = JPEGCodec.createJPEGEncoder( byteStream );
 
         encoder.encode( image );
         byteStream.close();
-        
+
         byte[] buffer = byteStream.toByteArray();
         out.writeInt( buffer.length );
         out.write( buffer );
     }
-    
+
     protected BufferedImage readBufferedImage( DataInput in ) throws IOException {
         byte compression = in.readByte();
-        
+
         if (compression==NO_COMPRESSION)
             return readBufferedImageNoCompression( in );
         else if (compression==GZIP_COMPRESSION)
@@ -224,65 +224,65 @@ public abstract class ImageComponentState extends NodeComponentState {
             return readBufferedImageJpegCompression( in );
 	throw new SGIORuntimeException("Unknown Image Compression");
     }
-        
-    private BufferedImage readBufferedImageNoCompression( DataInput in ) throws IOException {  
+
+    private BufferedImage readBufferedImageNoCompression( DataInput in ) throws IOException {
         int size = in.readInt();
         byte[] buffer = new byte[ size ];
         in.readFully( buffer );
         ByteArrayInputStream byteIn = new ByteArrayInputStream( buffer );
         DataInputStream dataIn = new DataInputStream( byteIn );
-        
+
         ColorModel colorModel = readColorModel( dataIn );
         WritableRaster raster = readWritableRaster( dataIn );
         boolean alphaPreMult = dataIn.readBoolean();
         dataIn.close();
-        
+
         return new BufferedImage( colorModel, raster, alphaPreMult, null );
     }
-    
-    private BufferedImage readBufferedImageGzipCompression( DataInput in ) throws IOException {  
+
+    private BufferedImage readBufferedImageGzipCompression( DataInput in ) throws IOException {
         int size = in.readInt();
         byte[] buffer = new byte[ size ];
         in.readFully( buffer );
         ByteArrayInputStream byteIn = new ByteArrayInputStream( buffer );
         GZIPInputStream gzipIn = new GZIPInputStream( byteIn );
         DataInputStream dataIn = new DataInputStream( gzipIn );
-        
+
         ColorModel colorModel = readColorModel( dataIn );
         WritableRaster raster = readWritableRaster( dataIn );
         boolean alphaPremult = dataIn.readBoolean();
         dataIn.close();
-        
+
         return new BufferedImage( colorModel, raster, alphaPremult, null );
     }
-    
-    private BufferedImage readBufferedImageJpegCompression( DataInput in ) throws IOException {  
+
+    private BufferedImage readBufferedImageJpegCompression( DataInput in ) throws IOException {
         int size = in.readInt();
         byte[] buffer = new byte[ size ];
         in.readFully( buffer );
         ByteArrayInputStream byteStream = new ByteArrayInputStream( buffer );
-        
+
         JPEGImageDecoder decoder = JPEGCodec.createJPEGDecoder( byteStream );
         byteStream.close();
-        
+
         return decoder.decodeAsBufferedImage();
     }
-    
+
     private void writeColorModel( DataOutput out, ColorModel colorModel ) throws IOException {
         if (colorModel instanceof DirectColorModel) {
             out.writeInt( DIRECT_COLOR_MODEL );
             writeDirectColorModel( out, (DirectColorModel)colorModel );
-        } 
+        }
         else
             throw new SGIORuntimeException("Unsupported ColorModel "+colorModel.getClass().getName() );
     }
-    
+
     private ColorModel readColorModel( DataInput in ) throws IOException {
         switch( in.readInt() ) {
             case DIRECT_COLOR_MODEL:
                 return readDirectColorModel( in );
         }
-        
+
         throw new SGIORuntimeException( "Invalid ColorModel - File corrupt" );
     }
 
@@ -294,7 +294,7 @@ public abstract class ImageComponentState extends NodeComponentState {
         out.writeInt( colorModel.getBlueMask() );
         out.writeInt( colorModel.getAlphaMask() );
     }
-    
+
     private DirectColorModel readDirectColorModel( DataInput in ) throws IOException {
         return new DirectColorModel( in.readInt(),
                                      in.readInt(),
@@ -302,7 +302,7 @@ public abstract class ImageComponentState extends NodeComponentState {
                                      in.readInt(),
                                      in.readInt() );
     }
-    
+
     private void writeWritableRaster( DataOutput out, WritableRaster raster ) throws IOException{
         writeSampleModel( out, raster.getSampleModel() );
         writeDataBuffer( out, raster.getDataBuffer() );
@@ -311,13 +311,13 @@ public abstract class ImageComponentState extends NodeComponentState {
         out.writeInt( origin.x );
         out.writeInt( origin.y );
     }
-    
+
     private WritableRaster readWritableRaster( DataInput in ) throws IOException {
         return Raster.createWritableRaster( readSampleModel( in ),
                                    readDataBuffer( in ),
                                    new Point( in.readInt(), in.readInt() ));
     }
-    
+
     private void writeSampleModel( DataOutput out, SampleModel model ) throws IOException {
         if (model instanceof SinglePixelPackedSampleModel) {
             out.writeInt( SINGLE_PIXEL_PACKED_SAMPLE_MODEL );
@@ -325,16 +325,16 @@ public abstract class ImageComponentState extends NodeComponentState {
         } else
             throw new SGIORuntimeException("Unsupported SampleModel "+model.getClass().getName() );
     }
-    
+
     private SampleModel readSampleModel( DataInput in ) throws IOException {
         switch( in.readInt() ) {
             case SINGLE_PIXEL_PACKED_SAMPLE_MODEL:
                 return readSinglePixelPackedSampleModel( in );
         }
-        
+
         throw new SGIORuntimeException("Invalid SampleModel - file corrupt");
     }
-    
+
     private void writeSinglePixelPackedSampleModel( DataOutput out,
         SinglePixelPackedSampleModel model ) throws IOException {
 
@@ -342,28 +342,28 @@ public abstract class ImageComponentState extends NodeComponentState {
         out.writeInt( masks.length );
         for(int i=0; i<masks.length; i++)
             out.writeInt( masks[i] );
-        
+
         out.writeInt( model.getDataType() );
         out.writeInt( model.getWidth() );
         out.writeInt( model.getHeight() );
         out.writeInt( model.getScanlineStride() );
-        
+
     }
-    
+
     private SinglePixelPackedSampleModel readSinglePixelPackedSampleModel( DataInput in )
 	throws IOException {
 
         int masks[] = new int[ in.readInt() ];
         for(int i=0; i<masks.length; i++)
             masks[i] = in.readInt();
-        
+
         return new SinglePixelPackedSampleModel( in.readInt(),
                                                  in.readInt(),
                                                  in.readInt(),
                                                  in.readInt(),
                                                  masks );
     }
-    
+
     private void writeDataBuffer( DataOutput out, DataBuffer buffer ) throws IOException {
         if (buffer instanceof DataBufferInt) {
             out.writeInt( DATA_BUFFER_INT );
@@ -371,16 +371,16 @@ public abstract class ImageComponentState extends NodeComponentState {
         } else
             throw new SGIORuntimeException("Unsupported DataBuffer "+buffer.getClass().getName() );
     }
-    
+
     private DataBuffer readDataBuffer( DataInput in ) throws IOException {
         switch( in.readInt() ) {
             case DATA_BUFFER_INT:
                 return readDataBufferInt( in );
         }
-        
+
         throw new SGIORuntimeException("Incorrect DataBuffer - file corrupt");
     }
-    
+
     private void writeDataBufferInt( DataOutput out, DataBufferInt buffer ) throws IOException {
         int[][] data = buffer.getBankData();
         out.writeInt( data.length );
@@ -389,13 +389,13 @@ public abstract class ImageComponentState extends NodeComponentState {
             for( int j=0; j<data[i].length; j++)
                 out.writeInt( data[i][j] );
         }
-        
+
         out.writeInt( buffer.getSize() );
-        
+
         // TODO Handle DataBufferInt offsets
-            
+
     }
-    
+
     private DataBufferInt readDataBufferInt( DataInput in ) throws IOException {
         int[][] data = new int[in.readInt()][];
         for(int i=0; i<data.length; i++) {
@@ -403,8 +403,8 @@ public abstract class ImageComponentState extends NodeComponentState {
             for( int j=0; j<data[i].length; j++)
                 data[i][j] = in.readInt();
         }
-        
-        
+
+
         return new DataBufferInt( data, in.readInt() );
     }
 }

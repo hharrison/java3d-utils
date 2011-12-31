@@ -80,7 +80,7 @@ import com.sun.j3d.loaders.ParsingErrorException;
  */
 
 class LwoTexture extends ParserObject {
-	
+
     LWOBFileReader theReader;
     int red = 255, green = 255, blue = 255;
     Color3f color, diffuseColor, specularColor, emissiveColor;
@@ -96,11 +96,11 @@ class LwoTexture extends ParserObject {
     static Hashtable imageTable = new Hashtable();
     static Hashtable textureTable = new Hashtable();
 
-	/** 
+	/**
 	* Constructor: calls readTexture() to parse the file and retrieve
 	* texture parameters
 	*/
-    LwoTexture(LWOBFileReader reader, int length, String typename, 
+    LwoTexture(LWOBFileReader reader, int length, String typename,
 	       int debugVals) throws FileNotFoundException {
 	super(debugVals);
 	debugOutputLn(TRACE, "Constructor");
@@ -108,7 +108,7 @@ class LwoTexture extends ParserObject {
 	type = typename;
 	readTexture(length);
     }
-		
+
     String getNextToken() {
         return nextToken;
     }
@@ -130,7 +130,7 @@ class LwoTexture extends ParserObject {
 
 	/**
 	* Return the actual Texture object associated with the current image.
-	* If we've already created a texture for this image, return that; 
+	* If we've already created a texture for this image, return that;
 	* otherwise create a new Texture
 	*/
     Texture getTexture() {
@@ -152,7 +152,7 @@ class LwoTexture extends ParserObject {
     String getType() {
 	return type;
     }
-    
+
     Color3f getColor() {
 	return color;
     }
@@ -168,7 +168,7 @@ class LwoTexture extends ParserObject {
     int getTextureAxis() {
 	return textureAxis;
     }
-    
+
     Vector3f getTextureCenter() {
 	return textureCenter;
     }
@@ -176,27 +176,27 @@ class LwoTexture extends ParserObject {
     String getMappingType() {
 	return mappingType;
     }
-   
+
 	/**
 	* Parse the binary file to retrieve all texture parameters for this
 	* surface.  If/when we encounter a TIMG parameter, which contains the
-	* filename of an image, then create a new TargaReader object to 
+	* filename of an image, then create a new TargaReader object to
 	* read that image file
-	*/ 
+	*/
     void readTexture(int length)
 	throws FileNotFoundException, ParsingErrorException {
 
 	debugOutputLn(TRACE, "readTexture()");
-	
+
 	int surfStopMarker = theReader.getMarker() + length;
 	mappingType = theReader.getString();
 	debugOutputLn(VALUES, "mappingType = " + mappingType);
 	String tokenString = theReader.getToken();
 	while (!(tokenString == null) && theReader.getMarker() < surfStopMarker) {
-	    
+
 	    debugOutputLn(VALUES, "  tokenString = " + tokenString);
 	    debugOutputLn(VALUES, "  marker, stop = " + theReader.getMarker() + ", " + surfStopMarker);
-	    
+
 	    if (tokenString.endsWith("TEX") ||
 		(!tokenString.startsWith("T") || tokenString.equals("TRAN"))) {
 		nextToken = tokenString;

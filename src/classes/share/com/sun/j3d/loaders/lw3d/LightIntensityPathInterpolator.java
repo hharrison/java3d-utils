@@ -68,9 +68,9 @@ class LightIntensityPathInterpolator extends FloatValueInterpolator {
 
     /**
      * This method is invoked by the behavior scheduler every frame.  It maps
-     * the alpha value that corresponds to the current time into the 
+     * the alpha value that corresponds to the current time into the
      * appropriate light intensity for that time as obtained by interpolating
-     * between the light intensity values for each knot point that were passed  
+     * between the light intensity values for each knot point that were passed
      * to this class.
      * @param criteria enumeration of criteria that have triggered this wakeup
      */
@@ -80,13 +80,13 @@ class LightIntensityPathInterpolator extends FloatValueInterpolator {
 
         if (this.getAlpha() != null) {
 
-            // Let FloatValueInterpolator calculate the correct 
+            // Let FloatValueInterpolator calculate the correct
             // interpolated value
             computePathInterpolation();
 
-            // Set light intensity to the value calculated by 
+            // Set light intensity to the value calculated by
             // FloatValueInterpolator
-            if (theLight != null) 
+            if (theLight != null)
                theLight.setIntensity(currentValue);
 
             if ((this.getAlpha()).finished())

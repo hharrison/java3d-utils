@@ -111,7 +111,7 @@ public class CompressedGeometryData extends Object {
      *
      * @exception IllegalArgumentException if a problem is detected with the
      * header.
-     */ 
+     */
     public CompressedGeometryData(Header hdr,
             byte[] compressedGeometry) {
 
@@ -226,7 +226,7 @@ public class CompressedGeometryData extends Object {
      * Retrieves the compressed geometry associated with the
      * CompressedGeometryData object.  Copies the compressed
      * geometry from the CompressedGeometryData node into the given array.
-     * The array must be large enough to hold all of the bytes. 
+     * The array must be large enough to hold all of the bytes.
      * The individual array elements must be allocated by the caller.
      *
      * @param compressedGeometry the array into which to copy the compressed
@@ -285,7 +285,7 @@ public class CompressedGeometryData extends Object {
 
     /**
      * Retrieves the data access mode for this CompressedGeometryData object.
-     * 
+     *
      * @return <code>true</code> if the data access mode for this
      * CompressedGeometryData object is by-reference;
      * <code>false</code> if the data access mode is by-copying.
@@ -317,7 +317,7 @@ public class CompressedGeometryData extends Object {
      * Gets the compressed geometry data buffer reference, which is
      * always null since NIO buffers are not supported for
      * CompressedGeometryData objects.
-     * 
+     *
      * @return null
      */
     public J3DBuffer getCompressedGeometryBuffer() {

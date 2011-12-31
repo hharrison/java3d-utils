@@ -66,24 +66,24 @@ import com.sun.j3d.utils.scenegraph.io.UnsupportedUniverseException;
  * Provides the infrastructure for ScenGraphStream Reader and Writer
  */
 public class StreamControl extends Controller {
-        
+
     protected String FILE_IDENT = new String( "j3dsf" );
-    
+
     private DataInputStream inputStream;
     private DataOutputStream outputStream;
-        
+
     public StreamControl( DataOutputStream out ) {
         super();
         outputStream = out;
         symbolTable = new SymbolTable( this );
     }
-    
+
     public StreamControl( DataInputStream in ) {
         super();
         inputStream = in;
         symbolTable = new SymbolTable( this );
     }
-    
+
     /**
      * Prepare the Stream for writing, by sending header information
      */
@@ -91,31 +91,31 @@ public class StreamControl extends Controller {
         outputStream.writeUTF( FILE_IDENT );
         outputStream.writeInt( outputFileVersion );
     }
-    
+
     public void readStreamHeader() throws IOException {
         String ident = inputStream.readUTF();
-        if ( ident.equals("demo_j3s") ) 
+        if ( ident.equals("demo_j3s") )
             throw new IOException( "Use Java 3D Fly Through I/O instead of Java 3D Scenegraph I/O" );
 
-        if ( !ident.equals("j3dsf") ) 
+        if ( !ident.equals("j3dsf") )
             throw new IOException(
 		"This is a File - use SceneGraphFileReader instead");
 
         currentFileVersion = inputStream.readInt();
-        
+
 	if (currentFileVersion > outputFileVersion ) {
             throw new IOException("Unsupported file version. This file was written using a new version of the SceneGraph IO API, please update your installtion to the latest version");
 	}
     }
-        
+
     /**
      * Add the named objects to the symbol table
      */
     public void addNamedObjects( HashMap namedObjects ) {
         symbolTable.addNamedObjects( namedObjects );
     }
-     
-    /** 
+
+    /**
      * The BranchGraph userData is not supported in a stream and will be
      * ignored.
      *
@@ -131,7 +131,7 @@ public class StreamControl extends Controller {
                 symbol.branchGraphID = -1;          // This is a new BranchGraph so set the ID to -1
             }                                       // which will cause setBranchGraphRoot to assign a new ID.
 
-            symbolTable.setBranchGraphRoot( symbol, 0 );        
+            symbolTable.setBranchGraphRoot( symbol, 0 );
             symbolTable.startUnsavedNodeComponentFrame();
             SceneGraphObjectState state = createState( bg, symbol );
             writeObject( outputStream, state );
@@ -145,9 +145,9 @@ public class StreamControl extends Controller {
             symbolTable.writeTable( outputStream );
         } catch( SGIORuntimeException e ) {
             throw new IOException( e.getMessage() );
-        }        
+        }
     }
-    
+
     public BranchGroup readBranchGraph( HashMap namedObjects ) throws IOException {
         try {
             SceneGraphObjectState state = readObject( inputStream );
@@ -164,9 +164,9 @@ public class StreamControl extends Controller {
             return (BranchGroup)state.getNode();
         } catch( SGIORuntimeException e ) {
             throw new IOException( e.getMessage() );
-        }        
+        }
     }
-    
+
     /**
      * Read the set of branchgraps.
      *
@@ -180,7 +180,7 @@ public class StreamControl extends Controller {
         for(int i=0; i<graphs.length; i++)
             readBranchGraph( null );
     }
-    
+
     /**
      * Used by SymbolTable to load a node component that is not in current
      * graph
@@ -188,11 +188,11 @@ public class StreamControl extends Controller {
     public void loadNodeComponent( SymbolTableData symbol ) throws IOException {
         throw new java.io.IOException("Unable to load individual NodeComponents from Stream");
     }
-    
+
     public void close() throws IOException {
         super.reset();
     }
-    
+
     /**
      * Implementation of abstract method from Controller.
      *
@@ -201,5 +201,5 @@ public class StreamControl extends Controller {
     public long getFilePointer() {
         return 0L;
     }
-    
+
 }

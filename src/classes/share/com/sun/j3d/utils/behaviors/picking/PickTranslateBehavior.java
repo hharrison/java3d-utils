@@ -53,7 +53,7 @@ import javax.vecmath.*;
 
 // A mouse behavior that allows user to pick and translate scene graph objects.
 // Common usage: 1. Create your scene graph. 2. Create this behavior with
-// the root and canvas. See PickRotateBehavior for more details. 
+// the root and canvas. See PickRotateBehavior for more details.
 
 /**
  * @deprecated As of Java 3D version 1.2, replaced by
@@ -70,7 +70,7 @@ public class PickTranslateBehavior extends PickMouseBehavior implements MouseBeh
 
   /**
    * Creates a pick/translate behavior that waits for user mouse events for
-   * the scene graph. This method has its pickMode set to BOUNDS picking. 
+   * the scene graph. This method has its pickMode set to BOUNDS picking.
    * @param root   Root of your scene graph.
    * @param canvas Java 3D drawing canvas.
    * @param bounds Bounds of your scene.
@@ -92,8 +92,8 @@ public class PickTranslateBehavior extends PickMouseBehavior implements MouseBeh
    * @param canvas Java 3D drawing canvas.
    * @param bounds Bounds of your scene.
    * @param pickMode specifys PickObject.USE_BOUNDS or PickObject.USE_GEOMETRY.
-   * Note: If pickMode is set to PickObject.USE_GEOMETRY, all geometry object in 
-   * the scene graph that allows pickable must have its ALLOW_INTERSECT bit set. 
+   * Note: If pickMode is set to PickObject.USE_GEOMETRY, all geometry object in
+   * the scene graph that allows pickable must have its ALLOW_INTERSECT bit set.
    **/
 
   public PickTranslateBehavior(BranchGroup root, Canvas3D canvas, Bounds bounds,
@@ -111,7 +111,7 @@ public class PickTranslateBehavior extends PickMouseBehavior implements MouseBeh
    * Sets the pickMode component of this PickTranslateBehavior to the value of
    * the passed pickMode.
    * @param pickMode the pickMode to be copied.
-   **/  
+   **/
 
   public void setPickMode(int pickMode) {
     this.pickMode = pickMode;
@@ -119,39 +119,39 @@ public class PickTranslateBehavior extends PickMouseBehavior implements MouseBeh
 
  /**
    * Return the pickMode component of this PickTranslaeBehavior.
-   **/ 
+   **/
 
   public int getPickMode() {
     return pickMode;
   }
 
   /**
-   * Update the scene to manipulate any nodes. This is not meant to be 
-   * called by users. Behavior automatically calls this. You can call 
+   * Update the scene to manipulate any nodes. This is not meant to be
+   * called by users. Behavior automatically calls this. You can call
    * this only if you know what you are doing.
-   * 
+   *
    * @param xpos Current mouse X pos.
    * @param ypos Current mouse Y pos.
    **/
   public void updateScene(int xpos, int ypos){
     TransformGroup tg = null;
-        
+
     if (!mevent.isAltDown() && mevent.isMetaDown()){
-      
+
       tg =(TransformGroup)pickScene.pickNode(pickScene.pickClosest(xpos, ypos, pickMode),
 					     PickObject.TRANSFORM_GROUP);
-      //Check for valid selection. 
-      if ((tg != null) && 
-	  (tg.getCapability(TransformGroup.ALLOW_TRANSFORM_READ)) && 
+      //Check for valid selection.
+      if ((tg != null) &&
+	  (tg.getCapability(TransformGroup.ALLOW_TRANSFORM_READ)) &&
 	  (tg.getCapability(TransformGroup.ALLOW_TRANSFORM_WRITE))){
-	
+
 	translate.setTransformGroup(tg);
 	translate.wakeup();
 	currentTG = tg;
       } else if (callback!=null)
 	callback.transformChanged( PickingCallback.NO_PICK, null );
     }
-    
+
   }
 
   /**

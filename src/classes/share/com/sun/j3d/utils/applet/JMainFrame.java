@@ -171,14 +171,14 @@ public class JMainFrame extends JFrame
         {
             public void windowClosing(WindowEvent winEvent)
             {
-		if (JMainFrame.this.applet != null) {		
+		if (JMainFrame.this.applet != null) {
 		    JMainFrame.this.applet.destroy();
 		}
 		hide();
 		try {
 		    dispose();
 		} catch (IllegalStateException e) {}
-		
+
 		if (_doExit) {
 		    System.exit(0);
 		}

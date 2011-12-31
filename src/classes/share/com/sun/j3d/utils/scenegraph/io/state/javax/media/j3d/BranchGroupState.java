@@ -55,7 +55,7 @@ public class BranchGroupState extends GroupState {
     public BranchGroupState( SymbolTableData symbol, Controller control ) {
         super( symbol, control );
     }
-    
+
     protected SceneGraphObject createNode() {
         return new BranchGroup();
     }

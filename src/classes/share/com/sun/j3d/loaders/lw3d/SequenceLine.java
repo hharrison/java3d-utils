@@ -50,10 +50,10 @@ import java.util.Hashtable;
 import java.util.Vector;
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader; 
-import java.io.StreamTokenizer; 
-import java.io.IOException; 
-import javax.media.j3d.*; 
+import java.io.FileReader;
+import java.io.StreamTokenizer;
+import java.io.IOException;
+import javax.media.j3d.*;
 import javax.vecmath.Point3d;
 
 import com.sun.j3d.loaders.IncorrectFormatException;
@@ -61,9 +61,9 @@ import com.sun.j3d.loaders.ParsingErrorException;
 import java.io.FileNotFoundException;
 
 /**
- * This class was created to handle "sequence files", which allow 
+ * This class was created to handle "sequence files", which allow
  * holosketch-type Tloop sequences to be loaded through the lw3d loader.
- * The class reads a sequence file line by line and uses SequenceLine to 
+ * The class reads a sequence file line by line and uses SequenceLine to
  * load the file specified in each line.<BR>
  * Idea behind the Tloop process:<BR>
  * Artist creates "tloops" (animations with each keyframe's
@@ -77,19 +77,19 @@ import java.io.FileNotFoundException;
  * special name, such as "bucket_sequence_bucketsequence.txt.lwo", which tells
  * the lw3d loader that it should look for a sequence file by the name of
  * bucketsequence.txt.  What happens to this object is irrelevant (as far as
- * the loader is concerned); all animation information is taken from its 
+ * the loader is concerned); all animation information is taken from its
  * parent instead.<BR>
  * 2) Artist saves out the geometry of the bucket at whatever frames she wants
- * to.  If she's saving a tloop (a sequence of frames), she should save them 
+ * to.  If she's saving a tloop (a sequence of frames), she should save them
  * under the names <filename>xxx.lwo, where xxx is the 3-digit sequence number
  * (000, 001, 002, etc.).<BR>
  * 3) Artist creates the sequence file, which lists all saved geometry files
- * (except sequences - these can be referred to simply by the first file 
- * (...000.lwo)), along with their associated start/end frames.  She also lists 
+ * (except sequences - these can be referred to simply by the first file
+ * (...000.lwo)), along with their associated start/end frames.  She also lists
  * the number of files in the sequence, although this parameter is implied
  * anyway, through the existence of the sequence files and their naming
  * convention.  Maybe we should trash this guy.<BR>
- * 4) In the lw3d loader, when LwsObject encounters an object with the 
+ * 4) In the lw3d loader, when LwsObject encounters an object with the
  * filename "..._sequence_<filename>.lwo", it searches for filename.  If
  * found, it parses the file (using the SequenceReader class) to retrieve
  * all parameters.<BR>
@@ -121,7 +121,7 @@ class SequenceLine {
 
     // storedRefList keeps references to already loaded objects
     static Hashtable storedRefList = new Hashtable();
-    
+
     SequenceLine(StreamTokenizer st, float time, int frames)
 	throws ParsingErrorException {
 	try {
@@ -157,7 +157,7 @@ class SequenceLine {
 	    (float)startFrame/(float)totalFrames;
 	Alpha theAlpha =
 	          new Alpha(-1, (long)startTime, 0, (long)animTime, 0, 0);
-		     
+
 	SwitchValueInterpolator b=new SwitchValueInterpolator(theAlpha,target);
 	behaviors = b;
 	BoundingSphere bounds =
@@ -165,9 +165,9 @@ class SequenceLine {
 	b.setSchedulingBounds(bounds);
         target.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
         target.addChild(behaviors);
- 
+
     }
-   
+
     /**
      * Create Java3d objects from the data in the sequence line.  This
      * means that for a tloop file (ends in "000"), we're going to create
@@ -190,7 +190,7 @@ class SequenceLine {
 		if (storedRefList.get(tempFileName) != null) {
 		    // System.out.println("retrieve stored version of " +
 		    // 		       tempFileName);
-		    SharedGroup storedGroup = 
+		    SharedGroup storedGroup =
 			(SharedGroup)storedRefList.get(tempFileName);
 		    Link newLink = new Link(storedGroup);
 		    s.addChild(newLink);
@@ -232,7 +232,7 @@ class SequenceLine {
 		geometryGroup = new Group();
 		if (storedRefList.get(fileName) != null) {
 			// System.out.println("getting old ref to " + fileName);
-			SharedGroup storedGroup = 
+			SharedGroup storedGroup =
 				(SharedGroup)storedRefList.get(fileName);
 			Link newLink = new Link(storedGroup);
 			geometryGroup.addChild(newLink);
@@ -265,5 +265,5 @@ class SequenceLine {
     Behavior getBehavior() {
 	return behaviors;
     }
-    
+
 }

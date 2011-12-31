@@ -90,10 +90,10 @@ public class Cone extends Primitive {
    */
   public static final int CAP = 1;
 
-  /**  
+  /**
    *   Constructs a default Cone of radius of 1.0 and height
    *   of 2.0. Resolution defaults to 15 divisions along X and axis
-   *   and 1 along the Y axis.  Normals are generated, texture 
+   *   and 1 along the Y axis.  Normals are generated, texture
    *   coordinates are not.
    */
   public Cone(){
@@ -144,7 +144,7 @@ public class Cone extends Primitive {
   /**
    * Obtains the Shape3D node associated with one of the parts of the
    * cone (the body or the cap). This allows users to modify the appearance
-   * or geometry of individual parts. 
+   * or geometry of individual parts.
    * @param partId The part to return (BODY or CAP).
    * @return The Shape3D object associated with the partId.  If an
    * invalid partId is passed in, null is returned.
@@ -182,9 +182,9 @@ public class Cone extends Primitive {
     }
 
 
-  /**  
+  /**
    *   Constructs a customized Cone of a given radius, height, flags,
-   *   resolution (X and Y dimensions), and appearance. The 
+   *   resolution (X and Y dimensions), and appearance. The
    *   resolution is defined in terms of number of subdivisions
    *   along the object's X axis (width) and Y axis (height). More divisions
    *   lead to finer tesselated objects.
@@ -225,7 +225,7 @@ public class Cone extends Primitive {
 	numTris += cache.getNumTris();
     }
     else {
-      // the body of the cone consists of the top of the cone and if 
+      // the body of the cone consists of the top of the cone and if
       // ydivisions is greater than 1, the body of the cone.
 	gbuf = q.coneTop((double)(height/2.0 - height/ydivisions),
 			 (double)(radius/ydivisions), height/ydivisions,
@@ -240,7 +240,7 @@ public class Cone extends Primitive {
 			xdivision, ydivision, primflags, gbuf);
       }
     }
-      
+
     // only need to add a body if the ydivisions is greater than 1
     if (ydivisions > 1) {
 	cache = getCachedGeometry(Primitive.CONE_DIVISIONS, radius, 0.0f,
@@ -266,7 +266,7 @@ public class Cone extends Primitive {
 	    }
 	}
     }
-      
+
     if ((flags & ENABLE_APPEARANCE_MODIFY) != 0) {
 	(shape[BODY]).setCapability(Shape3D.ALLOW_APPEARANCE_READ);
 	(shape[BODY]).setCapability(Shape3D.ALLOW_APPEARANCE_WRITE);
@@ -275,7 +275,7 @@ public class Cone extends Primitive {
     if ((flags & ENABLE_GEOMETRY_PICKING) != 0) {
         (shape[BODY]).setCapability(Shape3D.ALLOW_GEOMETRY_READ);
     }
-    
+
     this.addChild(shape[BODY]);
 
     // Create bottom cap.
@@ -321,9 +321,9 @@ public class Cone extends Primitive {
     objectMat.mul(objectMat, rotMat);
     t2.set(objectMat);
 */
-    
+
     this.addChild(shape[CAP]);
- 
+
     if (ap == null){
       setAppearance();
     }

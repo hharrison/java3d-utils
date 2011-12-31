@@ -63,10 +63,10 @@ public class ConeState extends PrimitiveState {
     private int ydivision=1;
     private int bodyAppearance=0;
     private int capAppearance=0;
-    
+
     public ConeState(SymbolTableData symbol,Controller control) {
 	super( symbol, control );
-        
+
         if (node!=null) {
             bodyAppearance = control.getSymbolTable().addReference( ((Cone)node).getShape( Cone.BODY ).getAppearance() );
             capAppearance = control.getSymbolTable().addReference( ((Cone)node).getShape( Cone.CAP ).getAppearance() );
@@ -84,10 +84,10 @@ public class ConeState extends PrimitiveState {
        bodyAppearance = in.readInt();
        capAppearance = in.readInt();
     }
-    
+
     public void writeConstructorParams( DataOutput out ) throws IOException {
 	super.writeConstructorParams( out );
-        
+
         out.writeFloat( ((Cone)node).getRadius() );
         out.writeFloat( ((Cone)node).getHeight() );
         out.writeInt( ((Cone)node).getXdivisions() );
@@ -96,13 +96,13 @@ public class ConeState extends PrimitiveState {
 
     public void readConstructorParams( DataInput in ) throws IOException {
        super.readConstructorParams(in);
-       
+
        radius = in.readFloat();
        height = in.readFloat();
        xdivision = in.readInt();
        ydivision = in.readInt();
     }
-    
+
     public void buildGraph() {
 
         if (bodyAppearance == capAppearance ) {
@@ -111,10 +111,10 @@ public class ConeState extends PrimitiveState {
             ((Cone)node).setAppearance( Cone.BODY, (Appearance)control.getSymbolTable().getJ3dNode( bodyAppearance ));
             ((Cone)node).setAppearance( Cone.CAP, (Appearance)control.getSymbolTable().getJ3dNode( capAppearance ));
         }
-        
+
         super.buildGraph(); // This must be the last call in the method
     }
-    
+
     public SceneGraphObject createNode( Class j3dClass ) {
         // Create the node with a null appearance, we will add the appearance
         // during build graph
@@ -132,13 +132,13 @@ public class ConeState extends PrimitiveState {
                                                 new Integer( xdivision ),
                                                 new Integer( ydivision ),
                                                 null } );
-                                                
+
         return cone;
     }
-    
+
     protected javax.media.j3d.SceneGraphObject createNode() {
         return new Cone( radius, height, primflags, xdivision, ydivision, null );
     }
 
-    
+
 }

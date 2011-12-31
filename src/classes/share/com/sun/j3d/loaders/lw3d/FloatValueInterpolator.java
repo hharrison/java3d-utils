@@ -43,7 +43,7 @@
  */
 
 package com.sun.j3d.loaders.lw3d;
- 
+
 import javax.vecmath.*;
 import java.util.BitSet;
 import java.util.Enumeration;
@@ -56,19 +56,19 @@ import javax.media.j3d.Interpolator;
 import com.sun.j3d.internal.J3dUtilsI18N;
 
 /**
- * This class acts as an interpolator between values specified in a 
- * floating point array, based on knot values (keyframes) specified in a 
+ * This class acts as an interpolator between values specified in a
+ * floating point array, based on knot values (keyframes) specified in a
  * knots array.
  */
 abstract class FloatValueInterpolator extends Interpolator {
 
     private   float knots[];
     private   int   knotsLength;
-    protected int   currentKnotIndex; 
+    protected int   currentKnotIndex;
     protected float currentInterpolationRatio;
     protected float values[];
     protected float currentValue;
-    
+
     /**
       * Constructs a new FloatValueInterpolator object.
       * @param alpha the alpha object for this interpolator
@@ -85,9 +85,9 @@ abstract class FloatValueInterpolator extends Interpolator {
         }
 
         // Check that last knot = 1.0f
-        if ((k[knotsLength-1] - 1.0f) < -0.0001 || 
+        if ((k[knotsLength-1] - 1.0f) < -0.0001 ||
             (k[knotsLength-1] - 1.0f) > 0.0001) {
- 
+
             throw new IllegalArgumentException(J3dUtilsI18N.getString("FloatValueInterpolator1"));
         }
 
@@ -114,7 +114,7 @@ abstract class FloatValueInterpolator extends Interpolator {
     }
 
     /**
-      * This method sets the value at the specified index for 
+      * This method sets the value at the specified index for
       * this interpolator.
       * @param index the index to be changed
       * @param position the new value at index
@@ -135,7 +135,7 @@ abstract class FloatValueInterpolator extends Interpolator {
     /**
      * This method computes the bounding knot indices and interpolation value
      * "currentValue" given the current value of alpha, the knots[] array and
-     * the array of values.  
+     * the array of values.
      * If the index is 0 and there will be no interpolation, both the
      * index variable and the interpolation variable are set to 0.
      * Otherwise, currentKnotIndex is set to the lower index of the
@@ -168,4 +168,4 @@ abstract class FloatValueInterpolator extends Interpolator {
     }
 
 }
-    
+

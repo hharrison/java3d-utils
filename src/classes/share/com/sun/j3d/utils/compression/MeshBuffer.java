@@ -54,11 +54,11 @@ import javax.vecmath.Vector3f;
  * compression semantics.
  */
 class MeshBuffer {
-    // 
+    //
     // The fixed-length mesh buffer stack is represented by circular buffers.
     // Three stack representations are provided: vertices, positions, and
     // indices.
-    // 
+    //
     // The vertex representation stores references to CompressionStreamVertex
     // objects.  The position representation stores references to Point3f,
     // Vector3f, Color3f, and Color4f objects, while the index representation

@@ -54,14 +54,14 @@ import javax.media.j3d.Transform3D;
  * @since Java 3D 1.4
  */
 public class SimpleDistanceComparator implements Comparator {
-    
+
     /** Creates a new instance of SimpleDistanceComparator */
     public SimpleDistanceComparator() {
     }
 
     /**
-     * Compares its two arguments for order. Returns a negative integer, zero, 
-     * or a positive integer as the first argument is less than (closer to the viewer), 
+     * Compares its two arguments for order. Returns a negative integer, zero,
+     * or a positive integer as the first argument is less than (closer to the viewer),
      * equal to, or greater than (further from the viewer) the second argument.
      *
      * The compare method will be called with 2 objects of type
@@ -71,19 +71,19 @@ public class SimpleDistanceComparator implements Comparator {
      *
      * @param o1 TransparencySortGeom object 1
      * @param o2 TransparencySortGeom object 2
-     * 
+     *
      */
     public int compare(Object o1, Object o2) {
         TransparencySortGeom t1 = (TransparencySortGeom)o1;
         TransparencySortGeom t2 = (TransparencySortGeom)o2;
-        
+
         double f = t1.getDistanceSquared()-t2.getDistanceSquared();
         if (f<0)
             return -1;
         if (f==0)
             return 0;
-        
+
         return 1;
     }
-    
+
 }

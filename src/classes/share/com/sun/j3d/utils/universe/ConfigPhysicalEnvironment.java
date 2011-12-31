@@ -75,7 +75,7 @@ class ConfigPhysicalEnvironment extends ConfigObject {
      * Handles the commands
      * (PhysicalEnvironmentAttribute {instance} {attrName} {attrValue}) and
      * (PhysicalEnvironmentProperty  {instance} {attrName} {attrValue}).
-     * 
+     *
      * @param command the command that invoked this method
      */
     protected void setProperty(ConfigCommand command) {
@@ -90,7 +90,7 @@ class ConfigPhysicalEnvironment extends ConfigObject {
 	}
 
 	if (!isName(argv[1])) {
-	    syntaxError("The first argument to " + command.commandName + 
+	    syntaxError("The first argument to " + command.commandName +
 			" must be a name") ;
 	}
 
@@ -135,7 +135,7 @@ class ConfigPhysicalEnvironment extends ConfigObject {
 		syntaxError("HeadTracker must be a Sensor name") ;
 
 	    sval = (String)val ;
-	    headTracker = 
+	    headTracker =
 		(ConfigSensor)configContainer.findConfigObject("Sensor", sval);
 	}
 	else {
@@ -153,7 +153,7 @@ class ConfigPhysicalEnvironment extends ConfigObject {
 
 	j3dPhysicalEnvironment.setCoexistenceCenterInPworldPolicy
 	    (coexistenceCenterInPworldPolicy) ;
-	    
+
 	if (coexistenceToTrackerBase != null)
 	    j3dPhysicalEnvironment.setCoexistenceToTrackerBase
 		(new Transform3D(coexistenceToTrackerBase)) ;

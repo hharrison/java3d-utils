@@ -51,11 +51,11 @@ import javax.media.j3d.*;
 import javax.vecmath.*;
 
 /**
- * MouseTranslate is a Java3D behavior object that lets users control the 
+ * MouseTranslate is a Java3D behavior object that lets users control the
  * translation (X, Y) of an object via a mouse drag motion with the third
  * mouse button (alt-click on PC). See MouseRotate for similar usage info.
  */
- 
+
 public class MouseTranslate extends MouseBehavior {
 
     double x_factor = .02;
@@ -71,7 +71,7 @@ public class MouseTranslate extends MouseBehavior {
     public MouseTranslate(TransformGroup transformGroup) {
 	super(transformGroup);
     }
-   
+
     /**
      * Creates a default translate behavior.
      */
@@ -102,7 +102,7 @@ public class MouseTranslate extends MouseBehavior {
      */
     public MouseTranslate(Component c) {
 	super(c, 0);
-    } 
+    }
 
     /**
      * Creates a translate behavior that uses AWT listeners and behavior
@@ -144,35 +144,35 @@ public class MouseTranslate extends MouseBehavior {
 	    y_factor *= -1;
 	}
     }
-    
+
     /**
      * Return the x-axis movement multipler.
      **/
     public double getXFactor() {
 	return x_factor;
     }
-  
+
     /**
      * Return the y-axis movement multipler.
      **/
     public double getYFactor() {
 	return y_factor;
     }
-  
+
     /**
      * Set the x-axis amd y-axis movement multipler with factor.
      **/
     public void setFactor( double factor) {
 	x_factor = y_factor = factor;
     }
-  
+
     /**
      * Set the x-axis amd y-axis movement multipler with xFactor and yFactor
      * respectively.
      **/
     public void setFactor( double xFactor, double yFactor) {
 	x_factor = xFactor;
-	y_factor = yFactor;    
+	y_factor = yFactor;
     }
 
     public void processStimulus (Enumeration criteria) {
@@ -181,10 +181,10 @@ public class MouseTranslate extends MouseBehavior {
  	MouseEvent evt;
 // 	int id;
 // 	int dx, dy;
-    
+
 	while (criteria.hasMoreElements()) {
 	    wakeup = (WakeupCriterion) criteria.nextElement();
-      
+
 	    if (wakeup instanceof WakeupOnAWTEvent) {
 		events = ((WakeupOnAWTEvent)wakeup).getAWTEvent();
 		if (events.length > 0) {
@@ -220,42 +220,42 @@ public class MouseTranslate extends MouseBehavior {
 	int dx, dy;
 
 	processMouseEvent(evt);
-	
+
 	if (((buttonPress)&&((flags & MANUAL_WAKEUP) == 0)) ||
 	    ((wakeUp)&&((flags & MANUAL_WAKEUP) != 0))){
 	    id = evt.getID();
 	    if ((id == MouseEvent.MOUSE_DRAGGED) &&
 		!evt.isAltDown() && evt.isMetaDown()) {
-		
+
 		x = evt.getX();
 		y = evt.getY();
-		
+
 		dx = x - x_last;
 		dy = y - y_last;
-		
+
 		if ((!reset) && ((Math.abs(dy) < 50) && (Math.abs(dx) < 50))) {
 		    //System.out.println("dx " + dx + " dy " + dy);
 		    transformGroup.getTransform(currXform);
-		    
-		    translation.x = dx*x_factor; 
+
+		    translation.x = dx*x_factor;
 		    translation.y = -dy*y_factor;
-		    
+
 		    transformX.set(translation);
-		    
+
 		    if (invert) {
 			currXform.mul(currXform, transformX);
 		    } else {
 			currXform.mul(transformX, currXform);
 		    }
-		    
+
 		    transformGroup.setTransform(currXform);
-		    
+
 		    transformChanged( currXform );
-		    
+
 		    if (callback!=null)
 			callback.transformChanged( MouseBehaviorCallback.TRANSLATE,
 						   currXform );
-		    
+
 		}
 		else {
 		    reset = false;
@@ -269,7 +269,7 @@ public class MouseTranslate extends MouseBehavior {
 	    }
 	}
     }
-    
+
     /**
      * Users can overload this method  which is called every time
      * the Behavior updates the transform

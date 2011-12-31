@@ -56,7 +56,7 @@ import com.sun.j3d.utils.behaviors.vp.ViewPlatformBehavior ;
  * that will effect the viewing configuration specified in the file.  These
  * can include Viewers, ViewingPlatforms, ViewPlatformBehaviors, InputDevices,
  * Sensors, and other objects.<p>
- * 
+ *
  * Clients can construct the view side of a scene graph by retrieving these
  * objects using the accessor methods provided by this class.  This could
  * involve as little as just attaching ViewingPlatforms to a Locale, depending
@@ -89,7 +89,7 @@ public class ConfigContainer {
     // must be evaluated in the order in which they were created.
     // LinkedHashMap is available in JDK 1.4 but currently this code must run
     // under JDK 1.3.1 as well.
-    // 
+    //
     private Map baseNameMap = new HashMap() ;
 
     // Map containing named canvases for each view.
@@ -120,7 +120,7 @@ public class ConfigContainer {
 
     // The visibility status of Viewer AWT components.
     private boolean setVisible = false ;
-    
+
     private ClassLoader classLoader = ClassLoader.getSystemClassLoader();
 
     /**
@@ -170,7 +170,7 @@ public class ConfigContainer {
 
 	this(userConfig, setVisible, transformCount, true) ;
     }
-	
+
     /**
      * Creates a new ConfigContainer and loads the configuration file at the
      * specified URL.  Any ViewingPlatform instantiated by the configuration
@@ -207,7 +207,7 @@ public class ConfigContainer {
      * <code>setViewingPlatform</code> in order to look up the actual Sensor,
      * Viewer, Behavior, etc., instances associated with the names provided
      * them from the configuration file.<p>
-     * 
+     *
      * The preferred methods to retrieve instances of specific objects defined
      * in the configuration file are to either 1) get the ConfiguredUniverse
      * instance when the behavior's <code>initialize</code> method is called,
@@ -234,7 +234,7 @@ public class ConfigContainer {
 	loadConfig(userConfig) ;
 	processConfig(setVisible, transformCount, attachBehaviors) ;
     }
-	
+
     /**
      * Package scoped constructor that adds the ability to set the ClassLoader
      * which will be used to load any app specific classes specified in the
@@ -249,14 +249,14 @@ public class ConfigContainer {
 
    /**
      * Open, parse, and load the contents of a configuration file.
-     * 
+     *
      * @param userConfig location of the configuration file
      */
     private void loadConfig(URL userConfig) {
 	InputStream inputStream = null ;
 	StreamTokenizer streamTokenizer = null ;
 	String lastFileName = currentFileName ;
-	
+
 	currentFileName = userConfig.toString() ;
 	try {
 	    inputStream = userConfig.openStream() ;
@@ -270,7 +270,7 @@ public class ConfigContainer {
 
 	//
 	// Set up syntax tables for the tokenizer.
-	// 
+	//
 	// It would be nice to allow '/' as a word constituent for URL strings
 	// and Unix paths, but then the scanner won't ignore "//" and "/* */"
 	// comment style syntax.  Treating '/' as an ordinary character will
@@ -282,7 +282,7 @@ public class ConfigContainer {
 	// should still be treated as an ordinary character however, so that a
 	// non-quoted URL string or Unix path will be treated as a syntax
 	// error instead of a comment.
-	// 
+	//
 	streamTokenizer.ordinaryChar('/') ;
 	streamTokenizer.wordChars('_', '_') ;
 	streamTokenizer.wordChars('$', '$') ; // for ${...} Java property
@@ -372,7 +372,7 @@ public class ConfigContainer {
      * are processed here, at which point the subclass implementation of
      * initialize() is called.  Subclasses must override initialize() if they
      * need to process more than what is processed by default here.
-     * 
+     *
      * @param cmd configuration command that creates a new ConfigObject
      */
     private ConfigObject createConfigObject(ConfigCommand cmd) {
@@ -441,7 +441,7 @@ public class ConfigContainer {
      * information.  The command is of the form:<p>
      *
      * ({baseName}Alias {aliasName} {originalName})
-     * 
+     *
      * @param cmd configuration command that creates a new alias
      * @return the new ConfigObject with alias information
      */
@@ -452,11 +452,11 @@ public class ConfigContainer {
 	    throw new IllegalArgumentException
 		("Command \"" + cmd.commandName +
 		 "\" requires an instance name as second argument") ;
-	    
+
 	original = findConfigObject(cmd.baseName, (String)cmd.argv[2]) ;
 	return new ConfigAlias(cmd.baseName, cmd.instanceName, original) ;
     }
-    
+
     /**
      * A class that does nothing but reference another ConfigObject.  Once
      * created, the alias name can be used in all commands that would accept
@@ -476,7 +476,7 @@ public class ConfigContainer {
     /**
      * Adds the specified ConfigObject instance into this container using the
      * given ConfigCommand's base name and instance name.
-     * 
+     *
      * @param object the ConfigObject instance to add into the database
      */
     private void addConfigObject(ConfigObject object) {
@@ -590,7 +590,7 @@ public class ConfigContainer {
      * after the config file has already been parsed.  The parser won't catch
      * any of the exceptions generated by this method, so the error messages
      * are wrapped accordingly.
-     * 
+     *
      * @param basename base name of the config object
      * @param cmd command containing the name in argv[1]
      * @return the found ConfigObject
@@ -613,7 +613,7 @@ public class ConfigContainer {
      * This method gets called from a ConfigObject to evaluate a retained
      * built-in command nested within a property command.  These are commands
      * that can't be evaluated until the entire config file is parsed.
-     * 
+     *
      * @param cmd the built-in command
      * @return object representing result of evaluation
      */
@@ -698,7 +698,7 @@ public class ConfigContainer {
     }
 
     // Process config physical environments into Java 3D physical
-    // environments.  
+    // environments.
     private void processPhysicalEnvironments(Collection c) {
 	Iterator i = c.iterator() ;
 	while (i.hasNext()) {
@@ -753,10 +753,10 @@ public class ConfigContainer {
 	    if (! cd.j3dInputDevice.initialize())
 		throw new RuntimeException
 		    (cd.errorMessage(cd.creatingCommand,
-				     "could not initialize device \"" + 
+				     "could not initialize device \"" +
 				     cd.instanceName + "\"")) ;
 	}
-	
+
 	// An InputDevice implementation will have created all its Sensors by
 	// the time initialize() returns.  Retrieve and configure them here.
 	if (s != null) {
@@ -809,7 +809,7 @@ public class ConfigContainer {
 	}
     }
 
-    // Process generic objects. 
+    // Process generic objects.
     private void processGenericObjects(Collection objects) {
 	Iterator i = objects.iterator() ;
 	while (i.hasNext()) {
@@ -865,13 +865,13 @@ public class ConfigContainer {
      * (NewPhysicalBody <i>&lt;instance name&gt;</i>
      * [Alias <i>&lt;alias name&gt;</i>])
      * </blockquote>
-     * 
+     *
      * The PhysicalBody is configured through the following command:<p>
      * <blockquote>
      * (PhysicalBodyProperty <i>&lt;instance name&gt;
      * &lt;property name&gt; &lt;property value&gt;</i>)
      * </blockquote>
-     * 
+     *
      * @return read-only Set of all unique instances, or null
      */
     public Set getPhysicalBodies() {
@@ -883,7 +883,7 @@ public class ConfigContainer {
     /**
      * Returns a read-only Map that maps PhysicalBody names to instances.
      * Names may be aliases and if so will map to the original instances.
-     * 
+     *
      * @return read-only Map from names to PhysicalBody instances, or null if
      *  no instances
      */
@@ -896,19 +896,19 @@ public class ConfigContainer {
     /**
      * Returns a read-only Set of all configured PhysicalEnvironment instances
      * in the order they were defined in the configuration file.<p>
-     * 
+     *
      * PhysicalEnvironment instances are created with the following command:<p>
      * <blockquote>
      * (NewPhysicalEnvironment <i>&lt;instance name&gt;</i>
      * [Alias <i>&lt;alias name&gt;</i>])
      * </blockquote>
-     * 
+     *
      * The PhysicalEnvironment is configured through the following command:<p>
      * <blockquote>
      * (PhysicalEnvironmentProperty <i>&lt;instance name&gt;
      * &lt;property name&gt; &lt;property value&gt;</i>)
      * </blockquote>
-     * 
+     *
      * @return read-only Set of all unique instances, or null
      */
     public Set getPhysicalEnvironments() {
@@ -921,7 +921,7 @@ public class ConfigContainer {
      * Returns a read-only Map that maps PhysicalEnvironment names to
      * instances.  Names may be aliases and if so will map to the original
      * instances.
-     * 
+     *
      * @return read-only Map from names to PhysicalEnvironment instances, or
      *  null if no instances
      */
@@ -937,12 +937,12 @@ public class ConfigContainer {
      * incorporated any PhysicalEnvironment and PhysicalBody objects specfied
      * for them in the configuration file, and will be attached to any
      * ViewingPlatforms specified for them.<p>
-     * 
+     *
      * Viewer instances are created with the following command:<p>
      * <blockquote>
      * (NewView <i>&lt;instance name&gt;</i> [Alias <i>&lt;alias name&gt;</i>])
      * </blockquote>
-     * 
+     *
      * The Viewer is configured through the following command:<p>
      * <blockquote>
      * (ViewProperty <i>&lt;instance name&gt;
@@ -963,7 +963,7 @@ public class ConfigContainer {
      * The Viewers will have incorporated any PhysicalEnvironment and
      * PhysicalBody objects specfied for them in the configuration file, and
      * will be attached to any ViewingPlatforms specified for them.<p>
-     * 
+     *
      * @return read-only Map from names to Viewer instances, or
      *  null if no instances
      */
@@ -984,7 +984,7 @@ public class ConfigContainer {
      * (NewDevice <i>&lt;instanceName&gt; &lt;className&gt;</i>
      * [Alias <i>&lt;alias name&gt;</i>])
      * </blockquote>
-     * 
+     *
      * <i>className</i> must be the fully-qualified name of a class that
      * implements the InputDevice interface.  The implementation
      * must provide a parameterless constructor.<p>
@@ -994,14 +994,14 @@ public class ConfigContainer {
      * (DeviceProperty <i>&lt;instanceName&gt; &lt;propertyName&gt;
      *  &lt;arg0&gt; ... &lt;argn&gt;</i>)
      * </blockquote>
-     * 
+     *
      * <i>propertyName</i> must be the name of a input device method that
      * takes an array of Objects as its only parameter; the array is populated
      * with the values of <i>arg0</i> through <i>argn</i> when the method is
      * invoked to set the property.  These additional requirements for
      * configurable input devices can usually be fulfilled by extending or
      * wrapping available InputDevice implementations.
-     * 
+     *
      * @return read-only Set of all unique instances, or null
      */
     public Set getInputDevices() {
@@ -1015,7 +1015,7 @@ public class ConfigContainer {
      * Names may be aliases and if so will map to the original instances.  All
      * InputDevice instances in the map are initialized and registered with
      * any PhysicalEnvironments that reference them.
-     * 
+     *
      * @return read-only Map from names to InputDevice instances, or
      *  null if no instances
      * @see #getInputDevices
@@ -1031,13 +1031,13 @@ public class ConfigContainer {
      * they were defined in the configuration file.  The associated
      * InputDevices are all initialized and registered with any
      * PhysicalEnvironments that reference them.<p>
-     * 
+     *
      * Sensor instances are named with the following command:<p>
      * <blockquote>
-     * (NewSensor <i>&lt;instance name&gt; &lt;device name&gt; 
+     * (NewSensor <i>&lt;instance name&gt; &lt;device name&gt;
      * &lt;sensor index&gt;</i> [Alias <i>&lt;alias name&gt;</i>])
      * </blockquote>
-     * 
+     *
      * <i>device name</i> is the instance name of a previously defined
      * InputDevice, and <i>sensor index</i> is the index of the Sensor to be
      * bound to <i>instance name</i>.  The InputDevice implementation is
@@ -1046,13 +1046,13 @@ public class ConfigContainer {
      *
      * The Sensor is configured through the SensorProperty command:<p>
      * <blockquote>
-     * (SensorProperty <i>&lt;instance name&gt; &lt;property name&gt; 
+     * (SensorProperty <i>&lt;instance name&gt; &lt;property name&gt;
      * &lt;property value&gt;</i>)
      * </blockquote>
-     * 
+     *
      * With the sole exception of the Sensor assigned to the head tracker,
      * none of the Sensors defined in the configuration file are placed into
-     * the Sensor array maintained by a PhysicalEnvironment.  
+     * the Sensor array maintained by a PhysicalEnvironment.
      *
      * @return read-only Set of all unique instances, or null
      */
@@ -1067,11 +1067,11 @@ public class ConfigContainer {
      * be aliases and if so will map to the original instances.  The
      * associated InputDevices are all initialized and registered with any
      * PhysicalEnvironments that reference them.<p>
-     * 
+     *
      * With the sole exception of the Sensor assigned to the head tracker,
      * none of the Sensors defined in the configuration file are placed into
-     * the Sensor array maintained by a PhysicalEnvironment.  
-     * 
+     * the Sensor array maintained by a PhysicalEnvironment.
+     *
      * @return read-only Map from names to Sensor instances, or
      *  null if no instances
      */
@@ -1093,7 +1093,7 @@ public class ConfigContainer {
      * (NewViewPlatform <i>&lt;instance name&gt;</i>
      * [Alias <i>&lt;alias name&gt;</i>])
      * </blockquote>
-     * 
+     *
      * The ViewingPlatform is configured through the following command:<p>
      * <blockquote>
      * (ViewPlatformProperty <i>&lt;instance name&gt; &lt;property name&gt;
@@ -1114,7 +1114,7 @@ public class ConfigContainer {
      * ConfigContainer class itself does not attach the ViewingPlatform
      * instances to any scengraph components or universe Locales; they are not
      * "live" until made so by a separate client such as ConfiguredUniverse.
-     * 
+     *
      * @return read-only Map from names to ViewingPlatform instances, or
      *  null if no instances
      */
@@ -1127,7 +1127,7 @@ public class ConfigContainer {
     /**
      * Returns a read-only Set of all configured ViewPlatformBehavior
      * instances in the order they were defined in the configuration file.<p>
-     * 
+     *
      * The behaviors are attached to any ViewingPlatforms that specified them;
      * that is, the <code>setViewPlatformBehavior</code> and
      * <code>setViewingPlatform</code> methods of ViewingPlatform and
@@ -1139,7 +1139,7 @@ public class ConfigContainer {
      * <blockquote>
      * (NewViewPlatformBehavior <i>&lt;instanceName&gt; &lt;className&gt;</i>)
      * </blockquote>
-     * 
+     *
      * <i>className</i> must be the fully qualified name of a concrete class
      * that extends the abstract ViewPlatformBehavior class.  The
      * implementation must provide a parameterless constructor.<p>
@@ -1149,7 +1149,7 @@ public class ConfigContainer {
      * (ViewPlatformBehaviorProperty <i>&lt;instanceName&gt;
      *  &lt;propertyName&gt; &lt;arg0&gt; ... &lt;argn&gt;</i>)
      * </blockquote>
-     * 
+     *
      * ViewPlatformBehavior subclasses inherit a number of pre-defined
      * properties that can be directly specified with the <i>propertyName</i>
      * string; see the configuration file documentation for details.<p>
@@ -1175,14 +1175,14 @@ public class ConfigContainer {
      * Returns a read-only Map that maps ViewPlatformBehavior names to
      * instances.  Names may be aliases and if so will map to the original
      * instances.<p>
-     * 
+     *
      * The behaviors are attached to any ViewingPlatforms that specified them;
      * that is, the <code>setViewPlatformBehavior</code> and
      * <code>setViewingPlatform</code> methods of ViewingPlatform and
      * ViewPlatformBehavior have been called if appropriate.  However, a
      * behavior's <code>initialize</code> method is not called until the
      * ViewingPlatform to which it is attached is made live.<p>
-     * 
+     *
      * @return read-only Map from names to ViewPlatformBehavior instances, or
      *  null if no instances
      * @see #getViewPlatformBehaviors
@@ -1199,14 +1199,14 @@ public class ConfigContainer {
      * original instances.  The set of unique Canvas3D instances used by a
      * Viewer may be obtained by calling the Viewer's accessor methods
      * directly.<p>
-     * 
+     *
      * A named Canvas3D is created and added to a Viewer whenever any of the
      * following configuration commands are used:<p>
      * <blockquote>
      * (ViewProperty <i>&lt;view&gt;</i> Screen <i>&lt;screenName&gt;</i>)<br>
      * (ViewProperty <i>&lt;view&gt;</i> Window <i>&lt;windowName&gt;</i>)
      * </blockquote>
-     * 
+     *
      * <i>view</i> is the name of a Viewer created with the NewView command.
      * The <i>screenName</i> and <i>windowName</i> parameters of the above
      * commands are the keys to use when looking up the associated Canvas3D
@@ -1229,7 +1229,7 @@ public class ConfigContainer {
 	    ConfigScreen cs = (ConfigScreen)i.next() ;
 	    m.put(cs.instanceName, cs.j3dCanvas) ;
 
-	    // The aliases list contains all alias strings for the canvas. 
+	    // The aliases list contains all alias strings for the canvas.
 	    Iterator j = cs.aliases.iterator() ;
 	    while (j.hasNext()) m.put(j.next(), cs.j3dCanvas) ;
 	}
@@ -1246,7 +1246,7 @@ public class ConfigContainer {
      * <blockquote>
      * (NewObject <i>&lt;instanceName&gt; &lt;className&gt;</i>)
      * </blockquote>
-     * 
+     *
      * <i>className</i> must be the fully-qualified name of a class that
      * provides a parameterless constructor.<p>
      *
@@ -1255,7 +1255,7 @@ public class ConfigContainer {
      * (ObjectProperty <i>&lt;instanceName&gt; &lt;propertyName&gt;
      *  &lt;arg0&gt; ... &lt;argn&gt;</i>)
      * </blockquote>
-     * 
+     *
      * <i>propertyName</i> must be the name of a method provided by object
      * <i>instanceName</i>.  It must take an array of Objects as its only
      * parameter; the array is populated with the values of <i>arg0</i>
@@ -1275,7 +1275,7 @@ public class ConfigContainer {
      * Returns a read-only Map that maps generic object names to
      * instances.  Names may be aliases and if so will map to the original
      * instances.
-     * 
+     *
      * @return read-only Map from names to generic object instances, or
      *  null if no instances
      * @see #getGenericObjects
@@ -1301,11 +1301,11 @@ public class ConfigContainer {
      * Returns whether Viewers should be created with their AWT components
      * initially visible or invisible.  This is useful for clients that wish
      * to provide a default Viewer if the configuration file doesn't specify
-     * one. 
+     * one.
      *
      * @return true if Viewer components should be initially visible; false
-     *  otherwise 
-     */ 
+     *  otherwise
+     */
     public boolean getViewerVisibility() {
 	return setVisible ;
     }
@@ -1395,7 +1395,7 @@ public class ConfigContainer {
 	    genericObjectMap.map.clear() ;
 	    genericObjectMap = null ;
 	}
-	
+
     }
 
     /**

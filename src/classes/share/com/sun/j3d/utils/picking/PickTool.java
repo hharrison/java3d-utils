@@ -48,69 +48,69 @@ import javax.vecmath.*;
 import javax.media.j3d.*;
 import com.sun.j3d.internal.*;
 
-/** 
+/**
  * The base class for picking operations.
- * The picking methods will return a PickResult object for each object picked, 
- * which can then be queried to 
+ * The picking methods will return a PickResult object for each object picked,
+ * which can then be queried to
  * obtain more detailed information about the specific objects that were
- * picked. 
+ * picked.
  * <p>
  * The pick mode specifies the detail level of picking before the PickResult
  * is returned:
  * <p>
  * <UL>
- * <LI> PickTool.BOUNDS - Pick using the bounds of the pickable nodes.  The 
+ * <LI> PickTool.BOUNDS - Pick using the bounds of the pickable nodes.  The
  * PickResult returned will contain the SceneGraphPath to the picked Node.
  * </LI>
  * <LI> PickTool.GEOMETRY will pick using the geometry of the pickable nodes.
  * The PickResult returned will contain the SceneGraphPath to the picked Node.
  * Geometry nodes in the scene must have the ALLOW_INTERSECT capability set for
  * this mode.</LI>
- * <LI> PickTool.GEOMETRY_INTERSECT_INFO -is the same as GEOMETRY, but the 
+ * <LI> PickTool.GEOMETRY_INTERSECT_INFO -is the same as GEOMETRY, but the
  * the PickResult will also include information on each intersection
  * of the pick shape with the geometry.  The intersection information includes
- * the sub-primitive picked (that is, the point, line, triangle or quad), 
- * the closest vertex to the center of the pick shape, and 
+ * the sub-primitive picked (that is, the point, line, triangle or quad),
+ * the closest vertex to the center of the pick shape, and
  * the intersection's coordinate, normal, color and texture coordinates.
- * To allow this information to be generated, Shape3D and Morph nodes must have 
- * the ALLOW_GEOMETRY_READ capability set and GeometryArrays must have the 
+ * To allow this information to be generated, Shape3D and Morph nodes must have
+ * the ALLOW_GEOMETRY_READ capability set and GeometryArrays must have the
  * ALLOW_FORMAT_READ,
  * ALLOW_COUNT_READ, and ALLOW_COORDINATE_READ capabilities set, plus the
- * ALLOW_COORDINATE_INDEX_READ capability for indexed geometry. 
+ * ALLOW_COORDINATE_INDEX_READ capability for indexed geometry.
  * To inquire
- * the intersection color, normal or texture coordinates 
+ * the intersection color, normal or texture coordinates
  * the corresponding READ capability bits must be set on the GeometryArray.
  * </LI>
  * </UL>
- * <p> The utility method 
+ * <p> The utility method
  * <A HREF="PickTool.html#setCapabilities(javax.media.j3d.Node, int)">
- * <code>PickTool.setCapabilities(Node, int)</code></A> 
+ * <code>PickTool.setCapabilities(Node, int)</code></A>
  * can be used before the scene graph is
- * made live to set the 
+ * made live to set the
  * capabilities of Shape3D, Morph or Geometry
  * nodes to allow picking.
  * <p>
  * A PickResult from a lower level of detail pick can be used to
- * inquire more detailed information if the capibility bits are set.  
+ * inquire more detailed information if the capibility bits are set.
  * This can be used to filter the PickResults
- * before the more computationally intensive intersection processing. 
+ * before the more computationally intensive intersection processing.
  * For example,
  * the application can do a BOUNDS pick and then selectively inquire
- * intersections on some of the PickResults. This will save the effort of 
- * doing intersection computation on the other PickResults.  
- * However, inquiring the intersections from a GEOMETRY pick will make 
+ * intersections on some of the PickResults. This will save the effort of
+ * doing intersection computation on the other PickResults.
+ * However, inquiring the intersections from a GEOMETRY pick will make
  * the intersection computation happen twice, use GEOMETRY_INTERSECT_INFO
  * if you want to inquire the intersection information on all the PickResults.
  * <p>
- * When using pickAllSorted or pickClosest methods, the picks 
- * will be sorted by the distance from the start point of the pick shape to 
+ * When using pickAllSorted or pickClosest methods, the picks
+ * will be sorted by the distance from the start point of the pick shape to
  * the intersection point.
  * <p>
- * Morph nodes cannot be picked using the displayed geometry in 
- * GEOMETRY_INTERSECT_INFO mode due to limitations in the current Java3D core 
+ * Morph nodes cannot be picked using the displayed geometry in
+ * GEOMETRY_INTERSECT_INFO mode due to limitations in the current Java3D core
  * API (the current
- * geometry of the the Morph cannot be inquired).  Instead they are picked 
- * using 
+ * geometry of the the Morph cannot be inquired).  Instead they are picked
+ * using
  * the geometry at index 0 in the Morph, this limitation may be eliminated in a
  * future release of Java3D.
  * <p>
@@ -136,7 +136,7 @@ public class PickTool {
     Locale pickRootL = null;
 
     /** Used to store a reference point used in determining how "close" points
-        are. 
+        are.
     */
     Point3d start = null;
 
@@ -144,16 +144,16 @@ public class PickTool {
     int mode = BOUNDS;
 
     /** Use this mode to pick by bounds and get basic information
-        on the pick. 
+        on the pick.
     */
     public static final int BOUNDS = 0x200;
 
-    /** Use this mode to pick by geometry and get basic 
-	information on the pick. 
+    /** Use this mode to pick by geometry and get basic
+	information on the pick.
     */
     public static final int GEOMETRY = 0x100;
 
-    /** Use this mode to pick by geometry and save 
+    /** Use this mode to pick by geometry and save
         information about the intersections (intersected primitive,
 	intersection point and closest vertex).
     */
@@ -165,15 +165,15 @@ public class PickTool {
    * Flag to pass to <CODE>setCapabilities(Node, int)<code> to set
    * the Node's capabilities to allow intersection tests, but not
    * inquire information about the intersections (use for GEOMETRY mode).
-   * @see PickTool#setCapabilities 
+   * @see PickTool#setCapabilities
    */
   public static final int INTERSECT_TEST = 0x1001;
 
   /**
    * Flag to pass to <CODE>setCapabilities(Node, int)<code> to set
    * the Node's capabilities to allow inquiry of the intersection
-   * coordinate information. 
-   * @see PickTool#setCapabilities 
+   * coordinate information.
+   * @see PickTool#setCapabilities
    */
   public static final int INTERSECT_COORD = 0x1002;
 
@@ -181,13 +181,13 @@ public class PickTool {
    * Flag to pass to <CODE>setCapabilities(Node, int)<code> to set
    * the Node's capabilities to allow inquiry of all intersection
    * information.
-   * @see PickTool#setCapabilities 
+   * @see PickTool#setCapabilities
    */
   public static final int INTERSECT_FULL = 0x1004;
 
     /* ============================ METHODS ============================ */
 
-    /** 
+    /**
      * Constructor with BranchGroup to be picked.
      */
     public PickTool (BranchGroup b) {
@@ -195,29 +195,29 @@ public class PickTool {
     }
 
     /** Returns the BranchGroup to be picked if the tool was initialized
-	with a BranchGroup, null otherwise. 
+	with a BranchGroup, null otherwise.
       */
     public BranchGroup getBranchGroup() {
         return pickRootBG;
     }
 
-    /** 
+    /**
      * Constructor with the Locale to be picked.
      */
     public PickTool (Locale l) {
 	pickRootL = l;
     }
 
-    /** 
+    /**
      * Returns the Locale to be picked if the tool was initialized with
      * a Locale, null otherwise.
      */
     public Locale getLocale () {
 	return pickRootL;
     }
-    
 
-    /** 
+
+    /**
      * @deprecated This method does nothing other than return its
      * input parameter.
      */
@@ -225,10 +225,10 @@ public class PickTool {
          return l;
     }
 
-    /** 
+    /**
      * Sets the capabilities on the Node and it's components to allow
-     * picking at the specified detail level.  
-     * <p> 
+     * picking at the specified detail level.
+     * <p>
      * Note that by default all com.sun.j3d.utils.geometry.Primitive
      * objects with the same parameters share their geometry (e.g.,
      * you can have 50 spheres in your scene, but the geometry is
@@ -244,7 +244,7 @@ public class PickTool {
      *  INTERSECT_COORD or INTERSECT_FULL
      * @throws IllegalArgumentException if Node is not a Shape3D or Morph or
      *	if the flag value is not valid.
-     * @throws javax.media.j3d.RestrictedAccessException if the node is part 
+     * @throws javax.media.j3d.RestrictedAccessException if the node is part
      *  of a live or compiled scene graph.  */
     static public void setCapabilities(Node node, int level)  {
 	if (node instanceof Morph) {
@@ -342,7 +342,7 @@ public class PickTool {
 
     // Methods used to define the pick shape
 
-    /** Sets the pick shape to a user-provided PickShape object 
+    /** Sets the pick shape to a user-provided PickShape object
       *  @param ps The pick shape to pick against.
       *  @param startPt The start point to use for distance calculations
       */
@@ -352,7 +352,7 @@ public class PickTool {
 	userDefineShape = (ps != null);
     }
 
-    /**  Sets the pick shape to use a user-provided Bounds object 
+    /**  Sets the pick shape to use a user-provided Bounds object
       *  @param bounds The bounds to pick against.
       *  @param startPt The start point to use for distance calculations
       */
@@ -363,11 +363,11 @@ public class PickTool {
     }
 
     /** Sets the picking detail mode.  The default is BOUNDS.
-     * @param mode One of BOUNDS, GEOMETRY, GEOMETRY_INTERSECT_INFO, or 
+     * @param mode One of BOUNDS, GEOMETRY, GEOMETRY_INTERSECT_INFO, or
      * @exception IllegalArgumentException if mode is not a legal value
      */
     public void setMode (int mode) {
-	if ((mode != BOUNDS) && (mode != GEOMETRY) && 
+	if ((mode != BOUNDS) && (mode != GEOMETRY) &&
 	      (mode != GEOMETRY_INTERSECT_INFO)) {
 	    throw new java.lang.IllegalArgumentException();
 	}
@@ -380,7 +380,7 @@ public class PickTool {
 	return mode;
     }
 
-    /**  Sets the pick shape to a PickRay. 
+    /**  Sets the pick shape to a PickRay.
      *   @param start The start of the ray
      *   @param dir The direction of the ray
      */
@@ -400,14 +400,14 @@ p	 @param end The end of the segment
 	userDefineShape = true;
     }
 
-    /**  Sets the pick shape to a capped PickCylinder 
+    /**  Sets the pick shape to a capped PickCylinder
      *   @param start The start of axis of the cylinder
      *   @param end The end of the axis of the cylinder
      *   @param radius The radius of the cylinder
      */
-    public void setShapeCylinderSegment (Point3d start, Point3d end, 
+    public void setShapeCylinderSegment (Point3d start, Point3d end,
 				   double radius) {
-	this.pickShape = (PickShape) 
+	this.pickShape = (PickShape)
 				new PickCylinderSegment (start, end, radius);
 	this.start = start;
 	userDefineShape = true;
@@ -418,31 +418,31 @@ p	 @param end The end of the segment
      *   @param dir The direction of the axis of the cylinder
      *   @param radius The radius of the cylinder
      */
-    public void setShapeCylinderRay (Point3d start, Vector3d dir, 
+    public void setShapeCylinderRay (Point3d start, Vector3d dir,
 			       double radius) {
 	this.pickShape = (PickShape) new PickCylinderRay (start, dir, radius);
 	this.start = start;
 	userDefineShape = true;
     }
 
-    /** Sets the pick shape to a capped PickCone 
+    /** Sets the pick shape to a capped PickCone
      *   @param start The start of axis of the cone
      *   @param end The end of the axis of the cone
      *   @param angle The angle of the cone
      */
-    public void setShapeConeSegment (Point3d start, Point3d end, 
+    public void setShapeConeSegment (Point3d start, Point3d end,
 			       double angle) {
 	this.pickShape = (PickShape) new PickConeSegment (start, end, angle);
 	this.start = start;
 	userDefineShape = true;
     }
 
-    /**  Sets the pick shape to an infinite PickCone. 
+    /**  Sets the pick shape to an infinite PickCone.
      *   @param start The start of axis of the cone
      *   @param dir The direction of the axis of the cone
      *   @param angle The angle of the cone
      */
-    public void setShapeConeRay (Point3d start, Vector3d dir, 
+    public void setShapeConeRay (Point3d start, Vector3d dir,
 			   double angle) {
 	this.pickShape = (PickShape) new PickConeRay (start, dir, angle);
 	this.start = start;
@@ -460,10 +460,10 @@ p	 @param end The end of the segment
     }
 
     /** Selects all the nodes that intersect the PickShape.
-      @return An array of <code>PickResult</code> objects which will contain 
-       information about the picked instances. <code>null</code> if nothing was 
+      @return An array of <code>PickResult</code> objects which will contain
+       information about the picked instances. <code>null</code> if nothing was
        picked.
-    */ 
+    */
     public PickResult[] pickAll () {
 	PickResult[] retval = null;
 	switch (mode) {
@@ -483,10 +483,10 @@ p	 @param end The end of the segment
     }
 
     /** Select one of the nodes that intersect the PickShape
-        @return A <code>PickResult</code> object which will contain 
-         information about the picked instance. <code>null</code> if nothing 
+        @return A <code>PickResult</code> object which will contain
+         information about the picked instance. <code>null</code> if nothing
 	 was picked.
-    */ 
+    */
     public PickResult pickAny () {
 	PickResult retval = null;
 	switch (mode) {
@@ -505,12 +505,12 @@ p	 @param end The end of the segment
 	return retval;
     }
 
-    /** Select all the nodes that intersect the 
+    /** Select all the nodes that intersect the
         PickShape, returned sorted. The "closest" object will be returned first.
-        See note above to see how "closest" is determined.    
+        See note above to see how "closest" is determined.
 	<p>
-	@return An array of <code>PickResult</code> objects which will contain 
-	information 
+	@return An array of <code>PickResult</code> objects which will contain
+	information
 	about the picked instances. <code>null</code> if nothing was picked.
     */
     public PickResult[] pickAllSorted () {
@@ -534,7 +534,7 @@ p	 @param end The end of the segment
 	      // The current Shape3D.intersect() API does't return the closest intersected
 	      // geometry.
 	      retval =  pickGeomAllSorted(pickShape);
-	      
+
 	      break;
 	  case GEOMETRY_INTERSECT_INFO:
 	      // System.out.println ("PickShape " + pickShape);
@@ -547,12 +547,12 @@ p	 @param end The end of the segment
 	return retval;
     }
 
-    /** Select the closest node that 
-        intersects the PickShape. See note above to see how "closest" is 
+    /** Select the closest node that
+        intersects the PickShape. See note above to see how "closest" is
 	determined.
 	<p>
-	@return A <code>PickResult</code> object which will contain 
-	information about the picked instance. <code>null</code> if nothing 
+	@return A <code>PickResult</code> object which will contain
+	information about the picked instance. <code>null</code> if nothing
 	was picked.
     */
     public PickResult pickClosest () {
@@ -572,7 +572,7 @@ p	 @param end The end of the segment
 	      // The current Shape3D.intersect() API does't return the closest intersected
 	      // geometry.
 	      retval =  pickGeomClosest(pickShape);
-	      
+
 	      break;
 	case GEOMETRY_INTERSECT_INFO:
 	    // System.out.println ("PickShape " + pickShape);
@@ -684,9 +684,9 @@ p	 @param end The end of the segment
 	    if (obj[i] instanceof Shape3D) {
 		found[i] = ((Shape3D) obj[i]).intersect(sgp[i], pickShape);
 	    } else if (obj[i] instanceof Morph) {
-		found[i] = ((Morph) obj[i]).intersect(sgp[i], pickShape); 
+		found[i] = ((Morph) obj[i]).intersect(sgp[i], pickShape);
 	    }
-	    if (found[i] == true) cnt++;	
+	    if (found[i] == true) cnt++;
 	}
 
 	if (cnt == 0) return null; // no match
@@ -706,7 +706,7 @@ p	 @param end The end of the segment
 	Node[] obj = null;
 	int i, cnt=0;
 	double[] dist = new double[1];
-	
+
 	// First pass
 	if (pickRootBG != null) {
 	    sgp = pickRootBG.pickAll(pickShape);
@@ -724,20 +724,20 @@ p	 @param end The end of the segment
 	double[] distArr = new double[sgp.length];
 	obj = new Node [sgp.length];
 	PickResult[] pr = new PickResult [sgp.length];
-	
+
 	for (i=0; i<sgp.length; i++) {
 	    obj[i] = sgp[i].getObject();
 	    pr[i] = new PickResult (sgp[i], pickShape);
 	    if (obj[i] instanceof Shape3D) {
 		found[i] = ((Shape3D)obj[i]).intersect(sgp[i], pickShape,
 						       dist);
-		distArr[i] = dist[0];		
+		distArr[i] = dist[0];
 	    } else if (obj[i] instanceof Morph) {
 		found[i] = ((Morph)obj[i]).intersect(sgp[i], pickShape,
 						     dist);
 		distArr[i] = dist[0];
 	    }
-	    if (found[i] == true) cnt++;	
+	    if (found[i] == true) cnt++;
 	}
 	if (cnt == 0) return null; // no match
 
@@ -750,7 +750,7 @@ p	 @param end The end of the segment
 		npr[cnt++] = pr[i];
 	    }
 	}
-	if (cnt > 1) { 
+	if (cnt > 1) {
 	    return sortPickResults (npr, distance);
 	} else { // Don't have to sort if only one item
 	    return npr;
@@ -855,12 +855,12 @@ p	 @param end The end of the segment
 
 	// System.out.println ("PickTool.pickGeomAllSortedIntersect: bounds " +
 	// " picking found "+sgp.length+" nodes");
-		
-	
+
+
 	// Second pass, check to see if geometries intersected
 	boolean[] found = new boolean[sgp.length];
 	double[] distArr = new double[sgp.length];
-	
+
 	PickResult[] pr = new PickResult[sgp.length];
 	for (i=0; i<sgp.length; i++) {
  	    pr[i] = new PickResult(sgp[i], pickShape);
@@ -881,11 +881,11 @@ p	 @param end The end of the segment
 		    tempDist = pr[i].getIntersection(j).getDistance();
 		    if(minDist > tempDist) {
 			minDist = tempDist;
-			minIndex = j;    
+			minIndex = j;
 			needToSwap = true;
 		    }
 		}
-		
+
 		//Swap if necc.
 		if(needToSwap) {
 		    // System.out.println ("Swap is needed");
@@ -894,17 +894,17 @@ p	 @param end The end of the segment
 		    pr[i].intersections.set(0, piMin);
 		    pr[i].intersections.set(minIndex, pi0);
 		}
-		
+
 		distArr[i] = pr[i].getIntersection(0).getDistance();
 		cnt++;
 	    }
 	}
-	
-	
+
+
 	// System.out.println ("PickTool.pickGeomAllSortedIntersect: geometry intersect check "
 	// + " cnt " + cnt);
-	  
-	
+
+
 	if (cnt == 0) return null; // no match
 
 	PickResult[] npr = new PickResult[cnt];
@@ -916,14 +916,14 @@ p	 @param end The end of the segment
 		npr[cnt++] = pr[i];
 	    }
 	}
-	
+
 	if (cnt > 1) {
 	    return sortPickResults (npr, distance);
 	} else { // Don't have to sort if only one item
 	    return npr;
 	}
     }
-    
+
     private PickResult pickGeomClosestIntersect(PickShape pickShape) {
 	PickResult[] pr = pickGeomAllSortedIntersect(pickShape);
 	/*
@@ -940,7 +940,7 @@ p	 @param end The end of the segment
 	    return pr[0];
 	}
     }
-    private PickResult pickGeomAnyIntersect(PickShape pickShape) { 
+    private PickResult pickGeomAnyIntersect(PickShape pickShape) {
 	Node obj = null;
 	int i;
 	SceneGraphPath[] sgpa = null;
@@ -968,7 +968,7 @@ p	 @param end The end of the segment
     private PickResult[] sortPickResults (PickResult[] pr, double[] dist) {
 	int[] pos = new int [pr.length];
 	PickResult[] prsorted = new PickResult [pr.length];
-	
+
 	// Initialize position array
 	for (int i=0; i<pr.length; i++) {
 	    pos[i]=i;
@@ -982,8 +982,8 @@ p	 @param end The end of the segment
 	}
 	return prsorted;
     }
-  
-    private final void quicksort( int l, int r, double[] dist, 
+
+    private final void quicksort( int l, int r, double[] dist,
 			    int[] pos) {
 	int p,i,j;
 	double tmp,k;

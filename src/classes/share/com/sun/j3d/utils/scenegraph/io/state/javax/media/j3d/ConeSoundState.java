@@ -57,12 +57,12 @@ public class ConeSoundState extends PointSoundState {
 
     public ConeSoundState(SymbolTableData symbol,Controller control) {
         super( symbol, control );
-        
+
     }
-    
+
     public void writeObject( DataOutput out ) throws IOException {
         super.writeObject( out );
-        
+
         float[] distanceAtten = new float[ ((ConeSound)node).getAngularAttenuationLength() ];
         float[] gainAtten = new float[ distanceAtten.length ];
         float[] filterAtten = new float[ distanceAtten.length ];
@@ -70,7 +70,7 @@ public class ConeSoundState extends PointSoundState {
         float[] backGain = new float[ distanceAtten.length ];
         float[] frontDistance = new float[ distanceAtten.length ];
         float[] frontGain = new float[ distanceAtten.length ];
-        
+
         ((ConeSound)node).getDistanceGain( frontDistance, frontGain, backDistance, backGain );
         ((ConeSound)node).getAngularAttenuation( distanceAtten, gainAtten, filterAtten );
         out.writeInt( distanceAtten.length );
@@ -80,26 +80,26 @@ public class ConeSoundState extends PointSoundState {
             out.writeFloat( filterAtten[i] );
             out.writeFloat( backDistance[i] );
             out.writeFloat( backGain[i] );
-            
+
             // We don't need to write the front distance or gain as these
             // will be handled by the superclass
         }
-        
+
         Vector3f direction = new Vector3f();
-        
+
         ((ConeSound)node).getDirection( direction );
         control.writeVector3f( out, direction );
     }
-    
+
     public void readObject( DataInput in ) throws IOException {
         super.readObject( in );
-                    
+
         float[] distanceAtten = new float[ in.readInt() ];
         float[] gainAtten = new float[ distanceAtten.length ];
         float[] filterAtten = new float[ distanceAtten.length ];
         float[] backDistance = new float[ distanceAtten.length ];
         float[] backGain = new float[ distanceAtten.length ];
-        
+
         for(int i=0; i<distanceAtten.length; i++) {
             distanceAtten[i] = in.readFloat();
             gainAtten[i] = in.readFloat();
@@ -107,16 +107,16 @@ public class ConeSoundState extends PointSoundState {
             backDistance[i] = in.readFloat();
             backGain[i] = in.readFloat();
         }
-        
+
         ((ConeSound)node).setBackDistanceGain( backDistance, backGain );
         ((ConeSound)node).setAngularAttenuation( distanceAtten, gainAtten, filterAtten );
-        
+
         ((ConeSound)node).setDirection( control.readVector3f( in ));
     }
-    
+
     protected SceneGraphObject createNode() {
         return new ConeSound();
     }
 
-    
+
 }

@@ -53,11 +53,11 @@ import javax.media.j3d.SceneGraphObject;
 import javax.media.j3d.LineAttributes;
 
 public class LineAttributesState extends NodeComponentState {
-    
+
     public LineAttributesState( SymbolTableData symbol, Controller control ) {
         super(symbol, control);
     }
-    
+
     public void writeObject( DataOutput out ) throws IOException {
         super.writeObject( out );
         LineAttributes attr = (LineAttributes)node;
@@ -67,7 +67,7 @@ public class LineAttributesState extends NodeComponentState {
         out.writeInt( attr.getPatternMask() );
         out.writeInt( attr.getPatternScaleFactor() );
     }
-    
+
     public void readObject( DataInput in ) throws IOException {
         super.readObject( in );
         LineAttributes attr = (LineAttributes)node;
@@ -77,11 +77,11 @@ public class LineAttributesState extends NodeComponentState {
         attr.setPatternMask( in.readInt() );
         attr.setPatternScaleFactor( in.readInt() );
     }
-    
+
     protected javax.media.j3d.SceneGraphObject createNode() {
         return new LineAttributes();
     }
 
-    
+
 }
 

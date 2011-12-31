@@ -45,9 +45,9 @@
 package com.sun.j3d.utils.timer;
 
 /**
- * A High Resolution interval timer. The timer resolution is 
- * operating system dependent and can be queried using 
- * getTimerResolution(). 
+ * A High Resolution interval timer. The timer resolution is
+ * operating system dependent and can be queried using
+ * getTimerResolution().
  *
  * These methods are not reentrant and should not
  * be called concurrently from multiple threads.

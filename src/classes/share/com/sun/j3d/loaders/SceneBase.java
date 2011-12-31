@@ -83,7 +83,7 @@ public class SceneBase implements Scene {
     Vector fogVector = new Vector();
     Vector backgroundVector = new Vector();
     Vector soundVector = new Vector();
-    
+
     // Add methods
 
     /**
@@ -108,7 +108,7 @@ public class SceneBase implements Scene {
     }
 
     /**
-     * Adds the given behavior to a list of behaviors 
+     * Adds the given behavior to a list of behaviors
      */
     public void addBehaviorNode(Behavior b) {
 	behaviorVector.addElement(b);
@@ -170,7 +170,7 @@ public class SceneBase implements Scene {
 	    }
 	}
     }
-    
+
     /**
      * This method returns the BranchGroup containing the overall
      * scene loaded by the loader.
@@ -198,7 +198,7 @@ public class SceneBase implements Scene {
     /**
      * This method returns an array of floats that contains the horizontal
      * field of view values for each corresponding entry in the array of
-     * view groups returned by the method getViewGroups. 
+     * view groups returned by the method getViewGroups.
      */
     public float[] getHorizontalFOVs() {
 	if (hfovVector.isEmpty())
@@ -215,20 +215,20 @@ public class SceneBase implements Scene {
           tmpFovs[i] = null;
         }
 	return hfovs;
-    } 
+    }
 
-    
+
     /**
      * This method returns an array of all Lights defined in the file.
      */
     public Light[] getLightNodes() {
 	if (lightVector.isEmpty())
 	    return null;
-	Light[] lightNodes = new Light[lightVector.size()]; 
+	Light[] lightNodes = new Light[lightVector.size()];
 	lightVector.copyInto(lightNodes);
 	return lightNodes;
     }
-    
+
 
     /**
      * This method returns a Hashtable which contains a list of all named
@@ -240,7 +240,7 @@ public class SceneBase implements Scene {
     public Hashtable getNamedObjects() {
 	return namedObjects;
     }
-    
+
 
     /**
      * This method returns an array of all Background nodes defined in the
@@ -253,7 +253,7 @@ public class SceneBase implements Scene {
 	backgroundVector.copyInto(backgroundNodes);
 	return backgroundNodes;
     }
-    
+
 
     /**
      * This method returns an array of all Fog nodes defined in the
@@ -266,7 +266,7 @@ public class SceneBase implements Scene {
 	fogVector.copyInto(fogNodes);
 	return fogNodes;
     }
-    
+
 
     /**
      * This method returns a group containing all of the Behavior nodes
@@ -275,12 +275,12 @@ public class SceneBase implements Scene {
     public Behavior[] getBehaviorNodes() {
 	if (behaviorVector.isEmpty())
 	    return null;
-	Behavior[] behaviorNodes = new Behavior[behaviorVector.size()]; 
+	Behavior[] behaviorNodes = new Behavior[behaviorVector.size()];
 	behaviorVector.copyInto(behaviorNodes);
 
 	return behaviorNodes;
     }
-    
+
 
     /**
      * This method returns an array of all of the Sound nodes defined
@@ -306,6 +306,6 @@ public class SceneBase implements Scene {
 }
 
 
-    
 
-    
+
+

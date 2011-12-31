@@ -58,31 +58,31 @@ public class TransformGroupState extends GroupState {
     public TransformGroupState( SymbolTableData symbol, Controller control ) {
         super( symbol, control );
     }
-    
+
     public void writeObject( DataOutput out ) throws IOException {
         super.writeObject( out );
         Transform3D trans = new Transform3D();
         ((TransformGroup)node).getTransform( trans );
         double[] matrix = new double[16];
         trans.get( matrix );
-        
+
         for(int i=0; i<16; i++)
             out.writeDouble( matrix[i] );
-        
+
     }
-    
+
     public void readObject( DataInput in ) throws IOException {
         super.readObject( in );
         Transform3D trans = new Transform3D();
         double[] matrix = new double[16];
-        
+
         for(int i=0; i<16; i++)
             matrix[i] = in.readDouble();
-        
+
         trans.set( matrix );
         ((TransformGroup)node).setTransform( trans );
     }
-    
+
     protected javax.media.j3d.SceneGraphObject createNode() {
         return new TransformGroup();
     }

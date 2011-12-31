@@ -91,12 +91,12 @@ import com.sun.j3d.utils.universe.ConfiguredUniverse;
 import com.sun.j3d.utils.universe.SimpleUniverse;
 
 /**
- * Provides code to control the reading and writing of Java3D objects to and 
+ * Provides code to control the reading and writing of Java3D objects to and
  * from any Java IO mechanism.
  */
 public abstract class Controller extends java.lang.Object {
-    
-    
+
+
     protected static final long SYMBOL_TABLE_PTR = 30;            // long - 8 bytes
     protected static final long BG_DIR_PTR = 38;                  // long - 8 bytes
     protected static final long NAMES_OBJECTS_TABLE_PTR = 46;     // long - 8 bytes
@@ -107,19 +107,19 @@ public abstract class Controller extends java.lang.Object {
 
     protected SymbolTable symbolTable;
     protected NullSceneGraphObjectState nullObject = new NullSceneGraphObjectState( null, this );
-    
+
     /**
      * The currentFileVersion being read
      */
     protected int currentFileVersion;
-    
+
     /**
      * The File version which will be written
      *
      * 1 = Java3D 1.3 beta 1
-     * 2 = Java3D 1.3 FCS, 1) fix to allow skipping user data written via 
+     * 2 = Java3D 1.3 FCS, 1) fix to allow skipping user data written via
 			      SceneGraphIO interface
-            		   2) Add missing duplicateOnCloneTree flag 
+            		   2) Add missing duplicateOnCloneTree flag
 			      (bug 4690159)
      * 3 = Java3D 1.5.1    1) Add support for SceneGraphObject Name field
      * 4 = Java3D 1.5.2    issue 532, for saving Background Geometry
@@ -128,7 +128,7 @@ public abstract class Controller extends java.lang.Object {
     protected int outputFileVersion = 5;
 
     /**
-     * When running the application within webstart this may not be the 
+     * When running the application within webstart this may not be the
      * correct ClassLoader. If Java 3D is not installed in the local vm and
      * is instead installed by webstart then this definitely is NOT the correct
      * classloader, in this case Thread.getCurrent().getClass().getClassLoader()
@@ -136,7 +136,7 @@ public abstract class Controller extends java.lang.Object {
      * classloader by calling setClassLoader in SceneGraph[Stream|File]Reader.
      */
     protected ClassLoader classLoader = ClassLoader.getSystemClassLoader();
-    
+
     /**
      * If true when loading a scenegraph that contains nodes who's classes
      * are not in the classpath then use then first Java3D core superclass
@@ -146,15 +146,15 @@ public abstract class Controller extends java.lang.Object {
      * located
      */
     private boolean useSuperClass = false;
-        
+
     private int imageCompression = ImageComponentState.NO_COMPRESSION;
-    
+
     /** Creates new Controller */
     public Controller() {
         try {
             if ( System.getProperty("j3d.io.UseSuperClassIfNoChildClass")!=null)
                 useSuperClass = true;
-            
+
             String imageC = System.getProperty("j3d.io.ImageCompression");
             if (imageC!=null) {
                 if (imageC.equalsIgnoreCase("None"))
@@ -165,27 +165,27 @@ public abstract class Controller extends java.lang.Object {
                     imageCompression = ImageComponentState.JPEG_COMPRESSION;
             }
         } catch( Exception e ) {}
-        
+
     }
-    
+
     public final SymbolTable getSymbolTable() {
         return symbolTable;
     }
-    
+
     /**
      * Get the file version that we should write
      */
     public int getOutputFileVersion() {
         return outputFileVersion;
     }
-    
+
     /**
      * Get the file version of the file we are reading
      */
     public int getCurrentFileVersion() {
         return currentFileVersion;
     }
-    
+
     /**
      * Create a new state object and check for a pre-existing symbol table
      * entry
@@ -193,7 +193,7 @@ public abstract class Controller extends java.lang.Object {
     public SceneGraphObjectState createState( SceneGraphObject obj ) {
         return createState( obj, symbolTable.getSymbol( obj ) );
     }
-    
+
     /**
       * Given a scene graph object instantiate the correct State class
       * for that object. If the symbol already exists (is not null) then
@@ -201,7 +201,7 @@ public abstract class Controller extends java.lang.Object {
       */
     public SceneGraphObjectState createState( SceneGraphObject obj, SymbolTableData symbol ) {
         if (obj==null) return nullObject;
- 
+
         if (symbol!=null) {
             symbol.incrementReferenceCount();
             symbolTable.setBranchGraphID( symbol );
@@ -209,10 +209,10 @@ public abstract class Controller extends java.lang.Object {
                 return symbol.getNodeState();
         } else
             symbol = symbolTable.createSymbol( obj );
-        
+
         return createState( symbol );
     }
-    
+
     /**
      * Return the state class for the SceneGraphObject, creating one if it does
      * not already exist
@@ -220,15 +220,15 @@ public abstract class Controller extends java.lang.Object {
     public SceneGraphObjectState createState( SymbolTableData symbol ) {
         SceneGraphObject obj = symbol.getJ3dNode();
         if (obj==null) return nullObject;
-        
+
         String name = obj.getClass().getName();
         SceneGraphObjectState ret;
-        
+
           try {
               Class state;
               if (obj instanceof SceneGraphStateProvider)
                   state = ((SceneGraphStateProvider)obj).getStateClass();
-              else 
+              else
                   state = Class.forName( "com.sun.j3d.utils.scenegraph.io.state."+name+"State" );
               ret = constructStateObj( symbol, state, obj.getClass() );
           } catch(ClassNotFoundException e) {
@@ -239,17 +239,17 @@ public abstract class Controller extends java.lang.Object {
                   throw new SGIORuntimeException( "No State class for "+
                                                   obj.getClass().getName() );
           }
-        
+
         symbol.nodeState = ret;
-        
+
         return ret;
     }
     private SceneGraphObjectState constructStateObj( SymbolTableData symbol,
                                                      Class state,
                                                      Class objClass ) {
- 
+
         SceneGraphObjectState ret = null;
- 
+
         try {
             Constructor construct = state.getConstructor(
                                 new Class[] { com.sun.j3d.utils.scenegraph.io.retained.SymbolTableData.class,
@@ -257,7 +257,7 @@ public abstract class Controller extends java.lang.Object {
                                             } );
             ret = (SceneGraphObjectState)construct.newInstance(
                                                 new Object[]{ symbol, this } );
- 
+
         } catch( NoSuchMethodException ex ) {
             System.out.println("Looking for Constructor ("+symbol.j3dNode.getClass().getName()+", Controller )");
             throw new SGIORuntimeException( "1 Broken State class for "+
@@ -273,21 +273,21 @@ public abstract class Controller extends java.lang.Object {
             throw new SGIORuntimeException( "4 Broken State class for "+
                                                 state.getName() );
         }
- 
+
         return ret;
     }
- 
+
     /**
       * Check to see if any of the superclasses of obj are
       * known to the Java3D IO package
       */
     private SceneGraphObjectState checkSuperClasses( SymbolTableData symbol ) {
-       
+
         Class cl = symbol.j3dNode.getClass().getSuperclass();
         Class state = null;
         boolean finished = false;
- 
- 
+
+
         while( cl != null & !finished ) {
             String name = cl.getName();
             //System.out.println("Got superclass "+name);
@@ -296,48 +296,48 @@ public abstract class Controller extends java.lang.Object {
             } catch(ClassNotFoundException e) {
                 state = null;
             }
-               
+
             if (state!=null)
                 finished = true;
             else
                 cl = cl.getSuperclass();
         }
- 
+
         if (cl==null)
             throw new SGIORuntimeException( "Unsupported class "+symbol.j3dNode.getClass().getName() );
-        
+
         return constructStateObj( symbol, state, cl );
-    } 
-              
-    
+    }
+
+
     public void writeObject( DataOutput out, SceneGraphObjectState obj ) throws IOException {
 
         int classID = getStateID( obj );
-        
-        out.writeInt( classID );      // Node class id 
-        
+
+        out.writeInt( classID );      // Node class id
+
         if (classID==0) {
             out.writeUTF( obj.getClass().getName() );
         }
-        
-        obj.writeObject( out );        
+
+        obj.writeObject( out );
     }
-    
+
     public SceneGraphObjectState readObject( DataInput in ) throws IOException {
         int classID = in.readInt();
 
         SceneGraphObjectState state = null;
-        
+
         if (classID==-1)
             return nullObject;
-        else if (classID==0) { 
+        else if (classID==0) {
             String stateClassName = in.readUTF();
 
             try {
                 Class cl = Class.forName( stateClassName, true, classLoader );
                 // System.out.println("Got class "+cl );
                 Constructor construct = cl.getConstructor(
-                        new Class[] { 
+                        new Class[] {
                         com.sun.j3d.utils.scenegraph.io.retained.SymbolTableData.class,
                         com.sun.j3d.utils.scenegraph.io.retained.Controller.class} );
 
@@ -361,19 +361,19 @@ public abstract class Controller extends java.lang.Object {
             } catch( InstantiationException excep ) {
                 throw new java.io.IOException( "4 Broken State class for "+
                                                     stateClassName );
-            }     
+            }
         } else {
             state = createCoreState( classID );
         }
-        
+
         state.readObject( in );
-        
+
         return state;
     }
 
-    /** 
+    /**
       * Set the class loader used to load the Scene Graph Objects and
-      * the serialized user data. The default is 
+      * the serialized user data. The default is
       * ClassLoader.getSystemClassLoader()
       */
     public void setClassLoader( ClassLoader classLoader ) {
@@ -381,9 +381,9 @@ public abstract class Controller extends java.lang.Object {
     }
 
 
-    /** 
+    /**
       * Get the class loader used to load the Scene Graph Objects and
-      * the serialized user data. The default is 
+      * the serialized user data. The default is
       * ClassLoader.getSystemClassLoader()
       */
     public ClassLoader getClassLoader() {
@@ -398,35 +398,35 @@ public abstract class Controller extends java.lang.Object {
         // This method is overridden by RandomAccessFileControl
         // The RandomAccessFileControl version sets the pointer to
         // the next NodeComponent correclty
-        
+
         ListIterator list = symbolTable.getUnsavedNodeComponents();
         out.writeInt( symbolTable.getUnsavedNodeComponentsSize() );
         while( list.hasNext() ) {
             SymbolTableData symbol = (SymbolTableData)list.next();
-            
+
             out.writeInt( symbol.nodeID );
             out.writeLong( 0L );            // Pointer to next NodeComponent
-            
+
             writeObject( out, symbol.getNodeState() );
         }
     }
-    
+
     /**
-     * Read in all the node components in this block 
+     * Read in all the node components in this block
      */
     protected void readNodeComponents( DataInput in ) throws IOException {
         int count = in.readInt();
-        
+
         for(int i=0; i<count; i++) {
             // nodeID and nextNC data is used in RandomAccessFileControl
             // version of readNodeComponents
             int nodeID = in.readInt();
             long nextNC = in.readLong();
-            
+
             SceneGraphObjectState nodeComponent = readObject( in );
         }
     }
-    
+
     /**
      * Write the shared group and it's node components to the IO stream
      */
@@ -437,17 +437,17 @@ public abstract class Controller extends java.lang.Object {
         writeNodeComponents( out );
         symbolTable.endUnsavedNodeComponentFrame();
     }
-    
+
     /**
      * Read a Shared group and it's node components from the IO Stream
      */
     public int readSharedGroup( DataInput in ) throws IOException {
         SceneGraphObjectState state = readObject( in );
         readNodeComponents( in );
-        
+
         return state.getNodeID();
     }
-        
+
     /**
      * Write out the Universe information.
      */
@@ -459,7 +459,7 @@ public abstract class Controller extends java.lang.Object {
             out.writeUTF( universe.getClass().getName() );
             SimpleUniverseState state = new SimpleUniverseState( universe, this );
             state.writeObject( out );
-            
+
             if (writeUniverseContent) {
                 state.detachAllGraphs();
                 int[] graphs = state.getAllGraphIDs();
@@ -468,7 +468,7 @@ public abstract class Controller extends java.lang.Object {
                     System.out.println("Writing "+graphs[i]+"  "+symbol.j3dNode );
                     writeBranchGraph( (BranchGroup)symbol.j3dNode, null );
                 }
-                
+
                 state.attachAllGraphs();
             }
         } else {
@@ -476,11 +476,11 @@ public abstract class Controller extends java.lang.Object {
 		"Current Implementation only support SimpleUniverse/ConfiguredUniverse.");
         }
     }
-    
+
     /**
      * Read and create a new Universe matching the one used during save.
      *
-     * @param attachBranchGraphs If true then all the branchGraph attached to 
+     * @param attachBranchGraphs If true then all the branchGraph attached to
      * the universe when it was saved will be loaded and reattached.
      */
     public ConfiguredUniverse readUniverse(DataInput in, boolean attachBranchGraphs,
@@ -493,19 +493,19 @@ public abstract class Controller extends java.lang.Object {
                   (universeClass.equals("com.sun.j3d.utils.universe.ConfiguredUniverse")) ) {
             SimpleUniverseState state = new SimpleUniverseState( this );
             state.readObject( in, canvas );
-            
+
             if (attachBranchGraphs) {
                 int[] graphs = state.getAllGraphIDs();
                 readBranchGraphs( graphs );
-                
+
                 state.buildGraph();
             }
-            
+
             return state.getNode();
         }
         throw new IOException("Unrecognized universe class "+universeClass);
     }
-    
+
     /**
      * Read the set of branchgraps.
      *
@@ -515,28 +515,28 @@ public abstract class Controller extends java.lang.Object {
      * StreamControl will read all graphs in the stream
      */
     protected abstract void readBranchGraphs( int[] graphs ) throws IOException;
-    
+
     public abstract void writeBranchGraph( BranchGroup bg, java.io.Serializable userData) throws IOException;
-    
+
     /**
      * Reset the controller, ready to load/save data to a new file
      */
     public void reset() {
         symbolTable.clear();
     }
-    
+
     /**
      * 'Core' classes (ie those hard coded in this API) are assigned a
      * numerical value representing their class. This simply saves space
      * and IO bandwidth
      */
     private SceneGraphObjectState createCoreState( int classID ) {
-        
+
         if (classID==-1)
             return nullObject;
         else if (classID==0)
             return null;
-        
+
         Class j3dClass = getNodeClassFromID( classID-1 );
         String j3dClassName = j3dClass.getName();
         String stateClassName = "com.sun.j3d.utils.scenegraph.io.state."+j3dClassName+"State";
@@ -549,21 +549,21 @@ public abstract class Controller extends java.lang.Object {
         } catch( Exception e ) {
             e.printStackTrace();
         }
-        
+
         return stateObj;
     }
-    
+
     /**
      * Return the id of the state class
      */
     private int getStateID( SceneGraphObjectState state ) {
-        
+
         if (state instanceof NullSceneGraphObjectState)
             return -1;
-        
+
         return getNodeClassID( state.getNode() )+1;
     }
-    
+
     // The order of this array dictates the ID's of classes therefore
     // changing the order of this array will break backward compatability
     Class[] j3dClasses = new Class[] {
@@ -637,42 +637,42 @@ public abstract class Controller extends java.lang.Object {
         else
             return j3dClasses[classID];
     }
-    
+
     // TODO Use a HashMap to eliminate the linear search for the class
     //
     public int getNodeClassID( javax.media.j3d.SceneGraphObject node ) {
-        
+
         int ret = -1;
         Class cl = node.getClass();
-        
+
         for(int i=0; i<j3dClasses.length && ret==-1; i++)
             if (j3dClasses[i]==cl)
                 ret = i;
-        
+
         return ret;
     }
-    
+
     /**
-     * Associate the name with the scene graph object 
+     * Associate the name with the scene graph object
      */
     public void addNamedObject( String name, SceneGraphObject object ) {
         symbolTable.addNamedObject( name, object );
     }
-    
+
     /**
      * Return the SceneGraphObject associated with the name
      */
     public SceneGraphObject getNamedObject( String name ) throws NamedObjectException, ObjectNotLoadedException {
         return symbolTable.getNamedObject( name );
     }
-    
+
     /**
      * Get all the names of the named objects
      */
     public String[] getNames() {
         return symbolTable.getNames();
     }
-    
+
     /**
      * Write a serializable object to the current file position, proceeded by
      * the size of the object
@@ -680,21 +680,21 @@ public abstract class Controller extends java.lang.Object {
     public void writeSerializedData( DataOutput dataOutput, java.io.Serializable userData ) throws IOException {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         ObjectOutputStream objOut = new ObjectOutputStream( out );
-        
+
         objOut.writeObject( userData );
-        
+
         out.close();
-        
+
         byte[] bytes = out.toByteArray();
         dataOutput.writeInt( bytes.length );
         if (bytes.length!=0)
             dataOutput.write( bytes );
     }
-    
+
     public Object readSerializedData( DataInput dataInput ) throws IOException {
         int size = dataInput.readInt();
         Object userData = null;
-        
+
         if (size!=0) {
             byte[] bytes = new byte[size];
             dataInput.readFully( bytes );
@@ -711,10 +711,10 @@ public abstract class Controller extends java.lang.Object {
                 objIn.close();
             }
         }
-        
+
         return userData;
     }
-    
+
     /**
      * Skip past the user data object
      */
@@ -722,31 +722,31 @@ public abstract class Controller extends java.lang.Object {
         int size = dataInput.readInt();
         dataInput.skipBytes( size );
     }
-    
-    
-    
+
+
+
     public void writeColor3f( DataOutput out, Color3f color ) throws IOException {
         out.writeFloat( color.x );
         out.writeFloat( color.y );
         out.writeFloat( color.z );
     }
-    
+
     public Color3f readColor3f( DataInput in ) throws IOException {
         return new Color3f( in.readFloat(), in.readFloat(), in.readFloat() );
     }
-    
+
     public void writeColor4f( DataOutput out, Color4f vec ) throws IOException {
         writeTuple4f( out, vec );
     }
-    
+
     public Color4f readColor4f( DataInput in ) throws IOException {
         return (Color4f)readTuple4f( in, new Color4f() );
     }
-    
+
     public void writePoint3f( DataOutput out, Point3f pt ) throws IOException {
         writeTuple3f( out, pt );
     }
-    
+
     public Point3f readPoint3f( DataInput in ) throws IOException {
         return (Point3f)readTuple3f( in, new Point3f() );
     }
@@ -754,15 +754,15 @@ public abstract class Controller extends java.lang.Object {
     public void writePoint3d( DataOutput out, Point3d pt ) throws IOException {
         writeTuple3d( out, pt );
     }
-    
+
     public Point3d readPoint3d( DataInput in ) throws IOException {
         return (Point3d)readTuple3d( in, new Point3d() );
     }
-    
+
     public void writeVector3f( DataOutput out, Vector3f vec ) throws IOException {
         writeTuple3f( out, vec );
     }
-    
+
     public Vector3f readVector3f( DataInput in ) throws IOException {
         return (Vector3f)readTuple3f( in, new Vector3f() );
     }
@@ -770,23 +770,23 @@ public abstract class Controller extends java.lang.Object {
     public void writeVector4d( DataOutput out, Vector4d vec ) throws IOException {
         writeTuple4d( out, vec );
     }
-    
+
     public Vector4d readVector4d( DataInput in ) throws IOException {
         return (Vector4d)readTuple4d( in, new Vector4d() );
     }
-    
+
     public void writeVector4f( DataOutput out, Vector4f vec ) throws IOException {
         writeTuple4f( out, vec );
     }
-    
+
     public Vector4f readVector4f( DataInput in ) throws IOException {
         return (Vector4f)readTuple4f( in, new Vector4f() );
     }
-    
+
     public void writeQuat4f( DataOutput out, Quat4f vec ) throws IOException {
         writeTuple4f( out, vec );
     }
-    
+
     public Quat4f readQuat4f( DataInput in ) throws IOException {
         return (Quat4f)readTuple4f( in, new Quat4f() );
     }
@@ -796,48 +796,48 @@ public abstract class Controller extends java.lang.Object {
             for(int c=0; c<4; c++)
                 out.writeDouble( m.getElement( r, c ));
     }
-    
+
     public Matrix4d readMatrix4d( DataInput in ) throws IOException {
         double elements[] = new double[16];
         for(int c=0; c<16; c++)
             elements[ c ] = in.readDouble();
-        
+
         return new Matrix4d(elements);
     }
-    
+
     public void writeTuple3f( DataOutput out, Tuple3f tuple ) throws IOException {
         out.writeFloat( tuple.x );
         out.writeFloat( tuple.y );
         out.writeFloat( tuple.z );
     }
-    
+
     public Tuple3f readTuple3f( DataInput in, Tuple3f tuple ) throws IOException {
         tuple.x = in.readFloat();
         tuple.y = in.readFloat();
         tuple.z = in.readFloat();
         return tuple;
     }
-    
+
     public void writeTuple3d( DataOutput out, Tuple3d tuple ) throws IOException {
         out.writeDouble( tuple.x );
         out.writeDouble( tuple.y );
         out.writeDouble( tuple.z );
     }
-    
+
     public Tuple3d readTuple3d( DataInput in, Tuple3d tuple ) throws IOException {
         tuple.x = in.readDouble();
         tuple.y = in.readDouble();
         tuple.z = in.readDouble();
         return tuple;
     }
-    
+
     public void writeTuple4d( DataOutput out, Tuple4d tuple ) throws IOException {
         out.writeDouble( tuple.x );
         out.writeDouble( tuple.y );
         out.writeDouble( tuple.z );
         out.writeDouble( tuple.w );
     }
-    
+
     public Tuple4d readTuple4d( DataInput in, Tuple4d tuple ) throws IOException {
         tuple.x = in.readDouble();
         tuple.y = in.readDouble();
@@ -845,14 +845,14 @@ public abstract class Controller extends java.lang.Object {
         tuple.w = in.readDouble();
         return tuple;
     }
-    
+
     public void writeTuple4f( DataOutput out, Tuple4f tuple ) throws IOException {
         out.writeFloat( tuple.x );
         out.writeFloat( tuple.y );
         out.writeFloat( tuple.z );
         out.writeFloat( tuple.w );
     }
-    
+
     public Tuple4f readTuple4f( DataInput in, Tuple4f tuple ) throws IOException {
         tuple.x = in.readFloat();
         tuple.y = in.readFloat();
@@ -860,19 +860,19 @@ public abstract class Controller extends java.lang.Object {
         tuple.w = in.readFloat();
         return tuple;
     }
-    
+
     public void writeTransform3D( DataOutput out, Transform3D tran ) throws IOException {
         Matrix4d matrix = new Matrix4d();
         tran.get( matrix );
         writeMatrix4d( out, matrix );
     }
-    
+
     public Transform3D readTransform3D( DataInput in ) throws IOException {
         Transform3D ret = new Transform3D();
         ret.set( readMatrix4d( in ));
         return ret;
     }
-    
+
     public void writeBounds( DataOutput out, Bounds bounds ) throws IOException {
         if (bounds==null) {
             out.writeInt( 0 );
@@ -900,7 +900,7 @@ public abstract class Controller extends java.lang.Object {
             throw new IOException( "Unsupported bounds class "+bounds.getClass().getName() );
         }
     }
-    
+
     public Bounds readBounds( DataInput in ) throws IOException {
         Bounds bounds;
         switch( in.readInt() ) {
@@ -924,14 +924,14 @@ public abstract class Controller extends java.lang.Object {
         }
         return bounds;
     }
-    
+
 /**
      * Get the current file 'pointer' location.
      */
     public abstract long getFilePointer();
-    
+
     public abstract void close() throws IOException;
-    
+
     /**
      * Indicates to SceneGraphObjectState that it should use the
      * Java3D core superclass for any tree nodes whose classes are
@@ -940,7 +940,7 @@ public abstract class Controller extends java.lang.Object {
     public boolean useSuperClassIfNoChildClass() {
         return useSuperClass;
     }
-    
+
     /**
      * Returns the imageCompression to be used
      * IMAGE_COMPRESSION_NONE, IMAGE_COMPRESSION_GZIP, IMAGE_COMPRESSION_JPEG
@@ -948,14 +948,14 @@ public abstract class Controller extends java.lang.Object {
     public int getImageCompression() {
         return imageCompression;
     }
-     
 
-    /** 
+
+    /**
       * An ObjectInputStream that uses a different classLoader
       */
     class J3dIOObjectInputStream extends ObjectInputStream {
         public J3dIOObjectInputStream( java.io.InputStream in ) throws
-				IOException { 
+				IOException {
 	    super(in);
         }
 

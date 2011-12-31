@@ -49,23 +49,23 @@ import javax.media.j3d.*;
 import com.sun.j3d.utils.geometry.Primitive;
 
 /**
- * Holds information about an intersection of a PickShape with a Node 
+ * Holds information about an intersection of a PickShape with a Node
  * as part of a PickInfo.IntersectionInfo. Information about
- * the intersected geometry, intersected primitive, intersection point, and 
- * closest vertex can be inquired.  
+ * the intersected geometry, intersected primitive, intersection point, and
+ * closest vertex can be inquired.
  * <p>
  * The intersected primitive indicates which primitive out of the GeometryArray
- * was intersected (where the primitive is a point, line, triangle or quad, 
+ * was intersected (where the primitive is a point, line, triangle or quad,
  * not a
- * <code>com.sun.j3d.utils.geometry.Primitive)</code>.  
- * For example, the intersection would indicate which triangle out of a 
+ * <code>com.sun.j3d.utils.geometry.Primitive)</code>.
+ * For example, the intersection would indicate which triangle out of a
  * triangle strip was intersected.
- * The methods which return primitive data will have one value if the primitive 
+ * The methods which return primitive data will have one value if the primitive
  * is
  * a point, two values if the primitive is a line, three values if the primitive
  * is a triangle and four values if the primitive is quad.
  * <p>
- * The primitive's VWorld coordinates are saved when then intersection is 
+ * The primitive's VWorld coordinates are saved when then intersection is
  * calculated.  The local coordinates, normal, color and texture coordinates
  * for the primitive can also be inquired if they are present and readable.
  * <p>
@@ -76,7 +76,7 @@ import com.sun.j3d.utils.geometry.Primitive;
  * intersection can be interpolated if they are present and readable.
  * <p>
  * The closest vertex is the vertex of the primitive closest to the intersection
- * point.  The vertex index, VWorld coordinates and local coordinates of the 
+ * point.  The vertex index, VWorld coordinates and local coordinates of the
  * closest vertex can be inquired.  The normal, color and texture coordinate
  * of the closest vertex can be inquired from the geometry array:
  * <p><blockquote><pre>
@@ -95,23 +95,23 @@ import com.sun.j3d.utils.geometry.Primitive;
  * </pre></blockquote>
  * <p>
  * The color, normal
- * and texture coordinate information for the intersected primitive and the 
+ * and texture coordinate information for the intersected primitive and the
  * intersection point
  * can be inquired
- * the geometry includes them and the corresponding READ capibility bits are 
+ * the geometry includes them and the corresponding READ capibility bits are
  * set.
  */
 
 public class PickIntersection {
 
-    
+
     /* The intersection point */
     // Point3d getIntersectionPoint()
-    
+
     /* Distance between start point of pickShape and intersection point */
     // double getDistance()
-    
-    /* The vertex indices of the intersected primitive in the geometry */   
+
+    /* The vertex indices of the intersected primitive in the geometry */
     // int[] getVertexIndices()
 
     /*************************/
@@ -148,7 +148,7 @@ public class PickIntersection {
     private int[] primitiveNormalIndices;
     private int[] primitiveColorIndices;
     private int[] primitiveTexCoordIndices;
- 
+
     /** Indices of the intersected primitive */
     private int[] primitiveVertexIndices = null;
 
@@ -190,19 +190,19 @@ public class PickIntersection {
     /** Coordinates of the closest vertex */
     private Point3d closestVertexCoordinates = null;
 
-    /** Coordinates of the closest vertex (World coordinates) */  
-    private Point3d closestVertexCoordinatesVW = null;    
+    /** Coordinates of the closest vertex (World coordinates) */
+    private Point3d closestVertexCoordinatesVW = null;
 
     /* ===================   METHODS  ======================= */
 
-    /** 
-     * Constructor 
+    /**
+     * Constructor
      * @param intersectionInfo The IntersectionInfo this intersection is part of.
      */
     public PickIntersection (Transform3D localToVWorld,
 			     PickInfo.IntersectionInfo intersectionInfo) {
 
-	// Should check and throw NPE if the following is null. 
+	// Should check and throw NPE if the following is null.
 	// localToVWorld can't be null.
 	l2vw = localToVWorld;
 	// intersectionInfo can't be null.
@@ -215,7 +215,7 @@ public class PickIntersection {
 	primitiveVertexIndices = iInfo.getVertexIndices();
 
 	if (geometry instanceof GeometryArray) {
-	    
+
 	    int vertexFormat = ((GeometryArray)geometry).getVertexFormat();
 	    hasColors = (0 != (vertexFormat &
 			       (GeometryArray.COLOR_3 | GeometryArray.COLOR_4)));
@@ -223,23 +223,23 @@ public class PickIntersection {
 	    hasTexCoords = (0 != (vertexFormat &
 				  (GeometryArray.TEXTURE_COORDINATE_2 |
 				   GeometryArray.TEXTURE_COORDINATE_3)));
-	   
+
 	    if (geometry instanceof IndexedGeometryArray) {
 		geometryIsIndexed = true;
 	    }
 	}
     }
-    
-    /** 
-     * Returns true if the geometry is indexed 
+
+    /**
+     * Returns true if the geometry is indexed
      *
      */
     public boolean geometryIsIndexed() {
 	return geometryIsIndexed;
     }
 
-    /** 
-     * Get coordinates of closest vertex (local) 
+    /**
+     * Get coordinates of closest vertex (local)
      * @return the coordinates of the vertex closest to the intersection point
      *
      */
@@ -251,7 +251,7 @@ public class PickIntersection {
 	    int vertexIndex = getClosestVertexIndex();
 	    int vformat = geom.getVertexFormat();
 	    int val;
-	    
+
 	    int[] indices = getPrimitiveCoordinateIndices();
 	    if ((vformat & GeometryArray.BY_REFERENCE) == 0) {
 		closestVertexCoordinates = new Point3d();
@@ -271,15 +271,15 @@ public class PickIntersection {
 			}
 			else {
 			    val = indices[vertexIndex] * 3; // for x,y,z
-			    closestVertexCoordinates = new Point3d(floatData[val], 
-								   floatData[val+1], 
+			    closestVertexCoordinates = new Point3d(floatData[val],
+								   floatData[val+1],
 								   floatData[val+2]);
 			}
 		    }
 		    else {
 			val = indices[vertexIndex] * 3; // for x,y,z
-			closestVertexCoordinates = new Point3d(doubleData[val], 
-							       doubleData[val+1], 
+			closestVertexCoordinates = new Point3d(doubleData[val],
+							       doubleData[val+1],
 							       doubleData[val+2]);
 		    }
 		}
@@ -288,18 +288,18 @@ public class PickIntersection {
 		    int offset = getInterleavedVertexOffset(geom);
 		    int stride = offset + 3; // for the vertices .
 		    val = stride * indices[vertexIndex]+offset;
-		    closestVertexCoordinates = new Point3d(floatData[val], 
-							   floatData[val+1], 
+		    closestVertexCoordinates = new Point3d(floatData[val],
+							   floatData[val+1],
 							   floatData[val+2]);
 		}
 	    }
 	}
-	
+
 	return closestVertexCoordinates;
     }
 
     /**
-     * Get coordinates of closest vertex (world) 
+     * Get coordinates of closest vertex (world)
      * @return the coordinates of the vertex closest to the intersection point
      *
      */
@@ -312,11 +312,11 @@ public class PickIntersection {
 	return closestVertexCoordinatesVW;
     }
 
-    /** 
-     * Get index of closest vertex 
+    /**
+     * Get index of closest vertex
      * @return the index of the closest vertex
      */
-    public int getClosestVertexIndex() { 
+    public int getClosestVertexIndex() {
 	if (closestVertexIndex == -1) {
 	    double maxDist = Double.MAX_VALUE;
 	    double curDist = Double.MAX_VALUE;
@@ -327,15 +327,15 @@ public class PickIntersection {
 
 // 	    System.out.println("PI.getClosestVertexIndex : primitiveCoordinates.length " +
 // 			       primitiveCoordinates.length);
-	    
+
 	    for (int i=0;i<primitiveCoordinates.length;i++) {
 		curDist = pointCoordinates.distance (primitiveCoordinates[i]);
-		
+
 // 		System.out.println("pointCoordinates " + pointCoordinates);
 // 		System.out.println("primitiveCoordinates[" + i + "] " +
 // 				   primitiveCoordinates[i]);
 // 		System.out.println("curDist " + curDist);
-		
+
 		if (curDist < maxDist) {
 		    closestIndex = i;
 		    maxDist = curDist;
@@ -345,8 +345,8 @@ public class PickIntersection {
 	}
 	return closestVertexIndex;
     }
-    
-    /** 
+
+    /**
      * Get the distance from the PickShape start point to the intersection point
      * @return the distance to the intersection point, if available.
      */
@@ -358,9 +358,9 @@ public class PickIntersection {
     /**
      * Returns the color of the intersection point. Returns null if the geometry
      * does not contain colors.  If the geometry was defined with
-     * GeometryArray.COLOR_3, the 'w' component of the color will initialized to 
+     * GeometryArray.COLOR_3, the 'w' component of the color will initialized to
      * 1.0
-     * @return color at the intersection point.  
+     * @return color at the intersection point.
      */
     public Color4f getPointColor() {
 	if (hasColors && (pointColor == null)) {
@@ -386,9 +386,9 @@ public class PickIntersection {
     public Point3d getPointCoordinates() {
 	return pointCoordinates;
     }
-    
+
     /**
-     * Returns the coordinates of the intersection point (world coordinates), 
+     * Returns the coordinates of the intersection point (world coordinates),
      * if available.
      * @return coordinates of the point
      */
@@ -399,7 +399,7 @@ public class PickIntersection {
 	}
 
 	pointCoordinatesVW = new Point3d();
-	
+
 	pointCoordinatesVW.x = pointCoordinates.x;
 	pointCoordinatesVW.y = pointCoordinates.y;
 	pointCoordinatesVW.z = pointCoordinates.z;
@@ -428,13 +428,13 @@ public class PickIntersection {
     }
 
     /**
-     * Returns the texture coordinate of the intersection point at the specifed 
+     * Returns the texture coordinate of the intersection point at the specifed
      * index in the specified texture coordinate set.
      * Returns null if the geometry
      * does not contain texture coordinates.  If the geometry was defined with
      * GeometryArray.TEXTURE_COORDINATE_3, the 'z' component of the texture
      * coordinate will initialized to 0.0
-     * @return texture coordinate at the intersection point.  
+     * @return texture coordinate at the intersection point.
      */
     public TexCoord3f getPointTextureCoordinate(int index) {
 	if (hasTexCoords && (pointTexCoord == null)) {
@@ -450,7 +450,7 @@ public class PickIntersection {
 	return pointTexCoord;
     }
 
-    /** 
+    /**
      * Get the color indices for the intersected primitive.  For a non-indexed
      * primitive, this will be the same as the primitive vertex indices
      * If the geometry array does not contain colors this will return null.
@@ -459,10 +459,10 @@ public class PickIntersection {
     public int[] getPrimitiveColorIndices() {
 	if (hasColors && (primitiveColorIndices == null)) {
 	    if (geometryIsIndexed()) {
-		primitiveColorIndices = 
+		primitiveColorIndices =
 		    new int[primitiveVertexIndices.length];
 		for (int i = 0; i < primitiveVertexIndices.length; i++) {
-		    primitiveColorIndices[i] =  
+		    primitiveColorIndices[i] =
 			((IndexedGeometryArray)(geometry)).getColorIndex(primitiveVertexIndices[i]);
 		}
 	    } else {
@@ -472,14 +472,14 @@ public class PickIntersection {
 	return primitiveColorIndices;
     }
 
-    /** 
+    /**
      * Get the colors of the intersected primitive.  This will return null if
      * the primitive does not contain colors.  If the geometry was defined
      * using GeometryArray.COLOR_3, the 'w' value of the color will be set to 1.0.
      * @return an array of Point3d's for the primitive that was intersected
      */
     public Color4f[] getPrimitiveColors() {
-// 	System.out.println("PI.getPrimitiveColors " + primitiveColors);	
+// 	System.out.println("PI.getPrimitiveColors " + primitiveColors);
 	GeometryArray geom = (GeometryArray) geometry;
 
 	if (hasColors && (primitiveColors == null)) {
@@ -487,7 +487,7 @@ public class PickIntersection {
 	    int[] indices = getPrimitiveColorIndices();
 	    int vformat = geom.getVertexFormat();
 	    if ((vformat & GeometryArray.BY_REFERENCE) == 0) {
-		if ((vformat & GeometryArray.COLOR_4) == 
+		if ((vformat & GeometryArray.COLOR_4) ==
 		    GeometryArray.COLOR_4) {
 		    for (int i = 0; i < indices.length; i++) {
 			primitiveColors[i] = new Color4f();
@@ -517,7 +517,7 @@ public class PickIntersection {
 			else {
 			    // Could be color3 or color4
 			    int val;
-			    if ((vformat & GeometryArray.COLOR_4) == 
+			    if ((vformat & GeometryArray.COLOR_4) ==
 				GeometryArray.COLOR_4) {
 				for (int i = 0; i < indices.length; i++) {
 				    val = indices[i] << 2; // for color4f
@@ -533,7 +533,7 @@ public class PickIntersection {
 				    val = indices[i] * 3; // for color3f
 				    primitiveColors[i] = new Color4f(byteData[val],
 								     byteData[val+1],
-								     byteData[val+2], 
+								     byteData[val+2],
 								     1.0f);
 
 				}
@@ -543,7 +543,7 @@ public class PickIntersection {
 		    else {
 			// Could be color3 or color4
 			int val;
-			if ((vformat & GeometryArray.COLOR_4) == 
+			if ((vformat & GeometryArray.COLOR_4) ==
 			    GeometryArray.COLOR_4) {
 			    for (int i = 0; i < indices.length; i++) {
 				val = indices[i] << 2; // for color4f
@@ -569,10 +569,10 @@ public class PickIntersection {
 		else {
 		    float[] floatData = geom.getInterleavedVertices();
 		    int offset = getInterleavedColorOffset(geom);
-		    int stride = getInterleavedStride(geom); 
+		    int stride = getInterleavedStride(geom);
 		    for (int i = 0; i < indices.length; i++) {
 			int val = stride * indices[i]+offset;
-			if ((vformat & GeometryArray.COLOR_4) == 
+			if ((vformat & GeometryArray.COLOR_4) ==
 			    GeometryArray.COLOR_4) {
 			    primitiveColors[i] = new Color4f(floatData[val],
 							     floatData[val+1],
@@ -592,7 +592,7 @@ public class PickIntersection {
 	return primitiveColors;
     }
 
-    /** 
+    /**
      * Get the coordinates indices for the intersected primitive.  For a non-indexed
      * primitive, this will be the same as the primitive vertex indices
      * @return an array indices
@@ -600,10 +600,10 @@ public class PickIntersection {
     public int[] getPrimitiveCoordinateIndices() {
 	if (primitiveCoordinateIndices == null) {
 	    if (geometryIsIndexed()) {
-		primitiveCoordinateIndices = 
+		primitiveCoordinateIndices =
 		    new int[primitiveVertexIndices.length];
 		for (int i = 0; i < primitiveVertexIndices.length; i++) {
-		    primitiveCoordinateIndices[i] =  
+		    primitiveCoordinateIndices[i] =
 			((IndexedGeometryArray)(geometry)).getCoordinateIndex(primitiveVertexIndices[i]);
 		}
 	    } else {
@@ -613,12 +613,12 @@ public class PickIntersection {
 	return primitiveCoordinateIndices;
     }
 
-    /** 
-     * Get the local coordinates intersected primitive 
+    /**
+     * Get the local coordinates intersected primitive
      * @return an array of Point3d's for the primitive that was intersected
      */
     public Point3d[] getPrimitiveCoordinates() {
-// 	System.out.println("PI.getPrimitiveCoordinates " + primitiveCoordinates);	
+// 	System.out.println("PI.getPrimitiveCoordinates " + primitiveCoordinates);
 	GeometryArray geom = (GeometryArray) geometry;
 
 	if (primitiveCoordinates == null) {
@@ -626,7 +626,7 @@ public class PickIntersection {
 	    int[] indices = getPrimitiveCoordinateIndices();
 	    int vformat = geom.getVertexFormat();
 	    int val;
-	    
+
 // 	    System.out.println("---- indices.length - " + indices.length);
 	    if ((vformat & GeometryArray.BY_REFERENCE) == 0) {
 		for (int i = 0; i < indices.length; i++) {
@@ -642,13 +642,13 @@ public class PickIntersection {
 		    if (doubleData == null) {
 			float[] floatData = geom.getCoordRefFloat();
 			if (floatData == null) {
-			    throw new UnsupportedOperationException("Deprecated : BY_REF - c3f and c3d");		
+			    throw new UnsupportedOperationException("Deprecated : BY_REF - c3f and c3d");
 			}
 			else {
 			    for (int i = 0; i < indices.length; i++) {
 				val = indices[i] * 3;
-				primitiveCoordinates[i] = new Point3d(floatData[val], 
-								      floatData[val+1], 
+				primitiveCoordinates[i] = new Point3d(floatData[val],
+								      floatData[val+1],
 								      floatData[val+2]);
 			    }
 			}
@@ -656,10 +656,10 @@ public class PickIntersection {
 		    else {
 			for (int i = 0; i < indices.length; i++) {
 			    val = indices[i] * 3;
-			    primitiveCoordinates[i] = new Point3d(doubleData[val], 
-								  doubleData[val+1], 
+			    primitiveCoordinates[i] = new Point3d(doubleData[val],
+								  doubleData[val+1],
 								  doubleData[val+2]);
-			}			
+			}
 		    }
 		}
 		else {
@@ -668,8 +668,8 @@ public class PickIntersection {
 		    int stride = offset + 3; // for the vertices .
 		    for (int i = 0; i < indices.length; i++) {
 			val = stride * indices[i]+offset;
-			primitiveCoordinates[i] = new Point3d(floatData[val], 
-							      floatData[val+1], 
+			primitiveCoordinates[i] = new Point3d(floatData[val],
+							      floatData[val+1],
 							      floatData[val+2]);
 		    }
 		}
@@ -677,15 +677,15 @@ public class PickIntersection {
 
 	}
 	return primitiveCoordinates;
-    }    
+    }
 
-    /** 
-     * Get VWorld coordinates of the intersected primitive 
+    /**
+     * Get VWorld coordinates of the intersected primitive
      * @return an array of Point3d's for the primitive that was picked
      */
     public Point3d[] getPrimitiveCoordinatesVW() {
 
-// 	System.out.println("PI.getPrimitiveCoordinatesVW " + primitiveCoordinatesVW);	
+// 	System.out.println("PI.getPrimitiveCoordinatesVW " + primitiveCoordinatesVW);
 
 	if (primitiveCoordinatesVW == null) {
 	    // We need to call getPrimitiveCoordinates first.
@@ -704,8 +704,8 @@ public class PickIntersection {
 	}
 	return primitiveCoordinatesVW;
     }
-    
-    /** 
+
+    /**
      * Get the normal indices for the intersected primitive.  For a non-indexed
      * primitive, this will be the same as the primitive vertex indices
      * If the geometry array does not contain normals this will return null
@@ -714,10 +714,10 @@ public class PickIntersection {
     public int[] getPrimitiveNormalIndices() {
 	if (hasNormals && (primitiveNormalIndices == null)) {
 	    if (geometryIsIndexed()) {
-		primitiveNormalIndices = 
+		primitiveNormalIndices =
 		    new int[primitiveVertexIndices.length];
 		for (int i = 0; i < primitiveVertexIndices.length; i++) {
-		    primitiveNormalIndices[i] = 
+		    primitiveNormalIndices[i] =
 			((IndexedGeometryArray)(geometry)).getNormalIndex(primitiveVertexIndices[i]);
 		}
 	    } else {
@@ -727,13 +727,13 @@ public class PickIntersection {
 	return primitiveNormalIndices;
     }
 
-    /** 
+    /**
      * Get the normals of the intersected primitive.  This will return null if
      * the primitive does not contain normals.
      * @return an array of Point3d's for the primitive that was intersected
      */
     public Vector3f[] getPrimitiveNormals() {
-// 	System.out.println("PI.getPrimitiveNormals " + primitiveNormals);	
+// 	System.out.println("PI.getPrimitiveNormals " + primitiveNormals);
 	GeometryArray geom = (GeometryArray) geometry;
 
 	if (hasNormals && (primitiveNormals == null)) {
@@ -779,21 +779,21 @@ public class PickIntersection {
     }
 
 
-    /** 
-     * Get the texture coordinate indices for the intersected primitive at the specifed 
+    /**
+     * Get the texture coordinate indices for the intersected primitive at the specifed
      * index in the specified texture coordinate set.  For a   non-indexed
      * primitive, this will be the same as the primitive vertex indices
-     * If the geometry array does not contain texture coordinates, this will 
+     * If the geometry array does not contain texture coordinates, this will
      * return null.
      * @return an array indices
      */
     public int[] getPrimitiveTexCoordIndices(int index) {
 	if (hasTexCoords && (primitiveTexCoordIndices == null)) {
 	    if (geometryIsIndexed()) {
-		primitiveTexCoordIndices = 
+		primitiveTexCoordIndices =
 		    new int[primitiveVertexIndices.length];
 		for (int i = 0; i < primitiveVertexIndices.length; i++) {
-		    primitiveTexCoordIndices[i] =  
+		    primitiveTexCoordIndices[i] =
 			((IndexedGeometryArray)(geometry)).getTextureCoordinateIndex(index, primitiveVertexIndices[i]);
 		}
 	    } else {
@@ -803,17 +803,17 @@ public class PickIntersection {
 	return primitiveTexCoordIndices;
     }
 
-    /** 
-     * Get the texture coordinates of the intersected primitive at the specifed 
+    /**
+     * Get the texture coordinates of the intersected primitive at the specifed
      * index in the specified texture coordinate set.
-     * null if the primitive does not contain texture coordinates.  
+     * null if the primitive does not contain texture coordinates.
      * If the geometry was defined
      * using GeometryArray.TEXTURE_COORDINATE_2, the 'z' value of the texture
      * coordinate will be set to 0.0.
      * @return an array of TexCoord3f's for the primitive that was intersected
      */
     public TexCoord3f[] getPrimitiveTexCoords (int index) {
-// 	System.out.println("PI.getPrimitiveTexCoords " + primitiveTexCoords);	
+// 	System.out.println("PI.getPrimitiveTexCoords " + primitiveTexCoords);
 	GeometryArray geom = (GeometryArray) geometry;
 
 	if (primitiveTexCoords == null) {
@@ -866,15 +866,15 @@ public class PickIntersection {
 		    }
 		    for (int i = 0; i < indices.length; i++) {
 			int val = stride * indices[i];
-			if ((vformat & GeometryArray.TEXTURE_COORDINATE_2) == 
+			if ((vformat & GeometryArray.TEXTURE_COORDINATE_2) ==
 			    GeometryArray.TEXTURE_COORDINATE_2) {
-			    primitiveTexCoords[i] = 
+			    primitiveTexCoords[i] =
 				new TexCoord3f(floatData[val+offset],
 					       floatData[val+1+offset],
 					       0.0f);
 			}
 			else {
-			    primitiveTexCoords[i] = 
+			    primitiveTexCoords[i] =
 				new TexCoord3f(floatData[val+offset],
 					       floatData[val+1+offset],
 					       floatData[val+2+offset]);
@@ -886,7 +886,7 @@ public class PickIntersection {
 	return primitiveTexCoords;
     }
 
-    /** 
+    /**
      * Get vertex indices of the intersected primitive
      * @return an array which contains the list of indices
      */
@@ -903,7 +903,7 @@ public class PickIntersection {
 
     /**
      * String representation of this object
-     */ 
+     */
     public String toString() {
 	String rt = new String ("PickIntersection: ");
 	rt += " IntersectionInfo = "+ iInfo + "\n";
@@ -939,7 +939,7 @@ public class PickIntersection {
 		rt += " "+primitiveTexCoordIndices[i] + "\n";
 	    }
 	}
-    
+
 	if (closestVertexCoordinates != null) {
 	    rt += " clos. vert:" + closestVertexCoordinates + "\n";
 	}
@@ -994,7 +994,7 @@ public class PickIntersection {
 	else if ((vformat & GeometryArray.TEXTURE_COORDINATE_3) == GeometryArray.TEXTURE_COORDINATE_3) {
 	    offset += 3 * geo.getTexCoordSetCount();
 	}
-	
+
 	return offset;
     }
 
@@ -1017,7 +1017,7 @@ public class PickIntersection {
     /* ================================================================== */
 
     /* absolute value */
-    double 
+    double
     abs(double value) {
 	if (value < 0.0) {
 	    return -value;
@@ -1027,7 +1027,7 @@ public class PickIntersection {
     }
 
     /* return the axis corresponding to the largest component of delta */
-    int 
+    int
     maxAxis(Vector3d delta) {
 	int axis = X_AXIS;
 	double max = abs(delta.x);
@@ -1041,7 +1041,7 @@ public class PickIntersection {
 	return axis;
     }
 
-    /* Triangle interpolation. Basic idea:  
+    /* Triangle interpolation. Basic idea:
      * Map the verticies of the triangle to the form:
      *
      * L--------R
@@ -1057,10 +1057,10 @@ public class PickIntersection {
        IL =  leftFactor * L + (1- leftFactor) * Base
        IR = rightFactor * R + (1-rightFactor) * Base
 
-       then find the interp factor, midFactor, for P between IL and IR.  If 
-       this is outside the range 0->1 then we have the wrong triangle of a 
-       quad and we return false.  
-    
+       then find the interp factor, midFactor, for P between IL and IR.  If
+       this is outside the range 0->1 then we have the wrong triangle of a
+       quad and we return false.
+
        Else, the weighting is:
 
        IP = midFactor * IL + (1 - midFactor) * IR;
@@ -1068,7 +1068,7 @@ public class PickIntersection {
        Solving for weights for the formula:
        IP = BaseWeight * Base + LeftWeight * L + RightWeight * R;
        We get:
-       BaseWeight = 1 - midFactor * leftFactor 
+       BaseWeight = 1 - midFactor * leftFactor
        - rightFactor + midFactor * rightFactor;
        LeftWeight = midFactor * leftFactor;
        RightWeight = righFactor - midFactor * rightFactor;
@@ -1076,7 +1076,7 @@ public class PickIntersection {
        */
 
     boolean
-    interpTriangle(int index0, int index1, int index2, Point3d[] coords, 
+    interpTriangle(int index0, int index1, int index2, Point3d[] coords,
 		   Point3d intPt) {
 
 	// find the longest edge, we'll use that to pick the axis */
@@ -1103,27 +1103,27 @@ public class PickIntersection {
 	/*
 	  System.out.println("index0 = " + index0 + " index1 = " + index1 +
 	  " index2 = " + index2);
-	  
+
 	  System.out.println("coords[index0] = " + coords[index0]);
 	  System.out.println("coords[index1] = " + coords[index1]);
 	  System.out.println("coords[index2] = " + coords[index2]);
 	  System.out.println("intPt = " + intPt);
-	  
+
 	  System.out.println("delta0 = " + delta0 + " len0 " + len0);
 	  System.out.println("delta1 = " + delta1 + " len1 " + len1);
 	  System.out.println("delta2 = " + delta2 + " len2 " + len2);
 	  */
-	
+
 	/* now project the intersection point along the axis onto the edges */
-	double[] factor = new double[3]; 
+	double[] factor = new double[3];
 	/* the factor is for the projection opposide the vertex 0 = 1->2, etc*/
-	factor[0] = 
+	factor[0] =
 	    getInterpFactorForBase(intPt, coords[index1], coords[index2], mainAxis);
-	factor[1] = 
+	factor[1] =
 	    getInterpFactorForBase(intPt, coords[index2], coords[index0], mainAxis);
-	factor[2] = 
+	factor[2] =
 	    getInterpFactorForBase(intPt, coords[index0], coords[index1], mainAxis);
-	
+
 	if (debug) {
 	    System.out.println("intPt  = " + intPt);
 	    switch(mainAxis) {
@@ -1255,7 +1255,7 @@ public class PickIntersection {
 
     }
 
-    /* Get the interpolation weights for each of the verticies of the 
+    /* Get the interpolation weights for each of the verticies of the
      * primitive.
      */
     double[] getInterpWeights() {
@@ -1288,7 +1288,7 @@ public class PickIntersection {
 	case 3: // triangle
 	    if (!interpTriangle(0, 1, 2, coordinates, pt)) {
 		throw new RuntimeException ("Interp point outside triangle");
-	    } 
+	    }
 	    break;
 	case 4: // quad
 	    if (!interpTriangle(0, 1, 2, coordinates, pt)) {
@@ -1303,10 +1303,10 @@ public class PickIntersection {
 	return interpWeights;
     }
 
-    /** 
+    /**
       Calculate the interpolation factor for point p by projecting it along
-      an axis (x,y,z) onto the edge between p1 and p2.  If the result is 
-      in the 0->1 range, point is between p1 and p2 (0 = point is at p1, 
+      an axis (x,y,z) onto the edge between p1 and p2.  If the result is
+      in the 0->1 range, point is between p1 and p2 (0 = point is at p1,
       1 => point is at p2).
       */
     private static float getInterpFactor (Point3d p, Point3d p1, Point3d p2,
@@ -1335,15 +1335,15 @@ public class PickIntersection {
 		t = (float)((p1.z - p.z) / (p1.z - p2.z));
 	    break;
 	default:
-	    throw new RuntimeException ("invalid axis parameter "+axis+" (must be 0-2)"); 
+	    throw new RuntimeException ("invalid axis parameter "+axis+" (must be 0-2)");
 	}
 	return t;
     }
 
-    /** 
+    /**
       Calculate the interpolation factor for point p by projecting it along
-      an axis (x,y,z) onto the edge between p1 and p2.  If the result is 
-      in the 0->1 range, point is between p1 and p2 (0 = point is at p1, 
+      an axis (x,y,z) onto the edge between p1 and p2.  If the result is
+      in the 0->1 range, point is between p1 and p2 (0 = point is at p1,
       1 => point is at p2).
       return MAX_VALUE if component of vertices are the same.
       */
@@ -1370,10 +1370,10 @@ public class PickIntersection {
 		t = (float)((p1.z - p.z) / (p1.z - p2.z));
 	    break;
 	default:
-	    throw new RuntimeException ("invalid axis parameter "+axis+" (must be 0-2)"); 
+	    throw new RuntimeException ("invalid axis parameter "+axis+" (must be 0-2)");
 	}
 	return t;
     }
 
-    
+
 } // PickIntersection

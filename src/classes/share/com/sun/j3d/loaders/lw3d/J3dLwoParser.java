@@ -76,23 +76,23 @@ import java.net.*;
  */
 
 class J3dLwoParser extends LwoParser {
-	
+
     float normalCoordsArray[];
     int normalIndicesArray[];
     Shape3D objectShape;
     Color3f color, diffuseColor, specularColor, emissiveColor;
     float shininess;
     Vector objectShapeList = new Vector();
- 
+
     /**
      * Constructor: Calls LwoObject to parse file and create data structures
-     */   
-    J3dLwoParser(String fileName, 
+     */
+    J3dLwoParser(String fileName,
 		 int debugVals) throws FileNotFoundException {
 		     super(fileName, debugVals);
     }
 
-    J3dLwoParser(URL url, int debugVals) 
+    J3dLwoParser(URL url, int debugVals)
 	throws FileNotFoundException {
 	    super(url, debugVals);
     }
@@ -107,7 +107,7 @@ class J3dLwoParser extends LwoParser {
      * file) into Java3d objects
      */
     void createJava3dGeometry() throws IncorrectFormatException {
-	
+
 	GeometryArray object;
 	LwoTexture texture;
 
@@ -155,7 +155,7 @@ class J3dLwoParser extends LwoParser {
 	    if (shape.facetSizes[0] == 1) {
 		// This case happens if the objects are points
 		// Note that points are colored, not lit
-		object = new 
+		object = new
 		    javax.media.j3d.PointArray(vertexCount, vertexFormat);
 		object.setCoordinates(0, shape.coordsArray);
 		ColoringAttributes colorAtt =
@@ -163,7 +163,7 @@ class J3dLwoParser extends LwoParser {
 					   ColoringAttributes.FASTEST);
 		PointAttributes pointStyle = new PointAttributes();
 		pointStyle.setPointSize(1);
-		
+
 		appearance.setColoringAttributes(colorAtt);
 		appearance.setPointAttributes(pointStyle);
 	    }
@@ -184,13 +184,13 @@ class J3dLwoParser extends LwoParser {
 		debugOutputLn(LINE_TRACE, "Creating IndexedTriFanArray");
 				// create triFanArray
 		vertexFormat |= javax.media.j3d.GeometryArray.NORMALS;
-		
+
 		debugOutputLn(LINE_TRACE, "about to process vertices/indices, facetIndices = " +
 			      shape.facetIndices);
 		if (shape.facetIndices != null) {
 		    float[] textureCoords = null;
 		    int[] textureIndices = null;
-		    
+
 		    debugOutputLn(LINE_TRACE, "setting vertexCount, normind = " + shape.normalIndices);
 		    // If these are null we're going direct (non-indexed)
 		    debugOutputLn(LINE_TRACE, "vtxcount, format, indcount = " +
@@ -281,8 +281,8 @@ class J3dLwoParser extends LwoParser {
 		}
 	    }
 	    debugOutputLn(LINE_TRACE, "done creating object");
-	   
-	    // This does gc 
+
+	    // This does gc
 	    shape.nullify();
 
 	    objectShape = new Shape3D(object);
@@ -421,7 +421,7 @@ class J3dLwoParser extends LwoParser {
 					      textureIndices,
 					      verts, indices);
 	else if (mappingType.startsWith("Spherical"))
-	    calculateSphericalTextureCoords(textureAxis, 
+	    calculateSphericalTextureCoords(textureAxis,
 					    textureCenter, textureCoords,
 					    textureIndices,
 					    verts, indices);
@@ -446,11 +446,11 @@ class J3dLwoParser extends LwoParser {
 		return -Math.atan(x / z);
 	}
     }
-	
+
     /** See the comments in calculateTextureCoordinates*/
     double xyztop(float x,float y,float z) {
 	double p;
-	
+
 	if (x == 0.0 && z == 0.0) {
 	    if (y != 0.0)
 		p = (y < 0.0) ? -Math.PI/2 : Math.PI/2;
@@ -467,7 +467,7 @@ class J3dLwoParser extends LwoParser {
 	return p;
     }
 
-    
+
     /** See the comments in calculateTextureCoordinates*/
     void calculateSphericalTextureCoords(int textureAxis,
 					 Vector3f textureCenter,
@@ -476,8 +476,8 @@ class J3dLwoParser extends LwoParser {
 					 float verts[], int indices[]) {
 	debugOutputLn(TRACE, "calculateSphericalTextureCoords");
 	double s, t;
-	
-	
+
+
 	for (int i = 0; i < indices.length; ++i) {
 	    float x = verts[3*indices[i]] - textureCenter.x;
 	    float y = verts[3*indices[i]+1] - textureCenter.y;
@@ -501,7 +501,7 @@ class J3dLwoParser extends LwoParser {
 	    textureIndices[i] = indices[i];
 	}
     }
-	
+
     /** See the comments in calculateTextureCoordinates*/
     void calculateCylindricalTextureCoords(int textureAxis,
 					   Vector3f textureSize,
@@ -519,7 +519,7 @@ class J3dLwoParser extends LwoParser {
 		      verts + ", " +
 		      indices);
 	double s, t;
-	
+
 	debugOutputLn(VALUES, "Cyl Texture Coords:");
 	for (int i = 0; i < indices.length; ++i) {
 	    float x = verts[3*indices[i]] - textureCenter.x;
@@ -547,7 +547,7 @@ class J3dLwoParser extends LwoParser {
 			  "s, t = " + s + ", " + t);
 	}
     }
-    
+
     /** See the comments in calculateTextureCoordinates*/
     void calculatePlanarTextureCoords(int textureAxis, Vector3f textureSize,
 				      Vector3f textureCenter,
@@ -589,7 +589,7 @@ class J3dLwoParser extends LwoParser {
 	}
     }
 
-    
+
     Shape3D getJava3dShape() {
 	return objectShape;
     }

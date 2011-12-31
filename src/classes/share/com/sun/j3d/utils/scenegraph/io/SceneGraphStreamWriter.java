@@ -62,7 +62,7 @@ import com.sun.j3d.utils.universe.SimpleUniverse;
  * SceneGraphFileWriter instead to achieve maximum performance and flexibility.
  */
 public class SceneGraphStreamWriter extends java.lang.Object {
-    
+
     private StreamControl control;
     private DataOutputStream out;
 
@@ -72,7 +72,7 @@ public class SceneGraphStreamWriter extends java.lang.Object {
         control = new StreamControl( out );
         control.writeStreamHeader();
     }
-    
+
 
     /**
      * Write <code>universe</code> to the Stream.<p>
@@ -97,7 +97,7 @@ public class SceneGraphStreamWriter extends java.lang.Object {
     public void writeUniverse( SimpleUniverse universe, boolean writeContent ) throws IOException, UnsupportedUniverseException {
         control.writeUniverse( out, universe, writeContent );
     }
-    
+
     /**
      * Write the entire graph to the stream.<p>
      *
@@ -117,8 +117,8 @@ public class SceneGraphStreamWriter extends java.lang.Object {
         control.addNamedObjects( namedObjects );
         control.writeBranchGraph( graph, null );
     }
-    
-    /** 
+
+    /**
      * Close the SceneGraphStreamWriter and the associated stream
      */
     public void close() throws IOException {

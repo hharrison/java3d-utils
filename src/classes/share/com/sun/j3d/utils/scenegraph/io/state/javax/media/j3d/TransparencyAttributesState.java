@@ -54,11 +54,11 @@ import javax.media.j3d.TransparencyAttributes;
 import javax.vecmath.Color3f;
 
 public class TransparencyAttributesState extends NodeComponentState {
-    
+
     public TransparencyAttributesState(SymbolTableData symbol,Controller control) {
         super(symbol, control);
     }
-    
+
     public void writeObject( DataOutput out ) throws IOException {
         super.writeObject( out );
         TransparencyAttributes attr = (TransparencyAttributes)node;
@@ -67,7 +67,7 @@ public class TransparencyAttributesState extends NodeComponentState {
         out.writeFloat( attr.getTransparency() );
         out.writeInt( attr.getTransparencyMode() );
     }
-    
+
     public void readObject( DataInput in ) throws IOException {
         super.readObject( in );
         TransparencyAttributes attr = (TransparencyAttributes)node;
@@ -76,11 +76,11 @@ public class TransparencyAttributesState extends NodeComponentState {
         attr.setTransparency( in.readFloat() );
         attr.setTransparencyMode( in.readInt() );
     }
-    
+
     protected javax.media.j3d.SceneGraphObject createNode() {
         return new TransparencyAttributes();
     }
 
-    
+
 }
 

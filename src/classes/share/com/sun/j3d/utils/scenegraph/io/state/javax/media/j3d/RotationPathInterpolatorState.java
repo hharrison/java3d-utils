@@ -58,14 +58,14 @@ import com.sun.j3d.utils.scenegraph.io.retained.SymbolTableData;
 public class RotationPathInterpolatorState extends PathInterpolatorState {
 
     private Quat4f[] quats;
-    
+
     public RotationPathInterpolatorState(SymbolTableData symbol,Controller control) {
         super( symbol, control );
     }
-    
+
     public void writeConstructorParams( DataOutput out ) throws IOException {
         super.writeConstructorParams( out );
-        
+
         quats = new Quat4f[ knots.length ];
         for(int i=0; i<quats.length; i++) {
             quats[i] = new Quat4f();
@@ -76,10 +76,10 @@ public class RotationPathInterpolatorState extends PathInterpolatorState {
             control.writeQuat4f( out, quats[i] );
         }
     }
-    
+
     public void readConstructorParams( DataInput in ) throws IOException {
         super.readConstructorParams( in );
-        
+
         quats = new Quat4f[ knots.length ];
         for(int i=0; i<quats.length; i++) {
             quats[i] = control.readQuat4f( in );
@@ -97,9 +97,9 @@ public class RotationPathInterpolatorState extends PathInterpolatorState {
                                                      new Transform3D(),
                                                      knots,
                                                      quats } );
-                                                    
+
     }
-    
+
     protected javax.media.j3d.SceneGraphObject createNode() {
         return new RotationPathInterpolator( null, null, new Transform3D(), knots, quats );
     }

@@ -50,7 +50,7 @@ import javax.media.j3d.NodeComponent;
 import javax.media.j3d.Geometry;
 
 public abstract class GeometryState extends NodeComponentState {
-    
+
     public GeometryState( SymbolTableData symbol, Controller control ) {
         super(symbol, control);
     }

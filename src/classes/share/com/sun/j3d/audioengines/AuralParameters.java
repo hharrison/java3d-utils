@@ -76,8 +76,8 @@ public class AuralParameters
     /*
      * @since Java 3D 1.3
      */
-    public float reverbCoefficient = 1.0f;  
-    public float reflectionDelay = 20.0f;  
+    public float reverbCoefficient = 1.0f;
+    public float reflectionDelay = 20.0f;
     public float decayTime       = 1000.0f;
     public float decayFrequencyCutoff = 5000.0f;
     public float diffusion       = 1.0f;  // 100%
@@ -85,7 +85,7 @@ public class AuralParameters
 
     /**
      * Construct a new AuralParameters object
-     */  
+     */
     public AuralParameters() {
         frequencyScaleFactor = 1.0f;
         velocityScaleFactor = 0.0f;
@@ -104,20 +104,20 @@ public class AuralParameters
         density       = 1.0f;  // 100%
     }
 
-    public void setDistanceFilter(int filterType, double[] distance, 
+    public void setDistanceFilter(int filterType, double[] distance,
               float[]  filterCutoff) {
         boolean error = false;
         boolean allocate = false;
         int attenuationLength = 0;
         if (distance == null || filterCutoff == null) {
             error = true;
-        } 
+        }
         else {
             attenuationLength = distance.length;
             if (attenuationLength == 0 || filterType == NO_FILTERING) {
                 error = true;
             }
-        }  
+        }
         if (error) {
             this.filterType = NO_FILTERING;
             this.filterDistance = null;
@@ -141,10 +141,10 @@ public class AuralParameters
             this.filterDistance = new double[attenuationLength];
             this.filterCutoff   = new float[attenuationLength];
         }
-        System.arraycopy(distance, 0, this.filterDistance, 0, 
-                         attenuationLength); 
-        System.arraycopy(filterCutoff, 0, this.filterCutoff, 0, 
-                         attenuationLength); 
+        System.arraycopy(distance, 0, this.filterDistance, 0,
+                         attenuationLength);
+        System.arraycopy(filterCutoff, 0, this.filterCutoff, 0,
+                         attenuationLength);
 
         if (debugFlag) {
             debugPrint("setDistanceFilter arrays = ");
@@ -176,9 +176,9 @@ public class AuralParameters
         if (attenuationLength > filterDistance.length)
             attenuationLength = filterDistance.length;
         System.arraycopy(this.filterDistance, 0, distance, 0,
-                         attenuationLength); 
+                         attenuationLength);
         System.arraycopy(this.filterCutoff, 0, filterCutoff, 0,
-                         attenuationLength); 
+                         attenuationLength);
         return;
     }
 
@@ -188,10 +188,10 @@ public class AuralParameters
 
     /**
      * Debug print method for Sound nodes
-     */ 
+     */
     protected void debugPrint(String message) {
         if (debugFlag)
             System.out.println(message);
     }
- 
+
 }

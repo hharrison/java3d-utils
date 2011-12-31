@@ -61,18 +61,18 @@ public class IndexedTriangleArrayState extends IndexedGeometryArrayState {
     public IndexedTriangleArrayState(SymbolTableData symbol,Controller control) {
         super( symbol, control );
     }
-    
+
     public void writeObject( DataOutput out ) throws IOException {
         super.writeObject( out );
     }
-    
-    
+
+
     public void readObject( DataInput in ) throws IOException {
         super.readObject( in );
     }
-    
+
     public SceneGraphObject createNode( Class j3dClass ) {
-        return super.createNode( j3dClass, new Class[] { Integer.TYPE, 
+        return super.createNode( j3dClass, new Class[] { Integer.TYPE,
                                                           Integer.TYPE,
                                                           Integer.TYPE,
                                                           texCoordSetMap.getClass(),
@@ -83,10 +83,10 @@ public class IndexedTriangleArrayState extends IndexedGeometryArrayState {
                                                           texCoordSetMap,
                                                           new Integer( indexCount ) } );
     }
-    
+
     protected javax.media.j3d.SceneGraphObject createNode() {
         return new IndexedTriangleArray( vertexCount, vertexFormat, texCoordSetCount, texCoordSetMap, indexCount );
     }
 
-    
+
 }

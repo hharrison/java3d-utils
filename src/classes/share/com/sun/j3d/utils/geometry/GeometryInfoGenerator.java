@@ -67,7 +67,7 @@ import javax.media.j3d.J3DBuffer;
 
 
 
-/** 
+/**
  * Populate a GeometryInfo object from the Geometry provided.  Used
  * by GeometryInfo.
  */
@@ -75,7 +75,7 @@ class GeometryInfoGenerator extends Object {
 
   public static void create(GeometryInfo geomInfo, GeometryArray geomArray)
   {
-    if (geomArray instanceof GeometryStripArray) 
+    if (geomArray instanceof GeometryStripArray)
       create(geomInfo, (GeometryStripArray)geomArray);
     else if (geomArray instanceof TriangleArray) {
       geomInfo.reset(GeometryInfo.TRIANGLE_ARRAY);
@@ -100,8 +100,8 @@ class GeometryInfoGenerator extends Object {
       geomInfo.reset(GeometryInfo.TRIANGLE_STRIP_ARRAY);
     } else throw new IllegalArgumentException(
       J3dUtilsI18N.getString("GeometryInfoGenerator0"));
-    
-    processGeometryArray(geomInfo, geomArray); 
+
+    processGeometryArray(geomInfo, geomArray);
     processStripArray(geomInfo, geomArray);
   } // End of create(GeometryInfo, GeometryStripArray)
 
@@ -121,7 +121,7 @@ class GeometryInfoGenerator extends Object {
       geomInfo.reset(GeometryInfo.TRIANGLE_STRIP_ARRAY);
       processIndexStripArray(geomInfo, (IndexedGeometryStripArray)geomArray);
     }
-    
+
     processGeometryArray(geomInfo, geomArray);
     processIndexedArray(geomInfo, geomArray);
   } // End of create(GeometryInfo, IndexedGeometryArray)
@@ -135,7 +135,7 @@ class GeometryInfoGenerator extends Object {
     int vertexFormat = geomArray.getVertexFormat();
     int texSets = geomArray.getTexCoordSetCount();
     int valid;
-    
+
     // Calculate validVertexCount
     if (geomArray instanceof GeometryStripArray) {
       // Does not include IndexedGeometryStripArray
@@ -158,11 +158,11 @@ class GeometryInfoGenerator extends Object {
       if ((vertexFormat & GeometryArray.COLOR_4) == GeometryArray.COLOR_4)
 	wpv += 4;
       else if ((vertexFormat & GeometryArray.COLOR_3) != 0) wpv += 3;
-      if ((vertexFormat & GeometryArray.TEXTURE_COORDINATE_2) != 0) 
+      if ((vertexFormat & GeometryArray.TEXTURE_COORDINATE_2) != 0)
 	wpv += 2 * texSets;
-      else if ((vertexFormat & GeometryArray.TEXTURE_COORDINATE_3) != 0) 
+      else if ((vertexFormat & GeometryArray.TEXTURE_COORDINATE_3) != 0)
 	wpv += 3 * texSets;
-      else if ((vertexFormat & GeometryArray.TEXTURE_COORDINATE_4) != 0) 
+      else if ((vertexFormat & GeometryArray.TEXTURE_COORDINATE_4) != 0)
 	wpv += 4 * texSets;
 
       int initial;
@@ -355,7 +355,7 @@ class GeometryInfoGenerator extends Object {
 	geomArray.getCoordinates(initial, coords);
       }
       geomInfo.setCoordinates(coords);
-      
+
       if ((vertexFormat & GeometryArray.NORMALS) != 0) {
 	Vector3f[] normals = null;
 	if (byRef) {
@@ -411,7 +411,7 @@ class GeometryInfoGenerator extends Object {
 	}
 	geomInfo.setNormals(normals);
       }
-      
+
       if ((vertexFormat & GeometryArray.COLOR_4) == GeometryArray.COLOR_4) {
 	Color4f[] colors = null;
 	if (byRef) {
@@ -592,7 +592,7 @@ class GeometryInfoGenerator extends Object {
 	}
 	geomInfo.setColors(colors);
       }
-      
+
       if ((vertexFormat & GeometryArray.TEXTURE_COORDINATE_4) != 0) {
 	geomInfo.setTextureCoordinateParams(texSets, 4);
 	for (i = 0 ; i < texSets ; i++) {
@@ -768,7 +768,7 @@ class GeometryInfoGenerator extends Object {
       }
     }
   } // End of processGeometryArray
- 
+
 
 
   private static void processIndexedArray(GeometryInfo geomInfo,
@@ -814,14 +814,14 @@ class GeometryInfoGenerator extends Object {
 	geomArray.getNormalIndices(initial, normalI);
 	geomInfo.setNormalIndices(normalI);
       }
-      
+
       if (((vertexFormat & GeometryArray.COLOR_3) != 0) ||
 	  ((vertexFormat & GeometryArray.COLOR_4) != 0)) {
 	int[] colorI = new int[valid];
 	geomArray.getColorIndices(initial, colorI);
 	geomInfo.setColorIndices(colorI);
       }
-      
+
       if (((vertexFormat & GeometryArray.TEXTURE_COORDINATE_2) != 0) ||
 	  ((vertexFormat & GeometryArray.TEXTURE_COORDINATE_3) != 0) ||
 	  ((vertexFormat & GeometryArray.TEXTURE_COORDINATE_4) != 0)) {
@@ -833,17 +833,17 @@ class GeometryInfoGenerator extends Object {
       }
     }
   } // End of processIndexedArray
- 
 
 
-  private static void processStripArray(GeometryInfo geomInfo, 
+
+  private static void processStripArray(GeometryInfo geomInfo,
 					GeometryStripArray geomArray)
   {
     int[] strips = new int[geomArray.getNumStrips()];
     geomArray.getStripVertexCounts(strips);
     geomInfo.setStripCounts(strips);
   } // End of processStripArray
- 
+
 
 
   private static void processIndexStripArray(

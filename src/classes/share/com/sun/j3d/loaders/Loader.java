@@ -50,7 +50,7 @@ import java.io.FileNotFoundException;
 
 /**
  * The Loader interface is used to specify the location
- * and elements of a file format to load. 
+ * and elements of a file format to load.
  * The interface is used to give loaders of various
  * file formats a common public interface.  Ideally
  * the Scene interface will be implemented to give
@@ -66,7 +66,7 @@ public interface Loader {
     // values together to construct an aggregate flag integer
     // (see the setFlags() method).  Users wishing to load all
     // data in a file should use the LOAD_ALL specifier.
-    
+
     /** This flag enables the loading of light objects into the scene.*/
     public static final int LOAD_LIGHT_NODES		= 1;
 
@@ -120,7 +120,7 @@ public interface Loader {
     public Scene load(Reader reader)
 	throws FileNotFoundException, IncorrectFormatException,
 	    ParsingErrorException;
-    
+
 
     // Variable get/set methods
 
@@ -157,7 +157,7 @@ public interface Loader {
      * method.
      */
     public String getBasePath();
-    
+
     /**
      * This method sets the load flags for the file.  The flags should
      * equal 0 by default (which tells the loader to only load geometry).

@@ -78,19 +78,19 @@ import java.lang.reflect.Constructor;
  * The default Viewer creates one Canvas3D.  If the Viewer object creates
  * the Canvas3D's, it will also create a JPanel and JFrame for each Canvas3D.
  *
- * Dynamic video resize is a new feature in Java 3D 1.3.1.   
+ * Dynamic video resize is a new feature in Java 3D 1.3.1.
  * This feature provides a means for doing swap synchronous resizing
  * of the area that is to be magnified (or passed through) to the
  * output video resolution. This functionality allows an application
  * to draw into a smaller viewport in the framebuffer in order to reduce
- * the time spent doing pixel fill. The reduced size viewport is then 
+ * the time spent doing pixel fill. The reduced size viewport is then
  * magnified up to the video output resolution using the SUN_video_resize
  * extension. This extension is only implemented in XVR-4000 and later
  * hardware with back end video out resizing capability.
  *
- * If video size compensation is enable, the line widths, point sizes and pixel 
- * operations will be scaled internally with the resize factor to approximately 
- * compensate for video resizing. The location of the pixel ( x, y ) in the 
+ * If video size compensation is enable, the line widths, point sizes and pixel
+ * operations will be scaled internally with the resize factor to approximately
+ * compensate for video resizing. The location of the pixel ( x, y ) in the
  * resized framebuffer = ( floor( x * factor + 0.5 ), floor( y * factor + 0.5 ) )
  *
  * <p>
@@ -112,7 +112,7 @@ public class Viewer {
     private        Window[]                  j3dWindows          = null;
     private        ViewingPlatform           viewingPlatform     = null;
 
-    
+
     static HashMap viewerMap = new HashMap(5);
     private float dvrFactor = 1.0f;
     private boolean doDvr = false;
@@ -123,9 +123,9 @@ public class Viewer {
      * Get the Viewer associated with the view object.
      *
      * @param view The View object for inquiry.
-     * @return The Viewer object associated with this View object. 
+     * @return The Viewer object associated with this View object.
      *
-     * Note: This method is targeted for SUN framebuffer XVR-4000 and later 
+     * Note: This method is targeted for SUN framebuffer XVR-4000 and later
      * hardware that support video size extension.
      *
      * @since Java 3D 1.3.1
@@ -145,9 +145,9 @@ public class Viewer {
      * Removes the entry associated with the view object.
      *
      * @param view The View object to be removed.
-     * @return The Viewer object associated with this View object. 
+     * @return The Viewer object associated with this View object.
      *
-     * Note: This method is targeted for SUN framebuffer XVR-4000 and later 
+     * Note: This method is targeted for SUN framebuffer XVR-4000 and later
      * hardware that support video size extension.
      *
      * @since Java 3D 1.3.1
@@ -168,14 +168,14 @@ public class Viewer {
     /**
      * Removes all Viewer mappings from the Viewer map.
      *
-     * Note: This method is targeted for SUN framebuffer XVR-4000 and later 
+     * Note: This method is targeted for SUN framebuffer XVR-4000 and later
      * hardware that support video size extension.
      *
      * @since Java 3D 1.3.1
      */
     // To support a back door for DVR support.
     public static void clearViewerMap() {
-	synchronized (viewerMap) {	   
+	synchronized (viewerMap) {
 	    viewerMap.clear();
 	}
 	// System.out.println("clearViewerMap - viewerMap.size() " + viewerMap.size());
@@ -187,20 +187,20 @@ public class Viewer {
      * Returns a status flag indicating whether or not dynamic video size
      * is enabled.
      *
-     * Note: This method is targeted for SUN framebuffer XVR-4000 and later 
+     * Note: This method is targeted for SUN framebuffer XVR-4000 and later
      * hardware that support video size extension.
      *
      * @since Java 3D 1.3.1
      */
     // To support a back door for DVR support.
     public boolean isDvrEnabled() {
-	return doDvr; 
+	return doDvr;
     }
 
     /**
      * Turns on or off dynamic video size.
      *
-     * Note: This method is targeted for SUN framebuffer XVR-4000 and later 
+     * Note: This method is targeted for SUN framebuffer XVR-4000 and later
      * hardware that support video size extension.
      *
      * @param dvr enables or disables dynamic video size.
@@ -218,7 +218,7 @@ public class Viewer {
      * Retrieves the dynamic video resize factor of this
      * viewer.
      *
-     * Note: This method is targeted for SUN framebuffer XVR-4000 and later 
+     * Note: This method is targeted for SUN framebuffer XVR-4000 and later
      * hardware that support video size extension.
      *
      * @since Java 3D 1.3.1
@@ -232,7 +232,7 @@ public class Viewer {
     /**
      * Set the dynamic video resize factor for this viewer.
      *
-     * Note: This method is targeted for SUN framebuffer XVR-4000 and later 
+     * Note: This method is targeted for SUN framebuffer XVR-4000 and later
      * hardware that support video size extension.
      *
      * @param dvr set the dynamic video resize factor for this viewer.
@@ -247,11 +247,11 @@ public class Viewer {
     }
 
     /**
-     * Turns on or off dynamic video resize compensation. 
+     * Turns on or off dynamic video resize compensation.
      *
-     * Note: This method is targeted for SUN framebuffer XVR-4000 and later 
+     * Note: This method is targeted for SUN framebuffer XVR-4000 and later
      * hardware that support video size extension.
-     *     
+     *
      * @param dvrRCE enables or disables dynamic video resize compensation.
      *
      * @since Java 3D 1.3.1
@@ -263,10 +263,10 @@ public class Viewer {
     }
 
     /**
-     * Returns a status flag indicating whether or not dynamic video resize 
+     * Returns a status flag indicating whether or not dynamic video resize
      * compensation is enabled.
      *
-     * Note: This method is targeted for SUN framebuffer XVR-4000 and later 
+     * Note: This method is targeted for SUN framebuffer XVR-4000 and later
      * hardware that support video size extension.
      *
      * @since Java 3D 1.3.1
@@ -372,10 +372,10 @@ public class Viewer {
         // Create a View and attach the Canvas3D and the physical
         // body and environment to the view.
         view = new View();
-        
+
         // Fix to issue 424
         view.setUserHeadToVworldEnable(true);
-        
+
 	// Add it to the Viewer's HashMap.
 	synchronized (viewerMap) {
 	    Viewer.viewerMap.put(view, this);
@@ -448,10 +448,10 @@ public class Viewer {
         // Create a View and attach the Canvas3D and the physical
         // body and environment to the view.
         view = new View();
-        
+
         // Fix to issue 424
         view.setUserHeadToVworldEnable(true);
-        
+
 	// Add it to the Viewer's HashMap.
 	synchronized (viewerMap) {
 	    Viewer.viewerMap.put(view, this);
@@ -487,17 +487,17 @@ public class Viewer {
 	physicalEnvironment = cv.physicalEnvironment;
 
 	// Get available screen devices.
-	// 
+	//
 	// When running with JDK 1.3.1 or older under the X Window System with
 	// Xinerama enabled, a single screen device is returned which is
 	// actually a virtual screen spanning all the physical screens in the
 	// X display.  These can only be configured as a single planar screen
 	// in the configuration file.
-	// 
+	//
 	// JDK 1.4 and newer returns a screen device for each physical screen,
 	// allowing them to configured as distinct screens with arbitrary
 	// orientations relative to each other.
-	// 
+	//
 	GraphicsDevice[] devices;
 	GraphicsEnvironment graphicsEnv;
 
@@ -669,7 +669,7 @@ public class Viewer {
     }
 
     // Create the JFrames and JPanels for application-supplied Canvas3D
-    // objects. 
+    // objects.
     private void createFramesAndPanels( boolean setVisible ) {
 	j3dJFrames = new JFrame[canvases.length];
 	j3dJPanels = new JPanel[canvases.length];
@@ -679,7 +679,7 @@ public class Viewer {
             j3dWindows[i] = j3dJFrames[i] = new JFrame();
             j3dJFrames[i].getContentPane().setLayout(new BorderLayout());
             j3dJFrames[i].setSize(256, 256);
-	    
+
             // Put the Canvas3D into a JPanel.
             j3dJPanels[i] = new JPanel();
             j3dJPanels[i].setLayout(new BorderLayout());
@@ -742,7 +742,7 @@ public class Viewer {
      * Get the ViewingPlatform object used by this Viewer.
      *
      * @return The ViewingPlatform object used by this
-     *  Viewer object. 
+     *  Viewer object.
      */
     public ViewingPlatform getViewingPlatform() {
 	return viewingPlatform;
@@ -889,7 +889,7 @@ public class Viewer {
      * constructed without any Canvas3D objects then the Viewer object will
      * create a Canva3D object, a JPanel containing the Canvas3D object, and a
      * JFrame to place the JPanel in.<p>
-     * 
+     *
      * NOTE: When running under JDK 1.4 or newer, the JFrame always directly
      * contains the JPanel which contains the Canvas3D.  When running under
      * JDK 1.3.1 and creating a borderless full screen through a configuration

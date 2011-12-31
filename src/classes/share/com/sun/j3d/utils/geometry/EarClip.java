@@ -130,7 +130,7 @@ class EarClip {
     }
 
 
-    /**                                                                         
+    /**
      * This function checks whether a diagonal is valid, that is, whether it is
      * locally within the polygon, and whether it does not intersect any other
      * segment of the polygon. also, some degenerate cases get a special

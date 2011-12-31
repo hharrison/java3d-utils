@@ -59,15 +59,15 @@ import javax.vecmath.Vector3f ;
 /**
  * A Shape3D representing a beam pointing from the origin of a
  * sensor's local coordinate system to its hotspot.
- * 
+ *
  * @since Java 3D 1.3
  */
 public class SensorBeamEcho extends Shape3D {
     /**
      * Creates a SensorBeamEcho.  Read and write capabilities are granted
-     * for the Appearance, Material, TransparencyAttributes, and 
+     * for the Appearance, Material, TransparencyAttributes, and
      * TransparencyAttributes mode and value.
-     * 
+     *
      * @param hotspot location of the sensor's hotspot in the sensor's
      *  local coordinate system; this must not be (0, 0, 0)
      * @param baseWidth width of the beam in meters
@@ -75,7 +75,7 @@ public class SensorBeamEcho extends Shape3D {
      *  generated and lighting enabled
      * @exception IllegalArgumentException if hotspot is (0, 0, 0)
      */
-    public SensorBeamEcho(Point3d hotspot, double baseWidth, 
+    public SensorBeamEcho(Point3d hotspot, double baseWidth,
 			  boolean enableLighting) {
 	super() ;
 

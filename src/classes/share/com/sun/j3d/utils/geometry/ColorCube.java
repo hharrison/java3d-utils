@@ -123,7 +123,7 @@ public class ColorCube extends Shape3D {
      * color cube are [-1,-1,-1] and [1,1,1].
      */
     public ColorCube() {
-	QuadArray cube = new QuadArray(24, QuadArray.COORDINATES | 
+	QuadArray cube = new QuadArray(24, QuadArray.COORDINATES |
 		QuadArray.COLOR_3);
 
 	cube.setCoordinates(0, verts);
@@ -141,7 +141,7 @@ public class ColorCube extends Shape3D {
      * @param scale the scale of the cube
      */
     public ColorCube(double scale) {
-	QuadArray cube = new QuadArray(24, QuadArray.COORDINATES | 
+	QuadArray cube = new QuadArray(24, QuadArray.COORDINATES |
 		QuadArray.COLOR_3);
 
 	float scaledVerts[] = new float[verts.length];

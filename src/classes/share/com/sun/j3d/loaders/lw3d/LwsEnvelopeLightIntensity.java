@@ -63,14 +63,14 @@ class LwsEnvelopeLightIntensity extends LwsEnvelope {
     /**
      * Constructor: Calls superclass, which will parse the stream
      * and store the envelope data
-     */    
+     */
     LwsEnvelopeLightIntensity(StreamTokenizer st,
 			      int frames, float time) {
 	super(st, frames, time);
     }
 
     /**
-     * Creates Java3d behaviors given the stored envelope data.  The 
+     * Creates Java3d behaviors given the stored envelope data.  The
      * Behavior created is a LightIntensityPathInterpolator
      */
     void createJava3dBehaviors(Object target) {
@@ -129,8 +129,8 @@ class LwsEnvelopeLightIntensity extends LwsEnvelope {
     Behavior getBehaviors() {
 	return behaviors;
     }
-    
-    
+
+
     LwsEnvelopeFrame getFirstFrame() {
 	if (numFrames > 0)
 	    return frames[0];
@@ -138,7 +138,7 @@ class LwsEnvelopeLightIntensity extends LwsEnvelope {
 	    return null;
     }
 
-    
+
     void printVals() {
 	debugOutputLn(VALUES, "   name = " + name);
 	debugOutputLn(VALUES, "   numChannels = " + numChannels);
@@ -150,4 +150,4 @@ class LwsEnvelopeLightIntensity extends LwsEnvelope {
 	}
     }
 
-}	
+}

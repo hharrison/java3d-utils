@@ -56,13 +56,13 @@ import javax.media.j3d.Group;
 import javax.vecmath.Vector4d;
 
 public class ModelClipState extends LeafState {
-    
+
     private int[] scopes;
     private int influencingBoundingLeaf;
-    
+
     public ModelClipState(SymbolTableData symbol,Controller control) {
         super(symbol, control);
-        
+
         if (node!=null) {
             scopes = new int[ ((ModelClip)node).numScopes() ];
             for(int i=0; i<scopes.length; i++)
@@ -71,63 +71,63 @@ public class ModelClipState extends LeafState {
             influencingBoundingLeaf = control.getSymbolTable().addReference( ((ModelClip)node).getInfluencingBoundingLeaf());
         }
     }
-    
+
     public void writeObject( DataOutput out ) throws IOException {
         super.writeObject( out );
-        
+
         boolean[] enables = new boolean[6];
         ((ModelClip)node).getEnables( enables );
-        
+
         out.writeInt( scopes.length );
         for(int i=0; i<scopes.length; i++)
             out.writeInt( scopes[i] );
-        
+
         out.writeInt( influencingBoundingLeaf );
         control.writeBounds( out, ((ModelClip)node).getInfluencingBounds() );
-        
+
         Vector4d[] planes = new Vector4d[6];
         ((ModelClip)node).getPlanes( planes );
-        
+
         for(int i=0; i<6; i++) {
             out.writeBoolean( enables[i] );
             control.writeVector4d( out, planes[i] );
         }
     }
-    
+
     public void readObject( DataInput in ) throws IOException {
         super.readObject( in );
-        
+
         scopes = new int[ in.readInt() ];
         for(int i=0; i<scopes.length; i++)
             scopes[i] = in.readInt();
-        
+
         influencingBoundingLeaf = in.readInt();
-        
+
         ((ModelClip)node).setInfluencingBounds( control.readBounds(in));
-        
+
         boolean[] enables = new boolean[6];
         Vector4d[] planes = new Vector4d[6];
         for( int i=0; i<6; i++) {
             enables[i] = in.readBoolean();
             planes[i] = control.readVector4d( in );
         }
-        
+
         ((ModelClip)node).setEnables( enables );
         ((ModelClip)node).setPlanes( planes );
     }
-    
+
     public void buildGraph() {
         for(int i=0; i<scopes.length; i++)
             ((ModelClip)node).addScope( (Group)control.getSymbolTable().getJ3dNode( scopes[i] ));
-        
+
         ((ModelClip)node).setInfluencingBoundingLeaf( (BoundingLeaf)control.getSymbolTable().getJ3dNode( influencingBoundingLeaf ));
- 	super.buildGraph();       
+ 	super.buildGraph();
     }
-    
+
     protected javax.media.j3d.SceneGraphObject createNode() {
         return new ModelClip();
     }
 
-    
+
 }
 

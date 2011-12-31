@@ -56,7 +56,7 @@ import javax.vecmath.*;
 /**
  * A mouse behavior that allows user to pick and zoom scene graph objects.
  * Common usage: 1. Create your scene graph. 2. Create this behavior with
- * the root and canvas. See PickRotateBehavior for more details. 
+ * the root and canvas. See PickRotateBehavior for more details.
  */
 
 public class PickZoomBehavior extends PickMouseBehavior implements MouseBehaviorCallback {
@@ -66,7 +66,7 @@ public class PickZoomBehavior extends PickMouseBehavior implements MouseBehavior
 
   /**
    * Creates a pick/zoom behavior that waits for user mouse events for
-   * the scene graph. 
+   * the scene graph.
    * @param root   Root of your scene graph.
    * @param canvas Java 3D drawing canvas.
    * @param bounds Bounds of your scene.
@@ -83,15 +83,15 @@ public class PickZoomBehavior extends PickMouseBehavior implements MouseBehavior
 
   /**
    * Creates a pick/zoom behavior that waits for user mouse events for
-   * the scene graph. 
+   * the scene graph.
    * @param root   Root of your scene graph.
    * @param canvas Java 3D drawing canvas.
    * @param bounds Bounds of your scene.
    * @param pickMode specifys PickTool.BOUNDS, PickTool.GEOMETRY or
-   * PickTool.GEOMETRY_INTERSECT_INFO.  
+   * PickTool.GEOMETRY_INTERSECT_INFO.
    * @see PickTool#setMode
    */
-    public PickZoomBehavior(BranchGroup root, Canvas3D canvas, Bounds bounds, 
+    public PickZoomBehavior(BranchGroup root, Canvas3D canvas, Bounds bounds,
 			    int pickMode) {
 	super(canvas, root, bounds);
 	zoom = new MouseZoom(MouseBehavior.MANUAL_WAKEUP);
@@ -103,30 +103,30 @@ public class PickZoomBehavior extends PickMouseBehavior implements MouseBehavior
     }
 
   /**
-   * Update the scene to manipulate any nodes. This is not meant to be 
-   * called by users. Behavior automatically calls this. You can call 
+   * Update the scene to manipulate any nodes. This is not meant to be
+   * called by users. Behavior automatically calls this. You can call
    * this only if you know what you are doing.
-   * 
+   *
    * @param xpos Current mouse X pos.
    * @param ypos Current mouse Y pos.
    **/
 
   public void updateScene(int xpos, int ypos){
     TransformGroup tg = null;
-      
+
     if (mevent.isAltDown() && !mevent.isMetaDown()){
-	   
+
       pickCanvas.setShapeLocation(xpos, ypos);
       PickResult pr = pickCanvas.pickClosest();
       if ((pr != null) &&
-          ((tg = (TransformGroup)pr.getNode(PickResult.TRANSFORM_GROUP)) 
+          ((tg = (TransformGroup)pr.getNode(PickResult.TRANSFORM_GROUP))
 								!= null) &&
-	  (tg.getCapability(TransformGroup.ALLOW_TRANSFORM_READ)) && 
+	  (tg.getCapability(TransformGroup.ALLOW_TRANSFORM_READ)) &&
 	  (tg.getCapability(TransformGroup.ALLOW_TRANSFORM_WRITE))){
 	zoom.setTransformGroup(tg);
 	zoom.wakeup();
 	currentTG = tg;
-        // Need to clean up Issue 123 --- Chien        
+        // Need to clean up Issue 123 --- Chien
 	// freePickResult(pr);
       } else if (callback!=null)
           callback.transformChanged( PickingCallback.NO_PICK, null );
@@ -140,7 +140,7 @@ public class PickZoomBehavior extends PickMouseBehavior implements MouseBehavior
   public void transformChanged( int type, Transform3D transform ) {
       callback.transformChanged( PickingCallback.ZOOM, currentTG );
   }
- 
+
   /**
     * Register the class @param callback to be called each
     * time the picked object moves

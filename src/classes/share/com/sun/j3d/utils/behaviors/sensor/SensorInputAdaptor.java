@@ -48,7 +48,7 @@ package com.sun.j3d.utils.behaviors.sensor ;
  * The adaptor which receives sensor button and read events.  The methods
  * in this class are empty; the ones of interest should be overridden by
  * classes extending this adaptor.
- * 
+ *
  * @since Java 3D 1.3
  */
 public class SensorInputAdaptor

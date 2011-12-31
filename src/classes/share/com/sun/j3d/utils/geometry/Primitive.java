@@ -60,18 +60,18 @@ import java.math.*;
  * geometry are shared, and once one of the shared nodes is live, the
  * capabilities cannot be set.  Use the GEOMETRY_NOT_SHARED flag if
  * you do not wish to share geometry among primitives with the same
- * parameters. 
+ * parameters.
  */
 
 public abstract class Primitive extends Group {
   /**
-   * Specifies that normals are generated along with the positions. 
+   * Specifies that normals are generated along with the positions.
    */
   public static final int GENERATE_NORMALS =  0x01;
 
   /**
    * Specifies that texture coordinates are generated along with the
-   * positions. 
+   * positions.
    */
   public static final int GENERATE_TEXTURE_COORDS = 0x02;
 
@@ -85,11 +85,11 @@ public abstract class Primitive extends Group {
    *
    * @since Java 3D 1.5.1
    */
-  // Fix to Issue 411. Java 3D prefers images used for texture mapping to be Y-up   
+  // Fix to Issue 411. Java 3D prefers images used for texture mapping to be Y-up
   public static final int GENERATE_TEXTURE_COORDS_Y_UP = 0x08;
-  
-  
-  /** 
+
+
+  /**
    * Specifies that the geometry being created will not be shared by
    * another scene graph node. By default all primitives created with
    * the same parameters share their geometry (e.g., you can have 50
@@ -108,7 +108,7 @@ public abstract class Primitive extends Group {
   public static final int ENABLE_GEOMETRY_PICKING = 0x20;
 
   /**
-   * Specifies that the ALLOW_APPEARANCE_READ and 
+   * Specifies that the ALLOW_APPEARANCE_READ and
    * ALLOW_APPEARANCE_WRITE bits are to be set on the generated
    * geometry's Shape3D nodes.
    */
@@ -132,7 +132,7 @@ public abstract class Primitive extends Group {
    */
   int flags;
 
-  
+
   /**
    * Constructs a default primitive.
    */
@@ -142,7 +142,7 @@ public abstract class Primitive extends Group {
     setCapability(ENABLE_PICK_REPORTING);
     setCapability(ALLOW_CHILDREN_READ);
   }
-       
+
     /**
      * Returns the total number of triangles in this primitive.
      * @return the total number of triangles in this primitive
@@ -219,13 +219,13 @@ public abstract class Primitive extends Group {
     getShape(partid).setAppearance(ap);
   }
 
-  /** Sets the main appearance of the primitive (all subparts) to 
+  /** Sets the main appearance of the primitive (all subparts) to
    *  same appearance.
    */
   public abstract void setAppearance(Appearance ap);
 
-  
-  /** Sets the main appearance of the primitive (all subparts) to 
+
+  /** Sets the main appearance of the primitive (all subparts) to
    *  a default white appearance.
    */
   public void setAppearance(){
@@ -242,15 +242,15 @@ public abstract class Primitive extends Group {
     setAppearance(a);
   }
 
-  static Hashtable geomCache = new Hashtable(); 
+  static Hashtable geomCache = new Hashtable();
 
   String strfloat(float x)
   {
     return (new Float(x)).toString();
   }
 
-  protected void cacheGeometry(int kind, float a, float b, 
-			    float c, int d, int e, int flags, 
+  protected void cacheGeometry(int kind, float a, float b,
+			    float c, int d, int e, int flags,
 			    GeomBuffer geo)
   {
     String key = new String(kind+strfloat(a)+strfloat(b)+
@@ -267,10 +267,10 @@ public abstract class Primitive extends Group {
 
     return((GeomBuffer) cache);
   }
-  
+
   /**
    * Clear the shared geometry cache for all Primitive types.
-   * Existing Shapes with shared geometry will continue to share 
+   * Existing Shapes with shared geometry will continue to share
    * the geometry. New Primitives will create new shared geometry.
    *
    * @since Java 3D 1.3.2

@@ -60,9 +60,9 @@ public class RotationInterpolatorState extends TransformInterpolatorState {
 
     public RotationInterpolatorState(SymbolTableData symbol,Controller control) {
         super( symbol, control );
-        
+
     }
-    
+
     public void writeObject( DataOutput out ) throws IOException {
         super.writeObject( out );
 
@@ -70,7 +70,7 @@ public class RotationInterpolatorState extends TransformInterpolatorState {
         out.writeFloat( interp.getMinimumAngle() );
         out.writeFloat( interp.getMaximumAngle() );
     }
-    
+
     public void readObject( DataInput in ) throws IOException {
         super.readObject( in );
 
@@ -78,12 +78,12 @@ public class RotationInterpolatorState extends TransformInterpolatorState {
         interp.setMinimumAngle( in.readFloat() );
         interp.setMaximumAngle( in.readFloat() );
     }
-    
+
     public SceneGraphObject createNode( Class j3dClass ) {
         return createNode( j3dClass, new Class[] { Alpha.class, TransformGroup.class },
         new Object[] { null, null } );
     }
-    
+
     protected javax.media.j3d.SceneGraphObject createNode() {
         return new RotationInterpolator( null, null );
     }

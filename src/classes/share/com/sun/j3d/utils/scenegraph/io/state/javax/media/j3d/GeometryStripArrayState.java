@@ -54,18 +54,18 @@ import com.sun.j3d.utils.scenegraph.io.retained.SymbolTableData;
 public abstract class GeometryStripArrayState extends GeometryArrayState {
 
     protected int[] stripVertexCounts;
-    
+
     public GeometryStripArrayState( SymbolTableData symbol, Controller control ) {
 	super( symbol, control );
     }
 
     protected void writeConstructorParams( DataOutput out ) throws
 								IOException {
-        super.writeConstructorParams( out ); 
-        
+        super.writeConstructorParams( out );
+
 	stripVertexCounts = new int[((GeometryStripArray)node).getNumStrips()];
         ((GeometryStripArray)node).getStripVertexCounts( stripVertexCounts );
-        
+
 	out.writeInt(stripVertexCounts.length);
         for(int i=0; i<stripVertexCounts.length; i++)
             out.writeInt( stripVertexCounts[i] );

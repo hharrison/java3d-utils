@@ -58,7 +58,7 @@ public class ViewerAvatarState extends BranchGroupState {
     public ViewerAvatarState(SymbolTableData symbol,Controller control) {
         super(symbol, control);
     }
-    
+
     protected javax.media.j3d.SceneGraphObject createNode() {
         return new ViewerAvatar();
     }

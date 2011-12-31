@@ -66,7 +66,7 @@ class ConfigView extends ConfigObject {
      * ConfigView.  This is set during parsing of the configuration file.
      */
     boolean stereoEnable = false ;
-    
+
     /**
      * Indicates whether or not antialiasing is enabled for this ConfigView.
      * This is set during parsing of the configuration file.
@@ -107,7 +107,7 @@ class ConfigView extends ConfigObject {
     private ConfigPhysicalBody configBody = null ;
     private ConfigPhysicalEnvironment configEnv = null ;
     private ConfigViewPlatform configViewPlatform = null ;
-    
+
     /**
      * Overrides initialize() to do nothing.
      */
@@ -117,7 +117,7 @@ class ConfigView extends ConfigObject {
     /**
      * Processes properties for this object.  Handles commands of the form:<p>
      * (ViewAttribute {instanceName} {attrName} {attrValue})
-     * 
+     *
      * @param command the command that invoked this method
      */
     protected void setProperty(ConfigCommand command) {
@@ -132,7 +132,7 @@ class ConfigView extends ConfigObject {
         // Check that arg[1] and arg[2] are strings
         if (argc != 4) {
             syntaxError("Incorrect number of arguments to " +
-			command.commandName) ; 
+			command.commandName) ;
         }
 
         if (!isName(argv[1])) {
@@ -415,7 +415,7 @@ class ConfigView extends ConfigObject {
 	    if (!coeCenteringEnableSet)
 		coeCenteringEnable = false ;
 	}
-	    
+
         j3dView.setWindowEyepointPolicy(windowEyepointPolicy) ;
         j3dView.setWindowMovementPolicy(windowMovementPolicy) ;
         j3dView.setWindowResizePolicy(windowResizePolicy) ;
@@ -431,17 +431,17 @@ class ConfigView extends ConfigObject {
         if (stereoEnable) {
             Point3d leftEyeBody =  new Point3d() ;
             Point3d rightEyeBody = new Point3d() ;
-            
+
             physicalBody.getLeftEyePosition(leftEyeBody) ;
             physicalBody.getRightEyePosition(rightEyeBody) ;
 
             leftEyeCoe.add(leftEyeBody) ;
             rightEyeCoe.add(rightEyeBody) ;
         }
-        
+
         j3dView.setLeftManualEyeInCoexistence(leftEyeCoe) ;
         j3dView.setRightManualEyeInCoexistence(rightEyeCoe) ;
-        
+
         j3dView.setBackClipPolicy(backClipPolicy) ;
         j3dView.setFrontClipPolicy(frontClipPolicy) ;
         j3dView.setBackClipDistance(backClipDistance) ;

@@ -54,13 +54,13 @@ public class J3fOutputStream implements java.io.DataOutput {
 
     private PositionOutputStream positionOutputStream;
     private DataOutputStream dataOutputStream;
-    
+
     /** Creates new J3fInputStream */
     public J3fOutputStream( java.io.OutputStream stream ) {
         positionOutputStream = new PositionOutputStream( stream );
         dataOutputStream = new DataOutputStream( positionOutputStream );
     }
-    
+
     /**
      * Move the file pointer to the specified position.
      * The position MUST be greater or equal to the current position
@@ -68,65 +68,65 @@ public class J3fOutputStream implements java.io.DataOutput {
     public void seekForward( long position ) throws IOException {
         positionOutputStream.seekForward( position );
     }
-    
+
     public long getFilePointer() {
         return positionOutputStream.getFilePointer();
     }
 
     public void write(byte[] p1,int p2,int p3) throws java.io.IOException {
         dataOutputStream.write( p1, p2, p3 );
-    }    
+    }
 
     public void writeFloat(float p1) throws java.io.IOException {
         dataOutputStream.writeFloat(p1);
-    }    
-    
+    }
+
     public void write(int p1) throws java.io.IOException {
         dataOutputStream.write(p1 );
     }
-    
+
     public void writeShort(int p1) throws java.io.IOException {
         dataOutputStream.writeShort( p1 );
     }
-    
+
     public void writeBytes(java.lang.String p1) throws java.io.IOException {
         dataOutputStream.writeBytes( p1 );
     }
-    
+
     public void writeChar(int p1) throws java.io.IOException {
         dataOutputStream.writeChar( p1 );
     }
-    
+
     public void writeByte(int p1) throws java.io.IOException {
         dataOutputStream.writeByte( p1 );
     }
-    
+
     public void writeLong(long p1) throws java.io.IOException {
         dataOutputStream.writeLong( p1 );
     }
-    
+
     public void writeBoolean(boolean p1) throws java.io.IOException {
         dataOutputStream.writeBoolean( p1 );
     }
-    
+
     public void writeUTF(java.lang.String p1) throws java.io.IOException {
         dataOutputStream.writeUTF( p1 );
     }
-    
+
     public void writeInt(int p1) throws java.io.IOException {
         dataOutputStream.writeInt( p1 );
     }
-    
+
     public void writeChars(java.lang.String p1) throws java.io.IOException {
         dataOutputStream.writeChars( p1 );
     }
-    
+
     public void write(byte[] p1) throws java.io.IOException {
         dataOutputStream.write( p1 );
     }
-    
+
     public void writeDouble(double p1) throws java.io.IOException {
         dataOutputStream.writeDouble( p1 );
     }
-    
+
 }

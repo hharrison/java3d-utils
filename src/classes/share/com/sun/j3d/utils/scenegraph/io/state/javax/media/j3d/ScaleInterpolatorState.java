@@ -60,29 +60,29 @@ public class ScaleInterpolatorState extends TransformInterpolatorState {
     public ScaleInterpolatorState(SymbolTableData symbol,Controller control) {
         super( symbol, control );
     }
-    
+
     public void writeObject( DataOutput out ) throws IOException {
         super.writeObject( out );
-        
+
         out.writeFloat( ((ScaleInterpolator)node).getMinimumScale() );
         out.writeFloat( ((ScaleInterpolator)node).getMaximumScale() );
     }
-    
+
     public void readObject( DataInput in ) throws IOException {
         super.readObject( in );
-                
+
         ((ScaleInterpolator)node).setMinimumScale( in.readFloat() );
         ((ScaleInterpolator)node).setMaximumScale( in.readFloat() );
     }
-    
+
     public SceneGraphObject createNode( Class j3dClass ) {
         return createNode( j3dClass, new Class[] { javax.media.j3d.Alpha.class,
                                                     TransformGroup.class },
                                       new Object[] { null,
                                                      null } );
-                                                    
+
     }
-    
+
     protected javax.media.j3d.SceneGraphObject createNode() {
         return new ScaleInterpolator( null, null );
     }

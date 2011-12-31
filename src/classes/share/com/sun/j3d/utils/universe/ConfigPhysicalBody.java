@@ -171,7 +171,7 @@ class ConfigPhysicalBody extends ConfigObject {
 	j3dPhysicalBody.setNominalEyeHeightFromGround(
 				nominalEyeHeightFromGround);
 	j3dPhysicalBody.setNominalEyeOffsetFromNominalScreen(
-				nominalEyeOffsetFromNominalScreen);    
+				nominalEyeOffsetFromNominalScreen);
 
 	return j3dPhysicalBody ;
     }

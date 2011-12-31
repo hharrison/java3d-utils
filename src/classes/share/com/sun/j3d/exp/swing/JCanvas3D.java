@@ -126,13 +126,13 @@ public class JCanvas3D extends JPanel implements AncestorListener {
 
     /** the template to be used for this canvas */
     private GraphicsConfigTemplate3D template;
-    
+
     /** the graphics configuration used for this canvas */
     private GraphicsConfiguration graphicsConfig;
 
     /** The canvas that is linked to the component. */
     private InternalCanvas3D canvas;
-    
+
     /** flag indicating that the JCanvas3D has been added to a container */
     private boolean hasBeenAdded = false;
 
@@ -372,7 +372,7 @@ public class JCanvas3D extends JPanel implements AncestorListener {
 
     /**
      * Retrieves the resize mode for that component.
-     * 
+     *
      * @return the resize mode, which can be one of RESIZE_IMMEDIATELY or
      *         RESIZE_DELAYED
      */
@@ -563,7 +563,7 @@ public class JCanvas3D extends JPanel implements AncestorListener {
      * drawbacks will be users will see nothing. Default delay is set to
      * 100ms, which is low enough for common human not to be able to really
      * see that the rendered image is scaled.
-     * 
+     *
      * @param resizeMode can be one of RESIZE_IMMEDIATELY or RESIZE_DELAYED
      * @see #RESIZE_IMMEDIATELY
      * @see #RESIZE_DELAYED
@@ -579,7 +579,7 @@ public class JCanvas3D extends JPanel implements AncestorListener {
      * resized at the lowest level possible, thus in the rendering pipeline.
      * Note: Changing this field is only useful if resize mode is set to
      * RESIZE_IMMEDIATELY or RESIZE_DELAYED
-     * 
+     *
      * @param resizeValidationDelay the delay before a real resize would occur.
      * @see #RESIZE_IMMEDIATELY
      * @see #RESIZE_DELAYED
@@ -654,7 +654,7 @@ public class JCanvas3D extends JPanel implements AncestorListener {
         /**
          * Creates a new instance of JCanvas3D. Resize mode is set
          * to RESIZE_IMMEDIATELY and validation delay to 100ms.
-         * 
+         *
          * @param graphicsConfiguration The graphics configuration to be used.
          * @param lwCanvas the lightweight canvas that is linked to that
          *        heavyweight canvas.
@@ -814,7 +814,7 @@ public class JCanvas3D extends JPanel implements AncestorListener {
         }
 
     }
-    
+
     /**
      * This Runnable is the class used when the canvas has to be
      * resized.

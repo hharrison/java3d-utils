@@ -50,7 +50,7 @@ package com.sun.j3d.utils.scenegraph.io;
  * the SceneGraphIO interface.
  */
 public interface SceneGraphObjectReferenceControl {
-    
+
     /**
      * Add a reference to the scenegraph object specified and return
      * the nodeID for the object

@@ -54,5 +54,5 @@ public abstract class LeafState extends NodeState {
     public LeafState( SymbolTableData symbol, Controller control ) {
         super( symbol, control );
     }
-    
+
 }

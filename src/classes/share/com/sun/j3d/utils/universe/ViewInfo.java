@@ -87,7 +87,7 @@ import javax.vecmath.* ;
  * capability doesn't need to be set for these applications.<p>
  *
  * <b>Other Synchronization Issues</b><p>
- * 
+ *
  * Scene graph updates are guaranteed to take effect in the same frame only
  * if run from the processStimulus() method of a Behavior. Updates from
  * multiple behaviors are only guaranteed to take effect in the same frame if
@@ -98,7 +98,7 @@ import javax.vecmath.* ;
  * it's set.  Updating scene graph elements from anything other than the
  * Behavior thread, such as an external input thread or a renderer callback
  * in Canvas3D, will not necessarily be synchronized with rendering.<p>
- * 
+ *
  * Direct updates to geometry data have a different frame latency than
  * updates to scene graph transforms and structure. In the Java 3D 1.3
  * architecture, updates to by-reference geometry arrays and texture data have
@@ -115,9 +115,9 @@ import javax.vecmath.* ;
  * computes the changes that need to be made based on current view state.  If
  * the update behavior is awakened by a behavior post from the computing
  * behavior then the update will be delayed by a single frame.<p>
- * 
+ *
  * <b>Implementation Notes</b><p>
- * 
+ *
  * This utility is essentially a rewrite of a few private Java 3D core
  * classes, but designed for public use and source code availability.  The
  * source code may be helpful in understanding some of the more complex
@@ -127,25 +127,25 @@ import javax.vecmath.* ;
  * the view model as defined by the Java 3D Specification, so it can be
  * considered an alternative implementation.  This class will produce the
  * same results as the Java 3D core implementation except for:<p><ul>
- * 
+ *
  * <li>The frame latency issue for virtual world transforms.</li><p>
- * 
+ *
  * <li>Active clip node status.	 If a clip node is active in the scene graph,
  *     it should override the view's back clip plane.  This class has no such
  *     information, so this can't be implemented.</li><p>
- * 
+ *
  * <li>"Infinite" view transforms for background geometry.  These are simply
  *     the rotation components of the normal view transforms with adjusted
  *     clip planes. Again, this function depends upon scene graph content
  *     inaccessible to this class.</li><p>
- * 
+ *
  * <li>Small floating point precision differences resulting from the
  *     alternative computations.</li><p>
- * 
+ *
  * <li>Bugs in this class and the Java 3D core.</li><p>
- * 
+ *
  * <li>Tracked head position.</li></ul><p>
- * 
+ *
  * The last item deserves some mention.	 Java 3D provides no way to directly
  * query the tracked head position being used by the renderer.	The View's
  * <code>getUserHeadToVworld</code> method always incorporates a virtual world
@@ -157,7 +157,7 @@ import javax.vecmath.* ;
  * and possible workarounds.<p>
  *
  * <b>Thread Safety</b><p>
- * 
+ *
  * All transforms are lazily evaluated.  The <code>updateScreen</code>,
  * <code>updateCanvas</code>, <code>updateViewPlatform</code>,
  * <code>updateView</code>, and <code>updateHead</code> methods just set flags
@@ -223,7 +223,7 @@ public class ViewInfo {
     // the Java 3D view model.	Since ViewInfo is per-View and we want to
     // cache screen and platform derived data, we maintain static references
     // to the screens and platforms here.
-    // 
+    //
     // From a design standpoint our ViewInfo objects should probably be in the
     // scope of an object that encloses these maps so they can be gc'ed
     // properly.  This is cumbersome with the current design constraints, so
@@ -257,7 +257,7 @@ public class ViewInfo {
     private boolean autoUpdate = false ;
     private int autoUpdateFlags = 0 ;
 
-    // Cached View policies.  
+    // Cached View policies.
     private int viewPolicy = View.SCREEN_VIEW ;
     private int resizePolicy = View.PHYSICAL_WORLD ;
     private int movementPolicy = View.PHYSICAL_WORLD ;
@@ -310,7 +310,7 @@ public class ViewInfo {
      * The View must be attached to a ViewPlatform.  If the ViewPlatform is
      * attached to a live scene graph, then <code>ALLOW_POLICY_READ</code>
      * capability must be set on the ViewPlatform node.
-     * 
+     *
      * @param view the View to use
      * @see #updateView
      * @see #updateCanvas updateCanvas(Canvas3D)
@@ -327,7 +327,7 @@ public class ViewInfo {
      * attached to a ViewPlatform.  If the ViewPlatform is attached to a live
      * scene graph, then <code>ALLOW_POLICY_READ</code> capability must be set
      * on the ViewPlatform node.
-     * 
+     *
      * @param view the View to use<p>
      * @param autoUpdateFlags a logical <code>OR</code> of any of the
      *	<code>VIEW_AUTO_UPDATE</code>, <code>CANVAS_AUTO_UPDATE</code>,
@@ -362,7 +362,7 @@ public class ViewInfo {
      * Alternatively, the other constructors can be used by calling
      * <code>ViewInfo.clear</code> when done with ViewInfo, or by simply
      * retaining the static references until the JVM exits.<p>
-     * 
+     *
      * @param view the View to use<p>
      * @param autoUpdateFlags a logical <code>OR</code> of any of the
      *	<code>VIEW_AUTO_UPDATE</code>, <code>CANVAS_AUTO_UPDATE</code>,
@@ -406,7 +406,7 @@ public class ViewInfo {
     /**
      * Gets the current transforms from image plate coordinates to view
      * platform coordinates and copies them into the given Transform3Ds.<p>
-     * 
+     *
      * With a monoscopic canvas the image plate transform is copied to the
      * first argument and the second argument is not used.  For a stereo
      * canvas the first argument receives the left image plate transform, and
@@ -459,7 +459,7 @@ public class ViewInfo {
     /**
      * Gets the current transforms from image plate coordinates to virtual
      * world coordinates and copies them into the given Transform3Ds.<p>
-     * 
+     *
      * With a monoscopic canvas the image plate transform is copied to the
      * first argument and the second argument is not used.  For a stereo
      * canvas the first argument receives the left image plate transform, and
@@ -555,7 +555,7 @@ public class ViewInfo {
 	// a monoscopic view policy of CYCLOPEAN_EYE_VIEW (which averages the
 	// left and right eye positions) when the eyepoints are expressed in
 	// coexistence coordinates or are derived from the tracked head.
-	// 
+	//
 	if (ci.updateCoeToPlate) {
 	    if (verbose) System.err.println("updating CoeToPlate") ;
 	    if (ci.coeToPlate == null) {
@@ -621,7 +621,7 @@ public class ViewInfo {
      * platform is positioned with respect to the virtual world through the
      * scene graph, so the view platform to coexistence transform defines the
      * space in which the virtual world and physical world coexist.<p>
-     * 
+     *
      * This method requires a Canvas3D.	 A different transform may be returned
      * for each canvas in the view if any of the following apply:<p><ul>
      *
@@ -838,7 +838,7 @@ public class ViewInfo {
     /**
      * Gets the transforms from eye coordinates to image plate coordinates and
      * copies them into the Transform3Ds specified.<p>
-     * 
+     *
      * When head tracking is used the eye positions are taken from the head
      * position and set in relation to the image plates with each Screen3D's
      * <code>trackerBaseToImagePlate</code> transform.	Otherwise the window
@@ -847,7 +847,7 @@ public class ViewInfo {
      * determined solely by calibration constants in Screen3D and
      * PhysicalBody; see the source code for the private method
      * <code>getEyesHMD</code> for more information.<p>
-     * 
+     *
      * Eye coordinates are always aligned with image plate coordinates, so
      * these transforms are always just translations.  With a monoscopic
      * canvas the eye transform is copied to the first argument and the second
@@ -902,8 +902,8 @@ public class ViewInfo {
     // *apparent* width and height as viewed through the HMD optics.  They
     // must be set directly through the Screen3D methods; the default pixel
     // metrics of 90 pixels/inch used by Java 3D aren't appropriate for HMD
-    // optics. 
-    // 
+    // optics.
+    //
     // Most HMDs have 100% overlap between the left and right displays; in
     // that case, headTrackerToLeftImagePlate and headTrackerToRightImagePlate
     // should be identical.  The HMD manufacturer's specifications of the
@@ -987,7 +987,7 @@ public class ViewInfo {
 				 ci.rightManualEyeInPlate.z) ;
 	    break ;
 	case View.RELATIVE_TO_SCREEN:
-	    setEyeScreenRelative(ci, 
+	    setEyeScreenRelative(ci,
 				 ci.leftManualEyeInPlate,
 				 ci.rightManualEyeInPlate) ;
 	    break ;
@@ -1013,7 +1013,7 @@ public class ViewInfo {
 
 	// Eye position Y is always the canvas center.
 	leftEye.y = rightEye.y = ci.canvasY + (ci.canvasHeight / 2.0) ;
-	
+
 	// Eye positions Z are as given.
 	leftEye.z = leftZ ;
 	rightEye.z = rightZ ;
@@ -1055,7 +1055,7 @@ public class ViewInfo {
     /**
      * Gets the current transforms from eye coordinates to view platform
      * coordinates and copies them into the given Transform3Ds.<p>
-     * 
+     *
      * With a monoscopic canvas the eye transform is copied to the first
      * argument and the second argument is not used.  For a stereo canvas the
      * first argument receives the left eye transform, and if the second
@@ -1070,12 +1070,12 @@ public class ViewInfo {
      * resize policy or the <code>SCALE_SCREEN_SIZE</code> screen scale
      * policy, which alter the scale depending upon the width of the canvas or
      * the width of the screen respectively.<p>
-     * 
+     *
      * With window eyepoint policies of <code>RELATIVE_TO_FIELD_OF_VIEW</code>,
      * <code>RELATIVE_TO_SCREEN</code>, or <code>RELATIVE_TO_WINDOW</code>,
      * then the transforms returned may differ across canvases due to
      * the following additional conditions:<p><ul>
-     * 
+     *
      * <li>The window eyepoint policy is <code>RELATIVE_TO_WINDOW</code> or
      *	   <code>RELATIVE_TO_SCREEN</code>, in which case the manual eye
      *	   position in image plate can be set differently for each
@@ -1084,7 +1084,7 @@ public class ViewInfo {
      * <li>The window eyepoint policy is <code>RELATIVE_TO_FIELD_OF_VIEW</code>
      *	   and the view attach policy is <code>NOMINAL_SCREEN</code>, which
      *	   decouples the view platform's canvas Z offset from the eyepoint's
-     *	   canvas Z offset.</li><p> 
+     *	   canvas Z offset.</li><p>
      *
      * <li>The eyepoint X and Y coordinates are centered in the canvas with a
      *	   window eyepoint policy of <code>RELATIVE_TO_FIELD_OF_VIEW</code>
@@ -1100,7 +1100,7 @@ public class ViewInfo {
      * @param e2vpl the Transform3D to receive the left transform
      * @param e2vpr the Transform3D to receive the right transform, or null
      */
-    public void getEyeToViewPlatform(Canvas3D c3d, 
+    public void getEyeToViewPlatform(Canvas3D c3d,
 				     Transform3D e2vpl, Transform3D e2vpr) {
 
 	CanvasInfo ci = updateCache(c3d, "getEyeToViewPlatform", false) ;
@@ -1121,7 +1121,7 @@ public class ViewInfo {
 	    ci.eyeToViewPlatform.mul(ci.plateToViewPlatform, ci.eyeToPlate) ;
 
 	    if (ci.useStereo) {
-		if (ci.rightEyeToViewPlatform == null) 
+		if (ci.rightEyeToViewPlatform == null)
 		    ci.rightEyeToViewPlatform = new Transform3D() ;
 
 		ci.rightEyeToViewPlatform.mul
@@ -1135,7 +1135,7 @@ public class ViewInfo {
     /**
      * Gets the current transforms from view platform coordinates to eye
      * coordinates and copies them into the given Transform3Ds.<p>
-     * 
+     *
      * With a monoscopic canvas the eye transform is copied to the first
      * argument and the second argument is not used.  For a stereo canvas the
      * first argument receives the left eye transform, and if the second
@@ -1144,14 +1144,14 @@ public class ViewInfo {
      * This method requires a Canvas3D.	 The transforms returned may differ
      * across canvases for all the same reasons discussed in the description
      * of <code>getEyeToViewPlatform</code>.
-     * 
+     *
      * @param c3d the Canvas3D to use
      * @param vp2el the Transform3D to receive the left transform
      * @param vp2er the Transform3D to receive the right transform, or null
      * @see #getEyeToViewPlatform
      *       getEyeToViewPlatform(Canvas3D, Transform3D, Transform3D)
      */
-    public void getViewPlatformToEye(Canvas3D c3d, 
+    public void getViewPlatformToEye(Canvas3D c3d,
 				     Transform3D vp2el, Transform3D vp2er) {
 
 	CanvasInfo ci = updateCache(c3d, "getViewPlatformToEye", false) ;
@@ -1183,7 +1183,7 @@ public class ViewInfo {
     /**
      * Gets the current transforms from eye coordinates to virtual world
      * coordinates and copies them into the given Transform3Ds.<p>
-     * 
+     *
      * With a monoscopic canvas the eye transform is copied to the first
      * argument and the second argument is not used.  For a stereo canvas the
      * first argument receives the left eye transform, and if the second
@@ -1195,7 +1195,7 @@ public class ViewInfo {
      *
      * This method requires a Canvas3D.	 The transforms returned may differ
      * across canvases for all the same reasons discussed in the description
-     * of <code>getEyeToViewPlatform</code>.  
+     * of <code>getEyeToViewPlatform</code>.
      *
      * @param c3d the Canvas3D to use
      * @param e2vwl the Transform3D to receive the left transform
@@ -1244,7 +1244,7 @@ public class ViewInfo {
      * plate eye location defines the apex of a viewing frustum;
      * otherwise, the orientation of the image plate determines the
      * direction of a parallel projection.<p>
-     * 
+     *
      * With a monoscopic canvas the projection transform is copied to the
      * first argument and the second argument is not used.  For a stereo
      * canvas the first argument receives the left projection transform,
@@ -1257,12 +1257,12 @@ public class ViewInfo {
      * <code>ALLOW_LOCAL_TO_VWORLD_READ</code> capability set; otherwise, a
      * scale factor of 1.0 will be used for the scale factor from virtual
      * world units to view platform units.
-     * 
+     *
      * @param c3d the Canvas3D to use
      * @param e2ccl the Transform3D to receive left transform
      * @param e2ccr the Transform3D to receive right transform, or null
      */
-    public void getProjection(Canvas3D c3d, 
+    public void getProjection(Canvas3D c3d,
 			      Transform3D e2ccl, Transform3D e2ccr) {
 
 	CanvasInfo ci = updateCache(c3d, "getProjection", true) ;
@@ -1308,7 +1308,7 @@ public class ViewInfo {
      * and copies them into the given Transform3Ds.  These transforms take
      * the clip space volume bounded by the range [-1.0 .. + 1.0] on each
      * of the X, Y, and Z and project it into eye coordinates.<p>
-     * 
+     *
      * With a monoscopic canvas the projection transform is copied to the
      * first argument and the second argument is not used.  For a stereo
      * canvas the first argument receives the left projection transform, and
@@ -1321,12 +1321,12 @@ public class ViewInfo {
      * <code>ALLOW_LOCAL_TO_VWORLD_READ</code> capability set; otherwise, a
      * scale factor of 1.0 will be used for the scale factor from virtual
      * world units to view platform units.
-     * 
+     *
      * @param c3d the Canvas3D to use
      * @param cc2el the Transform3D to receive left transform
      * @param cc2er the Transform3D to receive right transform, or null
      */
-    public void getInverseProjection(Canvas3D c3d, 
+    public void getInverseProjection(Canvas3D c3d,
 				     Transform3D cc2el, Transform3D cc2er) {
 
 	CanvasInfo ci = updateCache(c3d, "getInverseProjection", true) ;
@@ -1361,7 +1361,7 @@ public class ViewInfo {
      * transforms take the clip space volume bounded by the range
      * [-1.0 .. +1.0] on each of the X, Y, and Z axes and project into
      * the view platform coordinate system.<p>
-     * 
+     *
      * With a monoscopic canvas the projection transform is copied to the
      * first argument and the second argument is not used.  For a stereo
      * canvas the first argument receives the left projection transform, and
@@ -1374,12 +1374,12 @@ public class ViewInfo {
      * <code>ALLOW_LOCAL_TO_VWORLD_READ</code> capability set; otherwise, a
      * scale factor of 1.0 will be used for the scale factor from virtual
      * world units to view platform units.
-     * 
+     *
      * @param c3d the Canvas3D to use
      * @param cc2vpl the Transform3D to receive left transform
      * @param cc2vpr the Transform3D to receive right transform, or null
      */
-    public void getInverseViewPlatformProjection(Canvas3D c3d, 
+    public void getInverseViewPlatformProjection(Canvas3D c3d,
 						 Transform3D cc2vpl,
 						 Transform3D cc2vpr) {
 
@@ -1420,7 +1420,7 @@ public class ViewInfo {
      * transforms take the clip space volume bounded by the range
      * [-1.0 .. +1.0] on each of the X, Y, and Z axes and project into
      * the virtual world.<p>
-     * 
+     *
      * With a monoscopic canvas the projection transform is copied to the
      * first argument and the second argument is not used.  For a stereo
      * canvas the first argument receives the left projection transform, and
@@ -1435,7 +1435,7 @@ public class ViewInfo {
      * @param cc2vwl the Transform3D to receive left transform
      * @param cc2vwr the Transform3D to receive right transform, or null
      */
-    public void getInverseVworldProjection(Canvas3D c3d, 
+    public void getInverseVworldProjection(Canvas3D c3d,
 					   Transform3D cc2vwl,
 					   Transform3D cc2vwr) {
 
@@ -1472,7 +1472,7 @@ public class ViewInfo {
     // Compute a projection matrix from the given eye position in image plate,
     // the front and back clip Z positions in image plate, and the current
     // canvas position in image plate.
-    // 
+    //
     private void computeProjection(CanvasInfo ci, Point3d eye,
 				   double front, double back, Transform3D p) {
 
@@ -1511,7 +1511,7 @@ public class ViewInfo {
         // parametric form as P = tV.  To find the projection onto the plane
         // containing the canvas, find t such that P.z = iz; ie, t = iz/V.z.
         // The projection P is thus [V.x*iz/V.z, V.y*iz/V.z, iz].
-        // 
+        //
         // This projection can expressed as the following matrix equation:
         //
         //   -iz     0     0     0       V.x
@@ -1529,7 +1529,7 @@ public class ViewInfo {
         // the translation results in (V.x - lx)(2/(hx - lx)) - 1, which after
         // some algebra can be confirmed to the same as the following
         // canonical scale/offset form:
-        // 
+        //
         //   V.x*2/(hx - lx) - (hx + lx)/(hx - lx)
         //
         // Similarly for Y:
@@ -1540,29 +1540,29 @@ public class ViewInfo {
         //
         //   2*V.x*idx - (hx + lx)idx
         //   2*V.y*idy - (hy + ly)idy
-        // 
+        //
         // These scales and offsets are represented by the following matrix:
-        // 
+        //
         //   2*idx       0         0  -(hx + lx)*idx
         //     0       2*idy       0  -(hy + ly)*idy
-        //     0         0         1         0      
-        //     0         0         0         1           {matrix 2} 
+        //     0         0         1         0
+        //     0         0         0         1           {matrix 2}
         //
         // The result after concatenating the projection transform
         // ({matrix 2} X {matrix 1}):
-        // 
+        //
         //   -2*iz*idx     0      (hx + lx)*idx    0
         //       0     -2*iz*idy  (hy + ly)*idy    0
         //       0         0           -iz {a}     0 {b}
         //       0         0           -1          0     {matrix 3}
-        // 
+        //
         // The Z scaling is handled by m[10] ("a") and m[11] ("b"), which must
         // map the range [front..back] to [1..-1] in clipping space.  If ze is
         // the Z coordinate in eye space, and zc is the Z coordinate in
         // clipping space after division by w, then from {matrix 3}:
-        // 
+        //
         //   zc =  (a*ze + b)/-ze = -(a + b/ze)
-        // 
+        //
         // We want this to map to +1 when ze is at the near clip plane, and
         // to -1 when ze is at the far clip plane:
         //
@@ -1624,7 +1624,7 @@ public class ViewInfo {
 
     //
     // Get front clip plane Z coordinate in image plate space.
-    // 
+    //
     private double getFrontClip(CanvasInfo ci, Point3d eye) {
 	if (frontClipPolicy == View.PHYSICAL_EYE ||
 	    frontClipPolicy == View.VIRTUAL_EYE) {
@@ -1637,7 +1637,7 @@ public class ViewInfo {
 
     //
     // Get back clip plane Z coordinate in image plate space.
-    // 
+    //
     private double getBackClip(CanvasInfo ci, Point3d eye) {
 	//
 	// Note: Clip node status is unavailable here.	If a clip node is
@@ -1696,7 +1696,7 @@ public class ViewInfo {
      * <code>ALLOW_LOCAL_TO_VWORLD_READ</code> capability set; otherwise, a
      * scale factor of 1.0 will be used for the scale factor from virtual
      * world units to view platform units.
-     * 
+     *
      * @param c3d the Canvas3D to use
      * @return the physical front clip distance
      */
@@ -1730,7 +1730,7 @@ public class ViewInfo {
      * <code>ALLOW_LOCAL_TO_VWORLD_READ</code> capability set; otherwise, a
      * scale factor of 1.0 will be used for the scale factor from virtual
      * world units to view platform units.
-     * 
+     *
      * @param c3d the Canvas3D to use
      * @return the physical back clip distance
      */
@@ -1746,7 +1746,7 @@ public class ViewInfo {
 
 	    ci.frontClipDistance = view.getFrontClipDistance() *
 		getClipScale(ci, frontClipPolicy) ;
-		
+
 	    ci.backClipDistance = view.getBackClipDistance() *
 		getClipScale(ci, backClipPolicy) ;
 
@@ -1776,7 +1776,7 @@ public class ViewInfo {
 
     /**
      * Gets the scale factor from physical meters to view platform units.<p>
-     * 
+     *
      * This method requires a Canvas3D.	 A different scale may be returned
      * for each canvas in the view if any of the following apply:<p><ul>
      *
@@ -1816,7 +1816,7 @@ public class ViewInfo {
 
     /**
      * Gets the scale factor from physical meters to virtual units.<p>
-     * 
+     *
      * This method requires a Canvas3D.	 A different scale may be returned
      * across canvases for the same reasons as discussed in the description of
      * <code>getPhysicalToViewPlatformScale</code>.<p>
@@ -1858,7 +1858,7 @@ public class ViewInfo {
      * using the <code>setPhysicalScreenWidth</code> method of Screen3D, then
      * Java 3D will derive the screen width based on a screen resolution of 90
      * pixels/inch.
-     * 
+     *
      * @param c3d the Canvas3D to use
      * @return the width of the canvas scaled to physical meters
      */
@@ -1874,7 +1874,7 @@ public class ViewInfo {
      * using the <code>setPhysicalScreenHeight</code> method of Screen3D, then
      * Java 3D will derive the screen height based on a screen resolution of 90
      * pixels/inch.
-     * 
+     *
      * @param c3d the Canvas3D to use
      * @return the height of the canvas scaled to physical meters
      */
@@ -1890,7 +1890,7 @@ public class ViewInfo {
      * width and height are not explicitly set in Screen3D, then Java 3D will
      * derive those screen parameters based on a screen resolution of 90
      * pixels/inch.
-     * 
+     *
      * @param c3d the Canvas3D to use
      * @param location the output position, in meters, of the lower-left
      *  corner of the canvas relative to the image plate lower-left corner; Z
@@ -1939,7 +1939,7 @@ public class ViewInfo {
      * @see #getViewPlatformToCoexistence
      *       getViewPlatformToCoexistence(Canvas3D, Transform3D)
      */
-    public void getSensorToVworld(Canvas3D c3d, 
+    public void getSensorToVworld(Canvas3D c3d,
 				  Sensor sensor, Transform3D s2vw) {
 
 	CanvasInfo ci = updateCache(c3d, "getSensorToVworld", true) ;
@@ -2083,7 +2083,7 @@ public class ViewInfo {
      * has not been enabled for the View, then this method should be called if
      * any of the attributes of the View associated with this object have
      * changed.<p>
-     * 
+     *
      * These do <i>not</i> include the attributes of the existing Canvas3D or
      * Screen3D components of the View, but do include the attributes of all
      * other components such as the PhysicalEnvironment and PhysicalBody, and
@@ -2204,7 +2204,7 @@ public class ViewInfo {
     private void getViewInfo() {
 	if (verbose) System.err.println("  getViewInfo") ;
 
-	// Check if an update of the Canvas3D collection is needed. 
+	// Check if an update of the Canvas3D collection is needed.
 	if (this.canvasCount != view.numCanvas3Ds()) {
 	    this.canvasCount = view.numCanvas3Ds() ;
 	    getCanvases() ;
@@ -2261,7 +2261,7 @@ public class ViewInfo {
 		if (this.headToTrackerBase == null)
 		    this.headToTrackerBase = new Transform3D() ;
 	    }
-	    
+
 	    body.getLeftEyePosition(this.leftEyeInHead) ;
 	    body.getRightEyePosition(this.rightEyeInHead) ;
 	    body.getHeadToHeadTracker(this.headToHeadTracker) ;
@@ -2308,7 +2308,7 @@ public class ViewInfo {
 	}
 
 	// Propagate view updates to each canvas.
-	for (int i = 0 ; i < canvasCount ; i++) 
+	for (int i = 0 ; i < canvasCount ; i++)
 	    this.canvasInfo[i].updateViewDependencies() ;
 
 	this.updateView = false ;
@@ -2319,13 +2319,13 @@ public class ViewInfo {
 	}
     }
 
-    // 
+    //
     // Each view can have multiple canvases, each with an associated screen.
     // Each canvas is associated with only one view.  Each screen can have
     // multiple canvases that are used across multiple views.  We rebuild the
     // canvas info instead of trying to figure out what canvases have been
     // added or removed from the view.
-    // 
+    //
     private void getCanvases() {
 	if (this.canvasInfo.length < canvasCount) {
 	    this.canvasInfo = new CanvasInfo[canvasCount] ;
@@ -2383,10 +2383,10 @@ public class ViewInfo {
 	this.updateView = true ;
     }
 
-    // 
+    //
     // Update the view platform. Each view can be attached to only one, but
     // each view platform can have many views attached.
-    // 
+    //
     private void getViewPlatform() {
 	ViewPlatform vp = view.getViewPlatform() ;
 	if (vp == null)
@@ -2474,7 +2474,7 @@ public class ViewInfo {
      * These are the same conditions under which the Java 3D renderer uses
      * head tracking.  This method can be overridden if there is any need to
      * decouple the head tracking status of ViewInfo from the renderer.
-     * 
+     *
      * @return <code>true</code> if ViewInfo should use head tracking
      */
     protected boolean useHeadTracking() {
@@ -2483,7 +2483,7 @@ public class ViewInfo {
 
     //
     // Cache the current tracked head position and derived data.
-    // 
+    //
     private void getHeadInfo() {
 	if (verbose) System.err.println("  getHeadInfo") ;
 
@@ -2501,11 +2501,11 @@ public class ViewInfo {
 	    this.canvasInfo[i].updateHeadDependencies() ;
 
 	this.updateHead = false ;
-	// 
+	//
 	// The head position used by the Java 3D renderer isn't accessible
 	// in the public API.  A head tracker generates continuous data, so
 	// getting the same sensor read as the renderer is unlikely.
-	// 
+	//
 	// Possible workaround: for fixed screens, get the Java 3D
 	// renderer's version of plateToVworld and headToVworld by calling
 	// Canvas3D.getImagePlateToVworld() and View.getUserHeadToVworld().
@@ -2532,7 +2532,7 @@ public class ViewInfo {
 	// means that objects in the virtual world cannot be made to appear in
 	// a fixed position relative to the tracked head position without a
 	// frame lag between them.
-	// 
+	//
 	// The reason for this is that the tracked head position used by the
 	// Java 3D renderer is updated asynchronously from scene graph
 	// updates.  This is done to reduce latency between the user's
@@ -2541,7 +2541,7 @@ public class ViewInfo {
 	// update to the scene graph may have a frame latency before it gets
 	// rendered, a change to the user's tracked position is always
 	// reflected in the current frame.
-	// 
+	//
 	// This problem can't be fixed without eliminating the frame latency
 	// in the Java 3D internal state, although there are possible
 	// workarounds at the expense of increased user position latency.
@@ -2584,7 +2584,7 @@ public class ViewInfo {
 	// The ViewInfo methods can be used to compute the view and projection
 	// matrices, which can then be delayed to synchronize with the scene
 	// graph.
-	// 
+	//
 	// Note that these workarounds could be used to make view-dependent
 	// scene graph updates consistent, but they still can't do anything
 	// about synchronizing the actual physical position of the user with
@@ -2609,7 +2609,7 @@ public class ViewInfo {
 	private boolean updateScreen = true ;
 
 	private Map viewInfoMap = new HashMap() ;
-	private List viewInfoList = new LinkedList() ; 
+	private List viewInfoList = new LinkedList() ;
 	private Transform3D t3d = new Transform3D() ;
 
 	private double screenWidth = 0.0 ;
@@ -2667,7 +2667,7 @@ public class ViewInfo {
 	    getCanvasList(vi).add(ci) ;
 	}
 
-	// 
+	//
 	// Get all relevant screen information, find out what changed, and
 	// flag derived data.  With normal use it's unlikely that any of the
 	// Screen3D attributes will change after the first time this method is
@@ -2824,9 +2824,9 @@ public class ViewInfo {
 
 	    vp.getLocalToVworld(this.viewPlatformToVworld) ;
 	    this.vworldToViewPlatform.invert(viewPlatformToVworld) ;
-	
+
 	    // Get the scale factor from the virtual world to view platform
-	    // transform.  Note that this is always a congruent transform. 
+	    // transform.  Note that this is always a congruent transform.
 	    vworldToViewPlatform.get(m) ;
 	    double newScale = Math.sqrt(m[0]*m[0] + m[1]*m[1] + m[2]*m[2]) ;
 
@@ -2855,7 +2855,7 @@ public class ViewInfo {
 
     //
     // A per-canvas cache.
-    // 
+    //
     private class CanvasInfo {
 	private Canvas3D c3d = null ;
 	private ScreenInfo si = null ;
@@ -2880,7 +2880,7 @@ public class ViewInfo {
 	// coeToPlate is the same for each Canvas3D in a Screen3D unless
 	// coexistence centering is enabled and the window movement policy is
 	// PHYSICAL_WORLD.
-	// 
+	//
 	private Transform3D coeToPlate = null ;
 	private Transform3D coeToRightPlate = null ;
 	private boolean updateCoeToPlate = true ;
@@ -2894,7 +2894,7 @@ public class ViewInfo {
 	// eyepoint policy is RELATIVE_TO_FIELD_OF_VIEW and the view attach
 	// policy is not NOMINAL_SCREEN, which will set the view platform
 	// origin in coexistence based on the width of the canvas.
-	// 
+	//
 	private Transform3D viewPlatformToCoe = null ;
 	private Transform3D coeToViewPlatform = null ;
 	private boolean updateViewPlatformToCoe = true ;
@@ -2949,7 +2949,7 @@ public class ViewInfo {
 
 	//
 	// The projection transform depends upon eye position in image plate.
-	// 
+	//
 	private Transform3D projection = null ;
 	private Transform3D rightProjection = null ;
 	private boolean updateProjection = true ;
@@ -3033,7 +3033,7 @@ public class ViewInfo {
 		    System.err.println("    scale  " + windowScale) ;
 		}
 	    }
-	    
+
 	    // For multiple physical screens, AWT returns the canvas location
 	    // relative to the origin of the aggregated virtual screen.	 We
 	    // need the location relative to the physical screen origin.
@@ -3088,7 +3088,7 @@ public class ViewInfo {
 				       rightManualEyeInPlate) ;
 		}
 	    }
-		
+
 	    updateCanvasDependencies() ;
 	    this.updateStereo = false ;
 	    this.updateWindowScale = false ;
@@ -3268,7 +3268,7 @@ public class ViewInfo {
 	    // tracker, window eyepoint policy, field of view, coexistence
 	    // centering, or coexistence to image plate may have changed.
 	    updateEyeInPlate = true ;
-	    
+
 	    // If the eye position in image plate has changed, then the
 	    // projection transform may need to be updated.  The projection
 	    // policy and clip plane distances and policies may have changed.

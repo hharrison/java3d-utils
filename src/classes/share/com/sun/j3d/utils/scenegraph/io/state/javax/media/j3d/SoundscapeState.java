@@ -58,23 +58,23 @@ public class SoundscapeState extends LeafState {
 
     private int boundingLeaf;
     private int auralAttributes;
-    
+
     public SoundscapeState(SymbolTableData symbol,Controller control) {
         super( symbol, control );
-        
+
     }
-    
+
     public void writeObject( DataOutput out ) throws IOException {
         super.writeObject( out );
-        
+
         out.writeInt( control.getSymbolTable().addReference( ((Soundscape)node).getApplicationBoundingLeaf() ));
         control.writeBounds( out, ((Soundscape)node).getApplicationBounds() );
         out.writeInt( control.getSymbolTable().addReference( ((Soundscape)node).getAuralAttributes() ));
     }
-    
+
     public void readObject( DataInput in ) throws IOException {
         super.readObject( in );
-        
+
         boundingLeaf = in.readInt();
         ((Soundscape)node).setApplicationBounds( control.readBounds(in));
         auralAttributes = in.readInt();
@@ -88,16 +88,16 @@ public class SoundscapeState extends LeafState {
     public void addSubReference() {
         control.getSymbolTable().incNodeComponentRefCount( auralAttributes );
     }
-    
+
     public void buildGraph() {
         ((Soundscape)node).setApplicationBoundingLeaf( (BoundingLeaf)control.getSymbolTable().getJ3dNode( boundingLeaf ));
         ((Soundscape)node).setAuralAttributes( (AuralAttributes)control.getSymbolTable().getJ3dNode( auralAttributes ));
         super.buildGraph();     // Must be last call in method
     }
-    
+
     protected javax.media.j3d.SceneGraphObject createNode() {
         return new Soundscape();
     }
 
-    
+
 }

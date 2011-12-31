@@ -53,11 +53,11 @@ import javax.media.j3d.SceneGraphObject;
 import javax.media.j3d.PolygonAttributes;
 
 public class PolygonAttributesState extends NodeComponentState {
-    
+
     public PolygonAttributesState( SymbolTableData symbol, Controller control ) {
         super(symbol, control);
     }
-    
+
     public void writeObject( DataOutput out ) throws IOException {
         super.writeObject( out );
         PolygonAttributes polyAttr = (PolygonAttributes)node;
@@ -67,7 +67,7 @@ public class PolygonAttributesState extends NodeComponentState {
         out.writeFloat( polyAttr.getPolygonOffset() );
         out.writeFloat( polyAttr.getPolygonOffsetFactor() );
     }
-    
+
     public void readObject( DataInput in ) throws IOException {
         super.readObject( in );
         PolygonAttributes polyAttr = (PolygonAttributes)node;
@@ -77,11 +77,11 @@ public class PolygonAttributesState extends NodeComponentState {
         polyAttr.setPolygonOffset( in.readFloat() );
         polyAttr.setPolygonOffsetFactor( in.readFloat() );
     }
-    
+
     protected javax.media.j3d.SceneGraphObject createNode() {
         return new PolygonAttributes();
     }
 
-    
+
 }
 

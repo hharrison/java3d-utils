@@ -60,10 +60,10 @@ public class CylinderState extends PrimitiveState {
     private int topAppearance;
     private int bottomAppearance;
     private int bodyAppearance;
-    
+
     public CylinderState( SymbolTableData symbol, Controller control ) {
 	super( symbol, control );
-        
+
         if (node!=null) {
             bodyAppearance = control.getSymbolTable().addReference( ((Cylinder)node).getShape( Cylinder.BODY ).getAppearance() );
             topAppearance = control.getSymbolTable().addReference( ((Cylinder)node).getShape( Cylinder.TOP ).getAppearance() );
@@ -84,10 +84,10 @@ public class CylinderState extends PrimitiveState {
        bodyAppearance = in.readInt();
        bottomAppearance = in.readInt();
     }
-    
+
     public void writeConstructorParams( DataOutput out ) throws IOException {
 	super.writeConstructorParams( out );
-        
+
         out.writeFloat( ((Cylinder)node).getRadius() );
         out.writeFloat( ((Cylinder)node).getHeight() );
         out.writeInt( ((Cylinder)node).getXdivisions() );
@@ -96,13 +96,13 @@ public class CylinderState extends PrimitiveState {
 
     public void readConstructorParams( DataInput in ) throws IOException {
        super.readConstructorParams(in);
-       
+
        radius = in.readFloat();
        height = in.readFloat();
        xdivision = in.readInt();
        ydivision = in.readInt();
     }
-    
+
     public void buildGraph() {
         if (bodyAppearance == topAppearance && bodyAppearance == bottomAppearance ) {
             ((Cylinder)node).setAppearance( (Appearance)control.getSymbolTable().getJ3dNode( bodyAppearance ));
@@ -113,7 +113,7 @@ public class CylinderState extends PrimitiveState {
         }
         super.buildGraph(); // This must be the last call in the method
     }
-    
+
     public SceneGraphObject createNode( Class j3dClass ) {
         // Create the node with a null appearance, we will add the appearance
         // during build graph
@@ -131,13 +131,13 @@ public class CylinderState extends PrimitiveState {
                                                 new Integer( xdivision ),
                                                 new Integer( ydivision ),
                                                 null } );
-                                                
+
         return cylinder;
     }
-    
+
     protected javax.media.j3d.SceneGraphObject createNode() {
         return new Cylinder( radius, height, primflags, xdivision, ydivision, null );
     }
 
-    
+
 }

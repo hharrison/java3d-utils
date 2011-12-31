@@ -120,7 +120,7 @@ class LWOBFileReader extends BufferedInputStream {
 
 
     /**
-     * Read four bytes from the file and return their integer value 
+     * Read four bytes from the file and return their integer value
      */
     public int getInt() throws ParsingErrorException {
         try {

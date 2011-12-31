@@ -53,11 +53,11 @@ import javax.media.j3d.SceneGraphObject;
 import javax.media.j3d.RenderingAttributes;
 
 public class RenderingAttributesState extends NodeComponentState {
-    
+
     public RenderingAttributesState( SymbolTableData symbol, Controller control ) {
         super(symbol, control);
     }
-    
+
     public void writeObject( DataOutput out ) throws IOException {
         super.writeObject( out );
         RenderingAttributes attr = (RenderingAttributes)node;
@@ -70,7 +70,7 @@ public class RenderingAttributesState extends NodeComponentState {
         out.writeBoolean( attr.getRasterOpEnable() );
         out.writeBoolean( attr.getVisible() );
     }
-    
+
     public void readObject( DataInput in ) throws IOException {
         super.readObject( in );
         RenderingAttributes attr = (RenderingAttributes)node;
@@ -83,11 +83,11 @@ public class RenderingAttributesState extends NodeComponentState {
         attr.setRasterOpEnable( in.readBoolean() );
         attr.setVisible( in.readBoolean() );
     }
-    
+
     protected javax.media.j3d.SceneGraphObject createNode() {
         return new RenderingAttributes();
     }
 
-    
+
 }
 

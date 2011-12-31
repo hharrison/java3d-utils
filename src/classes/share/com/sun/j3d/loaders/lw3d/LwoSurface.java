@@ -67,7 +67,7 @@ import com.sun.j3d.loaders.ParsingErrorException;
  */
 
 class LwoSurface extends ParserObject {
-	
+
     LWOBFileReader theReader;
     int red = 255, green = 255, blue = 255;
     float diffuse = 0.0f, specular = 0.0f, transparency = 0.0f, luminosity = 0.0f;
@@ -94,7 +94,7 @@ class LwoSurface extends ParserObject {
 	getSurf(length);
 	setJ3dColors();
     }
-		
+
     /**
      * Creates Java3d color objects from the lw3d surface data
      */
@@ -155,7 +155,7 @@ class LwoSurface extends ParserObject {
             }
         }
         catch (ArrayIndexOutOfBoundsException e) {
-            debugOutputLn(EXCEPTION, 
+            debugOutputLn(EXCEPTION,
                 "getTexture(), exception returning first element: " + e);
             return null;
         }
@@ -286,7 +286,7 @@ class LwoSurface extends ParserObject {
 	    else if (tokenString.endsWith("TEX")) {
 		// Textures are complex - hand off this bit to the
 		// LwoTexture class
-		LwoTexture texture = 
+		LwoTexture texture =
 		    new LwoTexture(theReader,
 				   surfStopMarker - theReader.getMarker(),
 				   tokenString,
@@ -312,5 +312,5 @@ class LwoSurface extends ParserObject {
 
 }
 
- 
+
 

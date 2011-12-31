@@ -54,11 +54,11 @@ import javax.media.j3d.TexCoordGeneration;
 import javax.vecmath.Vector4f;
 
 public class TexCoordGenerationState extends NodeComponentState {
-    
+
     public TexCoordGenerationState( SymbolTableData symbol, Controller control ) {
         super(symbol, control);
     }
-    
+
     public void writeObject( DataOutput out ) throws IOException {
         super.writeObject( out );
         TexCoordGeneration attr = (TexCoordGeneration)node;
@@ -75,7 +75,7 @@ public class TexCoordGenerationState extends NodeComponentState {
         attr.getPlaneQ( vec );
         control.writeVector4f( out, vec );
     }
-    
+
     public void readObject( DataInput in ) throws IOException {
         super.readObject( in );
         TexCoordGeneration attr = (TexCoordGeneration)node;
@@ -87,11 +87,11 @@ public class TexCoordGenerationState extends NodeComponentState {
         attr.setPlaneT( control.readVector4f( in ));
 	attr.setPlaneQ( control.readVector4f( in ));
     }
-    
+
     protected javax.media.j3d.SceneGraphObject createNode() {
         return new TexCoordGeneration();
     }
 
-    
+
 }
 

@@ -51,7 +51,7 @@ class DefaultMaterials {
   /**
    * String that describes the default materials.
    */
-  static final String materials = 
+  static final String materials =
     "newmtl amber\n" +
     "Ka 0.0531 0.0531 0.0531\n" +
     "Kd 0.5755 0.2678 0.0000\n" +

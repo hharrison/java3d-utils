@@ -55,7 +55,7 @@ public class DecalGroupState extends GroupState {
     public DecalGroupState(SymbolTableData symbol,Controller control) {
         super( symbol, control );
     }
-    
+
     protected SceneGraphObject createNode() {
         return new DecalGroup();
     }

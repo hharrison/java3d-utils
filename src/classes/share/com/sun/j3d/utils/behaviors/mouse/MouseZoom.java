@@ -52,16 +52,16 @@ import javax.vecmath.*;
 
 
 /**
- * MouseZoom is a Java3D behavior object that lets users control the 
+ * MouseZoom is a Java3D behavior object that lets users control the
  * Z axis translation of an object via a mouse drag motion with the second
  * mouse button. See MouseRotate for similar usage info.
  */
- 
+
 public class MouseZoom extends MouseBehavior {
 
     double z_factor = .04;
     Vector3d translation = new Vector3d();
-  
+
     private MouseBehaviorCallback callback = null;
 
     /**
@@ -142,21 +142,21 @@ public class MouseZoom extends MouseBehavior {
 	    invert = true;
 	}
     }
-    
+
     /**
      * Return the y-axis movement multipler.
      **/
     public double getFactor() {
 	return z_factor;
     }
-  
+
     /**
      * Set the y-axis movement multipler with factor.
      **/
     public void setFactor( double factor) {
 	z_factor = factor;
     }
-  
+
 
     public void processStimulus (Enumeration criteria) {
 	WakeupCriterion wakeup;
@@ -164,7 +164,7 @@ public class MouseZoom extends MouseBehavior {
  	MouseEvent evt;
 // 	int id;
 // 	int dx, dy;
-    
+
 	while (criteria.hasMoreElements()) {
 	    wakeup = (WakeupCriterion) criteria.nextElement();
 	    if (wakeup instanceof WakeupOnAWTEvent) {
@@ -191,7 +191,7 @@ public class MouseZoom extends MouseBehavior {
 		    doProcess(evt);
 		}
 	    }
-	    
+
 	}
 	wakeupOn (mouseCriterion);
     }
@@ -201,45 +201,45 @@ public class MouseZoom extends MouseBehavior {
 	int dx, dy;
 
 	processMouseEvent(evt);
-	
+
 	if (((buttonPress)&&((flags & MANUAL_WAKEUP) == 0)) ||
 	    ((wakeUp)&&((flags & MANUAL_WAKEUP) != 0))){
 	    id = evt.getID();
 	    if ((id == MouseEvent.MOUSE_DRAGGED) &&
 		evt.isAltDown() && !evt.isMetaDown()){
-		
+
 		x = evt.getX();
 		y = evt.getY();
-		
+
 		dx = x - x_last;
 		dy = y - y_last;
-		
+
 		if (!reset){
 		    transformGroup.getTransform(currXform);
-		    
+
 		    translation.z  = dy*z_factor;
-		    
+
 		    transformX.set(translation);
-		    
+
 		    if (invert) {
 			currXform.mul(currXform, transformX);
 		    } else {
 			currXform.mul(transformX, currXform);
 		    }
-		    
+
 		    transformGroup.setTransform(currXform);
-		    
+
 		    transformChanged( currXform );
-		    
+
 		    if (callback!=null)
 			callback.transformChanged( MouseBehaviorCallback.ZOOM,
 						   currXform );
-		    
+
 		}
 		else {
 		    reset = false;
 		}
-		
+
 		x_last = x;
 		y_last = y;
 	    }
@@ -250,7 +250,7 @@ public class MouseZoom extends MouseBehavior {
 	}
     }
 
-    
+
   /**
     * Users can overload this method  which is called every time
     * the Behavior updates the transform
@@ -259,7 +259,7 @@ public class MouseZoom extends MouseBehavior {
     */
   public void transformChanged( Transform3D transform ) {
   }
- 
+
   /**
     * The transformChanged method in the callback class will
     * be called every time the transform is updated

@@ -63,19 +63,19 @@ public class KBRotPosScaleSplinePathInterpolatorState extends TransformInterpola
 
     private KBKeyFrame[] keyFrames;
     private Transform3D axisOfTranslation;
-    
+
     public KBRotPosScaleSplinePathInterpolatorState(SymbolTableData symbol,Controller control) {
         super( symbol, control );
     }
-    
+
     public void writeConstructorParams( DataOutput out ) throws IOException {
         super.writeConstructorParams( out );
-        
+
         control.writeTransform3D( out, ((KBRotPosScaleSplinePathInterpolator)node).getAxisOfRotPosScale() );
 
         int length = ((KBRotPosScaleSplinePathInterpolator)node).getArrayLength();
         out.writeInt( length );
-        
+
         for(int i=0; i<length; i++) {
             KBKeyFrame keyFrame = ((KBRotPosScaleSplinePathInterpolator)node).getKeyFrame( i );
             out.writeFloat( keyFrame.knot );
@@ -90,10 +90,10 @@ public class KBRotPosScaleSplinePathInterpolatorState extends TransformInterpola
             out.writeFloat( keyFrame.bias );
         }
     }
-    
+
     public void readConstructorParams( DataInput in ) throws IOException {
         super.readConstructorParams( in );
-        
+
         axisOfTranslation =  control.readTransform3D( in );
 
         keyFrames = new KBKeyFrame[in.readInt() ];
@@ -110,7 +110,7 @@ public class KBRotPosScaleSplinePathInterpolatorState extends TransformInterpola
                                            in.readFloat() );
         }
     }
-    
+
     public SceneGraphObject createNode( Class j3dClass ) {
         return createNode( j3dClass, new Class[] { javax.media.j3d.Alpha.class,
                                                     TransformGroup.class,
@@ -120,9 +120,9 @@ public class KBRotPosScaleSplinePathInterpolatorState extends TransformInterpola
                                                      null,
                                                      axisOfTranslation,
                                                      keyFrames } );
-                                                    
+
     }
-    
+
     protected javax.media.j3d.SceneGraphObject createNode() {
         return new KBRotPosScaleSplinePathInterpolator( null, null, axisOfTranslation, keyFrames );
     }

@@ -57,24 +57,24 @@ public class AuralAttributesState extends NodeComponentState {
 
     public AuralAttributesState(SymbolTableData symbol,Controller control) {
         super( symbol, control );
-        
+
     }
-    
+
     public void writeObject( DataOutput out ) throws IOException {
         super.writeObject( out );
-        
+
         out.writeFloat( ((AuralAttributes)node).getAttributeGain() );
-        
+
         float[] distance = new float[ ((AuralAttributes)node).getDistanceFilterLength() ];
         float[] cutoff = new float[ distance.length ];
-        
+
         ((AuralAttributes)node).getDistanceFilter( distance, cutoff );
         out.writeInt( distance.length );
         for(int i=0; i<distance.length; i++) {
             out.writeFloat( distance[i] );
             out.writeFloat( cutoff[i] );
         }
-        
+
         out.writeFloat( ((AuralAttributes)node).getFrequencyScaleFactor() );
         out.writeFloat( ((AuralAttributes)node).getReflectionCoefficient() );
         control.writeBounds( out, ((AuralAttributes)node).getReverbBounds() );
@@ -89,12 +89,12 @@ public class AuralAttributesState extends NodeComponentState {
 	out.writeFloat( ((AuralAttributes)node).getDiffusion() );
 	out.writeFloat( ((AuralAttributes)node).getDensity() );
     }
-    
+
     public void readObject( DataInput in ) throws IOException {
         super.readObject( in );
-                    
+
         ((AuralAttributes)node).setAttributeGain( in.readFloat() );
-        
+
         float[] distance = new float[ in.readInt() ];
         float[] cutoff = new float[ distance.length ];
         for(int i=0; i<distance.length; i++) {
@@ -102,7 +102,7 @@ public class AuralAttributesState extends NodeComponentState {
             cutoff[i] = in.readFloat();
         }
         ((AuralAttributes)node).setDistanceFilter( distance, cutoff );
-        
+
         ((AuralAttributes)node).setFrequencyScaleFactor( in.readFloat() );
         ((AuralAttributes)node).setReflectionCoefficient( in.readFloat() );
         ((AuralAttributes)node).setReverbBounds( control.readBounds(in) );
@@ -117,9 +117,9 @@ public class AuralAttributesState extends NodeComponentState {
 	((AuralAttributes)node).setDiffusion( in.readFloat() );
 	((AuralAttributes)node).setDensity( in.readFloat() );
     }
-    
+
     protected SceneGraphObject createNode() {
         return new AuralAttributes();
     }
-    
+
 }

@@ -56,14 +56,14 @@ import javax.media.j3d.Appearance;
 import javax.media.j3d.Group;
 
 public class AlternateAppearanceState extends LeafState {
-    
+
     private int[] scopes;
     private int appearance;
     private int influencingBoundingLeaf;
-    
+
     public AlternateAppearanceState(SymbolTableData symbol,Controller control) {
         super(symbol, control);
-        
+
         if (node!=null) {
             scopes = new int[ ((AlternateAppearance)node).numScopes() ];
             for(int i=0; i<scopes.length; i++)
@@ -73,29 +73,29 @@ public class AlternateAppearanceState extends LeafState {
             influencingBoundingLeaf = control.getSymbolTable().addReference( ((AlternateAppearance)node).getInfluencingBoundingLeaf());
         }
     }
-    
+
     public void writeObject( DataOutput out ) throws IOException {
         super.writeObject( out );
-        
+
         out.writeInt( scopes.length );
         for(int i=0; i<scopes.length; i++)
             out.writeInt( scopes[i] );
-        
+
         out.writeInt( appearance );
         out.writeInt( influencingBoundingLeaf );
         control.writeBounds( out, ((AlternateAppearance)node).getInfluencingBounds() );
     }
-    
+
     public void readObject( DataInput in ) throws IOException {
         super.readObject( in );
-        
+
         scopes = new int[ in.readInt() ];
         for(int i=0; i<scopes.length; i++)
             scopes[i] = in.readInt();
-        
+
         appearance = in.readInt();
         influencingBoundingLeaf = in.readInt();
-        
+
         ((AlternateAppearance)node).setInfluencingBounds( control.readBounds(in));
     }
 
@@ -108,17 +108,17 @@ public class AlternateAppearanceState extends LeafState {
 	// Ground and BoundingLeaf not node components
 	control.getSymbolTable().incNodeComponentRefCount( appearance );
     }
-    
+
     public void buildGraph() {
         for(int i=0; i<scopes.length; i++)
             ((AlternateAppearance)node).addScope( (Group)control.getSymbolTable().getJ3dNode( scopes[i] ));
-        
+
         ((AlternateAppearance)node).setAppearance( (Appearance)control.getSymbolTable().getJ3dNode( appearance ));
         ((AlternateAppearance)node).setInfluencingBoundingLeaf( (BoundingLeaf)control.getSymbolTable().getJ3dNode( influencingBoundingLeaf ));
 	super.buildGraph();	// Must be last call in method
-        
+
     }
-    
+
     protected SceneGraphObject createNode() {
         return new AlternateAppearance();
     }

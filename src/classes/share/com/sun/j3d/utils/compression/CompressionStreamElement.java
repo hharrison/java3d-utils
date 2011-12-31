@@ -76,7 +76,7 @@ abstract class CompressionStreamElement {
 	0xFFFFFFF0, 0xFFFFFFF8, 0xFFFFFFFC, 0xFFFFFFFE,
 	0xFFFFFFFF
     } ;
-    
+
     /**
      * Array with elements that can be used as masks to retain the number of
      * trailing bits of data indicated by the referencing index [0..64].  Used
@@ -148,7 +148,7 @@ abstract class CompressionStreamElement {
      * this includes the first 0 starting from the left, plus a 1 sign bit.
      * 0 is a special case returning 0; however, 0-length components are valid
      * ONLY for normals.
-     * 
+     *
      * The decompressor uses the data length to determine how many bits of
      * sign extension to add to the data coming in from the compressed stream
      * in order to create a 16-bit signed 2's complement integer.  E.g., a data
@@ -243,7 +243,7 @@ abstract class CompressionStreamElement {
 	int s1 = n1 & 0x8000 ;
 
 	// equal sign optimization
-	if (s0 == s1) 
+	if (s0 == s1)
 	    if (s0 == 0)
 		this.length = getLength(n0 | n1) ;
 	    else
@@ -253,7 +253,7 @@ abstract class CompressionStreamElement {
 
 	this.shift = getShift(n0 | n1) ;
     }
-    
+
 
     /**
      * Computes common length and shift of 3 numbers.
@@ -295,7 +295,7 @@ abstract class CompressionStreamElement {
 
 	this.shift = getShift(n0 | n1 | n2) ;
     }
-    
+
 
     /**
      * Computes common length and shift of 4 numbers.
@@ -306,7 +306,7 @@ abstract class CompressionStreamElement {
 
 	this.shift = getShift(n0 | n1 | n2 | n3) ;
     }
-    
+
 
     /**
      * Finds the maximum of two integers.

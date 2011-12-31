@@ -54,11 +54,11 @@ import javax.media.j3d.Material;
 import javax.vecmath.Color3f;
 
 public class MaterialState extends NodeComponentState {
-    
+
     public MaterialState( SymbolTableData symbol, Controller control ) {
         super(symbol, control);
     }
-    
+
     public void writeObject( DataOutput out ) throws IOException {
         super.writeObject( out );
         Material attr = (Material)node;
@@ -71,11 +71,11 @@ public class MaterialState extends NodeComponentState {
         control.writeColor3f( out, clr );
         attr.getSpecularColor( clr );
         control.writeColor3f( out, clr );
-        
+
         out.writeBoolean( attr.getLightingEnable() );
 	out.writeInt( attr.getColorTarget() );
     }
-    
+
     public void readObject( DataInput in ) throws IOException {
         super.readObject( in );
         Material attr = (Material)node;
@@ -86,11 +86,11 @@ public class MaterialState extends NodeComponentState {
         attr.setLightingEnable( in.readBoolean() );
 	attr.setColorTarget( in.readInt() );
     }
-    
+
     protected javax.media.j3d.SceneGraphObject createNode() {
         return new Material();
     }
 
-    
+
 }
 

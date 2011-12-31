@@ -67,7 +67,7 @@ class LwsEnvelopeFrame extends TextfileParser {
     /**
      * Constructor: parses stream and stores data for one keyframe of
      * an envelope sequence
-     */    
+     */
     LwsEnvelopeFrame(StreamTokenizer st) {
 	value = getNumber(st);
 	debugOutputLn(VALUES, "value = " + value);
@@ -86,13 +86,13 @@ class LwsEnvelopeFrame extends TextfileParser {
     double getValue() {
 	return value;
     }
-    
+
 
     double getFrameNum() {
 	return frameNumber;
     }
 
-    
+
     void printVals() {
 	debugOutputLn(VALUES, "         value = " + value);
 	debugOutputLn(VALUES, "         frameNum = " + frameNumber);
@@ -102,4 +102,4 @@ class LwsEnvelopeFrame extends TextfileParser {
 	debugOutputLn(VALUES, "         bias = " + bias);
     }
 
-}	
+}

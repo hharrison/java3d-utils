@@ -50,20 +50,20 @@ import javax.vecmath.*;
 
 
 /**
- * The KBCubicSplineSegment class creates the representation of a 
+ * The KBCubicSplineSegment class creates the representation of a
  * Kochanek-Bartel's (also known as the TCB or Tension-Continuity-Bias
- * Spline.  This class takes 4 key frames as its input (using KBKeyFrame). 
- * If interpolating between the i<sup>th</sup> and (i+1)<sup>th</sup> key 
- * frame then the four key frames that need to be specified are the 
- * (i-1)<sup>th</sup>, i<sup>th</sup>, (i+1)<sup>th</sup> 
+ * Spline.  This class takes 4 key frames as its input (using KBKeyFrame).
+ * If interpolating between the i<sup>th</sup> and (i+1)<sup>th</sup> key
+ * frame then the four key frames that need to be specified are the
+ * (i-1)<sup>th</sup>, i<sup>th</sup>, (i+1)<sup>th</sup>
  * and (i+2)<sup>th</sup>  keyframes in order. The KBCubicSegmentClass
- * then pre-computes the hermite interpolation basis coefficients if the 
- * (i+1)<sup>th</sup> frame has the linear flag set to zero. These are used to 
- * calculate the interpolated position, scale and quaternions when they 
- * requested by the user using the getInterpolated* methods. If the the 
- * (i+1)<sup>th</sup> frame's linear flag is set to 1 then the class uses 
- * linear interpolation to calculate the interpolated position, scale, heading 
- * pitch and bank it returns through the getInterpolated* methods. 
+ * then pre-computes the hermite interpolation basis coefficients if the
+ * (i+1)<sup>th</sup> frame has the linear flag set to zero. These are used to
+ * calculate the interpolated position, scale and quaternions when they
+ * requested by the user using the getInterpolated* methods. If the the
+ * (i+1)<sup>th</sup> frame's linear flag is set to 1 then the class uses
+ * linear interpolation to calculate the interpolated position, scale, heading
+ * pitch and bank it returns through the getInterpolated* methods.
  *
  * @since Java3D 1.2
  */
@@ -94,16 +94,16 @@ public class KBCubicSplineSegment {
 
     // Key Frames
     KBKeyFrame[] keyFrame = new KBKeyFrame[4];
-    
-    // H.C 
+
+    // H.C
     Point3f  c0, c1, c2, c3; // coefficients for position
-    Point3f  e0, e1, e2, e3; // coefficients for scale 
-    float    h0, h1, h2, h3; // coefficients for heading  
-    float    p0, p1, p2, p3; // coefficients for pitch 
-    float    b0, b1, b2, b3; // coefficients for bank 
+    Point3f  e0, e1, e2, e3; // coefficients for scale
+    float    h0, h1, h2, h3; // coefficients for heading
+    float    p0, p1, p2, p3; // coefficients for pitch
+    float    b0, b1, b2, b3; // coefficients for bank
 
     // variables for destination derivative
-    float    one_minus_t_in; 
+    float    one_minus_t_in;
     float    one_minus_c_in;
     float    one_minus_b_in;
     float    one_plus_c_in;
@@ -115,7 +115,7 @@ public class KBCubicSplineSegment {
     float    one_minus_t_out;
     float    one_minus_c_out;
     float    one_minus_b_out;
-    float    one_plus_c_out; 
+    float    one_plus_c_out;
     float    one_plus_b_out;
     float    dsb;
     float    dsa;
@@ -125,8 +125,8 @@ public class KBCubicSplineSegment {
 
     // interpolation type
     int      linear;
-    
-    // Default constructor 
+
+    // Default constructor
     KBCubicSplineSegment () {
 
         length = 0;
@@ -134,26 +134,26 @@ public class KBCubicSplineSegment {
     }
 
     /**
-     * Creates a cubic spline segment between two key frames using the 
-     * key frames provided. If creating a spline between the ith frame and 
-     * the (i+1)<sup>th</sup> frame then send down the (i - 1)<sup>th</sup>, 
-     * i<sup>th</sup> , (i+1)<sup>th</sup> and the (i+2)<sup>th</sup> key 
-     * frames.  
-     * 
+     * Creates a cubic spline segment between two key frames using the
+     * key frames provided. If creating a spline between the ith frame and
+     * the (i+1)<sup>th</sup> frame then send down the (i - 1)<sup>th</sup>,
+     * i<sup>th</sup> , (i+1)<sup>th</sup> and the (i+2)<sup>th</sup> key
+     * frames.
+     *
      * @param kf0 (i - 1)<sup>th</sup> Key Frame
-     * @param kf1 i<sup>th</sup> Key Frame 
+     * @param kf1 i<sup>th</sup> Key Frame
      * @param kf2 (i + 1)<sup>th</sup> Key Frame
-     * @param kf3 (i + 2)<sup>th</sup> Key Frame 
+     * @param kf3 (i + 2)<sup>th</sup> Key Frame
      */
 
     KBCubicSplineSegment (KBKeyFrame kf0,  KBKeyFrame kf1, KBKeyFrame kf2,
                                                            KBKeyFrame kf3) {
 
         // Copy KeyFrame information
-        keyFrame[0] = new KBKeyFrame(kf0); 
-        keyFrame[1] = new KBKeyFrame(kf1); 
-        keyFrame[2] = new KBKeyFrame(kf2); 
-        keyFrame[3] = new KBKeyFrame(kf3); 
+        keyFrame[0] = new KBKeyFrame(kf0);
+        keyFrame[1] = new KBKeyFrame(kf1);
+        keyFrame[2] = new KBKeyFrame(kf2);
+        keyFrame[3] = new KBKeyFrame(kf3);
 
         // if linear interpolation is requested then just set linear flag
         // if spline interpolation is needed then compute spline coefficients
@@ -171,32 +171,32 @@ public class KBCubicSplineSegment {
     }
 
     // compute the common coefficients
-    private void computeCommonCoefficients (KBKeyFrame kf0, 
+    private void computeCommonCoefficients (KBKeyFrame kf0,
                                             KBKeyFrame kf1,
-                                            KBKeyFrame kf2, 
+                                            KBKeyFrame kf2,
                                             KBKeyFrame kf3) {
 
         // variables for destination derivative
         float  one_minus_t_in = 1.0f - kf1.tension;
-        float  one_minus_c_in = 1.0f - kf1.continuity; 
+        float  one_minus_c_in = 1.0f - kf1.continuity;
         float  one_minus_b_in = 1.0f - kf1.bias;
         float  one_plus_c_in  = 1.0f + kf1.continuity;
         float  one_plus_b_in  = 1.0f + kf1.bias;
 
         // coefficients for the incoming Tangent
-        ddb = one_minus_t_in * one_minus_c_in * one_minus_b_in; 
-        dda = one_minus_t_in * one_plus_c_in * one_plus_b_in; 
+        ddb = one_minus_t_in * one_minus_c_in * one_minus_b_in;
+        dda = one_minus_t_in * one_plus_c_in * one_plus_b_in;
 
         // variables for source derivative
-        float  one_minus_t_out = 1.0f - kf2.tension; 
-        float  one_minus_c_out = 1.0f - kf2.continuity; 
+        float  one_minus_t_out = 1.0f - kf2.tension;
+        float  one_minus_c_out = 1.0f - kf2.continuity;
         float  one_minus_b_out = 1.0f - kf2.bias;
         float  one_plus_c_out  = 1.0f + kf2.continuity;
         float  one_plus_b_out  = 1.0f + kf2.bias;
-                  
+
         // coefficients for the outgoing Tangent
-        dsb = one_minus_t_in * one_plus_c_in * one_minus_b_in; 
-        dsa = one_minus_t_in * one_minus_c_in * one_plus_b_in; 
+        dsb = one_minus_t_in * one_plus_c_in * one_minus_b_in;
+        dsa = one_minus_t_in * one_minus_c_in * one_plus_b_in;
     }
 
 
@@ -213,7 +213,7 @@ public class KBCubicSplineSegment {
         float   deltaT;
         float   deltaB;
 
-        // Find the difference in position and scale 
+        // Find the difference in position and scale
         deltaP.x = kf2.position.x - kf1.position.x;
         deltaP.y = kf2.position.y - kf1.position.y;
         deltaP.z = kf2.position.z - kf1.position.z;
@@ -226,13 +226,13 @@ public class KBCubicSplineSegment {
         deltaH = kf2.heading - kf1.heading;
         deltaT = kf2.pitch - kf1.pitch;
         deltaB = kf2.bank - kf1.bank;
-         
+
         // Incoming Tangent
         Point3f dd_pos    = new Point3f();
         Point3f dd_scale  = new Point3f();
         float   dd_heading, dd_pitch, dd_bank;
 
-        // If this is the first keyframe of the animation 
+        // If this is the first keyframe of the animation
         if (kf0.knot == kf1.knot) {
 
            float ddab = 0.5f * (dda + ddb);
@@ -242,7 +242,7 @@ public class KBCubicSplineSegment {
            dd_pos.y = ddab * deltaP.y;
            dd_pos.z = ddab * deltaP.z;
 
-           // Scale 
+           // Scale
            dd_scale.x = ddab * deltaS.x;
            dd_scale.y = ddab * deltaS.y;
            dd_scale.z = ddab * deltaS.z;
@@ -257,36 +257,36 @@ public class KBCubicSplineSegment {
            float adj0 = (kf1.knot - kf0.knot)/(kf2.knot - kf0.knot);
 
            // Position
-           dd_pos.x = adj0 * 
+           dd_pos.x = adj0 *
               ((ddb * deltaP.x) + (dda * (kf1.position.x - kf0.position.x)));
            dd_pos.y = adj0 *
               ((ddb * deltaP.y) + (dda * (kf1.position.y - kf0.position.y)));
-           dd_pos.z = adj0 * 
+           dd_pos.z = adj0 *
               ((ddb * deltaP.z) + (dda * (kf1.position.z - kf0.position.z)));
 
-           // Scale 
-           dd_scale.x = adj0 * 
+           // Scale
+           dd_scale.x = adj0 *
               ((ddb * deltaS.x) + (dda * (kf1.scale.x - kf0.scale.x)));
-           dd_scale.y = adj0 * 
+           dd_scale.y = adj0 *
               ((ddb * deltaS.y) + (dda * (kf1.scale.y - kf0.scale.y)));
-           dd_scale.z = adj0 * 
+           dd_scale.z = adj0 *
               ((ddb * deltaS.z) + (dda * (kf1.scale.z - kf0.scale.z)));
 
            // Heading, Pitch and Bank
-           dd_heading = adj0 * 
+           dd_heading = adj0 *
               ((ddb * deltaH) + (dda * (kf1.heading - kf0.heading)));
-           dd_pitch = adj0 * 
+           dd_pitch = adj0 *
               ((ddb * deltaT) + (dda * (kf1.pitch - kf0.pitch)));
-           dd_bank = adj0 * 
+           dd_bank = adj0 *
               ((ddb * deltaB) + (dda * (kf1.bank - kf0.bank)));
         }
-       
+
         // Outgoing Tangent
         Point3f ds_pos   = new Point3f();
         Point3f ds_scale = new Point3f();
         float   ds_heading, ds_pitch, ds_bank;
 
-        // If this is the last keyframe of the animation 
+        // If this is the last keyframe of the animation
         if (kf2.knot == kf3.knot) {
 
            float dsab = 0.5f * (dsa + dsb);
@@ -295,7 +295,7 @@ public class KBCubicSplineSegment {
            ds_pos.x = dsab * deltaP.x;
            ds_pos.y = dsab * deltaP.y;
            ds_pos.z = dsab * deltaP.z;
-           
+
            // Scale
            ds_scale.x = dsab * deltaS.x;
            ds_scale.y = dsab * deltaS.y;
@@ -311,27 +311,27 @@ public class KBCubicSplineSegment {
            float adj1 = (kf2.knot - kf1.knot)/(kf3.knot - kf1.knot);
 
            // Position
-           ds_pos.x = adj1 * 
+           ds_pos.x = adj1 *
              ((dsb * (kf3.position.x - kf2.position.x)) + (dsa * deltaP.x));
-           ds_pos.y = adj1 * 
+           ds_pos.y = adj1 *
              ((dsb * (kf3.position.y - kf2.position.y)) + (dsa * deltaP.y));
-           ds_pos.z = adj1 * 
+           ds_pos.z = adj1 *
              ((dsb * (kf3.position.z - kf2.position.z)) + (dsa * deltaP.z));
 
            // Scale
-           ds_scale.x = adj1 * 
+           ds_scale.x = adj1 *
              ((dsb * (kf3.scale.x - kf2.scale.x)) + (dsa * deltaS.x));
-           ds_scale.y = adj1 * 
+           ds_scale.y = adj1 *
              ((dsb * (kf3.scale.y - kf2.scale.y)) + (dsa * deltaS.y));
-           ds_scale.z = adj1 * 
+           ds_scale.z = adj1 *
              ((dsb * (kf3.scale.z - kf2.scale.z)) + (dsa * deltaS.z));
 
-           // Heading, Pitch and Bank 
-           ds_heading = adj1 * 
+           // Heading, Pitch and Bank
+           ds_heading = adj1 *
              ((dsb * (kf3.heading - kf2.heading)) + (dsa * deltaH));
-           ds_pitch = adj1 * 
+           ds_pitch = adj1 *
              ((dsb * (kf3.pitch - kf2.pitch)) + (dsa * deltaT));
-           ds_bank = adj1 * 
+           ds_bank = adj1 *
              ((dsb * (kf3.bank - kf2.bank)) + (dsa * deltaB));
         }
 
@@ -356,7 +356,7 @@ public class KBCubicSplineSegment {
         c3.y = -2*deltaP.y + dd_pos.y + ds_pos.y;
         c3.z = -2*deltaP.z + dd_pos.z + ds_pos.z;
 
-        // Calculate the coefficients of the polynomial for scale 
+        // Calculate the coefficients of the polynomial for scale
         e0 = new Point3f();
         e0.x = kf1.scale.x;
         e0.y = kf1.scale.y;
@@ -377,7 +377,7 @@ public class KBCubicSplineSegment {
         e3.y = -2*deltaS.y + dd_scale.y + ds_scale.y;
         e3.z = -2*deltaS.z + dd_scale.z + ds_scale.z;
 
-        // Calculate the coefficients of the polynomial for heading, pitch 
+        // Calculate the coefficients of the polynomial for heading, pitch
         // and bank
         h0 = kf1.heading;
         p0 = kf1.pitch;
@@ -400,7 +400,7 @@ public class KBCubicSplineSegment {
     /**
      * Computes the length of the curve at a given point between
      * key frames.
-     * @param u specifies the point between keyframes where 0 <= u <= 1. 
+     * @param u specifies the point between keyframes where 0 <= u <= 1.
      */
 
     public float computeLength (float u) {
@@ -430,31 +430,31 @@ public class KBCubicSplineSegment {
         v.y = c1.y + u * (2 * c2.y + 3 * u * c3.y);
         v.z = c1.z + u * (2 * c2.z + 3 * u * c3.z);
 
-        return (float)(Math.sqrt(v.x*v.x + v.y*v.y + v.z*v.z)); 
+        return (float)(Math.sqrt(v.x*v.x + v.y*v.y + v.z*v.z));
     }
 
 
     /**
      * Computes the interpolated scale along the curve at a given point
-     * between key frames and returns a Point3f with the interpolated 
+     * between key frames and returns a Point3f with the interpolated
      * x, y, and z scale components. This routine uses linear
-     * interpolation if the (i+1)<sup>th</sup> key frame's linear 
-     * value is equal to 1. 
-     * 
-     * @param u specifies the point between keyframes where 0 <= u <= 1. 
+     * interpolation if the (i+1)<sup>th</sup> key frame's linear
+     * value is equal to 1.
+     *
+     * @param u specifies the point between keyframes where 0 <= u <= 1.
      * @param newScale returns the interpolated x,y,z scale value in a Point3f
      */
 
     public void getInterpolatedScale (float u, Point3f newScale) {
-        
+
         // if linear interpolation
         if (this.linear == 1) {
 
-            newScale.x = keyFrame[1].scale.x + 
+            newScale.x = keyFrame[1].scale.x +
                       ((keyFrame[2].scale.x - keyFrame[1].scale.x) * u);
-            newScale.y = keyFrame[1].scale.y + 
+            newScale.y = keyFrame[1].scale.y +
                       ((keyFrame[2].scale.y - keyFrame[1].scale.y) * u);
-            newScale.z = keyFrame[1].scale.z + 
+            newScale.z = keyFrame[1].scale.z +
                       ((keyFrame[2].scale.z - keyFrame[1].scale.z) * u);
 
         } else {
@@ -469,7 +469,7 @@ public class KBCubicSplineSegment {
 
     /**
      * Computes the interpolated position along the curve at a given point
-     * between key frames and returns a Point3f with the interpolated 
+     * between key frames and returns a Point3f with the interpolated
      * x, y, and z scale components. This routine uses linear
      * interpolation if the (i+1)<sup>th</sup> key frame's linear
      * value is equal to 1.
@@ -479,14 +479,14 @@ public class KBCubicSplineSegment {
      */
 
     public void getInterpolatedPosition (float u, Point3f newPos) {
-        
+
         // if linear interpolation
         if (this.linear == 1) {
-            newPos.x = keyFrame[1].position.x + 
+            newPos.x = keyFrame[1].position.x +
                       ((keyFrame[2].position.x - keyFrame[1].position.x) * u);
-            newPos.y = keyFrame[1].position.y + 
+            newPos.y = keyFrame[1].position.y +
                       ((keyFrame[2].position.y - keyFrame[1].position.y) * u);
-            newPos.z = keyFrame[1].position.z + 
+            newPos.z = keyFrame[1].position.z +
                       ((keyFrame[2].position.z - keyFrame[1].position.z) * u);
         } else {
 
@@ -500,23 +500,23 @@ public class KBCubicSplineSegment {
 
     /**
      * Computes the interpolated position along the curve at a given point
-     * between key frames and returns a Vector3f with the interpolated 
+     * between key frames and returns a Vector3f with the interpolated
      * x, y, and z scale components. This routine uses linear
      * interpolation if the (i+1)<sup>th</sup> key frame's linear
      * value is equal to 1.
      *
      * @param u specifies the point between keyframes where 0 <= u <= 1.
-     * @param newPos returns the interpolated x,y,z position in a Vector3f. 
+     * @param newPos returns the interpolated x,y,z position in a Vector3f.
      */
 
     public void getInterpolatedPositionVector (float u, Vector3f newPos) {
         // if linear interpolation
         if (this.linear == 1) {
-            newPos.x = keyFrame[1].position.x + 
+            newPos.x = keyFrame[1].position.x +
                       ((keyFrame[2].position.x - keyFrame[1].position.x) * u);
-            newPos.y = keyFrame[1].position.y + 
+            newPos.y = keyFrame[1].position.y +
                       ((keyFrame[2].position.y - keyFrame[1].position.y) * u);
-            newPos.z = keyFrame[1].position.z + 
+            newPos.z = keyFrame[1].position.z +
                       ((keyFrame[2].position.z - keyFrame[1].position.z) * u);
         } else {
 
@@ -529,22 +529,22 @@ public class KBCubicSplineSegment {
 
     /**
      * Computes the interpolated heading along the curve at a given point
-     * between key frames and returns the interpolated value as a float 
-     * This routine uses linear interpolation if the (i+1)<sup>th</sup> 
+     * between key frames and returns the interpolated value as a float
+     * This routine uses linear interpolation if the (i+1)<sup>th</sup>
      * key frame's linear value is equal to 1.
      *
      * @param u specifies the point between keyframes where 0 <= u <= 1.
-     * @return returns the interpolated heading value 
+     * @return returns the interpolated heading value
      */
 
     public float getInterpolatedHeading (float u) {
 
         float newHeading;
-        
+
         // if linear interpolation
         if (this.linear == 1) {
 
-            newHeading = keyFrame[1].heading + 
+            newHeading = keyFrame[1].heading +
                       ((keyFrame[2].heading - keyFrame[1].heading) * u);
         } else {
 
@@ -558,22 +558,22 @@ public class KBCubicSplineSegment {
 
     /**
      * Computes the interpolated pitch along the curve at a given point
-     * between key frames and returns the interpolated value as a float 
-     * This routine uses linear interpolation if the (i+1)<sup>th</sup> 
+     * between key frames and returns the interpolated value as a float
+     * This routine uses linear interpolation if the (i+1)<sup>th</sup>
      * key frame's linear value is equal to 1.
      *
      * @param u specifies the point between keyframes where 0 <= u <= 1.
-     * @return returns the interpolated pitch value 
+     * @return returns the interpolated pitch value
      */
 
     public float getInterpolatedPitch (float u) {
 
         float newPitch;
-        
+
         // if linear interpolation
         if (this.linear == 1) {
 
-            newPitch = keyFrame[1].pitch + 
+            newPitch = keyFrame[1].pitch +
                       ((keyFrame[2].pitch - keyFrame[1].pitch) * u);
         } else {
 
@@ -586,22 +586,22 @@ public class KBCubicSplineSegment {
 
     /**
      * Computes the interpolated bank along the curve at a given point
-     * between key frames and returns the interpolated value as a float 
-     * This routine uses linear interpolation if the (i+1)<sup>th</sup> 
+     * between key frames and returns the interpolated value as a float
+     * This routine uses linear interpolation if the (i+1)<sup>th</sup>
      * key frame's linear value is equal to 1.
      *
      * @param u specifies the point between keyframes where 0 <= u <= 1.
-     * @return returns the interpolated bank value 
+     * @return returns the interpolated bank value
      */
 
     public float getInterpolatedBank (float u) {
 
         float newBank;
-        
+
         // if linear interpolation
         if (this.linear == 1) {
 
-            newBank = keyFrame[1].bank + 
+            newBank = keyFrame[1].bank +
                       ((keyFrame[2].bank - keyFrame[1].bank) * u);
         } else {
 
@@ -618,10 +618,10 @@ public class KBCubicSplineSegment {
      * key frame to the position specified by u to the length of the entire
      * spline segment from the i<sup>th</sup> key frame to the (i+1)
      * <sup>th</sup> key frame. When the (i+1)<sup>th</sup> key frame's linear
-     * value is equal to 1, this is meaninful otherwise it should return u. 
+     * value is equal to 1, this is meaninful otherwise it should return u.
      *
      * @param u specifies the point between keyframes where 0 <= u <= 1.
-     * @return the interpolated ratio 
+     * @return the interpolated ratio
      */
 
     public float getInterpolatedValue (float u) {

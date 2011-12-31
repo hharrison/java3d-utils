@@ -62,7 +62,7 @@ public abstract class TransformInterpolatorState extends InterpolatorState {
     public TransformInterpolatorState(SymbolTableData symbol,Controller control) {
         super( symbol, control );
     }
-    
+
     public void writeObject( DataOutput out ) throws IOException {
         super.writeObject( out );
 
@@ -71,7 +71,7 @@ public abstract class TransformInterpolatorState extends InterpolatorState {
 	control.writeTransform3D(out, ti.getTransformAxis() );
 	out.writeInt( control.getSymbolTable().addReference( ti.getTarget() ) );
     }
-    
+
     public void readObject( DataInput in ) throws IOException {
         super.readObject( in );
 
@@ -79,7 +79,7 @@ public abstract class TransformInterpolatorState extends InterpolatorState {
 	ti.setTransformAxis( control.readTransform3D( in ) );
 	target = in.readInt();
     }
-    
+
     public void buildGraph() {
 	((TransformInterpolator)node).setTarget(
 	    (TransformGroup)control.getSymbolTable().getJ3dNode( target ) );

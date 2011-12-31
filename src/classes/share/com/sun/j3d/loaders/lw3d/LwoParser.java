@@ -69,12 +69,12 @@ import com.sun.j3d.loaders.IncorrectFormatException;
  * surface references and creates a list of LwoSurface objects to hold
  * the data for each surface.<BR>
  * Rather than describe in detail how the file is parsed for each method,
- * I advise the user of this code to understand the lw3d file format 
+ * I advise the user of this code to understand the lw3d file format
  * specs, which are pretty clear.
  */
 
 class LwoParser extends ParserObject {
-	
+
     LWOBFileReader theReader;
     int currLength;
     float coordsArray[];
@@ -86,7 +86,7 @@ class LwoParser extends ParserObject {
     float diffuse = 0.0f, specular = 0.0f, transparency = 0.0f, luminosity = 0.0f;
     int gloss = 128;
     Vector surfNameList = null;
-    Vector surfaceList = new Vector(200);	
+    Vector surfaceList = new Vector(200);
     Vector shapeList = new Vector(200);
 
 	/**
@@ -112,7 +112,7 @@ class LwoParser extends ParserObject {
       try {
 	long start = System.currentTimeMillis();
 	theReader = new LWOBFileReader(url);
-	debugOutputLn(TIME, " file opened in " + 
+	debugOutputLn(TIME, " file opened in " +
 		      (System.currentTimeMillis() - start));
       }
       catch (IOException ex) {
@@ -120,7 +120,7 @@ class LwoParser extends ParserObject {
       }
       parseFile();
   }
-		
+
 
 	/**
 	* Detail polygons are currently not implemented by this loader.  Their
@@ -132,7 +132,7 @@ class LwoParser extends ParserObject {
 	debugOutputLn(TRACE, "skipDetailPolygons(), numPolys = " + numPolys);
 	int lengthRead = 0;
 	int vert;
-	
+
 	try {
 	    for (int polyNum = 0; polyNum < numPolys; ++polyNum) {
 		debugOutputLn(VALUES, "polyNum = " + polyNum);
@@ -165,11 +165,11 @@ class LwoParser extends ParserObject {
 	return null;
     }
 
-   
+
 	/**
-	* Parse the file for all the data for a POLS object (polygon 
+	* Parse the file for all the data for a POLS object (polygon
 	* description)
-	*/ 
+	*/
     void getPols(int length) {
 	debugOutputLn(TRACE, "getPols(len), len = " + length);
 	int vert;
@@ -190,7 +190,7 @@ class LwoParser extends ParserObject {
 	//shape.facetIndicesList = facetIndicesList;
 	shape.facetIndicesArray = facetIndicesArray;
 	shapeList.addElement(shape);
-		
+
     //long startTime = (new Date()).getTime();
 	boolean firstTime = true;
 	while (lengthRead < length) {
@@ -275,7 +275,7 @@ class LwoParser extends ParserObject {
 	    surfNameList.addElement(surfName);
 	}
     }
-		
+
 	/**
 	* Parses file to get all vertices
 	*/
@@ -293,7 +293,7 @@ class LwoParser extends ParserObject {
 	*/
     void getSurf(int length) throws FileNotFoundException {
 	debugOutputLn(TRACE, "getSurf()");
-	
+
 	// Create LwoSurface object to read and hold each surface, then
 	// store that surface in a vector of all surfaces.
 
@@ -312,11 +312,11 @@ class LwoParser extends ParserObject {
 	int length = 0;
 	int lengthRead = 0;
 	int fileLength = 100000;
-	
+
 	long loopStartTime = System.currentTimeMillis();
 	// Every parsing unit begins with a four character string
 	String tokenString = theReader.getToken();
-		    
+
 	while (!(tokenString == null) &&
 		  lengthRead < fileLength) {
 	    long startTime = System.currentTimeMillis();
@@ -419,6 +419,6 @@ class LwoParser extends ParserObject {
     }
 }
 
- 
+
 
 

@@ -72,7 +72,7 @@ class LwsEnvelope extends TextfileParser {
     /**
      * Constructor: calls getEnvelope() to parse the stream for the
      * envelope data
-     */    
+     */
     LwsEnvelope(StreamTokenizer st, int frames, float time) {
 	numFrames = 0;
 	totalTime = time;
@@ -83,7 +83,7 @@ class LwsEnvelope extends TextfileParser {
 
 	/**
 	* Parses the stream to retrieve all envelope data.  Creates
-	* LwsEnvelopeFrame objects for each keyframe of the envelope 
+	* LwsEnvelopeFrame objects for each keyframe of the envelope
 	* (these frames differ slightly from LwsFrame objects because
 	* envelopes contain slightly different data)
 	*/
@@ -136,8 +136,8 @@ class LwsEnvelope extends TextfileParser {
     Behavior getBehaviors() {
 	return behaviors;
     }
-    
-    
+
+
     LwsEnvelopeFrame getFirstFrame() {
 	if (numFrames > 0)
 	    return frames[0];
@@ -145,7 +145,7 @@ class LwsEnvelope extends TextfileParser {
 	    return null;
     }
 
-    
+
     void printVals() {
 	debugOutputLn(VALUES, "   name = " + name);
 	debugOutputLn(VALUES, "   numChannels = " + numChannels);
@@ -157,4 +157,4 @@ class LwsEnvelope extends TextfileParser {
 	}
     }
 
-}	
+}

@@ -56,7 +56,7 @@ import javax.vecmath.Vector3f;
 
 class ShapeHolder extends ParserObject {
 
-    
+
     Vector facetSizesList;
     Vector facetIndicesList;
     int facetIndicesArray[];
@@ -68,7 +68,7 @@ class ShapeHolder extends ParserObject {
     int normalIndices[];
     float normalCoords[];
     float coordsArray[];
-    
+
     ShapeHolder() {
     }
 
@@ -78,7 +78,7 @@ class ShapeHolder extends ParserObject {
 
 
     /**
-     * Print out (to stdout) the geometry data (coords, indices, 
+     * Print out (to stdout) the geometry data (coords, indices,
      * and facet sizes).  This is a debugging utility.
      */
     void printGeometryData(LwoSurface surface) {
@@ -92,7 +92,7 @@ class ShapeHolder extends ParserObject {
 	    System.out.println("Facet of size " + polySize);
 	    for (j = 0; j < polySize; ++j) {
 		int coordIndex = 3 * facetIndices[indicesIndex++];
-		System.out.println("x, y, z = " + 
+		System.out.println("x, y, z = " +
 				   coordsArray[coordIndex] + ", " +
 				   coordsArray[coordIndex+1] + ", " +
 				   coordsArray[coordIndex+2]);
@@ -102,17 +102,17 @@ class ShapeHolder extends ParserObject {
 
     /**
      * Constructs geometry arrays given a winding rule (it turns out that
-     * lw3d winding is opposite of j3d winding, so this is always set to 
+     * lw3d winding is opposite of j3d winding, so this is always set to
      * true in J3dLwoParser)
      */
     void createArrays(boolean reverseWinding) {
 	debugOutputLn(TRACE, "createArrays()");
-	//	debugOutputLn(VALUES, "facetIndices, faceSizesList = " + 
+	//	debugOutputLn(VALUES, "facetIndices, faceSizesList = " +
 	//		      facetIndicesList +  facetSizesList);
 	//debugOutputLn(VALUES, "ind  and sizes size " +
-	//	      facetIndicesList.size() + ", " + 
+	//	      facetIndicesList.size() + ", " +
 	//	      facetSizesList.size());
-	//facetIndices = 
+	//facetIndices =
 	//	    new int[facetIndicesList.size()];
 	facetIndices = new int[currentNumIndices];
 	if (reverseWinding) {
@@ -164,13 +164,13 @@ class ShapeHolder extends ParserObject {
 	    facetIndices = null;
 	}
 
-	facetSizes = 
+	facetSizes =
 	    new int[facetSizesList.size()];
 	for (int i = 0; i < facetSizes.length; ++i) {
-	    facetSizes[i] = 
+	    facetSizes[i] =
 		((Integer)facetSizesList.elementAt(i)).intValue();
 	}
-	
+
 	facetSizesList = null;  // Force garbage collection on Vectors
 	facetIndicesList = null;
 	facetIndicesArray = null;
@@ -193,10 +193,10 @@ class ShapeHolder extends ParserObject {
      * This method calculates facet normals for the geometry.  It is no
      * longer used, as we're now using the GeometryInfo utility to calculate
      * smooth normals
-     */ 
+     */
     void calcNormals() {
 	debugOutputLn(TRACE, "calcNormals()");
-	debugOutputLn(LINE_TRACE, "coordsLength, facetsizes.len = " + 
+	debugOutputLn(LINE_TRACE, "coordsLength, facetsizes.len = " +
         coordsArray.length + ", " + facetSizes.length);
 	if (facetSizes[0] > 2) {
 	    // points and lines don't need normals, polys do
@@ -208,7 +208,7 @@ class ShapeHolder extends ParserObject {
             normalCoords = new float[coordsArray.length];
         }
         debugOutputLn(LINE_TRACE, "normalCoords, incides len = " +
-            normalCoords.length + ", " + 
+            normalCoords.length + ", " +
             ((facetIndices == null) ? 0 : normalIndices.length));
 	    int facetIndex = 0;
 	    int tempIndex = -1;
@@ -236,11 +236,11 @@ class ShapeHolder extends ParserObject {
                 index2 = facetIndex+1;
                 index3 = facetIndex+2;
             }
-		    v1 = new 
+		    v1 = new
 			Vector3f(coordsArray[index2*3] - coordsArray[index1*3],
 				 coordsArray[index2*3+1] - coordsArray[index1*3+1],
 				 coordsArray[index2*3+2] - coordsArray[index1*3+2]);
-		    v2 = new 
+		    v2 = new
 			Vector3f(coordsArray[index3*3] - coordsArray[index1*3],
 				 coordsArray[index3*3+1] - coordsArray[index1*3+1],
 				 coordsArray[index3*3+2] - coordsArray[index1*3+2]);
@@ -249,7 +249,7 @@ class ShapeHolder extends ParserObject {
 		    norm.cross(v1, v2);
 		    norm.normalize(norm);
 		}
-        
+
 		for (int j = 0; j < currFacetSize; ++j) {
 		    int normIndex = facetIndex + j;
             normalCoords[normIndex*3] = norm.x;

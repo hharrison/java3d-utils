@@ -82,9 +82,9 @@ import java.net.MalformedURLException;
  * Wavefront's Advanced Visualizer (tm) and available for purchase from
  * Viewpoint DataLabs, as well as other 3D model companies.  Object Files
  * are text based
- * files supporting both polygonal and free-form geometry (curves 
+ * files supporting both polygonal and free-form geometry (curves
  * and surfaces).  The Java 3D .obj file loader supports a subset of the
- * file format, but it is enough to load almost all commonly available 
+ * file format, but it is enough to load almost all commonly available
  * Object Files.  Free-form geometry is not supported.</p>
  *
  * The Object File tokens currently supported by this loader are:</p>
@@ -93,7 +93,7 @@ import java.net.MalformedURLException;
  *   listed in the file has index 1,
  *   and subsequent vertices are numbered sequentially.</dl></p>
  * <code>vn <i>float</i> <i>float</i> <i>float</i></code></p>
- *   <dl><dd>A normal.  The first normal in the file is index 1, and 
+ *   <dl><dd>A normal.  The first normal in the file is index 1, and
  *   subsequent normals are numbered sequentially.</dl></p>
  * <code>vt <i>float</i> <i>float</i></code></p>
  *   <dl><dd>A texture coordinate.  The first texture coordinate in the file is
@@ -120,7 +120,7 @@ import java.net.MalformedURLException;
  *   These geometry groups are returned as separated Shape3D objects
  *   attached to the parent SceneGroup.  Each named Shape3D will also
  *   be in the Hashtable returned by Scene.getNamedObjects().  It is
- *   legal to add faces to a group, switch to another group, and then 
+ *   legal to add faces to a group, switch to another group, and then
  *   add more faces to the original group by reissuing the same name
  *   with the g token.  If faces are added to the model before the g
  *   token is seen, the faces are put into the default group called
@@ -135,9 +135,9 @@ import java.net.MalformedURLException;
  *   is used to group faces geometrically.  Faces in the same smoothing
  *   group will have their normals calculated as if they are part of
  *   the same smooth surface.  To do this, we use the Java 3D NormalGenerator
- *   utility with the creaseAngle parameter set to PI (180 degrees - 
- *   smooth shading, no creases) or to whatever the user has set the 
- *   creaseAngle.  Faces in group 0 or 'off' use a 
+ *   utility with the creaseAngle parameter set to PI (180 degrees -
+ *   smooth shading, no creases) or to whatever the user has set the
+ *   creaseAngle.  Faces in group 0 or 'off' use a
  *   creaseAngle of zero, meaning there is no smoothing (the normal
  *   of the face is used at all vertices giving the surface a faceted
  *   look; there will be a
@@ -196,7 +196,7 @@ import java.net.MalformedURLException;
  *   <dl><dd>Load material properties from the named file.  Materials
  *   with the same name as the predefined materials above will override
  *   the default value.  Any directory path information in (filename)
- *   is ignored.  The .mtl files are assumed to be in the same directory 
+ *   is ignored.  The .mtl files are assumed to be in the same directory
  *   as the .obj file.  If they are in a different directory, use
  *   Loader.setBasePath() (or Loader.setBaseUrl() ).  The format of the
  *   material properties files
@@ -553,7 +553,7 @@ public class ObjectFile implements Loader {
      */
     void readFile(ObjectFileParser st) throws ParsingErrorException {
 	int t;
-    
+
 	st.getToken();
 	while (st.ttype != ObjectFileParser.TT_EOF) {
 
@@ -663,7 +663,7 @@ public class ObjectFile implements Loader {
      * the filename.
      * To attach the model to your scene, call getSceneGroup() on
      * the Scene object passed back, and attach the returned
-     * BranchGroup to your scene graph.  For an example, see 
+     * BranchGroup to your scene graph.  For an example, see
      * j3d-examples/ObjLoad/ObjLoad.java.
      */
     public Scene load(String filename) throws FileNotFoundException,
@@ -698,7 +698,7 @@ public class ObjectFile implements Loader {
      * The object file is loaded off of the web.
      * To attach the model to your scene, call getSceneGroup() on
      * the Scene object passed back, and attach the returned
-     * BranchGroup to your scene graph.  For an example, see 
+     * BranchGroup to your scene graph.  For an example, see
      * j3d-examples/ObjLoad/ObjLoad.java.
      */
     public Scene load(URL url) throws FileNotFoundException,
@@ -933,7 +933,7 @@ public class ObjectFile implements Loader {
      * groups, which are also being converted to a new triangle based format.
      *
      * We need to convert to triangles before normals are generated
-     * because of smoothing groups.  The faces in a smoothing group 
+     * because of smoothing groups.  The faces in a smoothing group
      * are copied into a GeometryInfo to have their normals calculated,
      * and then the normals are copied out of the GeometryInfo using
      * GeometryInfo.getNormalIndices.  As part of Normal generation,
@@ -941,7 +941,7 @@ public class ObjectFile implements Loader {
      * to triangles *before* Normal generation so that the normals we
      * read out of the GeometryInfo match up with the vertex data
      * that we sent in.  If we sent in TRIANGLE_FAN data, the normal
-     * generator would convert it to triangles and we'd read out 
+     * generator would convert it to triangles and we'd read out
      * normals formatted for Triangle data.  This would not match up
      * with our original Fan data, so we couldn't tell which normals
      * go with which vertices.
@@ -1016,7 +1016,7 @@ public class ObjectFile implements Loader {
 	    if (normals) newNormIdxList = new ArrayList();
 	}
 
-	// Repeat for each face in the model - add the triangles from each 
+	// Repeat for each face in the model - add the triangles from each
 	// face to the Geometry and Smoothing Groups
 	int baseVertex = 0;
 	for (int f = 0 ; f < numFaces ; f++) {
@@ -1216,7 +1216,7 @@ public class ObjectFile implements Loader {
      * The Object File is loaded from the already opened file.
      * To attach the model to your scene, call getSceneGroup() on
      * the Scene object passed back, and attach the returned
-     * BranchGroup to your scene graph.  For an example, see 
+     * BranchGroup to your scene graph.  For an example, see
      * j3d-examples/ObjLoad/ObjLoad.java.
      */
     public Scene load(Reader reader) throws FileNotFoundException,

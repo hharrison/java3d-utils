@@ -52,7 +52,7 @@ package com.sun.j3d.utils.behaviors.sensor ;
  * are only valid until the listener has returned.  If a listener needs to
  * retain the event it must be copied using the
  * <code>SensorEvent(SensorEvent)</code> constructor.
- * 
+ *
  * @see SensorEvent
  * @see SensorEventAgent
  * @see SensorButtonListener
@@ -65,7 +65,7 @@ public interface SensorReadListener {
      * sensor's buttons have been handled by a button listener.  The
      * sensor read value has not necessarily changed since the last read
      * event.
-     * 
+     *
      * @param e the sensor event
      */
     public void read(SensorEvent e) ;

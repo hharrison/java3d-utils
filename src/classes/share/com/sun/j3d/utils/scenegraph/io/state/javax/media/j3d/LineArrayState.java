@@ -54,21 +54,21 @@ public class LineArrayState extends GeometryArrayState {
     public LineArrayState(SymbolTableData symbol,Controller control) {
         super( symbol, control );
     }
-    
+
     public SceneGraphObject createNode( Class j3dClass ) {
         return createNode( j3dClass, new Class[] {
                                             Integer.TYPE,
                                             Integer.TYPE,
                                             Integer.TYPE,
                                             texCoordSetMap.getClass()
-                                        }, 
+                                        },
                                         new Object[] { new Integer( vertexCount ),
                                                      new Integer( vertexFormat ),
                                                      new Integer( texCoordSetCount ),
                                                      texCoordSetMap } );
     }
 
-    
+
     protected javax.media.j3d.SceneGraphObject createNode() {
         return new LineArray( vertexCount, vertexFormat, texCoordSetCount, texCoordSetMap );
     }

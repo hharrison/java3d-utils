@@ -71,7 +71,7 @@ class LwsBackground extends TextfileParser {
 
     /**
      * Constructor: parses stream and retrieves all Background-related data
-     */    
+     */
     LwsBackground(StreamTokenizer st, int debugVals)
 	throws ParsingErrorException {
 
@@ -82,11 +82,11 @@ class LwsBackground extends TextfileParser {
 	skyColor = new Color3f(0f, 0f, 0f);
 	groundColor = new Color3f(0f, 0f, 0f);
 	nadirColor = new Color3f(0f, 0f, 0f);
-	
+
 	solidBackdrop = (int)getNumber(st);
 	while (!isCurrentToken(st, "FogType")) {
 	    debugOutputLn(LINE_TRACE, "currentToken = " + st.sval);
-	    
+
 	    if (isCurrentToken(st, "BackdropColor")) {
 		color.x = (float)getNumber(st)/255f;
 		color.y = (float)getNumber(st)/255f;
@@ -129,8 +129,8 @@ class LwsBackground extends TextfileParser {
      * geometry rather than a solid background color
      */
     void createJava3dObject() {
-	// TODO:  there are various attributes of 
-	// backdrops that we're not currently handling.  In 
+	// TODO:  there are various attributes of
+	// backdrops that we're not currently handling.  In
 	// particular, if the file calls for a gradient background
 	// (solidBackdrop == 0), we ignore the request and just
 	// create a solid background from the sky color instead.
@@ -159,5 +159,5 @@ class LwsBackground extends TextfileParser {
 	debugOutputLn(VALUES, "  BACKGROUND vals: ");
     }
 
-    
-}	
+
+}

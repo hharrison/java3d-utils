@@ -59,7 +59,7 @@ class CompressionStreamNormal extends CompressionStreamElement {
     int octant, sextant ;
     boolean specialNormal ;
     int uAbsolute, vAbsolute ;
-	    
+
     /**
      * Create a CompressionStreamNormal.
      *
@@ -75,7 +75,7 @@ class CompressionStreamNormal extends CompressionStreamElement {
 
     //
     // Normal Encoding Parameterization
-    // 
+    //
     // A floating point normal is quantized to a desired number of bits by
     // comparing it to candidate entries in a table of every possible normal
     // at that quantization and finding the closest match.  This table of
@@ -85,52 +85,52 @@ class CompressionStreamNormal extends CompressionStreamElement {
     // th and psi, using usual spherical coordinates. th is the angle about
     // the y axis, psi is the inclination to the plane containing the point.
     // The mapping between rectangular and spherical coordinates is:
-    // 
+    //
     // x = cos(th)*cos(psi)
     // y = sin(psi)
     // z = sin(th)*cos(psi)
-    // 
+    //
     // Points on sphere are folded first by octant, and then by sort order
     // of xyz into one of six sextants. All the table encoding takes place in
     // the positive octant, in the region bounded by the half spaces:
-    // 
+    //
     // x >= z
     // z >= y
     // y >= 0
-    // 
+    //
     // This triangular shaped patch runs from 0 to 45 degrees in th, and
     // from 0 to as much as 0.615479709 (MAX_Y_ANG) in psi. The xyz bounds
     // of the patch is:
-    // 
+    //
     // (1, 0, 0)  (1/sqrt(2), 0, 1/sqrt(2))  (1/sqrt(3), 1/sqrt(3), 1/sqrt(3))
-    // 
+    //
     // When dicing this space up into discrete points, the choice for y is
     // linear quantization in psi.  This means that if the y range is to be
     // divided up into n segments, the angle of segment j is:
-    // 
+    //
     // psi(j) = MAX_Y_ANG*(j/n)
-    // 
+    //
     // The y height of the patch (in arc length) is *not* the same as the xz
     // dimension. However, the subdivision quantization needs to treat xz and
     // y equally. To achieve this, the th angles are re-parameterized as
     // reflected psi angles.  That is, the i-th point's th is:
-    // 
+    //
     // th(i) = asin(tan(psi(i))) = asin(tan(MAX_Y_ANG*(i/n)))
-    // 
+    //
     // To go the other direction, the angle th corresponds to the real index r
     // (in the same 0-n range as i):
-    // 
+    //
     // r(th) = n*atan(sin(th))/MAX_Y_ANG
-    // 
+    //
     // Rounded to the nearest integer, this gives the closest integer index i
     // to the xz angle th. Because the triangle has a straight edge on the
     // line x=z, it is more intuitive to index the xz angles in reverse
     // order.  Thus the two equations above are replaced by:
-    // 
+    //
     // th(i) = asin(tan(psi(i))) = asin(tan(MAX_Y_ANG*((n-i)/n)))
-    // 
+    //
     // r(th) = n*(1 - atan(sin(th))/MAX_Y_ANG)
-    // 
+    //
     // Each level of quantization subdivides the triangular patch twice as
     // densely.  The case in which only the three vertices of the triangle are
     // present is the first logical stage of representation, but because of
@@ -191,7 +191,7 @@ class CompressionStreamNormal extends CompressionStreamElement {
     // An inverse sine table is used for each quantization level to take the Y
     // component of a normal (which is the sine of the inclination angle) and
     // obtain the closest quantized Y angle.
-    // 
+    //
     // At any level of compression, there are a fixed number of different Y
     // angles (between 0 and MAX_Y_ANG).  The inverse table is built to have
     // slightly more than twice as many entries as y angles at any particular
@@ -199,19 +199,19 @@ class CompressionStreamNormal extends CompressionStreamElement {
     // of the right one.  The size of the table should be as small as
     // possible, but with its delta sine still smaller than the delta sine
     // between the last two angles to be encoded.
-    // 
+    //
     // Example: the inverse sine table has a maximum angle of 0.615479709.  At
     // the maximum resolution of 6 bits there are 65 discrete angles used,
     // but twice as many are needed for thresholding between angles, so the
     // delta angle is 0.615479709/128. The difference then between the last
     // two angles to be encoded is:
     // sin(0.615479709*128.0/128.0) - sin(0.615479709*127.0/128.0) = 0.003932730
-    // 
+    //
     // Using 8 significent bits below the binary point, fixed point can
     // represent sines in increments of 0.003906250, just slightly smaller.
     // However, because the maximum Y angle sine is 0.577350269, only 148
     // instead of 256 table entries are needed.
-    // 
+    //
     private static final short inverseSine[][] = new short[MAX_UV_BITS+1][] ;
 
     // UNITY_14 * sin(MAX_Y_ANGLE)
@@ -236,54 +236,54 @@ class CompressionStreamNormal extends CompressionStreamElement {
 		// Bits below binary point for fixed point delta sine: 8
 		// Integer delta sine: 64
 		// Inverse sine table size: 148 entries
-		deltaSin = 1 << (14 - 8) ; 
+		deltaSin = 1 << (14 - 8) ;
 		break ;
 	    case 5:
 		// Delta angle: MAX_Y_ANGLE/64.0
 		// Bits below binary point for fixed point delta sine: 7
 		// Integer delta sine: 128
 		// Inverse sine table size: 74 entries
-		deltaSin = 1 << (14 - 7) ; 
+		deltaSin = 1 << (14 - 7) ;
 		break ;
 	    case 4:
 		// Delta angle: MAX_Y_ANGLE/32.0
 		// Bits below binary point for fixed point delta sine: 6
 		// Integer delta sine: 256
 		// Inverse sine table size: 37 entries
-		deltaSin = 1 << (14 - 6) ; 
+		deltaSin = 1 << (14 - 6) ;
 		break ;
 	    case 3:
 		// Delta angle: MAX_Y_ANGLE/16.0
 		// Bits below binary point for fixed point delta sine: 5
 		// Integer delta sine: 512
 		// Inverse sine table size: 19 entries
-		deltaSin = 1 << (14 - 5) ; 
+		deltaSin = 1 << (14 - 5) ;
 		break ;
 	    case 2:
 		// Delta angle: MAX_Y_ANGLE/8.0
 		// Bits below binary point for fixed point delta sine: 4
 		// Integer delta sine: 1024
 		// Inverse sine table size: 10 entries
-		deltaSin = 1 << (14 - 4) ; 
+		deltaSin = 1 << (14 - 4) ;
 		break ;
 	    case 1:
 		// Delta angle: MAX_Y_ANGLE/4.0
 		// Bits below binary point for fixed point delta sine: 3
 		// Integer delta sine: 2048
 		// Inverse sine table size: 5 entries
-		deltaSin = 1 << (14 - 3) ; 
+		deltaSin = 1 << (14 - 3) ;
 		break ;
 	    case 0:
 		// Delta angle: MAX_Y_ANGLE/2.0
 		// Bits below binary point for fixed point delta sine: 2
 		// Integer delta sine: 4096
 		// Inverse sine table size: 3 entries
-		deltaSin = 1 << (14 - 2) ; 
+		deltaSin = 1 << (14 - 2) ;
 		break ;
 	    }
 
 	    inverseSine[quant] = new short[(MAX_SIN_14BIT/deltaSin) + 1] ;
-	    
+
 	    intSin = 0 ;
 	    for (int i = 0 ; i < inverseSine[quant].length ; i++) {
 		// Compute float representation of integer sine with desired
@@ -335,7 +335,7 @@ class CompressionStreamNormal extends CompressionStreamElement {
 	double nx, ny, nz, t ;
 
 	// Clamp UV quantization.
-	int quant = 
+	int quant =
 	    (stream.normalQuant < 0? 0 :
 	     (stream.normalQuant > 6? 6 : stream.normalQuant)) ;
 
@@ -452,7 +452,7 @@ class CompressionStreamNormal extends CompressionStreamElement {
 	    specialNormal = true ;
 	    u = v = 0 ;
 	}
-	
+
 	// Compute deltas if possible.
 	// Use the non-normalized ii and jj indices.
 	int du = 0 ;
@@ -460,7 +460,7 @@ class CompressionStreamNormal extends CompressionStreamElement {
 	int uv64 = 64 >> (6 - quant) ;
 
 	absolute = false ;
-	if (stream.firstNormal || stream.normalQuantChanged || 
+	if (stream.firstNormal || stream.normalQuantChanged ||
 	    stream.lastSpecialNormal || specialNormal) {
 	    // The first normal by definition is absolute, and normals cannot
 	    // be represented as deltas to or from special normals, nor from
@@ -488,7 +488,7 @@ class CompressionStreamNormal extends CompressionStreamElement {
 	    // sextant has.
 	    du =  ii - stream.lastU ;
 	    dv = -jj - stream.lastV ;
-	    
+
 	    // Can't delta by less than -64.
 	    if (dv < -uv64) absolute = true ;
 
@@ -553,7 +553,7 @@ class CompressionStreamNormal extends CompressionStreamElement {
 	    // truncate the 0 sign bit for values > 0x001f.
 	    length = 6 ;
 	}
-	
+
 	// Add this element to the Huffman table associated with this stream.
 	huffmanTable.addNormalEntry(length, shift, absolute) ;
 
@@ -647,7 +647,7 @@ class CompressionStreamNormal extends CompressionStreamElement {
 	    header |= (int)(normalSubcommand >>> (subcommandLength - 6)) ;
 	    subcommandLength -= 6 ;
 	}
-	
+
 	// Add the header and body to the output buffer.
 	output.addCommand(header, headerLength,
 			  normalSubcommand, subcommandLength)  ;

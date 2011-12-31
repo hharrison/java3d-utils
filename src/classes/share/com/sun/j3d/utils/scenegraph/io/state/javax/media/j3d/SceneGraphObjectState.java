@@ -59,12 +59,12 @@ import com.sun.j3d.utils.scenegraph.io.retained.SymbolTableData;
 import com.sun.j3d.utils.scenegraph.io.retained.SGIORuntimeException;
 
 public abstract class SceneGraphObjectState {
-    
+
     protected SceneGraphObject node;
     protected SymbolTableData symbol;
     protected Controller control;
     protected String nodeClassName;
-    
+
     /**
      * Create a new State object
      *
@@ -78,19 +78,19 @@ public abstract class SceneGraphObjectState {
     public SceneGraphObjectState( SymbolTableData symbol, Controller control ) {
         this.symbol = symbol;
         this.control = control;
-        
+
         if (symbol!=null) {
             this.node = symbol.j3dNode;
-            
+
             // This consistancy check is for debugging purposes
             //if (symbol.j3dNode==null || symbol.nodeID==0)
             //    throw new RuntimeException( "Bad Symbol in State creation");
         }
-        
-        
+
+
         if (node!=null) {
             nodeClassName = node.getClass().getName();
-            
+
 	    try {
                 if (node instanceof com.sun.j3d.utils.scenegraph.io.SceneGraphIO)
                     ((com.sun.j3d.utils.scenegraph.io.SceneGraphIO)node).createSceneGraphObjectReferences( control.getSymbolTable() );
@@ -100,30 +100,30 @@ public abstract class SceneGraphObjectState {
             }
 
         }
-        
+
     }
-    
+
     /**
      * DO NOT call symbolTable.addReference in writeObject as this (may)
      * result in a concurrentModificationException.
      *
      * All references should be created in the constructor
      */
-    public void writeObject( DataOutput out ) throws IOException {  
+    public void writeObject( DataOutput out ) throws IOException {
         boolean sgIO = node instanceof com.sun.j3d.utils.scenegraph.io.SceneGraphIO;
         out.writeBoolean( sgIO );
         out.writeInt( symbol.nodeID );
-        
-        
+
+
         int nodeClassID = control.getNodeClassID( node );
-        
+
         out.writeShort( nodeClassID );
-        
+
         if (nodeClassID==-1)
             out.writeUTF( nodeClassName );
-        
+
         writeConstructorParams( out );
-        
+
         if (sgIO) {
             ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
 	    DataOutputStream tmpOut = new DataOutputStream( byteStream );
@@ -132,33 +132,33 @@ public abstract class SceneGraphObjectState {
 	    out.writeInt( byteStream.size() );
 	    out.write( byteStream.toByteArray() );
         }
-        
+
         writeUserData( out );
         writeString(node.getName(), out);
-        
+
         writeCapabilities( out );
     }
 
     public void readObject( DataInput in ) throws IOException {
-       
+
         boolean sgIO = in.readBoolean();
         int nodeID = in.readInt();
-        
+
 	int nodeClassID = in.readShort();
 
 	nodeClassName = null;
-	
+
 	if ( nodeClassID==-1 )
 	    nodeClassName = in.readUTF();
-	
+
 	readConstructorParams( in );
-	
+
 	if ( nodeClassID!=-1 ) {
 	    node = createNode();
 	    nodeClassName = node.getClass().getName();
-	} else 
+	} else
 	    node = createNode(nodeClassName);
-        
+
 
         if ( sgIO ) {
 	    if (control.getCurrentFileVersion()==1)
@@ -177,7 +177,7 @@ public abstract class SceneGraphObjectState {
                 }
             }
         }
-        
+
         symbol = control.getSymbolTable().createSymbol( this, node, nodeID );
         readUserData( in );
         if (control.getCurrentFileVersion()>2) {
@@ -186,34 +186,34 @@ public abstract class SceneGraphObjectState {
 
         readCapabilities( in );
     }
-    
+
     public SceneGraphObject getNode() {
         return node;
     }
-    
+
     public int getNodeID() {
         return symbol.nodeID;
     }
-    
+
     public SymbolTableData getSymbol() {
         return symbol;
     }
-        
+
     private void readUserData( DataInput in ) throws IOException {
-        
+
         node.setUserData( control.readSerializedData( in ));
     }
-    
+
     private void writeUserData( DataOutput out ) throws IOException {
         Object obj = node.getUserData();
         if (obj != null && !(obj instanceof java.io.Serializable)) {
             System.err.println("UserData is not Serializable and will not be saved");
             obj = null;
         }
-        
+
         control.writeSerializedData( out, (Serializable)obj );
     }
-    
+
     /*
      * NOTE:  This implementation assumes a maximum of 64 capability
      * bits per node class.  If this changes in the future, this
@@ -230,7 +230,7 @@ public abstract class SceneGraphObjectState {
         out.writeLong( capabilities );
         out.writeLong( frequentCapabilities );
     }
-    
+
     private void readCapabilities( DataInput in ) throws IOException {
 	long capabilities = in.readLong();
 	long frequentCapabilities = in.readLong();
@@ -254,7 +254,7 @@ public abstract class SceneGraphObjectState {
     protected void readConstructorParams( DataInput in ) throws
 							IOException {
     }
-    
+
     /**
      * Create a new Java3D node for this object.
      *
@@ -269,10 +269,10 @@ public abstract class SceneGraphObjectState {
     protected SceneGraphObject createNode() {
 	throw new SGIORuntimeException("createNode() not implemented in class "+this.getClass().getName());
     }
-    
+
     /**
       * Create a new Java3D node from the supplied class using the parameterless constructor
-      * 
+      *
       * For Java3D nodes which do not have a default constructor you must
       * overload this method and create the object using createNode( className, parameters )
       * This will correctly handle subclasses of Java3D classes
@@ -293,11 +293,11 @@ public abstract class SceneGraphObjectState {
 	}
 
 	return ret;
-    }    
-    
+    }
+
     /**
       * Create a new Java3D node from the supplied class name using the parameterless constructor
-      * 
+      *
       * For Java3D nodes which do not have a default constructor you must
       * overload this method and create the object using createNode( className, parameters )
       * This will correctly handle subclasses of Java3D classes
@@ -307,7 +307,7 @@ public abstract class SceneGraphObjectState {
 
 	try {
             Class state = Class.forName( className, true, control.getClassLoader() );
-            
+
 	    ret = createNode( state );
 
 	    //System.err.println("Created J3D node for "+className );
@@ -321,7 +321,7 @@ public abstract class SceneGraphObjectState {
 
 	return ret;
     }
-    
+
     /**
      * If createNode cannot locate the correct class to instantiate
      * the node this method is called and will instantiate the
@@ -329,15 +329,15 @@ public abstract class SceneGraphObjectState {
      */
     private SceneGraphObject createNodeFromSuper( String className ) {
 	SceneGraphObject ret;
-        
+
         String tmp = this.getClass().getName();
         String superClass = tmp.substring( tmp.indexOf("state")+6, tmp.length()-5 );
 
         System.err.println("Unable to create node "+className+" attempting Java3D superclass "+superClass );
-        
+
 	try {
             Class state = Class.forName( superClass );
-            
+
 	    ret = (SceneGraphObject)state.newInstance();
 
 	} catch(ClassNotFoundException e) {
@@ -350,10 +350,10 @@ public abstract class SceneGraphObjectState {
 	    throw new SGIORuntimeException( "Unable to instantiate class "+
 						className );
 	}
-        
+
         return ret;
     }
-    
+
     /**
      * Create a Java3D node which does not have a default constructor
      *
@@ -393,7 +393,7 @@ public abstract class SceneGraphObjectState {
 	    throw new SGIORuntimeException( "Invalid constructor for "+
 						className );
         }
-        
+
         return ret;
     }
 
@@ -429,10 +429,10 @@ public abstract class SceneGraphObjectState {
 	    throw new SGIORuntimeException( "Invalid constructor for "+
 						j3dClass.getClass().getName() );
         }
-        
+
         return ret;
     }
-    
+
     /**
      * If createNode cannot locate the correct class to instantiate
      * the node this method is called and will instantiate the
@@ -440,7 +440,7 @@ public abstract class SceneGraphObjectState {
      */
     private SceneGraphObject createNodeFromSuper( String className, Class[] parameterTypes, Object[] parameters ) {
 	SceneGraphObject ret;
-        
+
         String tmp = this.getClass().getName();
         String superClass = tmp.substring( tmp.indexOf("state")+6, tmp.length()-5 );
         Constructor constructor;
@@ -468,7 +468,7 @@ public abstract class SceneGraphObjectState {
 	    throw new SGIORuntimeException( "Invalid constructor for "+
 						className );
         }
-        
+
         return ret;
     }
 
@@ -501,28 +501,28 @@ public abstract class SceneGraphObjectState {
             if (node instanceof com.sun.j3d.utils.scenegraph.io.SceneGraphIO)
                 ((com.sun.j3d.utils.scenegraph.io.SceneGraphIO)node).restoreSceneGraphObjectReferences( control.getSymbolTable() );
     }
-    
+
     public void cleanup() {
         control = null;
         node = null;
     }
-    
+
     /**
      * Read and return a possibly null string
      */
     protected String readString(DataInput in) throws IOException {
             if (in.readBoolean())
                 return (in.readUTF());
-            return null;        
+            return null;
     }
-    
+
     /**
       * Write a possibly null string to the stream
      */
     protected void writeString(String str, DataOutput out) throws IOException {
         out.writeBoolean(str!=null);
         if (str!=null)
-            out.writeUTF(str);       
+            out.writeUTF(str);
     }
-    
+
 }

@@ -58,11 +58,11 @@ import javax.vecmath.Matrix4d;
 public class TextureAttributesState extends NodeComponentState {
 
     private static final int MAX_COLOR_OPERANDS = 2;
-    
+
     public TextureAttributesState( SymbolTableData symbol, Controller control ) {
         super(symbol, control);
     }
-    
+
     public void writeObject( DataOutput out ) throws IOException {
         super.writeObject( out );
         TextureAttributes attr = (TextureAttributes)node;
@@ -72,17 +72,17 @@ public class TextureAttributesState extends NodeComponentState {
         int tableComponents = attr.getNumTextureColorTableComponents();
         int tableSize = attr.getTextureColorTableSize();
         int[][] colorTable = new int[tableComponents][tableSize];
-        
+
         out.writeInt( attr.getPerspectiveCorrectionMode() );
         attr.getTextureBlendColor( clr );
         control.writeColor4f( out, clr );
         out.writeInt( tableComponents );
         out.writeInt( tableSize );
-        attr.getTextureColorTable( colorTable ); 
+        attr.getTextureColorTable( colorTable );
         for(int i=0; i<tableComponents; i++)
             for(int j=0; j<tableSize; j++)
                 out.writeInt( colorTable[i][j] );
-        
+
         out.writeInt( attr.getTextureMode() );
         attr.getTextureTransform( trans );
         trans.get( mat );
@@ -99,7 +99,7 @@ public class TextureAttributesState extends NodeComponentState {
 	out.writeInt( attr.getCombineRgbScale() );
 	out.writeInt( attr.getCombineAlphaScale() );
     }
-    
+
     public void readObject( DataInput in ) throws IOException {
         super.readObject( in );
         TextureAttributes attr = (TextureAttributes)node;
@@ -129,11 +129,11 @@ public class TextureAttributesState extends NodeComponentState {
 	attr.setCombineRgbScale( in.readInt() );
 	attr.setCombineAlphaScale( in.readInt() );
     }
-    
+
     protected javax.media.j3d.SceneGraphObject createNode() {
         return new TextureAttributes();
     }
 
-    
+
 }
 

@@ -99,7 +99,7 @@ class ObjectFileMaterials implements ImageObserver {
 	public Texture2D t;
 	public boolean transparent;
 	public float transparencyLevel;
-        
+
     }
 
 
@@ -107,7 +107,7 @@ class ObjectFileMaterials implements ImageObserver {
 	ObjectFileMaterial p = null;
 
 	if ((DEBUG & 1) != 0) System.out.println("Color " + matName);
-    
+
 	Material m = new Material();
 	p = (ObjectFileMaterial)materials.get(matName);
 	Appearance a = new Appearance();
@@ -136,7 +136,7 @@ class ObjectFileMaterials implements ImageObserver {
 		}
 	    }
 
-	    if (p.transparent) 
+	    if (p.transparent)
 		a.setTransparencyAttributes(
 		    new TransparencyAttributes(TransparencyAttributes.NICEST,
 					       p.transparencyLevel));

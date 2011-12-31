@@ -61,12 +61,12 @@ import javax.media.j3d.J3DBuffer;
 /**
  * The GeometryInfo object holds data for processing by the Java3D geometry
  * utility tools.<p><blockquote>
- * 
+ *
  *         The NormalGenerator adds normals to geometry without normals.<p>
- * 
+ *
  *         The Stripifier combines adjacent triangles into triangle strips for
  *         more efficent rendering.<p></blockquote>
- * 
+ *
  * Also, the GeometryCompressor can take a set of GeometryInfo objects in a
  * CompressionSteam and generate a CompressedGeometry object from the
  * geometry.<p>
@@ -117,7 +117,7 @@ import javax.media.j3d.J3DBuffer;
  *         st.stripify(gi);
  *         GeometryArray result = gi.getGeometryArray();
  * </blockquote></pre>
- * 
+ *
  * @see NormalGenerator
  * @see Stripifier
  * @see com.sun.j3d.utils.compression.CompressionStream
@@ -158,7 +158,7 @@ public class GeometryInfo {
    * possibly multi-contour, possible non-planar polygons.
    * The stripCounts array indicates how many vertices to use
    * for each contour, and the contourCounts array indicates how many
-   * stripCounts entries to use for each polygon.  The first 
+   * stripCounts entries to use for each polygon.  The first
    * contour is the bounding polygon, and subsequent contours are
    * "holes."  If contourCounts is left null, the default is
    * one contour per polygon.
@@ -166,15 +166,15 @@ public class GeometryInfo {
   public static final int POLYGON_ARRAY = 5;
 
   private int prim;
-  
+
   // 1 Show indexification details
   private static final int DEBUG = 0;
-  
+
   private Point3f coordinates[] = null;
   private Color3f colors3[] = null;
   private Color4f colors4[] = null;
   private Vector3f normals[] = null;
-  private Object texCoordSets[][] = null;		
+  private Object texCoordSets[][] = null;
 
   private int coordinateIndices[] = null;
   private int colorIndices[] = null;
@@ -184,7 +184,7 @@ public class GeometryInfo {
   private int[] texCoordSetMap = null;
   private int texCoordSetCount = 0;
   private int texCoordDim = 0;
-  
+
   private int stripCounts[] = null;
   private int contourCounts[] = null;
 
@@ -200,11 +200,11 @@ public class GeometryInfo {
 
   /**
    * Constructor.
-   * Creates an empty GeometryInfo object.  
+   * Creates an empty GeometryInfo object.
    * @param primitive Tells the GeometryInfo object the type of
    * primitive data to be stored
    * in it, so it will know the format of the data. It can be one of
-   * TRIANGLE_ARRAY, 
+   * TRIANGLE_ARRAY,
    * QUAD_ARRAY, TRIANGLE_FAN_ARRAY, TRIANGLE_STRIP_ARRAY, or POLYGON_ARRAY.
    */
   public GeometryInfo(int primitive)
@@ -222,7 +222,7 @@ public class GeometryInfo {
   /**
    * Contructor.  Populates the GeometryInfo with the geometry from
    * the GeometryArray.<p>
-   * If the GeometryArray uses the <code>Initial</code> and 
+   * If the GeometryArray uses the <code>Initial</code> and
    * <code>Valid</code> GeometryArray methods (<code>
    * setInitialVertexIndex()</code> and <code>setValidVertexCount()
    * </code> and their cousins) then only the needed geometry
@@ -252,22 +252,22 @@ public class GeometryInfo {
 	  throw new IllegalArgumentException(
 	      J3dUtilsI18N.getString("GeometryInfo0"));
       }
-      
+
       coordinates = null;
       colors3 = null;
       colors4 = null;
       normals = null;
-      
+
       coordinateIndices = null;
       colorIndices = null;
       normalIndices = null;
-      
+
       stripCounts = null;
       contourCounts = null;
-      
+
       oldPrim = 0;
       oldStripCounts = null;
-      
+
       texCoordDim = 0;
       texCoordSetCount = 0;
       texCoordSets = null;
@@ -275,7 +275,7 @@ public class GeometryInfo {
       texCoordSetMap = null;
 
       coordOnly = false;
-      
+
   } // End of reset(int)
 
 
@@ -297,7 +297,7 @@ public class GeometryInfo {
   private int[] expandQuad(int indices[])
   {
       int triangles[] = new int[indices.length / 4 * 6];
-      
+
       for (int i = 0 ; i < indices.length / 4 ; i++ ) {
 	  triangles[i * 6 + 0] = indices[i * 4];
 	  triangles[i * 6 + 1] = indices[i * 4 + 1];
@@ -306,7 +306,7 @@ public class GeometryInfo {
 	  triangles[i * 6 + 4] = indices[i * 4 + 2];
 	  triangles[i * 6 + 5] = indices[i * 4 + 3];
       }
-      
+
       return triangles;
   } // End of expandQuad
 
@@ -339,12 +339,12 @@ public class GeometryInfo {
   private int[] expandTriStrip(int numTris, int indices[])
   {
       int triangles[] = new int[numTris * 3];
-      
+
       int p = 0;
       int base = 0;
       for (int s = 0 ; s < stripCounts.length ; s++) {
 	  for (int t = 0 ; t < stripCounts[s] - 2 ; t++) {
-	      
+
 	      // Use a ping-ponging algorithm to reverse order on every other
 	      // triangle to preserve winding
 	      if (t % 2 == 0) {
@@ -359,7 +359,7 @@ public class GeometryInfo {
 	  }
 	  base += stripCounts[s];
       }
-      
+
       return triangles;
   } // End of expandTriStrip
 
@@ -367,7 +367,7 @@ public class GeometryInfo {
 
   // Used by the NormalGenerator utility.  Informs the GeometryInfo object
   // to remember its current primitive and stripCounts arrays so that
-  // they can be used to convert the object back to its original 
+  // they can be used to convert the object back to its original
   // primitive
   void rememberOldPrim()
   {
@@ -438,16 +438,16 @@ public class GeometryInfo {
   public void convertToIndexedTriangles()
   {
       int triangles = 0;
-      
+
       // This calls checkForBadData
       indexify();
-      
+
       if (prim == TRIANGLE_ARRAY) return;
-      
+
       switch(prim) {
-	  
+
 	  case QUAD_ARRAY:
-	      
+
 	      coordinateIndices = expandQuad(coordinateIndices);
 	      if (colorIndices != null) colorIndices = expandQuad(colorIndices);
 	      if (normalIndices != null)
@@ -455,45 +455,45 @@ public class GeometryInfo {
 	      for (int i = 0 ; i < texCoordSetCount ; i++)
 		  texCoordIndexSets[i] = expandQuad(texCoordIndexSets[i]);
 	      break;
-	      
+
 	  case TRIANGLE_FAN_ARRAY:
 	      // Count how many triangles are in the object
 	      for (int i = 0 ; i < stripCounts.length ; i++) {
 		  triangles += stripCounts[i] - 2;
 	      }
-	      
+
 	      coordinateIndices = expandTriFan(triangles, coordinateIndices);
 	      if (colorIndices != null)
 		  colorIndices = expandTriFan(triangles, colorIndices);
 	      if (normalIndices != null)
 		  normalIndices = expandTriFan(triangles, normalIndices);
 	      for (int i = 0 ; i < texCoordSetCount ; i++)
-		  texCoordIndexSets[i] = expandTriFan(triangles, 
+		  texCoordIndexSets[i] = expandTriFan(triangles,
 			      texCoordIndexSets[i]);
 	      break;
-	      
+
 	  case TRIANGLE_STRIP_ARRAY:
 	      // Count how many triangles are in the object
 	      for (int i = 0 ; i < stripCounts.length ; i++) {
 		  triangles += stripCounts[i] - 2;
 	      }
-	      
+
 	      coordinateIndices = expandTriStrip(triangles, coordinateIndices);
 	      if (colorIndices != null)
 		  colorIndices = expandTriStrip(triangles, colorIndices);
 	      if (normalIndices != null)
 		  normalIndices = expandTriStrip(triangles, normalIndices);
 	      for (int i = 0 ; i < texCoordSetCount ; i++)
-		  texCoordIndexSets[i] = expandTriStrip(triangles, 
+		  texCoordIndexSets[i] = expandTriStrip(triangles,
 			      texCoordIndexSets[i]);
 	      break;
-	      
+
 	  case POLYGON_ARRAY:
 	      if (tr == null) tr = new Triangulator();
 	      tr.triangulate(this);
 	      break;
       }
-      
+
       prim = TRIANGLE_ARRAY;
       stripCounts = null;
   } // End of convertToIndexedTriangles
@@ -516,7 +516,7 @@ public class GeometryInfo {
    * Set the current primitive.  Some of the utilities may change the
    * primitive type of the data stored in the GeometryInfo object
    * (for example, the stripifyer will change it to TRIANGLE_STRIP_ARRAY).
-   * But the user can't change the primitive type - it is set in the 
+   * But the user can't change the primitive type - it is set in the
    * constructor.  Therefore, this method has package scope.
    */
   void setPrimitive(int primitive)
@@ -532,7 +532,7 @@ public class GeometryInfo {
 
 
   /**
-   * Sets the coordinates array.  
+   * Sets the coordinates array.
    * No data copying is done because a reference to user data is used.
    */
   public void setCoordinates(Point3f coordinates[])
@@ -607,7 +607,7 @@ public class GeometryInfo {
   {
       return coordinates;
   } // End of getCoordinates
-  
+
 
 
   /**
@@ -620,7 +620,7 @@ public class GeometryInfo {
       colors3 = colors;
       colors4 = null;
   } // End of setColors
-  
+
 
 
   /**
@@ -633,7 +633,7 @@ public class GeometryInfo {
       colors3 = null;
       colors4 = colors;
   } // End of setColors
- 
+
 
 
   /**
@@ -655,7 +655,7 @@ public class GeometryInfo {
 	  }
       }
   } // End of setColors
- 
+
 
 
   /**
@@ -678,7 +678,7 @@ public class GeometryInfo {
 	  }
       }
   } // End of setColors
- 
+
 
 
   /**
@@ -701,7 +701,7 @@ public class GeometryInfo {
 	  }
       }
   } // End of setColors3
- 
+
 
 
   /**
@@ -725,7 +725,7 @@ public class GeometryInfo {
 	  }
       }
   } // End of setColors4
- 
+
 
 
   /**
@@ -847,17 +847,17 @@ public class GeometryInfo {
 
 
   /**
-   * This method is used to specify the number of texture coordinate sets  
+   * This method is used to specify the number of texture coordinate sets
    * and the dimensionality of the texture coordinates.
    * The number of texture coordinate sets must be specified to the GeometryInfo
-   * class before any of the sets are specified. The dimensionality of the 
-   * texture coordinates may be 2, 3, or 4, corresponding to 2D, 3D, or 4D 
-   * texture coordinates respectively.(All sets must have the same 
-   * dimensionality.) The default is zero, 2D texture coordinate sets. 
-   * This method should be called before any texture coordinate sets are 
+   * class before any of the sets are specified. The dimensionality of the
+   * texture coordinates may be 2, 3, or 4, corresponding to 2D, 3D, or 4D
+   * texture coordinates respectively.(All sets must have the same
+   * dimensionality.) The default is zero, 2D texture coordinate sets.
+   * This method should be called before any texture coordinate sets are
    * specified because <b>calling this method will delete all previously
-   * specified texture coordinate and texture coordinate index arrays</b> 
-   * associated with this GeometryInfo.  For example: 
+   * specified texture coordinate and texture coordinate index arrays</b>
+   * associated with this GeometryInfo.  For example:
    * <blockquote><pre>
    *	geomInfo.setTextureCoordinateParams(2, 3);
    *	geomInfo.setTextureCoordinates(0, tex0);
@@ -865,14 +865,14 @@ public class GeometryInfo {
    *	geomInfo.setTextureCoordinateParams(1, 2);
    *	geomInfo.getTexCoordSetCount();
    * </blockquote></pre>
-   * The second call to <code>setTextureCoordinateParams</code> will erase all 
+   * The second call to <code>setTextureCoordinateParams</code> will erase all
    * the texture coordinate arrays, so the subsequent call to <code>
    * getTexCoordSetCount</code> will return 1.
-   * @param numSets The number of texture coordinate sets that will be 
+   * @param numSets The number of texture coordinate sets that will be
    * specified for this GeometryInfo object.
-   * @param dim The dimensionality of the texture coordinates. Has to be 2, 3 
+   * @param dim The dimensionality of the texture coordinates. Has to be 2, 3
    * or 4.
-   * @throws IllegalArgumentException if the dimensionality of the texture 
+   * @throws IllegalArgumentException if the dimensionality of the texture
    * coordinates is not one of 2, 3 or 4.
    */
   public void setTextureCoordinateParams(int numSets, int dim)
@@ -891,7 +891,7 @@ public class GeometryInfo {
       texCoordDim = dim;
       texCoordSetCount = numSets;
   } // End of setTextureCoordinateParams
-  
+
 
 
   /**
@@ -916,7 +916,7 @@ public class GeometryInfo {
    * Returns the number of texture coordinate components that are stored
    * per vertex.  Returns 2 for ST (2D), 3 for STR (3D),
    * or 4 for STRQ (4D), aslo known as the "dimensionality" of the
-   * coordinates.  This value is set with 
+   * coordinates.  This value is set with
    * setTextureCoordinateParams().  If setTextureCoordinateParams()
    * has not been called, 0 is returned unless one of the deprecated
    * texture coordinate methods has been called.  Calling one of the
@@ -935,12 +935,12 @@ public class GeometryInfo {
 
   /**
    * Sets the mapping between texture coordinate sets and texture units.
-   * See the 
+   * See the
    * <a href="../../../../../javax/media/j3d/GeometryArray.html#texCoordSetMap">
    * GeometryArray constructor </a> for further details.
-   * <p> <b>Note:</b> If the texCoordSetMap is not set, multi-texturing is 
-   * turned off. Only the texture coordinate set at index 0 (if set) will be 
-   * used. Any other sets specified by the GeometryInfo.setTextureCoordinate* 
+   * <p> <b>Note:</b> If the texCoordSetMap is not set, multi-texturing is
+   * turned off. Only the texture coordinate set at index 0 (if set) will be
+   * used. Any other sets specified by the GeometryInfo.setTextureCoordinate*
    * methods will be ignored.
    */
   public void setTexCoordSetMap(int map[]) {
@@ -951,20 +951,20 @@ public class GeometryInfo {
 
   /**
    * Returns a reference to the texture coordinate set map.
-   * See the 
+   * See the
    * <a href="../../../../../javax/media/j3d/GeometryArray.html#texCoordSetMap">
    * GeometryArray constructor </a> for further details.
    */
   public int[] getTexCoordSetMap() {
       return texCoordSetMap;
   }
- 
+
 
 
   /**
    * Sets the 2D texture coordinates for the specified set.
-   * No data copying is done - a reference to user data is used. 
-   * @param texCoordSet The texture coordinate set for which these 
+   * No data copying is done - a reference to user data is used.
+   * @param texCoordSet The texture coordinate set for which these
    * coordinates are being specified.
    * @param texCoords Array of 2D texture coordinates.
    * @throws IllegalArgumentException if <code>texCoordSet </code> < 0 or
@@ -983,8 +983,8 @@ public class GeometryInfo {
 
       texCoordSets[texCoordSet] = texCoords;
   } // End of setTextureCoordinates(int, TexCoord3f[])
-  
- 
+
+
 
   /**
    * Sets the TextureCoordinates array by copying the data
@@ -992,7 +992,7 @@ public class GeometryInfo {
    * This method sets the number of texture coordinate sets to 1,
    * sets the dimensionality of the texture coordinates to 2,
    * and sets the coordinates for texture coordinate set 0.
-   * @deprecated As of Java 3D 1.3 replaced by 
+   * @deprecated As of Java 3D 1.3 replaced by
    * <code>setTextureCoordinates(int texCoordSet, TexCoord2f coords[])</code>
    */
   public void setTextureCoordinates(Point2f texCoords[])
@@ -1002,18 +1002,18 @@ public class GeometryInfo {
       texCoordSets = new TexCoord2f[1][];
       if (texCoords != null) {
 	TexCoord2f[] tex = new TexCoord2f[texCoords.length];
-	for (int i = 0 ; i < texCoords.length ; i++) 
+	for (int i = 0 ; i < texCoords.length ; i++)
 	    tex[i] = new TexCoord2f(texCoords[i]);
 	texCoordSets[0] = tex;
       }
   } // End of setTextureCoordinates(Point2f[])
- 
+
 
 
   /**
    * Sets the texture coordinates array for the specified set.
-   * No data copying is done - a reference to user data is used. 
-   * @param texCoordSet The texture coordinate set for which these coordinates 
+   * No data copying is done - a reference to user data is used.
+   * @param texCoordSet The texture coordinate set for which these coordinates
    * are being specified.
    * @param texCoords Array of 3D texture coordinates.
    * @throws IllegalArgumentException if <code> texCoordSet </code> < 0 or
@@ -1029,7 +1029,7 @@ public class GeometryInfo {
       if ((texCoordSet >= texCoordSetCount) || (texCoordSet < 0))
 	  throw new IllegalArgumentException(
 		  J3dUtilsI18N.getString("GeometryInfo18"));
-      
+
       texCoordSets[texCoordSet] = texCoords;
   } // End of setTextureCoordinates(int, TexCoord3f[])
 
@@ -1041,7 +1041,7 @@ public class GeometryInfo {
    * This method sets the number of texture coordinate sets to 1,
    * sets the dimensionality of the texture coordinates to 3,
    * and sets the coordinates for texture coordinate set 0.
-   * @deprecated As of Java 3D 1.3 replaced by 
+   * @deprecated As of Java 3D 1.3 replaced by
    * <code>setTextureCoordinates(int texCoordSet, TexCoord3f coords[])</code>
    */
   public void setTextureCoordinates(Point3f texCoords[])
@@ -1051,18 +1051,18 @@ public class GeometryInfo {
       texCoordSets = new TexCoord3f[1][];
       if (texCoords != null) {
 	TexCoord3f[] tex = new TexCoord3f[texCoords.length];
-	for (int i = 0 ; i < texCoords.length ; i++) 
+	for (int i = 0 ; i < texCoords.length ; i++)
 	    tex[i] = new TexCoord3f(texCoords[i]);
 	texCoordSets[0] = tex;
       }
   } // End of setTextureCoordinates(Point3f[])
- 
+
 
 
   /**
    * Sets the texture coordinates array for the specified set.
-   * No data copying is done - a reference to user data is used. 
-   * @param texCoordSet The texture coordinate set for which these coordinates 
+   * No data copying is done - a reference to user data is used.
+   * @param texCoordSet The texture coordinate set for which these coordinates
    * are being specified.
    * @param texCoords Array of 4D texture coordinates.
    * @throws IllegalArgumentException if <code> texCoordSet </code> < 0 or
@@ -1077,20 +1077,20 @@ public class GeometryInfo {
       if ((texCoordSet >= texCoordSetCount) || (texCoordSet < 0))
 	  throw new IllegalArgumentException(
 		  J3dUtilsI18N.getString("GeometryInfo18"));
-      
+
       texCoordSets[texCoordSet] = texCoords;
   } // End of setTextureCoordinates(int, TexCoord4f[])
- 
+
 
 
   /**
    * Sets the texture coordinates array by copying the data into the
    * GeometryInfo object.  The number of sets and dimensionality of
-   * the sets must have been set previously with 
+   * the sets must have been set previously with
    * setTextureCoordinateParams(texCoordSetCount, dim).
-   * @param texCoordSet The texture coordinate set for which these coordinates 
+   * @param texCoordSet The texture coordinate set for which these coordinates
    * are being specified.
-   * @param texCoords The float array of texture coordinates. For n texture 
+   * @param texCoords The float array of texture coordinates. For n texture
    * coordinates with dimensionality d, there must be d*n floats in the array.
    * @throws IllegalArgumentException if <code>texCoordSet </code> < 0 or
    * <code>texCoordSet >= texCoordSetCount</code>,
@@ -1102,24 +1102,24 @@ public class GeometryInfo {
       if ((texCoords.length % texCoordDim) != 0)
 	  throw new IllegalArgumentException(
 		  J3dUtilsI18N.getString("GeometryInfo2"));
-      
+
       // Copy the texCoords into this GeometryInfo object
       if (texCoordDim == 2) {
 	TexCoord2f tcoords[] = new TexCoord2f[texCoords.length / 2];
-	for (int i = 0 ; i < tcoords.length ; i++) 
+	for (int i = 0 ; i < tcoords.length ; i++)
 	    tcoords[i] = new TexCoord2f(texCoords[i * 2],
 					texCoords[i * 2 + 1]);
 	setTextureCoordinates(texCoordSet, tcoords);
       } else if (texCoordDim == 3) {
 	TexCoord3f tcoords[] = new TexCoord3f[texCoords.length / 3];
-	for (int i = 0 ; i < tcoords.length ; i++) 
+	for (int i = 0 ; i < tcoords.length ; i++)
 	    tcoords[i] = new TexCoord3f(texCoords[i * 3],
 					texCoords[i * 3 + 1],
 					texCoords[i * 3 + 2]);
 	setTextureCoordinates(texCoordSet, tcoords);
       } else if (texCoordDim == 4) {
 	TexCoord4f tcoords[] = new TexCoord4f[texCoords.length / 4];
-	for (int i = 0 ; i < tcoords.length ; i++) 
+	for (int i = 0 ; i < tcoords.length ; i++)
 	    tcoords[i] = new TexCoord4f(texCoords[i * 4],
 					texCoords[i * 4 + 1],
 					texCoords[i * 4 + 2],
@@ -1140,7 +1140,7 @@ public class GeometryInfo {
    * This method sets the number of texture coordinate sets to 1,
    * sets the dimensionality of the texture coordinates to 2,
    * and sets the coordinates for texture coordinate set 0.
-   * @deprecated As of Java 3D 1.3 replaced by 
+   * @deprecated As of Java 3D 1.3 replaced by
    * <code>setTextureCoordinates(int texCoordSet, float texCoords[])</code>
    */
   public void setTextureCoordinates2(float texCoords[])
@@ -1150,7 +1150,7 @@ public class GeometryInfo {
       texCoordSets = new TexCoord2f[1][];
       setTextureCoordinates(0, texCoords);
   } // End of setTextureCoordinates2(float[])
- 
+
 
 
   /**
@@ -1160,7 +1160,7 @@ public class GeometryInfo {
    * This method sets the number of texture coordinate sets to 1,
    * sets the dimensionality of the texture coordinates to 3,
    * and sets the coordinates for texture coordinate set 0.
-   * @deprecated As of Java 3D 1.3 replaced by 
+   * @deprecated As of Java 3D 1.3 replaced by
    * <code>setTextureCoordinates(int texCoordSet, float texCoords[])</code>
    */
   public void setTextureCoordinates3(float texCoords[])
@@ -1176,9 +1176,9 @@ public class GeometryInfo {
   /**
    * Returns a reference to the indicated texture coordinate array.
    * The return type will be <code>TexCoord2f[]</code>, <code>TexCoord3f[]
-   * </code>, or <code>TexCoord4f[]</code> depending on the 
+   * </code>, or <code>TexCoord4f[]</code> depending on the
    * current dimensionality of the texture coordinates in the GeometryInfo
-   * object.  Use <code>getNumTexCoordComponents()</code> to find out which 
+   * object.  Use <code>getNumTexCoordComponents()</code> to find out which
    * version is returned.
    * @param texCoordSet The index of the texture coordinate set to
    * retrieve.
@@ -1193,30 +1193,30 @@ public class GeometryInfo {
 	      J3dUtilsI18N.getString("GeometryInfo18"));
       return texCoordSets[texCoordSet];
   } // End of getTextureCoordinates(int)
-  
- 
+
+
 
   /**
    * Retrieves a reference to texture coordinate set 0.
    * The return type will be <code>TexCoord2f[]</code>, <code>TexCoord3f[]
-   * </code>, or <code>TexCoord4f[]</code> depending on the 
+   * </code>, or <code>TexCoord4f[]</code> depending on the
    * current dimensionality of the texture coordinates in the GeometryInfo
-   * object.  Use <code>getNumTexCoordComponents()</code> to find out which 
+   * object.  Use <code>getNumTexCoordComponents()</code> to find out which
    * version is returned.  Equivalent to <code>getTextureCoordinates(0)</code>.
    * @return An array of texture coordinates for set 0.
-   * @deprecated As of Java 3D 1.3 replaced by 
+   * @deprecated As of Java 3D 1.3 replaced by
    * <code>getTextureCoordinates(int texCoordSet)</code>
    */
   public Object[] getTextureCoordinates()
   {
       return texCoordSets[0];
   } // End of getTextureCoordinates()
-  
+
 
 
   /**
    * Sets the array of indices into the Coordinate array.
-   * No data copying is done - a reference to user data is used. 
+   * No data copying is done - a reference to user data is used.
    */
   public void setCoordinateIndices(int coordinateIndices[])
   {
@@ -1247,7 +1247,7 @@ public class GeometryInfo {
    * primitive type when creating the GeometryArray object to pass
    * back.  However, if your creaseAngle was not Math.PI (no creases -
    * smooth shading), then the introduction of
-   * creases into your model may have split primitives, lengthening 
+   * creases into your model may have split primitives, lengthening
    * the StripCounts and index arrays from your original data.
    */
   public int[] getCoordinateIndices()
@@ -1259,7 +1259,7 @@ public class GeometryInfo {
 
   /**
    * Sets the array of indices into the Color array.
-   * No data copying is done - a reference to user data is used. 
+   * No data copying is done - a reference to user data is used.
    */
   public void setColorIndices(int colorIndices[])
   {
@@ -1302,12 +1302,12 @@ public class GeometryInfo {
 
   /**
    * Sets the array of indices into the Normal array.
-   * No data copying is done - a reference to user data is used. 
+   * No data copying is done - a reference to user data is used.
    */
   public void setNormalIndices(int normalIndices[])
   {
       this.normalIndices = normalIndices;
-      
+
   } // End of setNormalIndices
 
 
@@ -1341,15 +1341,15 @@ public class GeometryInfo {
   {
       return normalIndices;
   } // End of getNormalIndices
-  
+
 
 
   /**
    * Sets one of the texture coordinate index arrays.
-   * No data copying is done - a reference to user data is used. 
-   * @param texCoordSet The texture coordinate set for which these coordinate 
+   * No data copying is done - a reference to user data is used.
+   * @param texCoordSet The texture coordinate set for which these coordinate
    * indices are being specified.
-   * @param texIndices The integer array of indices into the specified texture 
+   * @param texIndices The integer array of indices into the specified texture
    * coordinate set
    * @throws IllegalArgumentException If <code> texCoordSet</code> < 0 or
    * <code>texCoordSet >= texCoordSetCount</code>.
@@ -1359,8 +1359,8 @@ public class GeometryInfo {
       if ((texCoordSet >= texCoordSetCount) || (texCoordSet < 0))
 	  throw new IllegalArgumentException(
 		  J3dUtilsI18N.getString("GeometryInfo18"));
-      
-      // Texture coordinates are indexed 
+
+      // Texture coordinates are indexed
       texCoordIndexSets[texCoordSet] = texIndices;
   } // End of setTextureCoordinateIndices(int, int[])
 
@@ -1371,13 +1371,13 @@ public class GeometryInfo {
    * call this method if you are using more than one set of texture
    * coordinates.
    * No data is copied - a reference to the user data is used.
-   * @deprecated As of Java 3D 1.3 replaced by 
+   * @deprecated As of Java 3D 1.3 replaced by
    * <code>setTextureCoordinateIndices(int texCoordSet, int indices[])</code>
    * @throws IllegalArgumentException If <code>texCoordSetCount > 1</code>.
    */
   public void setTextureCoordinateIndices(int texIndices[])
   {
-      if (texCoordSetCount > 1) 
+      if (texCoordSetCount > 1)
 	  throw new IllegalArgumentException(
 		  J3dUtilsI18N.getString("GeometryInfo1"));
       texCoordIndexSets = new int[1][];
@@ -1424,7 +1424,7 @@ public class GeometryInfo {
    * Returns a reference to texture coordinate index set 0.
    * Equivalent to
    * <code>getTextureCoordinateIndices(0)</code>.
-   * @deprecated As of Java 3D 1.3 replaced by 
+   * @deprecated As of Java 3D 1.3 replaced by
    * <code>int[] getTextureCoordinateIndices(int texCoordSet) </code>
    * @return Integer array of the texture coordinate indices for set 0
    */
@@ -1433,14 +1433,14 @@ public class GeometryInfo {
       if (texCoordIndexSets == null) return null;
       return texCoordIndexSets[0];
   } // End of getTextureCoordinateIndices()
- 
 
-  
+
+
   /**
    * Sets the array of strip counts.  If index lists have been set for
    * this GeomteryInfo object then the data is indexed and the stripCounts
    * are like stripIndexCounts.  If no index lists have been set then
-   * the data is non-indexed and the stripCounts are like 
+   * the data is non-indexed and the stripCounts are like
    * stripVertexCounts.
    * @see GeometryStripArray#GeometryStripArray(int, int,
    * int[] stripVertexCounts)
@@ -1451,7 +1451,7 @@ public class GeometryInfo {
   {
       this.stripCounts = stripCounts;
   } // End of setStripCounts
- 
+
 
 
   /**
@@ -1482,13 +1482,13 @@ public class GeometryInfo {
   {
       return stripCounts;
   } // End of getStripCounts
- 
+
 
 
   /**
    * Sets the list of contour counts.  Only used with the POLYGON_ARRAY
-   * primitive.  Polygons can be made of several vertex lists 
-   * called contours.  The first list is the polygon, and 
+   * primitive.  Polygons can be made of several vertex lists
+   * called contours.  The first list is the polygon, and
    * subsequent lists are "holes" that are removed from the
    * polygon.  All of the holes must be contained entirely
    * within the polygon.
@@ -1517,30 +1517,30 @@ public class GeometryInfo {
   {
       // Create list of indices to return
       int indices[] = new int[list.length];
-      
+
       // Create hash table with initial capacity equal to the number
       // of components (assuming about half will be duplicates)
       HashMap table = new HashMap(list.length);
-      
+
       Integer idx;
       for (int i = 0 ; i < list.length ; i++) {
-	  
+
 	  // Find index associated with this object
 	  idx = (Integer)table.get(list[i]);
-	  
+
 	  if (idx == null) {
 	      // We haven't seen this object before
 	      indices[i] = i;
-	      
+
 	      // Put into hash table and remember the index
 	      table.put(list[i], new Integer(i));
-	      
+
 	  } else {
 	      // We've seen this object
 	      indices[i] = idx.intValue();
 	  }
       }
-      
+
       return indices;
   } // End of getListIndices
 
@@ -1585,7 +1585,7 @@ public class GeometryInfo {
       val = new int[size];
     } // End of IndexRow constructor
   } // End of class IndexRow
- 
+
 
 
   /**
@@ -1676,7 +1676,7 @@ public class GeometryInfo {
 	    newTexCoordSets[i] = new TexCoord4f[ir.length];
 	  }
 	}
-	
+
 	// Copy data into new arrays
 	n = ir.length;
 	for (int i = 0 ; i < n ; i++) {
@@ -1733,12 +1733,12 @@ public class GeometryInfo {
 	if (coordinateIndices != null) return;
 
 	coordinateIndices = getListIndices(coordinates);
-	
+
 	if (colors3 != null) colorIndices = getListIndices(colors3);
 	else if (colors4 != null) colorIndices = getListIndices(colors4);
-	
+
 	if (normals != null) normalIndices = getListIndices(normals);
-	
+
 	texCoordIndexSets = new int[texCoordSetCount][];
 	for(int i = 0 ; i < texCoordSetCount ; i++) {
 	    texCoordIndexSets[i] = getListIndices(texCoordSets[i]);
@@ -1746,7 +1746,7 @@ public class GeometryInfo {
 
 	coordOnly = false;
       }
-      
+
       if ((DEBUG & 1) == 1) {
 	  System.out.println("Coordinate Array:");
 	  for (int i = 0 ; i < coordinates.length ; i++) {
@@ -1758,7 +1758,7 @@ public class GeometryInfo {
 	      System.out.println("  " + i + " " + coordinateIndices[i]);
 	  }
       }
-      
+
   } // End of indexify
 
 
@@ -1767,22 +1767,22 @@ public class GeometryInfo {
   {
     indexify(false);
   } // End of indexify()
- 
+
 
 
   /**
-   * Allocates an array of the same type as the input type. This allows us to 
+   * Allocates an array of the same type as the input type. This allows us to
    * use a generic compactData method.
    *
    * @param data Array of coordinate, color, normal or texture coordinate data
-   * The data can be in one of the following formats - Point3f, Color3f, 
+   * The data can be in one of the following formats - Point3f, Color3f,
    * Color4f, TexCoord2f, TexCoord3f, TexCoord4f.
    *
    * @param num The size of the array to be allocated
    *
-   * @return An array of size num of the same type as the input type 
+   * @return An array of size num of the same type as the input type
    *
-   * @exception IllegalArgumentException if the input array is not one of the 
+   * @exception IllegalArgumentException if the input array is not one of the
    * types listed above.
    */
   Object[] allocateArray(Object data[], int num) {
@@ -1808,23 +1808,23 @@ public class GeometryInfo {
 	  J3dUtilsI18N.getString("GeometryInfo9"));
       return newData;
   } // End of allocateArray
- 
+
 
 
   /**
    * Generic method that compacts (ie removes unreferenced/duplicate data)
-   * any type of indexed data. 
+   * any type of indexed data.
    * Used to compact coordinate, color, normal and texture coordinate data.
    * @param indices Array of indices
    * @param data Array of coordinate, color, normal or texture coordinate data
-   * The data can be in one of the following formats - Point3f, Color3f, 
-   * Color4f, TexCoord2f, TexCoord3f, TexCoord4f. 
+   * The data can be in one of the following formats - Point3f, Color3f,
+   * Color4f, TexCoord2f, TexCoord3f, TexCoord4f.
    * @param newInd The new array of indexes after the data has been compacted.
-   * This must be allocated by the calling method. On return, this array will 
-   * contain the new index data. The size of this array must be equal to 
+   * This must be allocated by the calling method. On return, this array will
+   * contain the new index data. The size of this array must be equal to
    * indices.length
-   * @return Array of the data with unreferenced and duplicate entries removed. 
-   * The return type will be the same as the type that was passed in data. 
+   * @return Array of the data with unreferenced and duplicate entries removed.
+   * The return type will be the same as the type that was passed in data.
    */
    // TODO:  Remove duplicate entries in data lists.
   private Object[] compactData(int indices[], Object data[], int newInd[]) {
@@ -1838,7 +1838,7 @@ public class GeometryInfo {
       int translationTable[] = new int[data.length];
       for (int i = 0 ; i < indices.length ; i++) {
 	  if (translationTable[indices[i]] == 0) {
-	      
+
 	      numUnique++;
 	      translationTable[indices[i]] = 1;
 	  }
@@ -1865,11 +1865,11 @@ public class GeometryInfo {
   } // End of compactData
 
 
-  
+
   /**
    * Remove unused data from an indexed dataset.
    * Indexed data may contain data entries that are never referenced by
-   * the dataset.  This routine will remove those entries where 
+   * the dataset.  This routine will remove those entries where
    * appropriate and renumber the indices to match the new values.
    * @throws IllegalArgumentException if coordinate data is missing,
    * if the index lists aren't all the
@@ -1899,9 +1899,9 @@ public class GeometryInfo {
 
       if (colorIndices != null) {
 	  newInd = new int[colorIndices.length];
-	  if (colors3 != null) 
+	  if (colors3 != null)
 	      colors3 = (Color3f[])compactData(colorIndices, colors3, newInd);
-	  else if (colors4 != null) 
+	  else if (colors4 != null)
 	      colors4 = (Color4f[])compactData(colorIndices, colors4, newInd);
 	  colorIndices = newInd;
       }
@@ -1935,7 +1935,7 @@ public class GeometryInfo {
 	  throw new IllegalArgumentException(
 		  J3dUtilsI18N.getString("GeometryInfo3"));
       }
-      
+
       //
       // Check for indices with no data
       //
@@ -1945,7 +1945,7 @@ public class GeometryInfo {
       if ((normals == null) && (normalIndices != null))
 	  throw new IllegalArgumentException(
 		  J3dUtilsI18N.getString("GeometryInfo11"));
-      
+
       //
       // Make sure all TextureCoordinate data is set (indices or not)
       //
@@ -1954,7 +1954,7 @@ public class GeometryInfo {
 	  throw new IllegalArgumentException(
 		  J3dUtilsI18N.getString("GeometryInfo10"));
       }
-      
+
       //
       // Check for Missing Index lists
       //
@@ -1991,10 +1991,10 @@ public class GeometryInfo {
       //
       if ((coordinateIndices != null) && (!coordOnly)) {
 	  if (((colors3 != null) || (colors4 != null)) &&
-	      (colorIndices.length != coordinateIndices.length)) 
+	      (colorIndices.length != coordinateIndices.length))
 	    badData = true;
 	  else if ((normals != null) &&
-	           (normalIndices.length != coordinateIndices.length)) 
+	           (normalIndices.length != coordinateIndices.length))
 	    badData = true;
 	  else {
 	    //Check all texCoord indices have the same length
@@ -2010,7 +2010,7 @@ public class GeometryInfo {
 		      J3dUtilsI18N.getString("GeometryInfo5"));
 	  }
       }
-      
+
       //
       // For stripped primitives, make sure we have strip counts
       //
@@ -2023,12 +2023,12 @@ public class GeometryInfo {
 	  throw new IllegalArgumentException(
 		  J3dUtilsI18N.getString("GeometryInfo6"));
       }
-      
+
       // Find out how much data we have
       int count;
       if (coordinateIndices == null) count = coordinates.length;
       else count = coordinateIndices.length;
-      
+
       //
       // Make sure sum of strip counts equals indexCount (or vertexCount)
       // and check to make sure triangles and quads have the right number
@@ -2048,22 +2048,22 @@ public class GeometryInfo {
       } else if (prim == TRIANGLE_ARRAY) {
 	  if (count % 3 != 0) {
 	      throw new IllegalArgumentException(
-		      J3dUtilsI18N.getString("GeometryInfo12")); 
+		      J3dUtilsI18N.getString("GeometryInfo12"));
 	  }
       } else if (prim == QUAD_ARRAY) {
 	  if (count % 4 != 0) {
 	      throw new IllegalArgumentException(
-		      J3dUtilsI18N.getString("GeometryInfo13")); 
+		      J3dUtilsI18N.getString("GeometryInfo13"));
 	  }
       }
-      
+
       //
       // For polygons, make sure the contours add up.
       //
       if (prim == POLYGON_ARRAY) {
 	  if (contourCounts != null) {
 	      int c = 0;
-	      for (int i = 0 ; i < contourCounts.length ; i++) 
+	      for (int i = 0 ; i < contourCounts.length ; i++)
 		  c += contourCounts[i];
 	      if (c != stripCounts.length) {
 		  throw new IllegalArgumentException(
@@ -2077,7 +2077,7 @@ public class GeometryInfo {
 	  }
       }
   } // End of checkForBadData
- 
+
 
 
   /**
@@ -2116,18 +2116,18 @@ public class GeometryInfo {
 	    normalIndices = null;
 	  }
 
-	  for (int i = 0 ; i < texCoordSetCount ; i++) 
-	    texCoordSets[i] = unindexifyData(texCoordSets[i], 
+	  for (int i = 0 ; i < texCoordSetCount ; i++)
+	    texCoordSets[i] = unindexifyData(texCoordSets[i],
 					     texCoordIndexSets[i]);
 	  texCoordIndexSets = new int[texCoordSetCount][];
       }
   } // End of unindexify
- 
+
 
 
   /**
-   * Generic unindexify method. Can unindex data in any of the following 
-   * formats Point3f, Color3f, Color4f, Vector3f, TexCoord2f, TexCoord3f, 
+   * Generic unindexify method. Can unindex data in any of the following
+   * formats Point3f, Color3f, Color4f, Vector3f, TexCoord2f, TexCoord3f,
    * TexCoord4f.
    */
   private Object[] unindexifyData(Object data[], int index[])
@@ -2138,7 +2138,7 @@ public class GeometryInfo {
       }
       return newData;
   } // End of unindexifyData
- 
+
 
 
   /**
@@ -2147,22 +2147,22 @@ public class GeometryInfo {
   private int getVertexFormat()
   {
       int vertexFormat = GeometryArray.COORDINATES;
-      
+
       if (colors3 != null) vertexFormat |= GeometryArray.COLOR_3;
       else if (colors4 != null) vertexFormat |= GeometryArray.COLOR_4;
-      
+
       if (normals != null) vertexFormat |= GeometryArray.NORMALS;
-      
+
       if (texCoordDim == 2)
 	  vertexFormat |= GeometryArray.TEXTURE_COORDINATE_2;
       else if (texCoordDim == 3)
 	  vertexFormat |= GeometryArray.TEXTURE_COORDINATE_3;
       else if (texCoordDim == 4)
 	  vertexFormat |= GeometryArray.TEXTURE_COORDINATE_4;
-      
+
       return vertexFormat;
   } // End of getVertexFormat
- 
+
 
 
   /**
@@ -2171,23 +2171,23 @@ public class GeometryInfo {
   private int getVertexCount()
   {
       int vertexCount = coordinates.length;
-      
+
       if (colors3 != null) {
 	  if (colors3.length > vertexCount) vertexCount = colors3.length;
       } else if (colors4 != null) {
 	  if (colors4.length > vertexCount) vertexCount = colors4.length;
       }
-      
+
       if (normals != null) {
 	  if (normals.length > vertexCount) vertexCount = normals.length;
       }
-      
+
       // Find max length tex coord set
       for (int i = 0 ; i < texCoordSetCount ; i++) {
 	  if (texCoordSets[i].length > vertexCount)
-	      vertexCount = texCoordSets[i].length; 
+	      vertexCount = texCoordSets[i].length;
       }
-	
+
       return vertexCount;
   } // End of getVertexCount
 
@@ -2299,7 +2299,7 @@ public class GeometryInfo {
 	// Register reference to array of interleaved data
 	if (nio) {
 	  ByteBufferWrapper b = ByteBufferWrapper.allocateDirect(d.length * 4);
-	  FloatBufferWrapper f = 
+	  FloatBufferWrapper f =
 	    b.order( ByteOrderWrapper.nativeOrder() ).asFloatBuffer();
 	  f.put(d);
 	  ga.setInterleavedVertexBuffer(f.getJ3DBuffer());
@@ -2308,7 +2308,7 @@ public class GeometryInfo {
 
 	ByteBufferWrapper b =
 	  ByteBufferWrapper.allocateDirect(coordinates.length * 4 * 3);
-	FloatBufferWrapper f = 
+	FloatBufferWrapper f =
 	  b.order( ByteOrderWrapper.nativeOrder() ).asFloatBuffer();
 	f.put(vecmathToFloat(coordinates));
 	ga.setCoordRefBuffer(f.getJ3DBuffer());
@@ -2383,9 +2383,9 @@ public class GeometryInfo {
   /**
    * Redo indexes to guarantee connection information.
    * Use this routine if your original data is in indexed format, but
-   * you don't trust that the indexing is correct.  After this 
+   * you don't trust that the indexing is correct.  After this
    * routine it is guaranteed that two points with the same
-   * position will have the same coordinate index (for example).  
+   * position will have the same coordinate index (for example).
    * Try this if you see
    * glitches in your normals or stripification, to rule out
    * bad indexing as the source of the problem.  Works with normal
@@ -2419,9 +2419,9 @@ public class GeometryInfo {
   private void reverseList(int list[])
   {
       int t;
-      
+
       if (list == null) return;
-      
+
       for (int i = 0 ; i < list.length / 2 ; i++) {
 	  t = list[i];
 	  list[i] = list[list.length - i - 1];
@@ -2432,7 +2432,7 @@ public class GeometryInfo {
 
 
   /**
-   * Reverse the order of all lists.  If your polygons are formatted with 
+   * Reverse the order of all lists.  If your polygons are formatted with
    * clockwise winding, you will always see the back and never the front.
    * (Java 3D always wants vertices specified with a counter-clockwise
    * winding.)
@@ -2459,14 +2459,14 @@ public class GeometryInfo {
       reverseList(coordinateIndices);
       reverseList(colorIndices);
       reverseList(normalIndices);
-      for (int i = 0 ; i < texCoordSetCount ; i++) 
+      for (int i = 0 ; i < texCoordSetCount ; i++)
 	  reverseList(texCoordIndexSets[i]);
   } // End of reverse
 
 
 
   /**
-   * Returns true if the data in this GeometryInfo is currently 
+   * Returns true if the data in this GeometryInfo is currently
    * formatted in the USE_COORD_INDEX_ONLY format where a single
    * index list is used to index into all data lists.
    * @see GeometryInfo#indexify(boolean)
@@ -2484,7 +2484,7 @@ public class GeometryInfo {
    * Tells the GeometryInfo that its data is formatted in the
    * USE_COORD_INDEX_ONLY format with a single index list
    * (the coordinate index list) that indexes into all data
-   * lists (coordinates, normals, colors, and texture 
+   * lists (coordinates, normals, colors, and texture
    * coordinates).  NOTE: this will not convert the data
    * for you.  This method is for when you are sending in
    * data useng the setCoordinates, setNormals, setColors,
@@ -2530,14 +2530,14 @@ public class GeometryInfo {
 					boolean nio)
   {
       checkForBadData();
-      
+
       if (prim == POLYGON_ARRAY) {
 	  if (tr == null) tr = new Triangulator();
 	  tr.triangulate(this);
       } else changeBackToOldPrim();
-      
+
       unindexify();
-      
+
       int vertexFormat = getVertexFormat();
       if (nio) vertexFormat |= (GeometryArray.BY_REFERENCE |
 				GeometryArray.USE_NIO_BUFFER);
@@ -2546,9 +2546,9 @@ public class GeometryInfo {
       if (byRef) vertexFormat |= GeometryArray.BY_REFERENCE;
 
       int vertexCount = coordinates.length;
-      
-      // If the texCoordSetMap hasn't been set, assume one set of 
-      // texture coordinates only and one texture state unit 
+
+      // If the texCoordSetMap hasn't been set, assume one set of
+      // texture coordinates only and one texture state unit
       if ((texCoordSetCount > 0) && (texCoordSetMap == null)) {
 	  texCoordSetCount = 1;
 	  texCoordSetMap = new int[1];
@@ -2559,37 +2559,37 @@ public class GeometryInfo {
       GeometryArray ga = null;
       switch (prim) {
 	  case TRIANGLE_ARRAY:
-	      TriangleArray ta = new TriangleArray(vertexCount, vertexFormat, 
+	      TriangleArray ta = new TriangleArray(vertexCount, vertexFormat,
 		      texCoordSetCount, texCoordSetMap);
 	      ga = (GeometryArray)ta;
 	      break;
-	      
+
 	  case QUAD_ARRAY:
-	      QuadArray qa = new QuadArray(vertexCount, vertexFormat, 
+	      QuadArray qa = new QuadArray(vertexCount, vertexFormat,
 		      texCoordSetCount, texCoordSetMap);
 	      ga = (GeometryArray)qa;
 	      break;
-	      
+
 	  case TRIANGLE_STRIP_ARRAY:
-	      TriangleStripArray tsa = new TriangleStripArray(vertexCount, 
+	      TriangleStripArray tsa = new TriangleStripArray(vertexCount,
 		      vertexFormat, texCoordSetCount, texCoordSetMap,
 		      stripCounts);
 	      ga = (GeometryArray)tsa;
 	      break;
-	      
+
 	  case TRIANGLE_FAN_ARRAY:
-	      TriangleFanArray tfa = new TriangleFanArray(vertexCount, 
+	      TriangleFanArray tfa = new TriangleFanArray(vertexCount,
 		      vertexFormat, texCoordSetCount, texCoordSetMap,
 		      stripCounts);
 	      ga = (GeometryArray)tfa;
 	      break;
       }
-      
+
       fillIn(ga, byRef, interleaved, nio);
-      
+
       return ga;
   } // End of getGeometryArray(int, int)
- 
+
 
 
   /**
@@ -2620,7 +2620,7 @@ public class GeometryInfo {
    * Creates and returns a IndexedGeometryArray
    * based on the data in the GeometryInfo object.  This object is
    * suitable to be attached to a Shape3D node for rendering.
-   * @param compact Remove Coordinates, Colors, Normals, and 
+   * @param compact Remove Coordinates, Colors, Normals, and
    * TextureCoordinates that aren't referenced by any indices.
    * @param byRef Create the IndexedGeometryArray using geometry
    * BY_REFERENCE.
@@ -2631,7 +2631,7 @@ public class GeometryInfo {
    * byRef is true as well.
    * @param useCoordIndexOnly Create the IndexedGeometryArray using
    * USE_COORD_INDEX_ONLY.  Values from the coordinate index array
-   * are used as a single set of indices into all vertex 
+   * are used as a single set of indices into all vertex
    * component arrays (coord, color, normal, and texCoord).
    * @throws IllegalArgumentException if coordinate data is missing,
    * if the index lists aren't all the
@@ -2651,7 +2651,7 @@ public class GeometryInfo {
 						      boolean nio)
   {
       indexify(useCoordIndexOnly);
-      
+
       if (compact) compact();
 
       if (prim == POLYGON_ARRAY) {
@@ -2666,43 +2666,43 @@ public class GeometryInfo {
 
            if (coordinateIndices != null) {
              // See if all the array lengths are the same
-             if (colorIndices != null && 
+             if (colorIndices != null &&
                  colorIndices.length != coordinateIndices.length) {
                  canUseCoordIndexOnly = false;
              }
-             if (normalIndices != null && 
+             if (normalIndices != null &&
                  normalIndices.length != coordinateIndices.length) {
                  canUseCoordIndexOnly = false;
              }
              for (i = 0 ; i < texCoordSetCount ; i++) {
-                 if (texCoordIndexSets[i] != null && 
+                 if (texCoordIndexSets[i] != null &&
                      texCoordIndexSets[i].length != coordinateIndices.length) {
                      canUseCoordIndexOnly = false;
                      break;
                  }
              }
-             if (canUseCoordIndexOnly && 
-		 ((colorIndices != null) || 
+             if (canUseCoordIndexOnly &&
+		 ((colorIndices != null) ||
 		  (normalIndices != null) ||
-		  (texCoordSetCount > 0))) { 
+		  (texCoordSetCount > 0))) {
                  // All array lengths are the same.  Check their contents
 
                  for (i=0; i<coordinateIndices.length; i++) {
                      int indexValue = coordinateIndices[i];
-		     
 
-                     if (colorIndices != null && 
+
+                     if (colorIndices != null &&
                          colorIndices[i] != indexValue) {
                          canUseCoordIndexOnly = false;
                          break;
                      }
-                     if (normalIndices != null && 
+                     if (normalIndices != null &&
                          normalIndices[i] != indexValue) {
                          canUseCoordIndexOnly = false;
                          break;
                      }
                      for (j=0; j<texCoordSetCount; j++) {
-                         if (texCoordIndexSets[j] != null && 
+                         if (texCoordIndexSets[j] != null &&
                              texCoordIndexSets[j][i] != indexValue) {
                              canUseCoordIndexOnly = false;
                              break;
@@ -2723,30 +2723,30 @@ public class GeometryInfo {
       if (coordOnly) vertexFormat |= GeometryArray.USE_COORD_INDEX_ONLY;
 
       int vertexCount = getVertexCount();
-      
+
       if ((texCoordSetCount > 0) && (texCoordSetMap == null)) {
 	  texCoordSetCount = 1;
 	  texCoordSetMap = new int[1];
 	  texCoordSetMap[0] = 0;
       }
-      
+
       //
       // Create the IndexedGeometryArray object
       //
-      
+
       IndexedGeometryArray ga = null;
 
       switch (prim) {
 	  case TRIANGLE_ARRAY:
-	      IndexedTriangleArray ta = new IndexedTriangleArray(vertexCount, 
-		      vertexFormat, texCoordSetCount, texCoordSetMap, 
+	      IndexedTriangleArray ta = new IndexedTriangleArray(vertexCount,
+		      vertexFormat, texCoordSetCount, texCoordSetMap,
 		      coordinateIndices.length);
 	      ga = (IndexedGeometryArray)ta;
 	      break;
-	      
+
 	  case QUAD_ARRAY:
-	      IndexedQuadArray qa = new IndexedQuadArray(vertexCount, 
-		      vertexFormat, texCoordSetCount, texCoordSetMap, 
+	      IndexedQuadArray qa = new IndexedQuadArray(vertexCount,
+		      vertexFormat, texCoordSetCount, texCoordSetMap,
 		      coordinateIndices.length);
 	      ga = (IndexedGeometryArray)qa;
 	      break;
@@ -2756,7 +2756,7 @@ public class GeometryInfo {
 		      texCoordSetMap, coordinateIndices.length, stripCounts);
 	      ga = (IndexedGeometryArray)tsa;
 	      break;
-	      
+
 	  case TRIANGLE_FAN_ARRAY:
 	      IndexedTriangleFanArray tfa = new IndexedTriangleFanArray(
 		      vertexCount, vertexFormat, texCoordSetCount,
@@ -2767,19 +2767,19 @@ public class GeometryInfo {
 
       // Fill in the GeometryArray object
       fillIn(ga, byRef, interleaved, nio);
-      
+
       return ga;
   } // End of getIndexedGeometryArray(bool, bool, bool, bool, bool)
- 
+
 
 
   /**
    * Creates and returns an IndexedGeometryArray
    * based on the data in the GeometryInfo object.  This object is
    * suitable to be attached to a Shape3D node for rendering.
-   * Equivalent to <code>getIndexedGeometryArray(compact, false, 
+   * Equivalent to <code>getIndexedGeometryArray(compact, false,
    * false, false, false)</code>.
-   * @param compact Remove Coordinates, Colors, Normals, and 
+   * @param compact Remove Coordinates, Colors, Normals, and
    * TextureCoordinates that aren't referenced by any indices.
    * @throws IllegalArgumentException if coordinate data is missing,
    * if the index lists aren't all the
@@ -2796,14 +2796,14 @@ public class GeometryInfo {
   {
     return getIndexedGeometryArray(compact, false, false, false, false);
   } // End of getIndexedGeometryArray(boolean)
- 
+
 
 
   /**
    * Creates and returns an IndexedGeometryArray
    * based on the data in the GeometryInfo object.  This object is
    * suitable to be attached to a Shape3D node for rendering.
-   * Equivalent to <code>getIndexedGeometryArray(false, false, 
+   * Equivalent to <code>getIndexedGeometryArray(false, false,
    * false, false, false)</code>.
    * @throws IllegalArgumentException if coordinate data is missing,
    * if the index lists aren't all the
@@ -2820,7 +2820,7 @@ public class GeometryInfo {
   {
       return getIndexedGeometryArray(false, false, false, false, false);
   } // End of getIndexedGeometryArray()
-  
+
 } // End of class GeometryInfo
 
 // End of file GeometryInfo.java

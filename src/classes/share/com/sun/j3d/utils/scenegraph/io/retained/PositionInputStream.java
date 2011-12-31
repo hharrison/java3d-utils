@@ -48,37 +48,37 @@ import java.io.DataInputStream;
 import java.io.IOException;
 
 class PositionInputStream extends java.io.InputStream {
-    
+
     private long pos = 0;
     private java.io.InputStream stream;
-    
+
     public PositionInputStream( java.io.InputStream stream ) {
         this.stream = stream;
     }
-    
+
     public int read() throws IOException {
         pos++;
         return stream.read();
     }
-    
+
     public int read( byte[] b ) throws IOException {
         int s = stream.read( b );
         pos += s;
         return s;
     }
-    
+
     public int read( byte[] b, int off, int len ) throws IOException {
         int s = stream.read( b, off, len );
         pos += s;
         return s;
     }
-    
+
     public long skip( long n ) throws IOException {
         long s = stream.skip( n );
         pos += s;
         return s;
     }
-    
+
     /**
      * Move the file pointer to the specified position.
      * The position MUST be greater or equal to the current position
@@ -88,10 +88,10 @@ class PositionInputStream extends java.io.InputStream {
             throw new SGIORuntimeException( "Seeking Backward "+pos +"  "+position );
         else
             stream.skip( (int)(position-pos) );
-        
+
         pos = position;
     }
-    
+
     public long getFilePointer() {
         return pos;
     }

@@ -58,7 +58,7 @@ public class PlatformGeometryState extends BranchGroupState {
         super(symbol, control);
     }
 
-    
+
     protected javax.media.j3d.SceneGraphObject createNode() {
         return new PlatformGeometry();
     }

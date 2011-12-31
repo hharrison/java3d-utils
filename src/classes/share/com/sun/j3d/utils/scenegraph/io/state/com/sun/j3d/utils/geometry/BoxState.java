@@ -53,7 +53,7 @@ import com.sun.j3d.utils.scenegraph.io.retained.Controller;
 import com.sun.j3d.utils.scenegraph.io.retained.SymbolTableData;
 
 public class BoxState extends PrimitiveState {
-    
+
     private float xdim;
     private float ydim;
     private float zdim;
@@ -66,7 +66,7 @@ public class BoxState extends PrimitiveState {
 
     public BoxState( SymbolTableData symbol, Controller control ) {
 	super( symbol, control );
-        
+
         if (node!=null) {
             frontAppearance = control.getSymbolTable().addReference( ((Box)node).getShape( Box.FRONT ).getAppearance() );
             backAppearance = control.getSymbolTable().addReference( ((Box)node).getShape( Box.BACK ).getAppearance() );
@@ -79,7 +79,7 @@ public class BoxState extends PrimitiveState {
 
     public void writeObject( DataOutput out ) throws IOException {
 	super.writeObject( out );
-                
+
         out.writeInt( frontAppearance );
         out.writeInt( backAppearance );
         out.writeInt( topAppearance );
@@ -90,7 +90,7 @@ public class BoxState extends PrimitiveState {
 
     public void readObject( DataInput in ) throws IOException {
        super.readObject(in);
-       
+
        frontAppearance = in.readInt();
        backAppearance = in.readInt();
        topAppearance = in.readInt();
@@ -98,10 +98,10 @@ public class BoxState extends PrimitiveState {
        leftAppearance = in.readInt();
        rightAppearance = in.readInt();
     }
-    
+
     public void writeConstructorParams( DataOutput out ) throws IOException {
 	super.writeConstructorParams( out );
-                
+
         out.writeFloat( ((Box)node).getXdimension() );
         out.writeFloat( ((Box)node).getYdimension() );
         out.writeFloat( ((Box)node).getZdimension() );
@@ -109,12 +109,12 @@ public class BoxState extends PrimitiveState {
 
     public void readConstructorParams( DataInput in ) throws IOException {
        super.readConstructorParams(in);
-       
+
        xdim = in.readFloat();
        ydim = in.readFloat();
        zdim = in.readFloat();
     }
-    
+
     public void buildGraph() {
         if (frontAppearance == backAppearance &&
             frontAppearance == topAppearance &&
@@ -147,7 +147,7 @@ public class BoxState extends PrimitiveState {
                                                     null } );
         return box;
     }
-    
+
     protected javax.media.j3d.SceneGraphObject createNode() {
         return new Box( xdim, ydim, zdim, primflags, null );
     }

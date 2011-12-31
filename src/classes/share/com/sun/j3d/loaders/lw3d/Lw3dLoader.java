@@ -89,7 +89,7 @@ public class Lw3dLoader extends TextfileParser implements Loader {
     static final int FILE_TYPE_FILENAME = 2;
     static final int FILE_TYPE_READER = 4;
     int              fileType = FILE_TYPE_NONE;
-    
+
     /**
      * Default constructor.  Sets up default values for some variables.
      */
@@ -114,7 +114,7 @@ public class Lw3dLoader extends TextfileParser implements Loader {
         loadBehaviors = (loadFlags & Loader.LOAD_BEHAVIOR_NODES);
 
     }
-    
+
     /**
      * This method loads the named file and returns the Scene
      * containing the scene.  Any data files referenced by the Reader
@@ -122,7 +122,7 @@ public class Lw3dLoader extends TextfileParser implements Loader {
      * users should specify an alternate base path with the setBaseUrl(URL)
      * method.
      */
-    public Scene load(URL url) throws FileNotFoundException, 
+    public Scene load(URL url) throws FileNotFoundException,
                            IncorrectFormatException, ParsingErrorException {
 
 	fileType = FILE_TYPE_URL;
@@ -139,7 +139,7 @@ public class Lw3dLoader extends TextfileParser implements Loader {
 	fileType = FILE_TYPE_NONE;
 	return returnScene;
     }
-    
+
     /**
      * This method loads the named file and returns the Scene
      * containing the scene.  Any data files referenced by this
@@ -147,7 +147,7 @@ public class Lw3dLoader extends TextfileParser implements Loader {
      * otherwise users should specify an alternate base path with
      * the setBasePath(String) method.
      */
-    public Scene load(String fileName) throws FileNotFoundException, 
+    public Scene load(String fileName) throws FileNotFoundException,
                           IncorrectFormatException, ParsingErrorException {
 
 	fileType = FILE_TYPE_FILENAME;
@@ -157,20 +157,20 @@ public class Lw3dLoader extends TextfileParser implements Loader {
 	fileType = FILE_TYPE_NONE;
 	return returnScene;
     }
-	
+
     /**
      * This method loads the Reader and returns the Scene
      * containing the scene.  Any data files referenced by the Reader should
      * be located in the user's current working directory.
      */
-    public Scene load(Reader reader) throws FileNotFoundException, 
+    public Scene load(Reader reader) throws FileNotFoundException,
                             IncorrectFormatException, ParsingErrorException {
 
 	if (fileType == FILE_TYPE_NONE)
 	    fileType = FILE_TYPE_READER;
 	StreamTokenizer tokenizer = new StreamTokenizer(reader);
 	setupTokenizer(tokenizer);
-	
+
 	getAndCheckString(tokenizer, "LWSC");
 	getNumber(tokenizer);
 	getAndCheckString(tokenizer, "FirstFrame");
@@ -211,7 +211,7 @@ public class Lw3dLoader extends TextfileParser implements Loader {
 		    debugOutputLn(TIME, "loading " + filename + " at " +
 			    System.currentTimeMillis());
 		    LwsObject obj = new LwsObject(tokenizer, true,
-						  firstFrame, 
+						  firstFrame,
 						  finalFrame, totalTime,
 						  this,
 						  debugPrinter.getValidOutput());
@@ -277,13 +277,13 @@ public class Lw3dLoader extends TextfileParser implements Loader {
 		break;
 	    }
 	}
-	
+
 	// Set up scene groups and parent objects appropriately
 	sceneGroupNode = new BranchGroup();
         sceneBehaviors = new Vector();
 	parentObjects();
 	constructScene();
-	
+
 	return scene;
 
     }
@@ -318,18 +318,18 @@ public class Lw3dLoader extends TextfileParser implements Loader {
             addBehaviors();
 
 	scene.setSceneGroup(sceneGroupNode);
-	
+
 	// now add named objects to the scenes name table
 	for (Enumeration e = objectList.elements(); e.hasMoreElements() ;) {
-	    
+
 	    LwsObject obj = (LwsObject)e.nextElement();
 	    if (obj.fileName != null)
 		scene.addNamedObject(obj.fileName,(Object)obj.getObjectNode());
 	    else if (obj.objName != null)
 		scene.addNamedObject(obj.objName,(Object)obj.getObjectNode());
-				    
+
 	}
-    }	    
+    }
 
 
     /**
@@ -396,7 +396,7 @@ public class Lw3dLoader extends TextfileParser implements Loader {
     int getFileType() {
 	return fileType;
     }
-    
+
     /**
      * This method parents all objects in the scene appropriately.  If
      * the scen file specifies a Parent node for the object, then the
@@ -406,7 +406,7 @@ public class Lw3dLoader extends TextfileParser implements Loader {
     void parentObjects() {
 	debugOutputLn(TRACE, "parentObjects()");
 	for (Enumeration e = objectList.elements(); e.hasMoreElements(); ) {
-	    
+
 	    LwsObject obj = (LwsObject)e.nextElement();
 	    if (obj.getParent() != -1) {
 
@@ -416,7 +416,7 @@ public class Lw3dLoader extends TextfileParser implements Loader {
 		debugOutputLn(VALUES, "added child successfully");
 
 	    } else {
-	    
+
 		if (obj.getObjectNode() != null)
 		    sceneGroupNode.addChild(obj.getObjectNode());
 
@@ -435,7 +435,7 @@ public class Lw3dLoader extends TextfileParser implements Loader {
 
     }
 
-    
+
     /**
      * This method sets the base URL name for data files
      * associated with the file passed into the load(URL) method.
@@ -450,7 +450,7 @@ public class Lw3dLoader extends TextfileParser implements Loader {
 
     /**
      * This method sets the base path to be used when searching for all
-     * data files within a Lightwave scene.  
+     * data files within a Lightwave scene.
      */
     public void setBasePath(String pathName) {
 	// This routine standardizes path names so that all pathnames
@@ -468,7 +468,7 @@ public class Lw3dLoader extends TextfileParser implements Loader {
     }
 
     /**
-     * Returns the current base URL setting.  
+     * Returns the current base URL setting.
      */
     public URL getBaseUrl() {
 	return baseUrl;
@@ -480,7 +480,7 @@ public class Lw3dLoader extends TextfileParser implements Loader {
     public String getBasePath() {
 	return basePath;
     }
-    
+
     /**
      * This method sets the load flags for the file.  The flags should
      * equal 0 by default (which tells the loader to only load geometry).
@@ -497,7 +497,7 @@ public class Lw3dLoader extends TextfileParser implements Loader {
     }
 
 
-    
+
     /**
      * getObject() iterates through the objectList checking the given
      * name against the fileName and objectName of each object in turn.
@@ -590,7 +590,7 @@ public class Lw3dLoader extends TextfileParser implements Loader {
 	// scope ambient light to the lw3d scene
 	aLgt.addScope(sceneGroupNode);
 	scene.addLightNode(aLgt);
-    }	
+    }
 
     /**
      * Add any defined lights to the java3d scene
@@ -598,14 +598,14 @@ public class Lw3dLoader extends TextfileParser implements Loader {
     void addLights() {
 	// Add lights to the scene
 	for (Enumeration e1 = lightList.elements(); e1.hasMoreElements(); ) {
-	   
+
 	    debugOutputLn(LINE_TRACE, "adding light to scene group");
 	    LwsLight light = (LwsLight)e1.nextElement();
 
 	    if (light.getObjectNode() != null) {
 		// scope light to the lw3d scene
 		light.getLight().addScope(sceneGroupNode);
-		
+
 		if (light.getParent() != -1) {
 		    LwsObject parent = (LwsObject)
 			objectList.elementAt(light.getParent() - 1);
@@ -615,14 +615,14 @@ public class Lw3dLoader extends TextfileParser implements Loader {
 		    sceneGroupNode.addChild(light.getObjectNode());
 
 		}
-              
-                // collect behaviors if LOAD_BEHAVIOR_NODES is set 
+
+                // collect behaviors if LOAD_BEHAVIOR_NODES is set
                 if (loadBehaviors != 0) {
-                  if (!(light.getObjectBehaviors()).isEmpty()) 
+                  if (!(light.getObjectBehaviors()).isEmpty())
                       sceneBehaviors.addAll(light.getObjectBehaviors());
 
                 }
-                 
+
 		scene.addLightNode(light.getLight());
 	    }
 	    else
@@ -652,9 +652,9 @@ public class Lw3dLoader extends TextfileParser implements Loader {
 
 	    }
 
-            // collect behaviors if LOAD_BEHAVIOR_NODES is set 
+            // collect behaviors if LOAD_BEHAVIOR_NODES is set
             if (loadBehaviors != 0) {
-              if (!(camera.getObjectBehaviors()).isEmpty()) 
+              if (!(camera.getObjectBehaviors()).isEmpty())
                    sceneBehaviors.addAll(camera.getObjectBehaviors());
             }
 

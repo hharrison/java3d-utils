@@ -47,7 +47,7 @@ package com.sun.j3d.loaders;
 
 /**
  * Exception used to indicate that a file of the incorrect
- * type was passed to a loader. 
+ * type was passed to a loader.
  */
 public class IncorrectFormatException extends RuntimeException {
 

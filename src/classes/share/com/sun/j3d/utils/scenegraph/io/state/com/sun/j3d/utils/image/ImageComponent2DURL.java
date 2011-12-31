@@ -47,61 +47,61 @@ package com.sun.j3d.utils.scenegraph.io.state.com.sun.j3d.utils.image;
 public class ImageComponent2DURL extends javax.media.j3d.ImageComponent2D {
 
     private java.net.URL url = null;
-    
+
     public ImageComponent2DURL( int format, java.awt.image.BufferedImage image ) {
         super( format, image );
     }
-    
+
     public ImageComponent2DURL( int format, java.awt.image.BufferedImage image, java.net.URL url ) {
         super( format, image );
         this.url = url;
     }
-    
-    public ImageComponent2DURL( int format, java.awt.image.BufferedImage image, 
-                                boolean byReference, 
+
+    public ImageComponent2DURL( int format, java.awt.image.BufferedImage image,
+                                boolean byReference,
                                 boolean yUp ) {
         super( format, image, byReference, yUp );
     }
 
-    public ImageComponent2DURL( int format, java.awt.image.BufferedImage image, 
-                                boolean byReference, 
-                                boolean yUp, 
+    public ImageComponent2DURL( int format, java.awt.image.BufferedImage image,
+                                boolean byReference,
+                                boolean yUp,
                                 java.net.URL url ) {
         super( format, image, byReference, yUp );
         this.url = url;
     }
-    
+
     public ImageComponent2DURL( int format, int width, int height ) {
         super( format, width, height );
     }
-    
+
     public ImageComponent2DURL( int format, int width, int height,
                                 boolean byReference, boolean yUp ) {
         super( format, width, height, byReference, yUp );
     }
-    
+
     public ImageComponent2DURL( int format, java.awt.image.RenderedImage image ) {
         super( format, image );
     }
-    
+
     public ImageComponent2DURL( int format, java.awt.image.RenderedImage image,
                                 java.net.URL url ) {
         super( format, image );
         this.url = url;
     }
-    
+
     public ImageComponent2DURL( int format, java.awt.image.RenderedImage image,
                                 boolean byReference, boolean yUp ) {
         super( format, image, byReference, yUp );
     }
-    
+
     public ImageComponent2DURL( int format, java.awt.image.RenderedImage image,
                                 boolean byReference, boolean yUp,
                                 java.net.URL url ) {
         super( format, image, byReference, yUp );
         this.url = url;
     }
-    
+
     /**
      * Set the URL for this image component
      *
@@ -110,7 +110,7 @@ public class ImageComponent2DURL extends javax.media.j3d.ImageComponent2D {
     public void setURL( java.net.URL url ) {
         this.url = url;
     }
-    
+
     /**
      * Get the URL for this image component
      *

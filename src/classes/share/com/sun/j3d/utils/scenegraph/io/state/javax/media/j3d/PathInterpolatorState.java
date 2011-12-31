@@ -55,14 +55,14 @@ import com.sun.j3d.utils.scenegraph.io.retained.SymbolTableData;
 public abstract class PathInterpolatorState extends TransformInterpolatorState {
 
     protected float[] knots;
-    
+
     public PathInterpolatorState( SymbolTableData symbol,Controller control ) {
         super( symbol, control );
     }
 
     // PathInterpolator.setKnots(float[]) is protected so we can only set the
     // knots in the constructor
-    
+
     public void writeConstructorParams( DataOutput out ) throws IOException {
         super.writeConstructorParams( out );
         knots = new float[ ((PathInterpolator)node).getArrayLengths() ];
@@ -71,7 +71,7 @@ public abstract class PathInterpolatorState extends TransformInterpolatorState {
         for(int i=0; i<knots.length; i++)
             out.writeFloat( knots[i] );
     }
-    
+
     public void readConstructorParams( DataInput in ) throws IOException {
         super.readConstructorParams( in );
         knots = new float[ in.readInt() ];

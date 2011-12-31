@@ -56,7 +56,7 @@ public class DirectionalLightState extends LightState {
 	super( symbol, control );
 
     }
-    
+
     public void writeObject( DataOutput out ) throws IOException {
         super.writeObject( out );
 	Vector3f dir = new Vector3f();
@@ -69,7 +69,7 @@ public class DirectionalLightState extends LightState {
         super.readObject( in );
 	((DirectionalLight)node).setDirection( control.readVector3f(in) );
     }
-    
+
     protected javax.media.j3d.SceneGraphObject createNode() {
         return new DirectionalLight();
     }

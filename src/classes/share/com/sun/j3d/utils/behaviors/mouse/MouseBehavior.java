@@ -55,14 +55,14 @@ import com.sun.j3d.internal.J3dUtilsI18N;
 /**
  * Base class for all mouse manipulators (see MouseRotate, MouseZoom
  * and MouseTranslate for
- * examples of how to extend this base class). 
+ * examples of how to extend this base class).
  */
 
 public abstract class MouseBehavior extends Behavior
      implements MouseListener, MouseMotionListener, MouseWheelListener {
 
     private boolean listener = false;
-    
+
     protected WakeupCriterion[] mouseEvents;
     protected WakeupOr mouseCriterion;
     protected int x, y;
@@ -88,9 +88,9 @@ public abstract class MouseBehavior extends Behavior
     */
     public static final int MANUAL_WAKEUP = 0x1;
 
-    /** 
+    /**
      * Set this flag if you want to invert the inputs.  This is useful when
-     * the transform for the view platform is being changed instead of the 
+     * the transform for the view platform is being changed instead of the
      * transform for the object.
      */
     public static final int INVERT_INPUT = 0x2;
@@ -101,7 +101,7 @@ public abstract class MouseBehavior extends Behavior
      */
     public MouseBehavior(TransformGroup transformGroup) {
 	super();
-	// need to remove old behavior from group 
+	// need to remove old behavior from group
 	this.transformGroup = transformGroup;
 	currXform = new Transform3D();
 	transformX = new Transform3D();
@@ -167,15 +167,15 @@ public abstract class MouseBehavior extends Behavior
 	}
 	listener = true;
     }
- 
-  /** 
-   * Swap a new transformGroup replacing the old one. This allows 
+
+  /**
+   * Swap a new transformGroup replacing the old one. This allows
    * manipulators to operate on different nodes.
-   * 
+   *
    * @param transformGroup The *new* transform group to be manipulated.
    */
   public void setTransformGroup(TransformGroup transformGroup){
-    // need to remove old behavior from group 
+    // need to remove old behavior from group
     this.transformGroup = transformGroup;
     currXform = new Transform3D();
     transformX = new Transform3D();
@@ -220,9 +220,9 @@ public abstract class MouseBehavior extends Behavior
     x_last = 0;
     y_last = 0;
   }
-  
-  /** 
-   * Manually wake up the behavior. If MANUAL_WAKEUP flag was set upon 
+
+  /**
+   * Manually wake up the behavior. If MANUAL_WAKEUP flag was set upon
    * creation, you must wake up this behavior each time it is handled.
    */
 
@@ -242,8 +242,8 @@ public abstract class MouseBehavior extends Behavior
     else if (evt.getID()==MouseEvent.MOUSE_RELEASED){
       buttonPress = false;
       wakeUp = false;
-    }    
-    /* 
+    }
+    /*
        else if (evt.getID() == MouseEvent.MOUSE_MOVED) {
        // Process mouse move event
        }
@@ -252,7 +252,7 @@ public abstract class MouseBehavior extends Behavior
        }
     */
   }
-  
+
   /**
    * All mouse manipulators must implement this.
    */
@@ -291,7 +291,7 @@ public abstract class MouseBehavior extends Behavior
 	    synchronized (mouseq) {
 		mouseq.add(e);
 		// only need to post if this is the only event in the queue
-		if (mouseq.size() == 1) 
+		if (mouseq.size() == 1)
 		    postId(MouseEvent.MOUSE_PRESSED);
 	    }
 	}
@@ -321,7 +321,7 @@ public abstract class MouseBehavior extends Behavior
 	    synchronized (mouseq) {
 		mouseq.add(e);
 		// only need to post if this is the only event in the queue
-		if (mouseq.size() == 1) 
+		if (mouseq.size() == 1)
 		    postId(MouseEvent.MOUSE_DRAGGED);
 	    }
 	}
@@ -339,14 +339,14 @@ public abstract class MouseBehavior extends Behavior
 
     public void mouseWheelMoved(MouseWheelEvent e){
 	System.out.println("MouseBehavior : mouseWheel enable = " + enable );
-	
+
 	// add new event to the to the queue
 	// must be MT safe.
 	if (enable) {
 	    synchronized (mouseq) {
 		mouseq.add(e);
 		// only need to post if this is the only event in the queue
-		if (mouseq.size() == 1) 
+		if (mouseq.size() == 1)
 		    postId(MouseEvent.MOUSE_WHEEL);
 	    }
 	}

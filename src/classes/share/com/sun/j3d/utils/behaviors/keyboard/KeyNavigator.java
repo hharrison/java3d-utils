@@ -281,7 +281,7 @@ public class KeyNavigator {
 	if (((modifier_key_state & ALT) != 0) &&
 	    (key_state & PAGE_UP) == 0 && (key_state & PAGE_DOWN) != 0)
 	    accKeyAdd(a, downAcc, downDrag, scaleVel);
- 
+
 
 	/*
 	 *  Drag due to new or existing motion
@@ -483,7 +483,7 @@ public class KeyNavigator {
 	    modifier_key_state |=  META;
 	else
 	    modifier_key_state &= ~META;
-	
+
 	if (keyEvent.isAltDown())
 	    modifier_key_state |=  ALT;
 	else

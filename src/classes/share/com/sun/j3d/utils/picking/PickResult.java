@@ -52,13 +52,13 @@ import com.sun.j3d.internal.*;
 
 /**
  * Stores information about a pick hit.
- * Detailed information about the pick and each intersection of the PickShape 
+ * Detailed information about the pick and each intersection of the PickShape
  * with the picked Node can be inquired.  The PickResult is constructed with
  * basic information and more detailed information is generated as needed.  The
- * additional information is only available if capability bits on the scene 
- * graph Nodes are set properly; 
+ * additional information is only available if capability bits on the scene
+ * graph Nodes are set properly;
  * <A HREF="PickTool.html#setCapabilities(javax.media.j3d.Node, int)">
- * <code>PickTool.setCapabilties(Node, int)</code></A> 
+ * <code>PickTool.setCapabilties(Node, int)</code></A>
  * can
  * be used to ensure correct capabilites are set. Inquiring data which is not
  * available due to capabilties not being set will generate a
@@ -69,7 +69,7 @@ import com.sun.j3d.internal.*;
  * transformation for the Node.
  * <p>
  * Pick hits on TriangleStrip primitives will store the triangle points in the
- * PickIntersection with 
+ * PickIntersection with
  * the verticies in counter-clockwise order. For triangles which start with
  * an odd numbered vertex this will be the the opposite of the
  * order of the points in the TriangleStrip.
@@ -79,7 +79,7 @@ import com.sun.j3d.internal.*;
  * <p>
  * If the Shape3D being picked has multiple geometry arrays, the arrays are
  * stored in the PickResult and referred to by a geometry index.
- * <p> 
+ * <p>
  * If the Shape3D refers to a CompressedGeometry, the geometry is decompressed
  * into an array of Shape3D nodes which can be inquired.  The geometry
  * NodeComponents for the Shape3D nodes are stored and used as if the Shape3D
@@ -87,19 +87,19 @@ import com.sun.j3d.internal.*;
  * Shape3D, the decompressed Shape3Ds and GeometryArrays will be stored
  * sequentially.
  * <p>
- * The intersection point for Morph nodes cannot be calculated using the 
- * displayed geometry 
+ * The intersection point for Morph nodes cannot be calculated using the
+ * displayed geometry
  * due to limitations in  the current Java3D core API (the current
- * geometry of the the Morph cannot be inquired).  Instead 
+ * geometry of the the Morph cannot be inquired).  Instead
  * the geometry at index 0 in the Morph is used. This limitation may
  * be eliminated in a future release of Java3D.
- */ 
+ */
 public class PickResult {
-    
-    /* OPEN ISSUES:  
-       -- getInterpolatedTextureCoordinates uses the depricated API faor 
+
+    /* OPEN ISSUES:
+       -- getInterpolatedTextureCoordinates uses the depricated API faor
        getTextureCoordinate(), need to update.
-       -- Bounds tests don't fill in any picking info.  
+       -- Bounds tests don't fill in any picking info.
        -- Can't do any intersections with the PickPoint shape.
        */
 
@@ -107,82 +107,82 @@ public class PickResult {
     // Externally used constants
 
     /**
-     * Flag to pass to 
+     * Flag to pass to
      * <CODE>getNode(int)</CODE>
      * to return a
-     * <code>Shape3D</code> node from 
-     * the <code>SceneGraphPath</code>. 
+     * <code>Shape3D</code> node from
+     * the <code>SceneGraphPath</code>.
      */
     public static final int SHAPE3D = 0x1;
 
     /**
-     * Flag to pass to 
+     * Flag to pass to
      * <CODE>getNode(int)</CODE>
      * to return a
-     * <code>Morph</code> node from 
-     * the <code>SceneGraphPath</code>. 
+     * <code>Morph</code> node from
+     * the <code>SceneGraphPath</code>.
      */
     public static final int MORPH = 0x2;
 
     /**
-     * Flag to pass to 
+     * Flag to pass to
      * <CODE>getNode(int)</CODE>
 
      * to return a
-     * <code>Primitive</code> node from 
-     * the <code>SceneGraphPath</code>. 
+     * <code>Primitive</code> node from
+     * the <code>SceneGraphPath</code>.
      */
     public static final int PRIMITIVE = 0x4;
 
     /**
-     * Flag to pass to 
+     * Flag to pass to
      * <CODE>getNode(int)</CODE>
      * to return a
-     * <code>Link</code> node from 
-     * the <code>SceneGraphPath</code>. 
+     * <code>Link</code> node from
+     * the <code>SceneGraphPath</code>.
      */
     public static final int LINK = 0x8;
 
     /**
-     * Flag to pass to 
+     * Flag to pass to
      * <CODE>getNode(int)</CODE>
      * to return a
-     * <code>Group</code> node from 
-     * the <code>SceneGraphPath</code>. 
+     * <code>Group</code> node from
+     * the <code>SceneGraphPath</code>.
      */
     public static final int GROUP = 0x10;
-  
+
     /**
-     * Flag to pass to 
+     * Flag to pass to
      * <CODE>getNode(int)</CODE>
      * to return a
-     * <code>TransformGroup</code> node from 
-     * the <code>SceneGraphPath</code>. 
+     * <code>TransformGroup</code> node from
+     * the <code>SceneGraphPath</code>.
      */
     public static final int TRANSFORM_GROUP = 0x20;
- 
+
     /**
-     * Flag to pass to 
+     * Flag to pass to
      * <CODE>getNode(int)</CODE>
      * to return a
-     * <code>BranchGroup</code> node from 
-     * the <code>SceneGraphPath</code>. 
+     * <code>BranchGroup</code> node from
+     * the <code>SceneGraphPath</code>.
      */
     public static final int BRANCH_GROUP = 0x40;
 
     /**
-     * Flag to pass to 
+     * Flag to pass to
      * <CODE>getNode(int)</CODE>
      * to return a
-     * <code>Switch</code> node from 
-     * the <code>SceneGraphPath</code>. 
+     * <code>Switch</code> node from
+     * the <code>SceneGraphPath</code>.
      */
     public static final int SWITCH = 0x80;
 
 
 
     /* =================== ATTRIBUTES ======================= */
-    static boolean debug = false; 
+    static boolean debug = false;
 
     /** if true, find only the first intersection */
     private boolean 	firstIntersectOnly = false;
@@ -217,7 +217,7 @@ public class PickResult {
       * Used in PickTool
       */
     ArrayList 	intersections = null;
-    
+
     // internal constants used for intersections
     static final double FUZZ = 1E-6; /* fuzziness factor used to determine
 					if two lines are parallel */
@@ -239,7 +239,7 @@ public class PickResult {
     PickResult () { }
 
     /** Construct a PickResult using a SceneGraphPath
-      @param sgp SceneGraphPath associated with this PickResult 
+      @param sgp SceneGraphPath associated with this PickResult
       @param ps The pickShape to intersect against
       */
     public PickResult (SceneGraphPath sgp, PickShape ps) {
@@ -258,7 +258,7 @@ public class PickResult {
       @throws IllegalArgumentException If the node is not a Morph or Shape3D.
       */
     public PickResult (Node pn, Transform3D l2vw, PickShape ps) {
-	if ((pn instanceof Shape3D) || (pn instanceof Morph)) { 
+	if ((pn instanceof Shape3D) || (pn instanceof Morph)) {
 	    pickedNode = pn;
 	    localToVWorld = l2vw;
 	    pickShape = ps;
@@ -279,7 +279,7 @@ public class PickResult {
 	    if (pickShapeEnd == null) pickShapeEnd = new Point3d();
 	    if (pickShapeDir == null) pickShapeDir = new Vector3d();
 	    ((PickSegment)pickShape).get(pickShapeStart, pickShapeEnd);
-	    pickShapeDir.set (pickShapeEnd.x - pickShapeStart.x, 
+	    pickShapeDir.set (pickShapeEnd.x - pickShapeStart.x,
 			      pickShapeEnd.y - pickShapeStart.y,
 			      pickShapeEnd.z - pickShapeStart.z);
 	    pickShapeType = PICK_SHAPE_SEGMENT;
@@ -290,7 +290,7 @@ public class PickResult {
 	    else if( pickShapeBounds instanceof BoundingSphere )
 		pickShapeType = PICK_SHAPE_BOUNDING_SPHERE;
 	    else if( pickShapeBounds instanceof BoundingPolytope )
-		pickShapeType = PICK_SHAPE_BOUNDING_POLYTOPE;       
+		pickShapeType = PICK_SHAPE_BOUNDING_POLYTOPE;
 	} else if(pickShape instanceof PickPoint) {
 	    throw new RuntimeException ("PickPoint doesn't make sense for geometry-based picking. Java 3D doesn't have spatial information of the surface. Should use PickBounds with BoundingSphere and set radius to a epsilon tolerance.");
 	} else if (pickShape instanceof PickCylinder) {
@@ -298,8 +298,8 @@ public class PickResult {
 	} else if (pickShape instanceof PickCone) {
 	    pickShapeType = PICK_SHAPE_CONE;
 	} else {
-	    throw new 
-		RuntimeException("PickShape not supported for intersection"); 
+	    throw new
+		RuntimeException("PickShape not supported for intersection");
 	}
     }
 
@@ -312,7 +312,7 @@ public class PickResult {
     }
 
 
-    /** Get the localToVworld transform for the Node 
+    /** Get the localToVworld transform for the Node
      */
     public Transform3D getLocalToVworld() {
 	return localToVWorld;
@@ -373,14 +373,14 @@ public class PickResult {
 	}
     }
 
-    /** Get the PickShape used for intersections 
+    /** Get the PickShape used for intersections
      */
     public PickShape getPickShape() {
 	return pickShape;
     }
 
     /** Set the PickResult to find only the first intersection of the PickShape
-     * with the Node. The default is <code>false</code> (all intersections are 
+     * with the Node. The default is <code>false</code> (all intersections are
      * found)
      */
     public void setFirstIntersectOnly(boolean flag) {
@@ -431,7 +431,7 @@ public class PickResult {
 	}
 
 	for (int i=0;i<intersections.size();i++) {
-	    if ((null != (curPi = getIntersection(i))) && 
+	    if ((null != (curPi = getIntersection(i))) &&
 		(null != (curPt = curPi.getPointCoordinatesVW()))) {
 		curDist = pt.distance (curPt);
 		if (curDist < minDist) {
@@ -444,15 +444,15 @@ public class PickResult {
     }
 
 
-    /** 
-      Returns String representation 
+    /**
+      Returns String representation
       @return string representation of this object
       */
     public String toString () {
 	String rt = new String ("PickResult: sgp:"+pickedSceneGraphPath+"\n");
 	if (pickedNode != null) rt += " node:"+pickedNode;
 
-	
+
 	// TODO: catch cap not set exceptions and return no intersection info
 	if (intersections == null) {
 	    generateIntersections();
@@ -464,7 +464,7 @@ public class PickResult {
 		rt += ((PickIntersection)intersections.get(i)).toString2();
 	    }
 	}
-	
+
 	return rt;
     }
 
@@ -472,7 +472,7 @@ public class PickResult {
     private void storeGeometry () {
 	if (pickedNode instanceof Morph) {
 	    geometryArrays = new GeometryArray[1];
-	    geometryArrays[0] = 
+	    geometryArrays[0] =
 		(GeometryArray) ((Morph)pickedNode).getGeometryArray (0);
 	} else if (pickedNode instanceof Shape3D) {
 	    Shape3D shape = ((Shape3D)pickedNode);
@@ -511,7 +511,7 @@ public class PickResult {
 	    for (int i = 0; i < geoArrays.size(); i++) {
 		geometryArrays[i] = (GeometryArray) geoArrays.get(i);
 	    }
-	} 
+	}
 	if (geometryArrays == null) {
 	    if (pickedNode instanceof Shape3D) {
 		Shape3D shape = (Shape3D) pickedNode;
@@ -534,7 +534,7 @@ public class PickResult {
 	pickedNode = n;
     }
 
-    /** Get the first node of a certain type up the SceneGraphPath 
+    /** Get the first node of a certain type up the SceneGraphPath
       @param flags the type of node we are interested in
       @return a Node object
       */
@@ -545,19 +545,19 @@ public class PickResult {
 	if ((pickedNode instanceof Shape3D) && ((flags & SHAPE3D) != 0)){
 	    if (debug) System.out.println("Shape3D found");
 	    return pickedNode;
-	} 
+	}
 	else if ((pickedNode instanceof Morph) && ((flags & MORPH) != 0)){
-	    if (debug) System.out.println("Morph found"); 
+	    if (debug) System.out.println("Morph found");
 	    return pickedNode;
 	}
-	else {	  
+	else {
 	    if (pickedSceneGraphPath == null) {
 		return null;
 	    }
 	    for (int j=pickedSceneGraphPath.nodeCount()-1; j>=0; j--){
-		Node pNode = pickedSceneGraphPath.getNode(j); 
+		Node pNode = pickedSceneGraphPath.getNode(j);
 		if (debug) System.out.println("looking at node " + pNode);
-	    
+
 		if ((pNode instanceof Primitive) &&
 		    ((flags & PRIMITIVE) != 0)){
 		    if (debug) System.out.println("Primitive found");
@@ -584,7 +584,7 @@ public class PickResult {
 		else if ((pNode instanceof Group) && ((flags & GROUP) != 0)){
 		    if (debug) System.out.println("Group found");
 		    return pNode;
-		}	     
+		}
 	    }
 	}
 	return null; // should not be reached
@@ -600,7 +600,7 @@ public class PickResult {
 
     /** Fill in the intersections of the Node with the PickShape */
     boolean generateIntersections() {
-	if (geometryArrays == null) { 
+	if (geometryArrays == null) {
 	    storeGeometry();
 	}
 	intersections = new ArrayList();
@@ -620,7 +620,7 @@ public class PickResult {
 
 
 
-    /*  Takes a GeometryArray object, determines what actual type 
+    /*  Takes a GeometryArray object, determines what actual type
      *  it is (RTTI) and casts it to call the appropriate intersect method.
      */
     final boolean intersect(int geomIndex, boolean firstpick) {
@@ -659,7 +659,7 @@ public class PickResult {
 	}
 
 
-	Point3d[] pnts = new Point3d[numPts];	
+	Point3d[] pnts = new Point3d[numPts];
 
 	/*
 	  System.out.println("geomIndex : " + geomIndex);
@@ -668,7 +668,7 @@ public class PickResult {
 	  System.out.println("localToVWorld : ");
 	  System.out.println(localToVWorld);
 	*/
-	
+
 	if (debug) {
 	    System.out.println("localToVWorld = " + localToVWorld);
 	}
@@ -760,7 +760,7 @@ public class PickResult {
 	} else if (geom instanceof LineArray) {
 	    retFlag = intersectLA ((LineArray)geom, geomIndex, pnts, firstpick, pi);
 	} else if (geom instanceof LineStripArray) {
-	    retFlag = intersectLSA ((LineStripArray)geom, geomIndex, pnts, 	
+	    retFlag = intersectLSA ((LineStripArray)geom, geomIndex, pnts,
 				 firstpick, pi);
 	} else if (geom instanceof IndexedLineArray) {
 	    pi.iGeom = (IndexedGeometryArray) geom;
@@ -768,10 +768,10 @@ public class PickResult {
 				 firstpick, pi);
 	} else if (geom instanceof IndexedLineStripArray) {
 	    pi.iGeom = (IndexedGeometryArray) geom;
-	    retFlag = intersectILSA ((IndexedLineStripArray)geom, geomIndex, pnts, 
+	    retFlag = intersectILSA ((IndexedLineStripArray)geom, geomIndex, pnts,
 				  firstpick, pi);
 	} else if (geom instanceof TriangleArray) {
-	    retFlag = intersectTA ((TriangleArray)geom, geomIndex, pnts, 
+	    retFlag = intersectTA ((TriangleArray)geom, geomIndex, pnts,
 				firstpick, pi);
 	} else if (geom instanceof TriangleStripArray) {
 	    retFlag = intersectTSA ((TriangleStripArray)geom, geomIndex, pnts,
@@ -785,11 +785,11 @@ public class PickResult {
 				 firstpick, pi);
 	} else if (geom instanceof IndexedTriangleStripArray) {
 	    pi.iGeom = (IndexedGeometryArray) geom;
-	    retFlag = intersectITSA ((IndexedTriangleStripArray)geom, geomIndex, 
+	    retFlag = intersectITSA ((IndexedTriangleStripArray)geom, geomIndex,
 				  pnts, firstpick, pi);
 	} else if (geom instanceof IndexedTriangleFanArray) {
 	    pi.iGeom = (IndexedGeometryArray) geom;
-	    retFlag = intersectITFA ((IndexedTriangleFanArray)geom, geomIndex, 
+	    retFlag = intersectITFA ((IndexedTriangleFanArray)geom, geomIndex,
 				  pnts, firstpick, pi);
 	} else if (geom instanceof QuadArray) {
 	    retFlag = intersectQA ((QuadArray)geom, geomIndex, pnts, firstpick, pi);
@@ -810,7 +810,7 @@ public class PickResult {
     /*                 INTERSECT METHODS BY PRIMITIVE TYPE                  */
     /* ==================================================================== */
 
-    boolean intersectPoint(int[] vertidx, int[] coordidx, int geomIndex, 
+    boolean intersectPoint(int[] vertidx, int[] coordidx, int geomIndex,
 			   Point3d[] pnts, PickIntersection pi) {
 	// PickIntersection pi = new PickIntersection(this);
 
@@ -824,7 +824,7 @@ public class PickResult {
 	boolean intersect = false;
 	switch(pickShapeType) {
 	case PICK_SHAPE_RAY:
-	    intersect = intersectPntAndRay(point[0], pickShapeStart, 
+	    intersect = intersectPntAndRay(point[0], pickShapeStart,
 					   pickShapeDir, pi);
 	    break;
 	case PICK_SHAPE_SEGMENT:
@@ -863,7 +863,7 @@ public class PickResult {
 	    newpi.iGeom = pi.iGeom;
 	    newpi.setDistance(pi.distance);
 	    newpi.setPointCoordinatesVW(pi.getPointCoordinatesVW());
-	    
+
 	    // Set PickIntersection parameters
 	    newpi.setGeomIndex(geomIndex);
 	    newpi.setVertexIndices (vertidx);
@@ -872,23 +872,23 @@ public class PickResult {
 	    return true;
 	}
 	return false;
-    } 
+    }
 
-    boolean intersectLine(int[] vertidx, int[] coordidx, int geomIndex, 
+    boolean intersectLine(int[] vertidx, int[] coordidx, int geomIndex,
 			  Point3d[] pnts, PickIntersection pi) {
-	
+
 	Point3d[] linePts = new Point3d[2];
 	linePts[0] = pnts[coordidx[0]];
 	linePts[1] = pnts[coordidx[1]];
-	
+
 	boolean intersect = false;
 	switch(pickShapeType) {
 	case PICK_SHAPE_RAY:
-	    intersect = intersectLineAndRay(linePts[0], linePts[1], 
+	    intersect = intersectLineAndRay(linePts[0], linePts[1],
 					    pickShapeStart, pickShapeDir, pi);
 	    break;
 	case PICK_SHAPE_SEGMENT:
-	    if (intersectLineAndRay(linePts[0], linePts[1], pickShapeStart, 
+	    if (intersectLineAndRay(linePts[0], linePts[1], pickShapeStart,
 				    pickShapeDir, pi)) {
 		if (pi.getDistance() <= 1.0) {
 		    intersect = true;
@@ -896,10 +896,10 @@ public class PickResult {
 	    }
 	    break;
 	    /* case PICK_SHAPE_POINT:
-	       dir.x = linePts[1].x - linePts[0].x;       
-	       dir.y = linePts[1].y - linePts[0].y;       
-	       dir.z = linePts[1].z - linePts[0].z;       
-	       if (intersectPntAndRay(((PickPoint)pickShape).location, 
+	       dir.x = linePts[1].x - linePts[0].x;
+	       dir.y = linePts[1].y - linePts[0].y;
+	       dir.z = linePts[1].z - linePts[0].z;
+	       if (intersectPntAndRay(((PickPoint)pickShape).location,
 	       pnts[0], dir, dist)) {
 	       if(dist[0] <= 1.0) {
 	       intersect = true;
@@ -913,7 +913,7 @@ public class PickResult {
 	    pi.setPointCoordinatesVW(zeroPnt);
 	    break;
 	case PICK_SHAPE_BOUNDING_SPHERE:
-	    intersect = intersectBoundingSphere(linePts, 
+	    intersect = intersectBoundingSphere(linePts,
 						(BoundingSphere)pickShapeBounds);
 	    pi.setPointCoordinatesVW(zeroPnt);
 	    break;
@@ -921,7 +921,7 @@ public class PickResult {
 	    intersect = intersectBoundingPolytope(linePts,
 						  (BoundingPolytope)pickShapeBounds);
 	    pi.setPointCoordinatesVW(zeroPnt);
-	    break;    
+	    break;
 	case PICK_SHAPE_CYLINDER:
 	    intersect = intersectCylinder (linePts, (PickCylinder)pickShape,pi);
 	    break;
@@ -945,15 +945,15 @@ public class PickResult {
 	return false;
     }
 
-    boolean intersectTri(int[] vertidx, int[] coordidx, int geomIndex, 
+    boolean intersectTri(int[] vertidx, int[] coordidx, int geomIndex,
 			 Point3d[] pnts, PickIntersection pi) {
 
 	Point3d[] triPts = new Point3d[3];
-	
+
 	triPts[0] = pnts[coordidx[0]];
 	triPts[1] = pnts[coordidx[1]];
 	triPts[2] = pnts[coordidx[2]];
-	
+
 
 	boolean intersect = false;
 	switch(pickShapeType) {
@@ -965,21 +965,21 @@ public class PickResult {
 	    break;
 	    /* case PICK_SHAPE_POINT:
 	       if(inside(triPts, (PickPoint) pickShape, ccw)==false)
-	       return false;  
+	       return false;
 	       break;
 	       */
 	case PICK_SHAPE_BOUNDING_BOX:
-	    intersect = intersectBoundingBox (triPts, 
+	    intersect = intersectBoundingBox (triPts,
 					      (BoundingBox)pickShapeBounds);
 	    pi.setPointCoordinatesVW(zeroPnt);
 	    break;
 	case PICK_SHAPE_BOUNDING_SPHERE:
-	    intersect = intersectBoundingSphere (triPts, 
+	    intersect = intersectBoundingSphere (triPts,
 						 (BoundingSphere)pickShapeBounds);
 	    pi.setPointCoordinatesVW(zeroPnt);
 	    break;
 	case PICK_SHAPE_BOUNDING_POLYTOPE:
-	    intersect = intersectBoundingPolytope (triPts, 
+	    intersect = intersectBoundingPolytope (triPts,
 						   (BoundingPolytope)pickShapeBounds);
 	    pi.setPointCoordinatesVW(zeroPnt);
 	    break;
@@ -1007,11 +1007,11 @@ public class PickResult {
 	return false;
     }
 
-    boolean intersectQuad(int[] vertidx, int[] coordidx, int geomIndex, 
+    boolean intersectQuad(int[] vertidx, int[] coordidx, int geomIndex,
 			  Point3d[] pnts, PickIntersection pi) {
 
 	Point3d[] quadPts = new Point3d[4];
-	
+
 	quadPts[0] = pnts[coordidx[0]];
 	quadPts[1] = pnts[coordidx[1]];
 	quadPts[2] = pnts[coordidx[2]];
@@ -1029,21 +1029,21 @@ public class PickResult {
 	    break;
 	    /* case PICK_SHAPE_POINT:
 	       if(inside(quadPts, (PickPoint) pickShape, ccw)==false)
-	       return false;  
+	       return false;
 	       break;
 	       */
 	case PICK_SHAPE_BOUNDING_BOX:
-	    intersect = intersectBoundingBox (quadPts, 
+	    intersect = intersectBoundingBox (quadPts,
 					      (BoundingBox)pickShapeBounds);
 	    pi.setPointCoordinatesVW(zeroPnt);
 	    break;
 	case PICK_SHAPE_BOUNDING_SPHERE:
-	    intersect = intersectBoundingSphere (quadPts, 
+	    intersect = intersectBoundingSphere (quadPts,
 						 (BoundingSphere)pickShapeBounds);
 	    pi.setPointCoordinatesVW(zeroPnt);
 	    break;
 	case PICK_SHAPE_BOUNDING_POLYTOPE:
-	    intersect = intersectBoundingPolytope (quadPts, 
+	    intersect = intersectBoundingPolytope (quadPts,
 						   (BoundingPolytope)pickShapeBounds);
 	    pi.setPointCoordinatesVW(zeroPnt);
 	    break;
@@ -1054,12 +1054,12 @@ public class PickResult {
 	    intersect = intersectCone (quadPts, (PickCone)pickShape, pi);
 	    break;
 	}
-	if (intersect) {	    
+	if (intersect) {
 	    PickIntersection newpi = new PickIntersection(this, pi.geom);
 	    newpi.iGeom = pi.iGeom;
 	    newpi.setDistance(pi.distance);
 	    newpi.setPointCoordinatesVW(pi.getPointCoordinatesVW());
-	    
+
 	    // Set PickIntersection parameters
 	    newpi.setGeomIndex(geomIndex);
 	    newpi.setVertexIndices (vertidx);
@@ -1074,10 +1074,10 @@ public class PickResult {
     /*                 INTERSECT METHODS BY GEOMETRY TYPE                   */
     /* ==================================================================== */
 
-    /** 
-      Intersect method for PointArray 
+    /**
+      Intersect method for PointArray
       */
-    boolean intersectPA (PointArray geom, int geomIndex, Point3d[] pnts, 
+    boolean intersectPA (PointArray geom, int geomIndex, Point3d[] pnts,
 			 boolean firstpick, PickIntersection pi) {
 
 	if (debug) System.out.println ("intersect: PointArray");
@@ -1096,8 +1096,8 @@ public class PickResult {
 	return false;
     }
 
-    /** 
-      Intersect method for IndexedPointArray 
+    /**
+      Intersect method for IndexedPointArray
       */
     boolean intersectIPA (IndexedPointArray geom, int geomIndex, Point3d[] pnts,
 			  boolean firstpick, PickIntersection pi) {
@@ -1109,7 +1109,7 @@ public class PickResult {
 
 	int numint = 0;
 	int indexCount = geom.getIndexCount();
-	
+
 	for (int i=0; i< indexCount; i++) {
 	    pntVertIdx[0] = i;
 	    pntCoordIdx[0] = geom.getCoordinateIndex(i);
@@ -1123,11 +1123,11 @@ public class PickResult {
     }
 
 
-    /** 
-      Intersect method for LineArray 
+    /**
+      Intersect method for LineArray
       */
-    /** 
-      Intersect method for LineArray 
+    /**
+      Intersect method for LineArray
       */
     boolean intersectLA (LineArray geom, int geomIndex, Point3d[] pnts,
 			 boolean firstpick, PickIntersection pi) {
@@ -1146,13 +1146,13 @@ public class PickResult {
 		numint++;
 		if (firstpick) return true;
 	    }
-	} 
+	}
 	if (numint > 0) return true;
 	return false;
     }
 
-    /** 
-      Intersect method for LineStripArray 
+    /**
+      Intersect method for LineStripArray
       */
     boolean intersectLSA (LineStripArray geom, int geomIndex, Point3d[] pnts,
 			  boolean firstpick, PickIntersection pi) {
@@ -1161,15 +1161,15 @@ public class PickResult {
 	int[] stripVertexCounts = new int [geom.getNumStrips()];
 	geom.getStripVertexCounts (stripVertexCounts);
 	int stripStart = 0;
-	
+
 	if (debug) System.out.println ("intersect: LineStripArray");
 
 	int[] lineVertIdx = new int[2];
 
-	for (int i=0; i < stripVertexCounts.length; i++) {  
+	for (int i=0; i < stripVertexCounts.length; i++) {
 	    lineVertIdx[0] = stripStart;
 	    int end = stripStart + stripVertexCounts[i];
-	    
+
 	    for (int j=stripStart+1; j<end; j++) {
 		lineVertIdx[1] = j;
 		if (intersectLine(lineVertIdx, lineVertIdx, geomIndex, pnts, pi)) {
@@ -1184,8 +1184,8 @@ public class PickResult {
 	return false;
     }
 
-    /** 
-      Intersect method for IndexedLineArray 
+    /**
+      Intersect method for IndexedLineArray
       */
     boolean intersectILA (IndexedLineArray geom, int geomIndex, Point3d[] pnts,
 			  boolean firstpick, PickIntersection pi) {
@@ -1211,10 +1211,10 @@ public class PickResult {
 	return false;
     }
 
-    /** 
-      Intersect method for IndexedLineStripArray 
+    /**
+      Intersect method for IndexedLineStripArray
       */
-    boolean intersectILSA (IndexedLineStripArray geom, int geomIndex, 
+    boolean intersectILSA (IndexedLineStripArray geom, int geomIndex,
 			   Point3d[] pnts, boolean firstpick, PickIntersection pi) {
 	if (debug) System.out.println ("intersect: IndexedLineStripArray");
 
@@ -1225,8 +1225,8 @@ public class PickResult {
 	int[] stripVertexCounts = new int [geom.getNumStrips()];
 	geom.getStripIndexCounts (stripVertexCounts);
 	int stripStart = 0;
-	
-	for (int i=0; i < stripVertexCounts.length; i++) {  
+
+	for (int i=0; i < stripVertexCounts.length; i++) {
 
 	    lineVertIdx[0] = stripStart;
 	    lineCoordIdx[0] = geom.getCoordinateIndex(stripStart);
@@ -1247,13 +1247,13 @@ public class PickResult {
 	return false;
     }
 
-    /** 
-      Intersect method for TriangleArray 
+    /**
+      Intersect method for TriangleArray
       */
     boolean intersectTA (TriangleArray geom, int geomIndex, Point3d[] pnts,
 			 boolean firstpick, PickIntersection pi) {
 
-	if (debug) 
+	if (debug)
 	    System.out.println ("intersect: TriangleArray");
 
 	int[] triVertIdx = new int[3];
@@ -1267,24 +1267,24 @@ public class PickResult {
 		numint++;
 		if (firstpick) return true;
 	    }
-	} 
+	}
 
 	if (numint > 0) return true;
 	return false;
     }
 
-    /** 
-      Intersect method for IndexedTriangleArray 
+    /**
+      Intersect method for IndexedTriangleArray
       */
-    boolean intersectITA (IndexedTriangleArray geom, int geomIndex, 
+    boolean intersectITA (IndexedTriangleArray geom, int geomIndex,
 			  Point3d[] pnts, boolean firstpick, PickIntersection pi) {
-	
+
 	if (debug)
 	    System.out.println ("intersect: IndexedTriangleArray");
 
 	int[] triVertIdx = new int[3];
 	int[] triCoordIdx = new int[3];
-	
+
 	int numint = 0;
 	int indexCount = geom.getIndexCount();
 	for (int i=0; i<indexCount;) {
@@ -1298,18 +1298,18 @@ public class PickResult {
 		numint++;
 		if (firstpick) return true;
 	    }
-	} 
+	}
 
 	if (numint > 0) return true;
 	return false;
     }
 
-    /** 
-      Intersect method for TriangleStripArray 
+    /**
+      Intersect method for TriangleStripArray
       */
-    boolean intersectTSA (TriangleStripArray geom, int geomIndex, 
+    boolean intersectTSA (TriangleStripArray geom, int geomIndex,
 			  Point3d[] pnts, boolean firstpick, PickIntersection pi) {
-	if (debug) 
+	if (debug)
 	    System.out.println ("intersect: TriangleStripArray");
 
 	boolean ccw;
@@ -1320,7 +1320,7 @@ public class PickResult {
 	int start;
 	int[] triVertIdx = new int[3];
 
-	for (int i=0; i<stripVertexCounts.length; i++) {  
+	for (int i=0; i<stripVertexCounts.length; i++) {
 
 	    start = stripStart;
 	    // start a new strip
@@ -1329,12 +1329,12 @@ public class PickResult {
 	    triVertIdx[1] = start++;
 
 	    int end = start + stripVertexCounts[i] - 2;
-	    for (int j=start; j< end; j++) {	 
+	    for (int j=start; j< end; j++) {
 		/*
 		if (ccw) {
-		    triVertIdx[2] = j;   
+		    triVertIdx[2] = j;
 		} else {
-		    triVertIdx[1] = j;   
+		    triVertIdx[1] = j;
 		}
 		*/
 		triVertIdx[2] = j;
@@ -1344,7 +1344,7 @@ public class PickResult {
 		}
 
 		// Advance to the next triangle, keeping the winding of the test
-		// triangle correct.  
+		// triangle correct.
 		/*
 		if (ccw) {
 		    triVertIdx[0] = triVertIdx[1];
@@ -1367,13 +1367,13 @@ public class PickResult {
 	return false;
     }
 
-    /** 
-      Intersect method for IndexedTriangleStripArray 
+    /**
+      Intersect method for IndexedTriangleStripArray
       */
-    boolean intersectITSA (IndexedTriangleStripArray geom, int geomIndex, 
+    boolean intersectITSA (IndexedTriangleStripArray geom, int geomIndex,
 			   Point3d[] pnts, boolean firstpick, PickIntersection pi) {
 
-	if (debug) 
+	if (debug)
 	    System.out.println ("intersect: IndexedTriangleStripArray");
 	int numint = 0;
 	boolean ccw;
@@ -1384,40 +1384,40 @@ public class PickResult {
 	int start;
 	int[] triVertIdx = new int[3];
 	int[] triCoordIdx = new int[3];
-	
-	for (int i=0; i<stripVertexCounts.length; i++) {  
+
+	for (int i=0; i<stripVertexCounts.length; i++) {
 
 	    start = stripStart;
 	    // start a new strip
 	    ccw = true;
 	    triCoordIdx[0] = geom.getCoordinateIndex(start);
 	    triVertIdx[0] = start++;
-	    triCoordIdx[1] = geom.getCoordinateIndex(start);	    
+	    triCoordIdx[1] = geom.getCoordinateIndex(start);
 	    triVertIdx[1] = start++;
-	    
+
 	    int end = start + stripVertexCounts[i] - 2;
-	    for (int j=start; j<end; j++) {	 
+	    for (int j=start; j<end; j++) {
 		if (ccw) {
-		    triVertIdx[2] = j;   
+		    triVertIdx[2] = j;
 		    triCoordIdx[2] = geom.getCoordinateIndex(j);
 		} else {
-		    triVertIdx[1] = j;   
+		    triVertIdx[1] = j;
 		    triCoordIdx[1] = geom.getCoordinateIndex(j);
 		}
-		
+
 		if (intersectTri(triVertIdx, triCoordIdx, geomIndex, pnts, pi)) {
 		    numint++;
 		    if (firstpick) return true;
 		}
 
 		// Advance to the next triangle, keeping the winding of the test
-		// triangle correct.  
+		// triangle correct.
 		if (ccw) {
 		    triVertIdx[0] = triVertIdx[1];
 		    // triVertIdx[2] remains, triVertIdx[1] will be replaced
 		    triCoordIdx[0] = triCoordIdx[1];
-		    ccw = false; 
-		} else { 
+		    ccw = false;
+		} else {
 		    triVertIdx[0] = triVertIdx[2];
 		    // triVertIdx[1] remains, triVertIdx[2] will be replaced
 		    triCoordIdx[0] = triCoordIdx[2];
@@ -1432,8 +1432,8 @@ public class PickResult {
 
     }
 
-    /** 
-      Intersect method for TriangleFanArray 
+    /**
+      Intersect method for TriangleFanArray
       */
     boolean intersectTFA (TriangleFanArray geom, int geomIndex, Point3d[] pnts,
 			  boolean firstpick, PickIntersection pi) {
@@ -1447,33 +1447,33 @@ public class PickResult {
 	int fanStart = 0;
 	int start;
 	int[] triVertIdx = new int[3];
-	
+
 	// System.out.println("stripVertexCounts.length " + stripVertexCounts.length);
 	for (int i=0; i<stripVertexCounts.length; i++) {
 
 	    start = fanStart;
 	    triVertIdx[0] = start++;
 	    triVertIdx[1] = start++;
-	    
+
 	    int end = start + stripVertexCounts[i] - 2;
-	    for (int j=start; j<end; j++) {	 
+	    for (int j=start; j<end; j++) {
 		triVertIdx[2] = j;
 		if (intersectTri(triVertIdx, triVertIdx, geomIndex, pnts, pi)) {
 		    numint++;
 		    if (firstpick) return true;
 		}
 		triVertIdx[1] = triVertIdx[2];
-	    }    
+	    }
 	    fanStart += stripVertexCounts[i];
 	}
 	if (numint > 0) return true;
 	return false;
     }
 
-    /** 
-      Intersect method for IndexedTriangleFanArray 
+    /**
+      Intersect method for IndexedTriangleFanArray
       */
-    boolean intersectITFA (IndexedTriangleFanArray geom, int geomIndex, 
+    boolean intersectITFA (IndexedTriangleFanArray geom, int geomIndex,
 			   Point3d[] pnts, boolean firstpick, PickIntersection pi) {
 
 	if (debug) System.out.println ("intersect: IndexedTriangleFanArray");
@@ -1485,7 +1485,7 @@ public class PickResult {
 	int start;
 	int[] triVertIdx = new int[3];
 	int[] triCoordIdx = new int[3];
-	
+
 	for (int i=0; i<stripVertexCounts.length; i++) {
 
 	    start = fanStart;
@@ -1493,9 +1493,9 @@ public class PickResult {
 	    triVertIdx[0] = start++;
 	    triCoordIdx[1] = geom.getCoordinateIndex(start);
 	    triVertIdx[1] = start++;
-	    
+
 	    int end = start + stripVertexCounts[i] - 2;
-	    for (int j=start; j<end; j++) {	 
+	    for (int j=start; j<end; j++) {
 		triVertIdx[2] = j;
 		triCoordIdx[2] = geom.getCoordinateIndex(j);
 		if (intersectTri(triVertIdx, triCoordIdx, geomIndex, pnts, pi)) {
@@ -1504,15 +1504,15 @@ public class PickResult {
 		}
 		triVertIdx[1] = triVertIdx[2];
 		triCoordIdx[1] = triCoordIdx[2];
-	    }    
+	    }
 	    fanStart += stripVertexCounts[i];
 	}
 	if (numint > 0) return true;
 	return false;
     }
 
-    /** 
-      Intersect method for QuadArray 
+    /**
+      Intersect method for QuadArray
       */
     boolean intersectQA (QuadArray geom, int geomIndex, Point3d[] pnts,
 			 boolean firstpick, PickIntersection pi) {
@@ -1531,16 +1531,16 @@ public class PickResult {
 		numint++;
 		if (firstpick) return true;
 	    }
-	} 
+	}
 
 	if (numint > 0) return true;
 	return false;
     }
 
-    /** 
-      Intersect method for IndexedQuadArray 
+    /**
+      Intersect method for IndexedQuadArray
       */
-    final boolean intersectIQA (IndexedQuadArray geom, int geomIndex, 
+    final boolean intersectIQA (IndexedQuadArray geom, int geomIndex,
 				Point3d[] pnts, boolean firstpick,
 				PickIntersection pi) {
 
@@ -1566,7 +1566,7 @@ public class PickResult {
 		numint++;
 		if (firstpick) return true;
 	    }
-	} 
+	}
 
 	if (numint > 0) return true;
 	return false;
@@ -1576,47 +1576,47 @@ public class PickResult {
     /* ==================================================================== */
     /*                      GENERAL INTERSECT METHODS                       */
     /* ==================================================================== */
-    static boolean intersectBoundingBox (Point3d coordinates[], 
+    static boolean intersectBoundingBox (Point3d coordinates[],
 					 BoundingBox box) {
 	int i, j;
-	int out[] = new int[6];      
+	int out[] = new int[6];
 
 	Point3d lower = new Point3d();
 	Point3d upper = new Point3d();
 	box.getLower (lower);
 	box.getUpper (upper);
-       
+
 	//Do trivial vertex test.
 	for (i=0; i<6; i++) out[i] = 0;
 	for (i=0; i<coordinates.length; i++) {
-	    if ((coordinates[i].x >= lower.x) && 
+	    if ((coordinates[i].x >= lower.x) &&
 		(coordinates[i].x <= upper.x) &&
-		(coordinates[i].y >= lower.y) && 
+		(coordinates[i].y >= lower.y) &&
 		(coordinates[i].y <= upper.y) &&
-		(coordinates[i].z >= lower.z) && 
+		(coordinates[i].z >= lower.z) &&
 		(coordinates[i].z <= upper.z)) {
 		// We're done! It's inside the boundingbox.
-		return true;	  
+		return true;
 	    } else {
 		if (coordinates[i].x < lower.x) out[0]++; // left
 		if (coordinates[i].y < lower.y) out[1]++; // bottom
 		if (coordinates[i].z < lower.z) out[2]++; // back
 		if (coordinates[i].x > upper.x) out[3]++; // right
 		if (coordinates[i].y > upper.y) out[4]++; // top
-		if (coordinates[i].z > upper.z) out[5]++; // front	  
+		if (coordinates[i].z > upper.z) out[5]++; // front
 	    }
 	}
-      
+
 	if ((out[0] == coordinates.length) || (out[1] == coordinates.length) ||
 	    (out[2] == coordinates.length) || (out[3] == coordinates.length) ||
 	    (out[4] == coordinates.length) || (out[5] == coordinates.length)){
 	    // we're done. primitive is outside of boundingbox.
 	    return false;
-	}      
+	}
 	// Setup bounding planes.
 	Point3d pCoor[] = new Point3d[4];
 	for (i=0; i<4; i++) pCoor[i] = new Point3d();
-      
+
 	// left plane.
 	pCoor[0].set(lower.x, lower.y, lower.z);
 	pCoor[1].set(lower.x, lower.y, upper.z);
@@ -1651,7 +1651,7 @@ public class PickResult {
 	pCoor[2].set(lower.x, lower.y, upper.z);
 	pCoor[3].set(upper.x, lower.y, upper.z);
 	if (intersectPolygon(pCoor, coordinates, false) == true) return true;
-      
+
 	// back plane.
 	pCoor[0].set(upper.x, upper.y, lower.z);
 	pCoor[1].set(upper.x, lower.y, lower.z);
@@ -1662,7 +1662,7 @@ public class PickResult {
 	return false;
     }
 
-    static boolean intersectBoundingSphere (Point3d coordinates[], 
+    static boolean intersectBoundingSphere (Point3d coordinates[],
 					    BoundingSphere sphere) {
 
 
@@ -1678,7 +1678,7 @@ public class PickResult {
 	    tempV3D.x = coordinates[i].x - center.x;
 	    tempV3D.y = coordinates[i].y - center.y;
 	    tempV3D.z = coordinates[i].z - center.z;
-	
+
 	    if (tempV3D.length() <= radius) {
 		// We're done! It's inside the boundingSphere.
 		return true;
@@ -1687,10 +1687,10 @@ public class PickResult {
 
 	for (i=0; i<coordinates.length; i++) {
 	    if (i < (coordinates.length-1)) {
-		esFlag = edgeIntersectSphere(sphere, coordinates[i], 
+		esFlag = edgeIntersectSphere(sphere, coordinates[i],
 					     coordinates[i+1]);
 	    } else {
-		esFlag = edgeIntersectSphere(sphere, coordinates[i], 
+		esFlag = edgeIntersectSphere(sphere, coordinates[i],
 					     coordinates[0]);
 	    }
 	    if (esFlag == true) {
@@ -1716,29 +1716,29 @@ public class PickResult {
 	    vec0.z = coordinates[i+1].z - coordinates[i++].z;
 	    if (vec0.length() > 0.0) break;
 	}
-        
+
 	for (j=i; j<coordinates.length-1; j++) {
 	    vec1.x = coordinates[j+1].x - coordinates[j].x;
 	    vec1.y = coordinates[j+1].y - coordinates[j].y;
 	    vec1.z = coordinates[j+1].z - coordinates[j].z;
 	    if (vec1.length() > 0.0) break;
 	}
-      
+
 	if (j == (coordinates.length-1)) {
 	    // System.out.println("(1) Degenerated polygon.");
 	    return false;  // Degenerated polygon.
 	}
 
 	/*
-	  for (i=0; i<coordinates.length; i++) 
+	  for (i=0; i<coordinates.length; i++)
 	  System.out.println("coordinates P" + i + " " + coordinates[i]);
-	  for (i=0; i<coord2.length; i++) 
+	  for (i=0; i<coord2.length; i++)
 	  System.out.println("coord2 P" + i + " " + coord2[i]);
 	  */
-      
+
 	pNrm.cross(vec0,vec1);
-      
-	nLenSq = pNrm.lengthSquared(); 
+
+	nLenSq = pNrm.lengthSquared();
 	if ( nLenSq == 0.0) {
 	    // System.out.println("(2) Degenerated polygon.");
 	    return false;  // Degenerated polygon.
@@ -1749,9 +1749,9 @@ public class PickResult {
 	pa.z = coordinates[0].z - center.z;
 
 	pNrmDotPa = pNrm.dot(pa);
-      
+
 	pqLen = Math.sqrt(pNrmDotPa * pNrmDotPa/ nLenSq);
-      
+
 	if (pqLen > radius)
 	    return false;
 
@@ -1765,11 +1765,11 @@ public class PickResult {
 	return pointIntersectPolygon2D( pNrm, coordinates, q);
     }
 
-    static boolean intersectBoundingPolytope (Point3d coordinates[], 
+    static boolean intersectBoundingPolytope (Point3d coordinates[],
 					      BoundingPolytope polytope) {
-      
-	boolean debug = false;    
-    
+
+	boolean debug = false;
+
 	// this is a multiplier to the halfplane distance coefficients
 	double distanceSign = -1.0;
 	// Variable needed for intersection.
@@ -1790,39 +1790,39 @@ public class PickResult {
 	}
 
 	// It is a triangle or a quad.
-      
+
 	// first test to see if any of the coordinates are all inside of the
 	// intersection polytope's half planes
 	// essentially do a matrix multiply of the constraintMatrix K*3 with
 	// the input coordinates 3*1 = K*1 vector
 
-	if (debug) { 
+	if (debug) {
 	    System.out.println("The value of the input vertices are: ");
 	    for (int i=0; i < coordinates.length; i++) {
 		System.out.println("The " +i+ " th vertex is: " + coordinates[i]);
 	    }
-      
+
 	    System.out.println("The value of the input bounding Polytope's planes =");
 	    for (int i=0; i < planes.length; i++) {
 		System.out.println("The " +i+ " th plane is: " + planes[i]);
 	    }
-      
+
 	}
-    
+
 	// the direction for the intersection cost function
 	double centers[] = new double[4];
 	centers[0] = 0.8; centers[1] = 0.9; centers[2] = 1.1; centers[3] = 1.2;
-      
+
 	boolean intersection = true;
 	boolean PreTest = false;
-    
+
 	if (PreTest) {
 	    // for each coordinate, test it with each half plane
 	    for (int i=0; i < coordinates.length; i++) {
 		for (int j=0; j < planes.length; j++) {
 		    if ((planes[j].x * coordinates[i].x +
 			 planes[j].y * coordinates[i].y +
-			 planes[j].z*coordinates[i].z) <= 
+			 planes[j].z*coordinates[i].z) <=
 			(distanceSign)*planes[j].w){
 			// the point satisfies this particular hyperplane
 			intersection = true;
@@ -1838,15 +1838,15 @@ public class PickResult {
 		}
 	    }
 	}  // end of pretest
-    
+
 	// at this point all points are outside of the bounding hull
 	// build the problem tableau for the linear program
-    
+
 	int numberCols = planes.length + 2 + coordinates.length + 1;
 	int numberRows = 1 + coordinates.length;
-    
+
 	double problemTableau[][] = new double[numberRows][numberCols];
-    
+
 	// compute -Mtrans = -A*P
 	for ( int i = 0; i < planes.length; i++) {
 	    for ( int j=0; j < coordinates.length;  j++) {
@@ -1855,27 +1855,27 @@ public class PickResult {
 						planes[i].z*coordinates[j].z);
 	    }
 	}
-    
+
 	// add the other rows
 	for (int i = 0; i < coordinates.length; i++) {
 	    problemTableau[i][planes.length] = -1.0;
 	    problemTableau[i][planes.length + 1] =  1.0;
-      
+
 	    for (int j=0; j < coordinates.length; j++) {
 		if ( i==j ) {
 		    problemTableau[i][j + planes.length + 2] = 1.0;
 		} else {
 		    problemTableau[i][j + planes.length + 2] = 0.0;
 		}
-	
+
 		// place the last column elements the Ci's
 		problemTableau[i][numberCols - 1] = centers[i];
 	    }
 	}
-    
+
 	// place the final rows value
 	for (int j = 0; j < planes.length; j++) {
-	    problemTableau[numberRows - 1][j] = 
+	    problemTableau[numberRows - 1][j] =
 		(distanceSign)*planes[j].w;
 	}
 	problemTableau[numberRows - 1][planes.length] =  1.0;
@@ -1883,7 +1883,7 @@ public class PickResult {
 	for (int j = 0; j < coordinates.length; j++) {
 	    problemTableau[numberRows - 1][planes.length+2+j] = 0.0;
 	}
-    
+
 	if (debug) {
 	    System.out.println("The value of the problem tableau is: " );
 	    for (int i=0; i < problemTableau.length; i++) {
@@ -1893,8 +1893,8 @@ public class PickResult {
 		System.out.println();
 	    }
 	}
-    
-	double distance = generalStandardSimplexSolver(problemTableau, 
+
+	double distance = generalStandardSimplexSolver(problemTableau,
 						       Float.NEGATIVE_INFINITY);
 	if (debug) {
 	    System.out.println("The value returned by the general standard simplex = " +
@@ -1902,7 +1902,7 @@ public class PickResult {
 	}
 	if (distance == Float.POSITIVE_INFINITY) {
 	    return false;
-	} 
+	}
 	return true;
     }
 
@@ -1911,7 +1911,7 @@ public class PickResult {
     // method to solve the LP tableau.  This version has not been optimized to
     // work with a particular size input tableau and is much slower than some
     // of the other variants...supposedly
-    static double generalStandardSimplexSolver(double problemTableau[][], 
+    static double generalStandardSimplexSolver(double problemTableau[][],
 					       double stopingValue) {
 	boolean debug = false;
 	int numRow = problemTableau.length;
@@ -1921,12 +1921,12 @@ public class PickResult {
 	double maxElement, element, endElement, ratio, prevRatio;
 	int count = 0;
 	double multiplier;
-    
+
 	if (debug) {
 	    System.out.println("The number of rows is : " + numRow);
 	    System.out.println("The number of columns is : " + numCol);
 	}
-    
+
 	// until the optimal solution is found continue to do
 	// iterations of the simplex method
 	while(!optimal) {
@@ -1940,7 +1940,7 @@ public class PickResult {
 		    }
 		}
 	    }
-      
+
 	    // test to see if the current solution is optimal
 	    // check all bottom row elements except the right most one and
 	    // if all positive or zero its optimal
@@ -1952,7 +1952,7 @@ public class PickResult {
 		    pivotColIndex = i;
 		}
 	    }
-      
+
 	    // if there is no negative non-zero element then we
 	    // have found an optimal solution (the last row of the tableau)
 	    if (pivotColIndex == -1) {
@@ -1960,24 +1960,24 @@ public class PickResult {
 		//System.out.println("Found an optimal solution");
 		optimal = true;
 	    }
-      
+
 	    //System.out.println("The value of maxElement is:" + maxElement);
-      
+
 	    if (!optimal) {
 		// Case when the solution is not optimal but not known to be
 		// either unbounded or infeasable
-	
+
 		// from the above we have found the maximum negative element in
 		// bottom row, we have also found the column for this value
 		// the pivotColIndex represents this
-	
+
 		// initialize the values for the algorithm, -1 for pivotRowIndex
 		// indicates no solution
-	
+
 		prevRatio = Float.POSITIVE_INFINITY;
 		ratio = 0.0;
 		pivotRowIndex = -1;
-	
+
 		// note if all of the elements in the pivot column are zero or
 		// negative the problem is unbounded.
 		for (i = 0; i < numRow - 1; i++) {
@@ -2007,7 +2007,7 @@ public class PickResult {
 			    System.out.println("The value of endElement is: " + endElement);
 			    System.out.println("The value of ratio is: " + ratio);
 			    System.out.println("The value of prevRatio is: " + prevRatio);
-			    System.out.println("Value of ratio <= prevRatio is :" + 
+			    System.out.println("Value of ratio <= prevRatio is :" +
 					       (ratio <= prevRatio));
 			}
 			if (ratio <= prevRatio) {
@@ -2019,7 +2019,7 @@ public class PickResult {
 			}
 		    }
 		}
-	
+
 		// if the pivotRowIndex is still -1 then we know the pivotColumn
 		// has no viable pivot points and the solution is unbounded or
 		// infeasable (all pivot elements were either zero or negative or
@@ -2031,16 +2031,16 @@ public class PickResult {
 		    }
 		    return(Float.POSITIVE_INFINITY);
 		}
-	
+
 		// we now have the pivot row and col all that remains is
 		// to divide through by this value and subtract the appropriate
 		// multiple of the pivot row from all other rows to obtain
 		// a tableau which has a column of all zeros and one 1 in the
 		// intersection of pivot row and col
-	
+
 		// divide through by the pivot value
 		double pivotValue = problemTableau[pivotRowIndex][pivotColIndex];
-	
+
 		if (debug) {
 		    System.out.println("The value of row index is: " + pivotRowIndex);
 		    System.out.println("The value of col index is: " + pivotColIndex);
@@ -2051,7 +2051,7 @@ public class PickResult {
 		    problemTableau[pivotRowIndex][i] =
 			problemTableau[pivotRowIndex][i] / pivotValue;
 		}
-	
+
 		// subtract appropriate multiple of pivot row from all other rows
 		// to zero out all rows except the final row and the pivot row
 		for (i = 0; i < numRow; i++) {
@@ -2069,8 +2069,8 @@ public class PickResult {
 	return(problemTableau[numRow - 1][numCol - 1]);
     }
 
-    static boolean edgeIntersectSphere (BoundingSphere sphere, Point3d start, 
-					Point3d end) { 
+    static boolean edgeIntersectSphere (BoundingSphere sphere, Point3d start,
+					Point3d end) {
 
 	double abLenSq, acLenSq, apLenSq, abDotAp, radiusSq;
 	Vector3d ab = new Vector3d();
@@ -2079,17 +2079,17 @@ public class PickResult {
 	Point3d center = new Point3d();
 	sphere.getCenter (center);
 	double radius = sphere.getRadius ();
-      
+
 	ab.x = end.x - start.x;
 	ab.y = end.y - start.y;
 	ab.z = end.z - start.z;
-      
+
 	ap.x = center.x - start.x;
 	ap.y = center.y - start.y;
 	ap.z = center.z - start.z;
-      
+
 	abDotAp = ab.dot(ap);
-      
+
 	if (abDotAp < 0.0)
 	    return false; // line segment points away from sphere.
 
@@ -2101,21 +2101,21 @@ public class PickResult {
 
 	radiusSq = radius * radius;
 	apLenSq = ap.lengthSquared();
-     
+
 	if ((apLenSq - acLenSq) <= radiusSq)
-	    return true;      
+	    return true;
 
 	return false;
     }
 
 
     static double det2D(Point2d a, Point2d b, Point2d p) {
-	return (((p).x - (a).x) * ((a).y - (b).y) + 
+	return (((p).x - (a).x) * ((a).y - (b).y) +
 		((a).y - (p).y) * ((a).x - (b).x));
     }
 
     // Assume coord is CCW.
-    static boolean pointIntersectPolygon2D(Vector3d normal, Point3d[] coord, 
+    static boolean pointIntersectPolygon2D(Vector3d normal, Point3d[] coord,
 					   Point3d point) {
 
 	double  absNrmX, absNrmY, absNrmZ;
@@ -2123,52 +2123,52 @@ public class PickResult {
 	Point2d pnt = new Point2d();
 
 	int i, j, axis;
-      
+
 	// Project 3d points onto 2d plane.
 	// Note : Area of polygon is not preserve in this projection, but
-	// it doesn't matter here. 
-    
+	// it doesn't matter here.
+
 	// Find the axis of projection.
 	absNrmX = Math.abs(normal.x);
 	absNrmY = Math.abs(normal.y);
 	absNrmZ = Math.abs(normal.z);
-      
+
 	if (absNrmX > absNrmY)
 	    axis = 0;
-	else 
+	else
 	    axis = 1;
-      
+
 	if (axis == 0) {
 	    if (absNrmX < absNrmZ)
 		axis = 2;
-	}    
+	}
 	else if (axis == 1) {
 	    if (absNrmY < absNrmZ)
 		axis = 2;
-	}    
-    
+	}
+
 	// System.out.println("Normal " + normal + " axis " + axis );
-     	
+
 	for (i=0; i<coord.length; i++) {
 	    coord2D[i] = new Point2d();
-	
+
 	    switch (axis) {
 	    case 0:
 		coord2D[i].x = coord[i].y;
 		coord2D[i].y = coord[i].z;
 		break;
-	
+
 	    case 1:
 		coord2D[i].x = coord[i].x;
 		coord2D[i].y = coord[i].z;
 		break;
-	
+
 	    case 2:
 		coord2D[i].x = coord[i].x;
 		coord2D[i].y = coord[i].y;
-		break;      
-	    } 
-	    // System.out.println("i " + i + " u " + uCoor[i] + " v " + vCoor[i]); 
+		break;
+	    }
+	    // System.out.println("i " + i + " u " + uCoor[i] + " v " + vCoor[i]);
 	}
 
 	switch (axis) {
@@ -2176,16 +2176,16 @@ public class PickResult {
 	    pnt.x = point.y;
 	    pnt.y = point.z;
 	    break;
-	
+
 	case 1:
 	    pnt.x = point.x;
 	    pnt.y = point.z;
 	    break;
-	
+
 	case 2:
 	    pnt.x = point.x;
 	    pnt.y = point.y;
-	    break;      
+	    break;
 	}
 
 	// Do determinant test.
@@ -2205,33 +2205,33 @@ public class PickResult {
     }
 
 
-    static boolean edgeIntersectPlane(Vector3d normal, Point3d pnt, 
+    static boolean edgeIntersectPlane(Vector3d normal, Point3d pnt,
 				      Point3d start, Point3d end, Point3d iPnt){
-      
+
 	Vector3d tempV3d = new Vector3d();
 	Vector3d direction = new Vector3d();
 	double pD, pNrmDotrDir, tr;
-      
+
 	// Compute plane D.
 	tempV3d.set((Tuple3d) pnt);
 	pD = normal.dot(tempV3d);
-      
+
 	direction.x = end.x - start.x;
 	direction.y = end.y - start.y;
 	direction.z = end.z - start.z;
 
 	pNrmDotrDir = normal.dot(direction);
-    
-	// edge is parallel to plane. 
+
+	// edge is parallel to plane.
 	if (pNrmDotrDir== 0.0) {
 	    // System.out.println("Edge is parallel to plane.");
-	    return false;        
+	    return false;
 	}
 
 	tempV3d.set((Tuple3d) start);
-      
+
 	tr = (pD - normal.dot(tempV3d))/ pNrmDotrDir;
-      
+
 	// Edge intersects the plane behind the edge's start.
 	// or exceed the edge's length.
 	if ((tr < 0.0 ) || (tr > 1.0 )) {
@@ -2247,7 +2247,7 @@ public class PickResult {
     }
 
     // Assume coord is CCW.
-    static boolean edgeIntersectPolygon2D(Vector3d normal, Point3d[] coord, 
+    static boolean edgeIntersectPolygon2D(Vector3d normal, Point3d[] coord,
 					  Point3d[] seg) {
 
 	double  absNrmX, absNrmY, absNrmZ;
@@ -2255,52 +2255,52 @@ public class PickResult {
 	Point2d seg2D[] = new Point2d[2];
 
 	int i, j, axis;
-      
+
 	// Project 3d points onto 2d plane.
 	// Note : Area of polygon is not preserve in this projection, but
-	// it doesn't matter here. 
-    
+	// it doesn't matter here.
+
 	// Find the axis of projection.
 	absNrmX = Math.abs(normal.x);
 	absNrmY = Math.abs(normal.y);
 	absNrmZ = Math.abs(normal.z);
-      
+
 	if (absNrmX > absNrmY)
 	    axis = 0;
-	else 
+	else
 	    axis = 1;
-      
+
 	if (axis == 0) {
 	    if (absNrmX < absNrmZ)
 		axis = 2;
-	}    
+	}
 	else if (axis == 1) {
 	    if (absNrmY < absNrmZ)
 		axis = 2;
-	}    
-    
+	}
+
 	// System.out.println("Normal " + normal + " axis " + axis );
-     	
+
 	for (i=0; i<coord.length; i++) {
 	    coord2D[i] = new Point2d();
-	
+
 	    switch (axis) {
 	    case 0:
 		coord2D[i].x = coord[i].y;
 		coord2D[i].y = coord[i].z;
 		break;
-	
+
 	    case 1:
 		coord2D[i].x = coord[i].x;
 		coord2D[i].y = coord[i].z;
 		break;
-	
+
 	    case 2:
 		coord2D[i].x = coord[i].x;
 		coord2D[i].y = coord[i].y;
-		break;      
-	    } 
-	    // System.out.println("i " + i + " u " + uCoor[i] + " v " + vCoor[i]); 
+		break;
+	    }
+	    // System.out.println("i " + i + " u " + uCoor[i] + " v " + vCoor[i]);
 	}
 
 	for (i=0; i<2; i++) {
@@ -2310,18 +2310,18 @@ public class PickResult {
 		seg2D[i].x = seg[i].y;
 		seg2D[i].y = seg[i].z;
 		break;
-	
+
 	    case 1:
 		seg2D[i].x = seg[i].x;
 		seg2D[i].y = seg[i].z;
 		break;
-	
+
 	    case 2:
 		seg2D[i].x = seg[i].x;
 		seg2D[i].y = seg[i].y;
-		break;      
-	    } 
-	    // System.out.println("i " + i + " u " + uSeg[i] + " v " + vSeg[i]); 
+		break;
+	    }
+	    // System.out.println("i " + i + " u " + uSeg[i] + " v " + vSeg[i]);
 	}
 
 	// Do determinant test.
@@ -2339,7 +2339,7 @@ public class PickResult {
 	    if ((pntTest[0][j]==false) && (pntTest[1][j]==false))
 		return false;
 	}
-      
+
 	testFlag = true;
 	for (i=0; i<coord.length; i++) {
 	    if (pntTest[0][i]==false) {
@@ -2347,7 +2347,7 @@ public class PickResult {
 		break;
 	    }
 	}
-      
+
 	if (testFlag == true)
 	    return true; // start point is inside polygon.
 
@@ -2358,10 +2358,10 @@ public class PickResult {
 		break;
 	    }
 	}
-      
+
 	if (testFlag == true)
 	    return true; // end point is inside polygon.
-      
+
 
 	int cnt = 0;
 	for (i=0; i<coord.length; i++) {
@@ -2375,7 +2375,7 @@ public class PickResult {
 	return true;
     }
 
-    static boolean intersectPolygon(Point3d coord1[], Point3d coord2[], 
+    static boolean intersectPolygon(Point3d coord1[], Point3d coord2[],
 				    boolean doTrivialTest) {
 	int i, j;
 	Vector3d vec0 = new Vector3d(); //Edge vector from point 0 to point 1;
@@ -2391,7 +2391,7 @@ public class PickResult {
 	    if (vec0.length() > 0.0)
 		break;
 	}
-        
+
 	for (j=i; j<coord1.length-1; j++) {
 	    vec1.x = coord1[j+1].x - coord1[j].x;
 	    vec1.y = coord1[j+1].y - coord1[j].y;
@@ -2399,42 +2399,42 @@ public class PickResult {
 	    if (vec1.length() > 0.0)
 		break;
 	}
-      
+
 	if (j == (coord1.length-1)) {
 	    // System.out.println("(1) Degenerated polygon.");
 	    return false;  // Degenerated polygon.
 	}
 
 	/*
-	  for (i=0; i<coord1.length; i++) 
+	  for (i=0; i<coord1.length; i++)
 	  System.out.println("coord1 P" + i + " " + coord1[i]);
-	  for (i=0; i<coord2.length; i++) 
+	  for (i=0; i<coord2.length; i++)
 	  System.out.println("coord2 P" + i + " " + coord2[i]);
 	  */
-      
+
 	pNrm.cross(vec0,vec1);
-      
+
 	if (pNrm.length() == 0.0) {
 	    // System.out.println("(2) Degenerated polygon.");
 	    return false;  // Degenerated polygon.
 	}
-      
+
 	// Do trivial test here.
 	if ( doTrivialTest == true) {
 	    // Not implemented yet.
 	}
 
-	j = 0;      
+	j = 0;
 	Point3d seg[] = new Point3d[2];
 	seg[0] = new Point3d();
 	seg[1] = new Point3d();
 
 	for (i=0; i<coord2.length; i++) {
 	    if (i < (coord2.length-1))
-		epFlag = edgeIntersectPlane(pNrm, coord1[0], coord2[i], 
+		epFlag = edgeIntersectPlane(pNrm, coord1[0], coord2[i],
 					    coord2[i+1], seg[j]);
 	    else
-		epFlag = edgeIntersectPlane(pNrm, coord1[0], coord2[i], 
+		epFlag = edgeIntersectPlane(pNrm, coord1[0], coord2[i],
 					    coord2[0], seg[j]);
 	    if (epFlag == true) {
 		j++;
@@ -2445,7 +2445,7 @@ public class PickResult {
 
 	if (j==0)
 	    return false;
-      
+
 	if (coord2.length < 3)
 	    return pointIntersectPolygon2D(pNrm, coord1, seg[0]);
 
@@ -2455,14 +2455,14 @@ public class PickResult {
 
     static final boolean isNonZero(double v) {
 	return ((v > EPS) || (v < -EPS));
-	
+
     }
 
 
-    static boolean intersectRay(Point3d coordinates[], 
+    static boolean intersectRay(Point3d coordinates[],
 				PickRay ray, PickIntersection pi) {
-	Point3d origin = new Point3d(); 
-	Vector3d direction = new Vector3d(); 
+	Point3d origin = new Point3d();
+	Vector3d direction = new Vector3d();
 	boolean result;
 	ray.get (origin, direction);
 	result = intersectRayOrSegment(coordinates, direction, origin, pi, false);
@@ -2470,10 +2470,10 @@ public class PickResult {
     }
 
     /**
-     *  Return true if triangle or quad intersects with ray and the distance is 
+     *  Return true if triangle or quad intersects with ray and the distance is
      *  stored in pr.
      * */
-    static boolean intersectRayOrSegment(Point3d coordinates[], 
+    static boolean intersectRayOrSegment(Point3d coordinates[],
 					 Vector3d direction, Point3d origin,
 					 PickIntersection pi, boolean isSegment) {
 	Vector3d vec0, vec1, pNrm, tempV3d;
@@ -2484,7 +2484,7 @@ public class PickResult {
 	pNrm = new Vector3d();
 
 	double  absNrmX, absNrmY, absNrmZ, pD = 0.0;
-	double pNrmDotrDir = 0.0; 
+	double pNrmDotrDir = 0.0;
 
 	boolean isIntersect = false;
 	int i, j, k=0, l = 0;
@@ -2503,7 +2503,7 @@ public class PickResult {
 		break;
 	    }
 	}
-		
+
 
 	for (j=l; j<coordinates.length; j++) {
 	    if (j != coordinates.length-1) {
@@ -2517,7 +2517,7 @@ public class PickResult {
 	    if (vec1.length() > 0.0) {
 		break;
 	    }
-	}		
+	}
 
 	pNrm.cross(vec0,vec1);
 
@@ -2528,17 +2528,17 @@ public class PickResult {
 	    isIntersect = intersectLineAndRay(coordinates[l],
 					      coordinates[k],
 					      origin,
-					      direction, 
+					      direction,
 					      pi);
 	    return isIntersect;
 	}
 
-	// It is possible that Quad is degenerate to Triangle 
+	// It is possible that Quad is degenerate to Triangle
 	// at this point
 
 	pNrmDotrDir = pNrm.dot(direction);
 
-    	// Ray is parallel to plane. 
+    	// Ray is parallel to plane.
 	if (pNrmDotrDir == 0.0) {
 	    // Ray is parallel to plane
 	    // Check line/triangle intersection on plane.
@@ -2551,7 +2551,7 @@ public class PickResult {
 		if (intersectLineAndRay(coordinates[i],
 					coordinates[k],
 					origin,
-					direction, 
+					direction,
 					pi)) {
 		    isIntersect = true;
 		    break;
@@ -2568,7 +2568,7 @@ public class PickResult {
 
 	// Substitute Ray equation:
 	// p = origin + pi.distance*direction
-	// into the above Plane equation 
+	// into the above Plane equation
 
 	double dist = (pD - pNrm.dot(tempV3d))/ pNrmDotrDir;
 
@@ -2576,7 +2576,7 @@ public class PickResult {
 	if ((dist < -EPS ) ||
 	    (isSegment && (dist > 1.0+EPS))) {
 	    // Ray intersects the plane behind the ray's origin
-	    // or intersect point not fall in Segment 
+	    // or intersect point not fall in Segment
 	    return false;
 	}
 
@@ -2594,10 +2594,10 @@ public class PickResult {
 	absNrmZ = Math.abs(pNrm.z);
 
 	// Check out
-	// http://astronomy.swin.edu.au/~pbourke/geometry/insidepoly/ 
+	// http://astronomy.swin.edu.au/~pbourke/geometry/insidepoly/
 	// Solution 3:
 	// All sign of (y - y0) (x1 - x0) - (x - x0) (y1 - y0)
-	// must agree. 
+	// must agree.
 	double sign, t, lastSign = 0;
 	Point3d p0 = coordinates[coordinates.length-1];
 	Point3d p1 = coordinates[0];
@@ -2609,7 +2609,7 @@ public class PickResult {
 		for (i=0; i < coordinates.length; i++) {
 		    p0 = coordinates[i];
 		    p1 = (i != coordinates.length-1 ? coordinates[i+1]: coordinates[0]);
- 		    sign = (iPnt.y - p0.y)*(p1.x - p0.x) - 
+ 		    sign = (iPnt.y - p0.y)*(p1.x - p0.x) -
 			   (iPnt.x - p0.x)*(p1.y - p0.y);
 		    if (isNonZero(sign)) {
 			if (sign*lastSign < 0) {
@@ -2634,12 +2634,12 @@ public class PickResult {
 			    }
 			}
 		    }
-		} 
+		}
 	    } else {
 		for (i=0; i<coordinates.length; i++) {
 		    p0 = coordinates[i];
 		    p1 = (i != coordinates.length-1 ? coordinates[i+1]: coordinates[0]);
-		    sign = (iPnt.y - p0.y)*(p1.z - p0.z) - 
+		    sign = (iPnt.y - p0.y)*(p1.z - p0.z) -
 			   (iPnt.z - p0.z)*(p1.y - p0.y);
 		    if (isNonZero(sign)) {
 			if (sign*lastSign < 0) {
@@ -2666,14 +2666,14 @@ public class PickResult {
 			    }
 			}
 		    }
-		} 
+		}
 	    }
 	} else {
 	    if (absNrmY < absNrmZ) {
 		for (i=0; i<coordinates.length; i++) {
 		    p0 = coordinates[i];
 		    p1 = (i != coordinates.length-1 ? coordinates[i+1]: coordinates[0]);
-		    sign = (iPnt.y - p0.y)*(p1.x - p0.x) - 
+		    sign = (iPnt.y - p0.y)*(p1.x - p0.x) -
 			   (iPnt.x - p0.x)*(p1.y - p0.y);
 		    if (isNonZero(sign)) {
 			if (sign*lastSign < 0) {
@@ -2703,7 +2703,7 @@ public class PickResult {
 		for (i=0; i<coordinates.length; i++) {
 		    p0 = coordinates[i];
 		    p1 = (i != coordinates.length-1 ? coordinates[i+1]: coordinates[0]);
-		    sign = (iPnt.x - p0.x)*(p1.z - p0.z) - 
+		    sign = (iPnt.x - p0.x)*(p1.z - p0.z) -
 			   (iPnt.z - p0.z)*(p1.x - p0.x);
 		    if (isNonZero(sign)) {
 			if (sign*lastSign < 0) {
@@ -2735,7 +2735,7 @@ public class PickResult {
 	if (isIntersect) {
 	    pi.setDistance(dist*direction.length());
 	    pi.setPointCoordinatesVW(iPnt);
-	} 
+	}
 	return isIntersect;
     }
 
@@ -2758,21 +2758,21 @@ public class PickResult {
 	return result;
     }
 
-    
+
     /**
-      Return true if point is on the inside of halfspace test. The halfspace is 
+      Return true if point is on the inside of halfspace test. The halfspace is
       partition by the plane of triangle or quad.
       */
-     
+
     static boolean inside (Point3d coordinates[], PickPoint point, int ccw) {
-    
+
 	Vector3d vec0 = new Vector3d(); //Edge vector from point 0 to point 1;
 	Vector3d vec1 = new Vector3d(); //Edge vector from point 0 to point 2 or 3;
 	Vector3d pNrm = new Vector3d();
 	double  absNrmX, absNrmY, absNrmZ, pD = 0.0;
 	Vector3d tempV3d = new Vector3d();
-	double pNrmDotrDir = 0.0; 
-    
+	double pNrmDotrDir = 0.0;
+
 	double tempD;
 
 	int i, j;
@@ -2788,7 +2788,7 @@ public class PickResult {
 	    if (vec0.length() > 0.0)
 		break;
 	}
-        
+
 	for (j=i; j<coordinates.length-1; j++) {
 	    vec1.x = coordinates[j+1].x - coordinates[j].x;
 	    vec1.y = coordinates[j+1].y - coordinates[j].y;
@@ -2796,16 +2796,16 @@ public class PickResult {
 	    if (vec1.length() > 0.0)
 		break;
 	}
-    
+
 	if (j == (coordinates.length-1)) {
 	    // System.out.println("(1) Degenerated polygon.");
 	    return false;  // Degenerated polygon.
 	}
 
-	/* 
+	/*
 	   System.out.println("Ray orgin : " + origin + " dir " + direction);
 	   System.out.println("Triangle/Quad :");
-	   for (i=0; i<coordinates.length; i++) 
+	   for (i=0; i<coordinates.length; i++)
 	   System.out.println("P" + i + " " + coordinates[i]);
 	   */
 
@@ -2813,7 +2813,7 @@ public class PickResult {
 	    pNrm.cross(vec0,vec1);
 	else
 	    pNrm.cross(vec1,vec0);
-    
+
 	if (pNrm.length() == 0.0) {
 	    // System.out.println("(2) Degenerated polygon.");
 	    return false;  // Degenerated polygon.
@@ -2828,23 +2828,23 @@ public class PickResult {
 	    // System.out.println("point is on the outside of plane.");
 	    return false;
 	}
-	else 
+	else
 	    return true;
     }
 
-    static boolean intersectPntAndPnt (Point3d pnt1, Point3d pnt2, 
+    static boolean intersectPntAndPnt (Point3d pnt1, Point3d pnt2,
 				       PickIntersection pi) {
-  
+
 	if ((pnt1.x == pnt2.x) && (pnt1.y == pnt2.y) && (pnt1.z == pnt2.z)) {
 	    pi.setPointCoordinatesVW (pnt1);
 	    pi.setDistance (0.0);
 	    return true;
 	}
-	else 
+	else
 	    return false;
     }
 
-    static boolean intersectPntAndRay (Point3d pnt, Point3d ori, Vector3d dir, 
+    static boolean intersectPntAndRay (Point3d pnt, Point3d ori, Vector3d dir,
 				       PickIntersection pi) {
 	int flag = 0;
 	double temp;
@@ -2865,7 +2865,7 @@ public class PickResult {
 		return false;
 	    flag = 2;
 	    dist = (pnt.z - ori.z)/dir.z;
-           
+
 	}
 	else
 	    return false;
@@ -2876,9 +2876,9 @@ public class PickResult {
 	if (flag == 0) {
 	    temp = ori.y + dist * dir.y;
 	    if ((pnt.y < (temp - Double.MIN_VALUE)) || (pnt.y > (temp + Double.MIN_VALUE)))
-		return false;    
+		return false;
 	}
-    
+
 	if (flag < 2) {
 	    temp = ori.z + dist * dir.z;
 	    if ((pnt.z < (temp - Double.MIN_VALUE)) || (pnt.z > (temp + Double.MIN_VALUE)))
@@ -2889,13 +2889,13 @@ public class PickResult {
 	pi.setDistance (dist);
 
 	return true;
-    
+
     }
 
-    static boolean intersectLineAndRay(Point3d start, Point3d end, 
-				       Point3d ori, Vector3d dir, 
+    static boolean intersectLineAndRay(Point3d start, Point3d end,
+				       Point3d ori, Vector3d dir,
 				       PickIntersection pi) {
-    
+
 	double m00, m01, m10, m11;
 	double mInv00, mInv01, mInv10, mInv11;
 	double dmt, t, s, tmp1, tmp2;
@@ -2905,10 +2905,10 @@ public class PickResult {
 	//     System.out.println("Intersect : intersectLineAndRay");
 	//     System.out.println("start " + start + " end " + end );
 	//     System.out.println("ori " + ori + " dir " + dir);
-    
+
 	lDir = new Vector3d(end.x - start.x, end.y - start.y,
 			    end.z - start.z);
-    
+
 	m00 = lDir.x;
 	m01 = -dir.x;
 	m10 = lDir.y;
@@ -2942,7 +2942,7 @@ public class PickResult {
 
 	t = mInv00 * tmp1 + mInv01 * tmp2;
 	s = mInv10 * tmp1 + mInv11 * tmp2;
-    
+
 	if (s<0.0) { // Before the origin of ray.
 	    // System.out.println("Before the origin of ray " + s);
 	    return false;
@@ -2954,8 +2954,8 @@ public class PickResult {
 
 	tmp1 = ori.z + s * dir.z;
 	tmp2 = start.z + t * lDir.z;
-  
-	if ((tmp1 < (tmp2 - Double.MIN_VALUE)) || 
+
+	if ((tmp1 < (tmp2 - Double.MIN_VALUE)) ||
 	    (tmp1 > (tmp2 + Double.MIN_VALUE))) {
 	    // System.out.println("No intersection : tmp1 " + tmp1 + " tmp2 " + tmp2);
 	    return false;
@@ -2966,18 +2966,18 @@ public class PickResult {
 	Point3d iPnt = new Point3d ();
 	iPnt.scaleAdd (s, dir, ori);
 	pi.setPointCoordinatesVW (iPnt);
-    
+
 	// System.out.println("Intersected : tmp1 " + tmp1 + " tmp2 " + tmp2);
 	return true;
     }
 
     /**
-      Return true if triangle or quad intersects with cylinder and the 
+      Return true if triangle or quad intersects with cylinder and the
       distance is stored in pr.
       */
-    static boolean intersectCylinder (Point3d coordinates[], 
+    static boolean intersectCylinder (Point3d coordinates[],
 				      PickCylinder cyl, PickIntersection pi) {
-    
+
 	Point3d origin = new Point3d();
 	Point3d end = new Point3d();
 	Vector3d direction = new Vector3d();
@@ -3013,14 +3013,14 @@ public class PickResult {
 	double sqDistToEdge;
 	for (int i=0; i<coordinates.length-1;i++) {
 	    if (cyl instanceof PickCylinderSegment) {
-		sqDistToEdge = 
-		    Distance.segmentToSegment (origin, end, 
+		sqDistToEdge =
+		    Distance.segmentToSegment (origin, end,
 					       coordinates[i], coordinates[i+1],
 					       iPnt1, iPnt2, null);
 	    }
 	    else {
-		sqDistToEdge = 
-		    Distance.rayToSegment (origin, direction, 
+		sqDistToEdge =
+		    Distance.rayToSegment (origin, direction,
 					   coordinates[i], coordinates[i+1],
 					   iPnt1, iPnt2, null);
 	    }
@@ -3035,10 +3035,10 @@ public class PickResult {
     }
 
     /**
-      Return true if triangle or quad intersects with cone. The 
+      Return true if triangle or quad intersects with cone. The
       distance is stored in pr.
       */
-    static boolean intersectCone (Point3d coordinates[], 
+    static boolean intersectCone (Point3d coordinates[],
 				  PickCone cone, PickIntersection pi) {
 
 	Point3d origin = new Point3d();
@@ -3046,7 +3046,7 @@ public class PickResult {
 	Vector3d direction = new Vector3d();
 	Vector3d originToIpnt = new Vector3d();
 	double distance;
-    
+
 	Point3d iPnt1 = new Point3d();
 	Point3d iPnt2 = new Point3d();
 	Vector3d vector = new Vector3d();
@@ -3069,7 +3069,7 @@ public class PickResult {
 		}
 	    }
 	    else {
-		if (intersectSegment (coordinates, new PickSegment (origin, end), 
+		if (intersectSegment (coordinates, new PickSegment (origin, end),
 				      pi)) {
 		    return true;
 		}
@@ -3080,18 +3080,18 @@ public class PickResult {
 	double sqDistToEdge;
 	for (int i=0; i<coordinates.length-1;i++) {
 	    if (cone instanceof PickConeSegment) {
-		sqDistToEdge = 
-		    Distance.segmentToSegment (origin, end, 
+		sqDistToEdge =
+		    Distance.segmentToSegment (origin, end,
 					       coordinates[i], coordinates[i+1],
 					       iPnt1, iPnt2, null);
 	    }
 	    else {
-		sqDistToEdge = 
-		    Distance.rayToSegment (origin, direction, 
+		sqDistToEdge =
+		    Distance.rayToSegment (origin, direction,
 					   coordinates[i], coordinates[i+1],
 					   iPnt1, iPnt2, null);
 	    }
-	    originToIpnt.sub (iPnt1, origin);      
+	    originToIpnt.sub (iPnt1, origin);
 	    distance = originToIpnt.length();
 	    radius = Math.tan (cone.getSpreadAngle()) * distance;
 	    if (sqDistToEdge <= radius*radius) {
@@ -3106,10 +3106,10 @@ public class PickResult {
 
 
     /**
-      Return true if point intersects with cylinder and the 
+      Return true if point intersects with cylinder and the
       distance is stored in pi.
       */
-    static boolean intersectCylinder (Point3d pt, 
+    static boolean intersectCylinder (Point3d pt,
 				      PickCylinder cyl, PickIntersection pi) {
 
 	Point3d origin = new Point3d();
@@ -3140,10 +3140,10 @@ public class PickResult {
 	return false;
     }
     /**
-      Return true if point intersects with cone and the 
+      Return true if point intersects with cone and the
       distance is stored in pi.
       */
-    static boolean intersectCone (Point3d pt, 
+    static boolean intersectCone (Point3d pt,
 				  PickCone cone, PickIntersection pi) {
 
 	//    System.out.println ("Intersect.intersectCone point");

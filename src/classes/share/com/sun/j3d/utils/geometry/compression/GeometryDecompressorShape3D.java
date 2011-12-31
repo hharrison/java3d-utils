@@ -106,17 +106,17 @@ class GeometryDecompressorShape3D extends GeometryDecompressor {
     private static final int TRI_STRIP_AND_TRI_SET = 3 ;
 
     // Private convenience copies of various constants.
-    private static final int TYPE_POINT = 
+    private static final int TYPE_POINT =
 	CompressedGeometryRetained.TYPE_POINT ;
-    private static final int TYPE_LINE = 
+    private static final int TYPE_LINE =
 	CompressedGeometryRetained.TYPE_LINE ;
-    private static final int TYPE_TRIANGLE = 
+    private static final int TYPE_TRIANGLE =
 	CompressedGeometryRetained.TYPE_TRIANGLE ;
-    private static final int FRONTFACE_CCW = 
+    private static final int FRONTFACE_CCW =
 	GeneralizedStripFlags.FRONTFACE_CCW ;
 
     /**
-     * Decompress the given compressed geometry. 
+     * Decompress the given compressed geometry.
      * @param cgr CompressedGeometryRetained object with compressed geometry
      * @return an array of Shape3D with TriangleArray geometry if compressed
      * data contains triangles; otherwise, Shape3D array containing PointArray
@@ -130,7 +130,7 @@ class GeometryDecompressorShape3D extends GeometryDecompressor {
 
 
     /**
-     * Decompress the given compressed geometry. 
+     * Decompress the given compressed geometry.
      * @param cgr CompressedGeometryRetained object with compressed geometry
      * @return an array of Shape3D with TriangleStripArray geometry if
      * compressed data contains triangles; otherwise, Shape3D array containing
@@ -144,7 +144,7 @@ class GeometryDecompressorShape3D extends GeometryDecompressor {
 
 
     /**
-     * Decompress the given compressed geometry. 
+     * Decompress the given compressed geometry.
      * @param cgr CompressedGeometryRetained object with compressed geometry
      * @return an array of Shape3D with TriangleStripArray and
      * TriangleFanArray geometry if compressed data contains triangles;
@@ -159,7 +159,7 @@ class GeometryDecompressorShape3D extends GeometryDecompressor {
 
 
     /**
-     * Decompress the given compressed geometry. 
+     * Decompress the given compressed geometry.
      * @param cgr CompressedGeometryRetained object with compressed geometry
      * @return an array of Shape3D with TriangleStripArray and
      * TriangleArray geometry if compressed data contains triangles;
@@ -177,7 +177,7 @@ class GeometryDecompressorShape3D extends GeometryDecompressor {
      * return an array of Shape3D objects using the specified triangle output
      * type.  The triangle output type is ignored if the compressed data
      * contains points or lines.
-     */ 
+     */
     private Shape3D[] decompress(CompressedGeometryRetained cgr,
 				 int triOutputType) {
 
@@ -221,7 +221,7 @@ class GeometryDecompressorShape3D extends GeometryDecompressor {
 	if (vlist != null)
 	    // Construct shapes using the current vertex format.
 	    addShape3D() ;
-		
+
 	int vertexFormat = GeometryArray.COORDINATES ;
 
 	if (bundlingNorm) {
@@ -293,7 +293,7 @@ class GeometryDecompressorShape3D extends GeometryDecompressor {
 	    if (vlist.size() > 0)
 		// Construct Shape3D using the current vertex format.
 		addShape3D() ;
-		
+
 	    // Start a new vertex list with the new format.
 	    vlist = new GeneralizedVertexList
 		(vlist.vertexFormat|GeometryArray.NORMALS, FRONTFACE_CCW) ;
@@ -429,7 +429,7 @@ class GeometryDecompressorShape3D extends GeometryDecompressor {
 
 	if (benchmark || statistics)
 	    printBench() ;
-	     
+
 	if (statistics)
 	    printStats() ;
     }
@@ -486,11 +486,11 @@ class GeometryDecompressorShape3D extends GeometryDecompressor {
 	    System.out.println(vertexCount) ;
 	}
 	else if (triOutputType == TRI_STRIP_AND_TRI_SET) {
-	    System.out.println((vertexCount + triangleCount*3) + 
+	    System.out.println((vertexCount + triangleCount*3) +
 			       "\n number of strips: " + stripCount +
 			       "\n number of individual triangles: " +
 			       triangleCount) ;
-	    if (stripCount > 0) 
+	    if (stripCount > 0)
 		System.out.println
 		    (" vertices/strip: " + (float)vertexCount/stripCount +
 		     "\n triangles represented in strips: " +
@@ -499,7 +499,7 @@ class GeometryDecompressorShape3D extends GeometryDecompressor {
 	else {
 	    System.out.println(vertexCount +
 			       "\n number of strips: " + stripCount) ;
-	    if (stripCount > 0) 
+	    if (stripCount > 0)
 		System.out.println
 		    (" vertices/strip: " + (float)vertexCount/stripCount) ;
 	}

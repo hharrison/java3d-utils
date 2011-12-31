@@ -55,7 +55,7 @@ import javax.media.j3d.View;
  * centroid of their bounds. By supplying a different Comparator for a view using
  * the static setComparator method the user can provide their own sorting scheme.
  *
- * The Comparator provided will be called with 2 objects of class 
+ * The Comparator provided will be called with 2 objects of class
  * TransparencySortGeom.
  *
  * @since Java 3D 1.4
@@ -65,7 +65,7 @@ public class TransparencySortController {
     // Issue 478 - use a WeakHashMap to avoid holding a reference to a View unnecessarily.
     private static WeakHashMap<View,Comparator> comparators = new WeakHashMap<View,Comparator>();
 
-    /** 
+    /**
      * Set the comparator for the specified view.
      *
      * The comparators compare method will be called with 2 objects of type
@@ -79,7 +79,7 @@ public class TransparencySortController {
     public static void setComparator(View view, Comparator comparator) {
         comparators.put(view, comparator);
     }
-    
+
     /**
      * Returns the comparator for the specified view
      *

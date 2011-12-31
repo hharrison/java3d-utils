@@ -68,7 +68,7 @@ class ConfigViewPlatformBehavior extends ConfigObject {
     /**
      * Processes properties for this object.  Handles commands of the form:<p>
      * (ViewPlatformBehaviorProperty {instanceName} {attrName} {arg} ...)
-     * 
+     *
      * @param command the command that invoked this method
      */
     protected void setProperty(ConfigCommand cmd) {
@@ -113,7 +113,7 @@ class ConfigViewPlatformBehavior extends ConfigObject {
 
     /**
      * Instantiate a ViewPlatformBehavior of the given class name.<p>
-     * 
+     *
      * NOTE: All ConfigView and ConfigSensor objects must be processed before
      * calling this method.
      *

@@ -50,15 +50,15 @@ package com.sun.j3d.loaders.lw3d;
  */
 
 class ParserObject {
-	
+
 
     final static int TRACE = DebugOutput.TRACE, VALUES = DebugOutput.VALUES;
     final static int MISC = DebugOutput.MISC, LINE_TRACE = DebugOutput.LINE_TRACE;
     final static int NONE = DebugOutput.NONE, EXCEPTION = DebugOutput.EXCEPTION;
     final static int TIME = DebugOutput.TIME, WARNING = DebugOutput.WARNING;
-    
+
     protected DebugOutput debugPrinter;
-    
+
 
     ParserObject() {
 	debugPrinter = new DebugOutput(EXCEPTION);
@@ -68,7 +68,7 @@ class ParserObject {
 	this();
 	debugPrinter.setValidOutput(debugVals);
     }
-		
+
 
     protected void debugOutputLn(int outputType, String theOutput) {
 	if (theOutput.equals(""))
@@ -86,6 +86,6 @@ class ParserObject {
 
 }
 
- 
+
 
 

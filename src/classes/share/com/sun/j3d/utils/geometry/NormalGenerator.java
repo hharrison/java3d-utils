@@ -66,7 +66,7 @@ import javax.vecmath.Point3f;
  * <p>
  * Of course, sometimes your model *has* a crease in it.  That's what
  * creaseAngle is.  If two triangles' normals differ by more than
- * creaseAngle, then the vertex will get two separate normals, creating a 
+ * creaseAngle, then the vertex will get two separate normals, creating a
  * discontinuous crease in the model.  This is perfect for the edge
  * of a table or the corner of a cube, for instance.
  */
@@ -128,7 +128,7 @@ public class NormalGenerator {
 	}
       }
     } else {
-      // For quads, the facet normal of both triangles is the cross 
+      // For quads, the facet normal of both triangles is the cross
       // product of the two vectors that make an 'X' across the quad.
       for (int t = 0 ; t < coordInds.length ; t += 6) {
 	a.sub(coordinates[coordInds[t + 2]], coordinates[coordInds[t + 0]]);
@@ -160,7 +160,7 @@ public class NormalGenerator {
   // of groups of triangles sharing the vertex.  At the end of this routine
   // the groups of coordinate indexes will all be made, and the normal
   // indices will point to these groups.
-  // 
+  //
   // The routine works by going through each vertex of each triangle.
   // Starting at a triangle, we see if the vertex normal can be shared
   // with the neighbor triangle (their facet normals differ by less than
@@ -173,7 +173,7 @@ public class NormalGenerator {
   // Each time we step from one triangle to the next around the center
   // vertex, the triangle is added to the group of triangles whose normals
   // will be averaged to make the vertex normal.
-  // 
+  //
   // Returns the largest number of triangles that share a single normal.
   //
   private int createHardEdges()
@@ -279,7 +279,7 @@ public class NormalGenerator {
 	      }
 	    } else if ((DEBUG & 32) != 0) System.out.println("Hard Edge!");
 	  }
-	  
+
 	  if (!smooth && goingRight) {
 
 	    // We've hit an impasse going right, so now try going left
@@ -293,7 +293,7 @@ public class NormalGenerator {
 	    if ((DEBUG & 32) != 0) System.out.println( "  Left edge: " + edge);
 
 	  }
-          
+
 	} while (smooth && ((goingRight && (edge.v2 != endVertex)) ||
 			    !goingRight));
 
@@ -330,12 +330,12 @@ public class NormalGenerator {
   // This routine has something of a hack in it.  We found that our
   // method of breaking up data into individual triangles before
   // calculating normals was causing a bug.  If a polygon was broken
-  // into two triangles at a particular vertex, then that facet's 
+  // into two triangles at a particular vertex, then that facet's
   // normal would get averaged into the vertex normal *twice*,
   // skewing the normal toward the decomposed facet.  So what we did
   // was to check for duplicate facet normals as we're averaging,
-  // not allowing the same facet normal to be counted twice.  
-  // 
+  // not allowing the same facet normal to be counted twice.
+  //
   // What should be done is to put the facets' normals into a separate,
   // indexed, table.  That way, to tell if two triangles have the
   // same normal, we just need to compare indexes.  This would speed up
@@ -455,7 +455,7 @@ public class NormalGenerator {
 
 
   // The original data was in quads.  We converted it to triangles to
-  // calculate normals.  Now we need to convert it back to quads. 
+  // calculate normals.  Now we need to convert it back to quads.
   private void convertTriToQuad(GeometryInfo geom)
   {
     // Create the new arrays
@@ -477,7 +477,7 @@ public class NormalGenerator {
   // calculate the normals.  Now we are converting it back to fans.
   // We have already calculated the new stripCounts, so now we need
   // to change the index lists so they match up with the stripCounts.
-  // It's a very simple algorithm.  The paramater oldList is the 
+  // It's a very simple algorithm.  The paramater oldList is the
   // index list being compressed back into fans (could be coordinate,
   // color, normal, or texCoord indices) and numVerts is the pre-
   // calculated total of all entries of the stripCounts array.
@@ -507,7 +507,7 @@ public class NormalGenerator {
 
   //
   // The original data was in fans.  We converted it to triangles to
-  // calculate normals.  Now we need to convert it back to fans. 
+  // calculate normals.  Now we need to convert it back to fans.
   // The hard part is that, if we found a hard edge in the middle of
   // a fan, we need to split the fan into two.  To tell if there's
   // a hard edge there, we compare the normal indices of both
@@ -571,7 +571,7 @@ public class NormalGenerator {
     geom.setNormalIndices(triToFanIndices(sc, geom.getNormalIndices(), c));
     int num = geom.getTexCoordSetCount();
     for (int i = 0 ; i < num ; i++) {
-      geom.setTextureCoordinateIndices(i, 
+      geom.setTextureCoordinateIndices(i,
 	triToFanIndices(sc, geom.getTextureCoordinateIndices(i), c));
     }
 
@@ -598,7 +598,7 @@ public class NormalGenerator {
   // calculate the normals.  Now we are converting it back to strips.
   // We have already calculated the new stripCounts, so now we need
   // to change the index lists so they match up with the stripCounts.
-  // It's a very simple algorithm.  The paramater oldList is the 
+  // It's a very simple algorithm.  The paramater oldList is the
   // index list being compressed back into strips (could be coordinate,
   // color, normal, or texCoord indices) and numVerts is the pre-
   // calculated total of all entries of the stripCounts array.
@@ -669,7 +669,7 @@ public class NormalGenerator {
 	    }
 	  }
 	} else {
-	  // The middle vertex of this triangle must match the middle 
+	  // The middle vertex of this triangle must match the middle
 	  // vertex of the next, AND the third vertex of this triangle
 	  // must match the first vertex of the next
 	  if ((ni[tri * 3 + 1] == ni[(tri+1) * 3 + 1]) &&
@@ -709,7 +709,7 @@ public class NormalGenerator {
     geom.setNormalIndices(triToStripIndices(sc, geom.getNormalIndices(), c));
     int num = geom.getTexCoordSetCount();
     for (int i = 0 ; i < num ; i++) {
-      geom.setTextureCoordinateIndices(i, 
+      geom.setTextureCoordinateIndices(i,
 	triToStripIndices(sc, geom.getTextureCoordinateIndices(i), c));
     }
 
@@ -770,7 +770,7 @@ public class NormalGenerator {
    * Generate normals for the GeometryInfo object.  If the GeometryInfo
    * object didn't previously contain indexed data, indexes are made
    * by collapsing identical positions into a single index.  Any
-   * normal information previously contained in the GeometryInfo 
+   * normal information previously contained in the GeometryInfo
    * object is lost.  Strips and Fans are converted into individual
    * triangles for Normal generation, but are stitched back together
    * if GeometryInfo.getGeometryArray() (or getIndexedGeometryArray())
@@ -813,21 +813,21 @@ public class NormalGenerator {
       System.out.println("Convert to triangles: " + t1 + " ms");
       time = System.currentTimeMillis();
     }
-      
+
     calculatefacetNorms();
     if ((DEBUG & 16) != 0) {
       t2 += System.currentTimeMillis() - time;
       System.out.println("Calculate Facet Normals: " + t2 + " ms");
       time = System.currentTimeMillis();
     }
-      
+
     int maxShare = createHardEdges();
     if ((DEBUG & 16) != 0) {
       t3 += System.currentTimeMillis() - time;
       System.out.println("Hard Edges: " + t3 + " ms");
       time = System.currentTimeMillis();
     }
-      
+
     calculateVertexNormals(maxShare);
     if ((DEBUG & 16) != 0) {
       t5 += System.currentTimeMillis() - time;
@@ -841,7 +841,7 @@ public class NormalGenerator {
 	System.out.println(i + "  " + coordInds[i] + "  " + normalInds[i]);
       }
     }
-      
+
     // We have been caching some info from the GeometryInfo, so we need
     // to update it.
     gi.setCoordinateIndices(coordInds);
@@ -856,9 +856,9 @@ public class NormalGenerator {
 
 
   /**
-   * Set the crease angle.  
+   * Set the crease angle.
    * If two triangles' normals differ by more than
-   * creaseAngle, then the vertex will get two separate normals, creating a 
+   * creaseAngle, then the vertex will get two separate normals, creating a
    * discontinuous crease in the model.  This is perfect for the edge
    * of a table or the corner of a cube, for instance.  Clamped to
    * 0 <= creaseAngle <= PI.  Optimizations are made for creaseAngle == 0

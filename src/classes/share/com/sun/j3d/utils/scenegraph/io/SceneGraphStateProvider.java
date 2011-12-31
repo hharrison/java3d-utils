@@ -48,18 +48,18 @@ import com.sun.j3d.utils.scenegraph.io.state.javax.media.j3d.SceneGraphObjectSta
 
 /**
  * This interface allows developers to provide their own custom IO control for
- * subclasses of SceneGraphObjects. As the Scene Graph is being saved any 
- * SceneGraphObject in the graph that implements this interface must provide 
- * it's state class which is responsible for saving the entire state of 
+ * subclasses of SceneGraphObjects. As the Scene Graph is being saved any
+ * SceneGraphObject in the graph that implements this interface must provide
+ * it's state class which is responsible for saving the entire state of
  * that object.
  */
 public interface SceneGraphStateProvider {
-    
+
     /**
-     * Returns the State class 
+     * Returns the State class
      *
      * @return Class that will perform the IO for the SceneGraphObject
      */
     public Class<? extends SceneGraphObjectState> getStateClass();
-    
+
 }

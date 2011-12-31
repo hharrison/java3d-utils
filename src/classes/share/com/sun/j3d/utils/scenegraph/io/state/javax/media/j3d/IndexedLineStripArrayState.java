@@ -62,9 +62,9 @@ public class IndexedLineStripArrayState extends IndexedGeometryStripArrayState {
     public IndexedLineStripArrayState(SymbolTableData symbol,Controller control) {
         super( symbol, control );
     }
-    
+
     public SceneGraphObject createNode( Class j3dClass ) {
-        return super.createNode( j3dClass, new Class[] { Integer.TYPE, 
+        return super.createNode( j3dClass, new Class[] { Integer.TYPE,
                                                           Integer.TYPE,
                                                           Integer.TYPE,
                                                           texCoordSetMap.getClass(),
@@ -77,10 +77,10 @@ public class IndexedLineStripArrayState extends IndexedGeometryStripArrayState {
                                                           new Integer( indexCount ),
                                                           stripIndexCounts } );
     }
-    
+
     protected javax.media.j3d.SceneGraphObject createNode() {
         return new IndexedLineStripArray( vertexCount, vertexFormat, texCoordSetCount, texCoordSetMap, indexCount, stripIndexCounts );
     }
 
-    
+
 }

@@ -56,14 +56,14 @@ import javax.media.j3d.*;
  * This class sets up a minimal user environment to quickly and easily
  * get a Java 3D program up and running.  This utility class creates
  * all the necessary objects on the "view" side of the scene graph.
- * Specifically, this class creates a locale, a single ViewingPlatform, 
+ * Specifically, this class creates a locale, a single ViewingPlatform,
  * and a Viewer object (both with their default values).
  * Many basic Java 3D applications
  * will find that SimpleUniverse provides all necessary functionality
  * needed by their applications. More sophisticated applications
  * may find that they need more control in order to get extra functionality
  * and will not be able to use this class.
- * 
+ *
  * @see Viewer
  * @see ViewingPlatform
  */
@@ -208,7 +208,7 @@ public class SimpleUniverse extends VirtualUniverse {
       Canvas3D canvas, URL userConfig) {
           this( origin, numTransforms, canvas, userConfig, null );
     }
-    
+
     /**
      * Creates the "view" side of the scene graph.  The passed in parameters
      * override the default values where appropriate.
@@ -237,7 +237,7 @@ public class SimpleUniverse extends VirtualUniverse {
 	ViewingPlatform vwp;
 
         createLocale( origin, localeFactory );
-        
+
         // Create the ViewingPlatform and Viewer objects, passing
         // down the appropriate parameters.
 	vwp = new ViewingPlatform(numTransforms);
@@ -265,7 +265,7 @@ public class SimpleUniverse extends VirtualUniverse {
     public SimpleUniverse(ViewingPlatform viewingPlatform, Viewer viewer) {
         this( viewingPlatform, viewer, null );
     }
-    
+
     /**
      * Creates the "view" side of the scene graph.  The passed in parameters
      * override the default values where appropriate.
@@ -280,7 +280,7 @@ public class SimpleUniverse extends VirtualUniverse {
 			  LocaleFactory localeFactory ) {
         createLocale( null, localeFactory );
         viewingPlatform.setUniverse( this );
-        
+
         // Assign object references.
         this.viewer = new Viewer[1];
         this.viewer[0] = viewer;
@@ -292,17 +292,17 @@ public class SimpleUniverse extends VirtualUniverse {
         // graph is now "live".
         locale.addBranchGraph(viewingPlatform);
     }
-    
-    /** 
+
+    /**
      * Constructor for use by Configured Universe
      */
     SimpleUniverse( HiResCoord origin, LocaleFactory localeFactory ) {
         createLocale( origin, localeFactory );
     }
-    
-    /** 
+
+    /**
      *  Create the Locale using the LocaleFactory and HiRes origin,
-     *  if specified. 
+     *  if specified.
      */
     private void createLocale( HiResCoord origin,
 			       LocaleFactory localeFactory ) {
@@ -332,10 +332,10 @@ public class SimpleUniverse extends VirtualUniverse {
     }
 
     /**
-     * Returns the Viewer object associated with this scene graph.  
+     * Returns the Viewer object associated with this scene graph.
      * SimpleUniverse creates a single Viewer object for use in the
      * scene graph.
-     * 
+     *
      * @return The Viewer object associated with this scene graph.
      */
     public Viewer getViewer() {
@@ -431,7 +431,7 @@ public class SimpleUniverse extends VirtualUniverse {
     public void cleanup() {
 	// Get view associated with this SimpleUniverse
 	View view = viewer[0].getView();
-	
+
 	// Issue 134: cleanup all off-screen canvases
 	for (int i = view.numCanvas3Ds() - 1; i >= 0; i--) {
 	    Canvas3D c = view.getCanvas3D(i);

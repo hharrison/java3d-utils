@@ -117,7 +117,7 @@ import java.util.*;
 // <A HREF="/resources/classes/Acme/MainFrame.java">Fetch the software.</A><BR>
 // <A HREF="/resources/classes/Acme.tar.Z">Fetch the entire Acme package.</A>
 
-public class MainFrame extends Frame implements 
+public class MainFrame extends Frame implements
                    Runnable, AppletStub, AppletContext
 {
 
@@ -132,7 +132,7 @@ public class MainFrame extends Frame implements
     private static final String PARAM_PROP_PREFIX = "parameter.";
 
     /// Constructor with everything specified.
-    public MainFrame(Applet applet, String[] args, 
+    public MainFrame(Applet applet, String[] args,
 		     int width, int height) {
 	build(applet, args, width, height);
     }
@@ -148,7 +148,7 @@ public class MainFrame extends Frame implements
     }
 
     // Internal constructor routine.
-    private void build(	Applet applet, String[] args, 
+    private void build(	Applet applet, String[] args,
 			int width, int height) {
 	++instances;
 	this.applet = applet;
@@ -241,7 +241,7 @@ public class MainFrame extends Frame implements
 	// methods, in case they take a long time.
 	(new Thread( this )).start();
     }
-    
+
     // Turn command-line arguments into Applet parameters, by way of the
     // properties list.
     private static void parseArgs( String[] args, Properties props) {
@@ -277,7 +277,7 @@ public class MainFrame extends Frame implements
     public boolean isActive() {
 	return true;
     }
-    
+
     public URL getDocumentBase() {
 	// Returns the current directory.
 	String dir = System.getProperty( "user.dir" );
@@ -288,7 +288,7 @@ public class MainFrame extends Frame implements
 	    return null;
 	}
     }
-    
+
     public URL getCodeBase() {
 	// Hack: loop through each item in CLASSPATH, checking if
 	// the appropriately named .class file exists there.  But
@@ -310,12 +310,12 @@ public class MainFrame extends Frame implements
 	}
 	return null;
     }
-    
+
     public String getParameter(String name) {
 	// Return a parameter via the munged names in the properties list.
 	return System.getProperty( PARAM_PROP_PREFIX + name.toLowerCase() );
     }
-    
+
     public void appletResize(int width, int height) {
 	// Change the frame's size by the same amount that the applet's
 	// size is changing.
@@ -329,7 +329,7 @@ public class MainFrame extends Frame implements
     public AppletContext getAppletContext() {
 	return this;
     }
-    
+
 
     // Methods from AppletContext.
     public AudioClip getAudioClip( URL url ) {
@@ -350,7 +350,7 @@ public class MainFrame extends Frame implements
 	    return null;
 	}
     }
-    
+
     public Applet getApplet(String name) {
 	// Returns this Applet or nothing.
 	if (name.equals( this.name )) {
@@ -358,22 +358,22 @@ public class MainFrame extends Frame implements
 	}
 	return null;
     }
-    
+
     public Enumeration getApplets() {
 	// Just yields this applet.
 	Vector v = new Vector();
 	v.addElement( applet );
 	return v.elements();
     }
-    
+
     public void showDocument( URL url )	{
 	// Ignore.
     }
-    
+
     public void showDocument( URL url, String target ) {
 	// Ignore.
     }
-    
+
     public void showStatus( String status ) {
 	if (label != null) {
 	    label.setText(status);

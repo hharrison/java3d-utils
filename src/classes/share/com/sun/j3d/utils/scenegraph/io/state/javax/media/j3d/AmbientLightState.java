@@ -57,5 +57,5 @@ public class AmbientLightState extends LightState {
     protected javax.media.j3d.SceneGraphObject createNode() {
         return new AmbientLight();
     }
-    
+
 }

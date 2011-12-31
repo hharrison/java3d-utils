@@ -64,19 +64,19 @@ public class RotPosScaleTCBSplinePathInterpolatorState extends TransformInterpol
 
     private TCBKeyFrame[] keyFrames;
     private Transform3D axisOfTranslation;
-    
+
     public RotPosScaleTCBSplinePathInterpolatorState(SymbolTableData symbol,Controller control) {
         super( symbol, control );
     }
-    
+
     public void writeConstructorParams( DataOutput out ) throws IOException {
         super.writeConstructorParams( out );
-        
+
         control.writeTransform3D( out, ((RotPosScaleTCBSplinePathInterpolator)node).getAxisOfRotPosScale() );
 
         int length = ((RotPosScaleTCBSplinePathInterpolator)node).getArrayLength();
         out.writeInt( length );
-        
+
         for(int i=0; i<length; i++) {
             TCBKeyFrame keyFrame = ((RotPosScaleTCBSplinePathInterpolator)node).getKeyFrame( i );
             out.writeFloat( keyFrame.knot );
@@ -89,10 +89,10 @@ public class RotPosScaleTCBSplinePathInterpolatorState extends TransformInterpol
             out.writeFloat( keyFrame.bias );
         }
     }
-    
+
     public void readConstructorParams( DataInput in ) throws IOException {
         super.readConstructorParams( in );
-        
+
         axisOfTranslation =  control.readTransform3D( in );
 
         keyFrames = new TCBKeyFrame[in.readInt() ];
@@ -107,7 +107,7 @@ public class RotPosScaleTCBSplinePathInterpolatorState extends TransformInterpol
                                             in.readFloat() );
         }
     }
-    
+
     public SceneGraphObject createNode( Class j3dClass ) {
         return createNode( j3dClass, new Class[] { javax.media.j3d.Alpha.class,
                                                     TransformGroup.class,
@@ -117,9 +117,9 @@ public class RotPosScaleTCBSplinePathInterpolatorState extends TransformInterpol
                                                      null,
                                                      axisOfTranslation,
                                                      keyFrames } );
-                                                    
+
     }
-    
+
     protected javax.media.j3d.SceneGraphObject createNode() {
         return new RotPosScaleTCBSplinePathInterpolator( null, null, axisOfTranslation, keyFrames );
     }

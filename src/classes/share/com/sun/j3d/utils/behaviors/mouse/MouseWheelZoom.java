@@ -58,12 +58,12 @@ import javax.vecmath.*;
  */
 
 public class MouseWheelZoom extends MouseBehavior {
-	
+
 	double z_factor = .1;
 	Vector3d translation = new Vector3d();
-	
+
 	private MouseBehaviorCallback callback = null;
-	
+
 	/**
 	 * Creates a zoom behavior given the transform group.
 	 * @param transformGroup The transformGroup to operate on.
@@ -71,14 +71,14 @@ public class MouseWheelZoom extends MouseBehavior {
 	public MouseWheelZoom(TransformGroup transformGroup) {
 		super(transformGroup);
 	}
-	
+
 	/**
 	 * Creates a default mouse zoom behavior.
 	 **/
 	public MouseWheelZoom() {
 		super(0);
 	}
-	
+
 	/**
 	 * Creates a zoom behavior.
 	 * Note that this behavior still needs a transform
@@ -89,7 +89,7 @@ public class MouseWheelZoom extends MouseBehavior {
 	public MouseWheelZoom(int flags) {
 		super(flags);
 	}
-	
+
 	/**
 	 * Creates a zoom behavior that uses AWT listeners and behavior
 	 * posts rather than WakeupOnAWTEvent.  The behavior is added to the
@@ -103,7 +103,7 @@ public class MouseWheelZoom extends MouseBehavior {
 	public MouseWheelZoom(Component c) {
 		super(c, 0);
 	}
-	
+
 	/**
 	 * Creates a zoom behavior that uses AWT listeners and behavior
 	 * posts rather than WakeupOnAWTEvent.  The behaviors is added to
@@ -118,7 +118,7 @@ public class MouseWheelZoom extends MouseBehavior {
 	public MouseWheelZoom(Component c, TransformGroup transformGroup) {
 		super(c, transformGroup);
 	}
-	
+
 	/**
 	 * Creates a zoom behavior that uses AWT listeners and behavior
 	 * posts rather than WakeupOnAWTEvent.  The behavior is added to the
@@ -134,7 +134,7 @@ public class MouseWheelZoom extends MouseBehavior {
 	public MouseWheelZoom(Component c, int flags) {
 		super(c, flags);
 	}
-	
+
 	public void initialize() {
 	    super.initialize();
 	    if ((flags & INVERT_INPUT) == INVERT_INPUT) {
@@ -142,22 +142,22 @@ public class MouseWheelZoom extends MouseBehavior {
 		invert = true;
 	    }
 	}
-	
+
     /**
      * Return the y-axis movement multipler.
      **/
     public double getFactor() {
 	return z_factor;
     }
-	
+
     /**
      * Set the wheel units movement multipler with factor.
      **/
     public void setFactor( double factor) {
 	z_factor = factor;
     }
-	
-	
+
+
     public void processStimulus(Enumeration criteria) {
 	WakeupCriterion wakeup;
 	AWTEvent[] events;
@@ -172,7 +172,7 @@ public class MouseWheelZoom extends MouseBehavior {
 		    doProcess(evt);
 		}
 	    }
-	    
+
 	    else if (wakeup instanceof WakeupOnBehaviorPost) {
 		while (true) {
 		    synchronized (mouseq) {
@@ -189,51 +189,51 @@ public class MouseWheelZoom extends MouseBehavior {
 		    doProcess(evt);
 		}
 	    }
-	    
+
 	}
 	wakeupOn(mouseCriterion);
     }
-	
+
     void doProcess(MouseEvent evt) {
 	int units = 0;
-		
+
 	processMouseEvent(evt);
-		
+
 	if ((evt.getID() == MouseEvent.MOUSE_WHEEL)) {
 	    MouseWheelEvent wheelEvent = (MouseWheelEvent)evt;
 	    if (wheelEvent.getScrollType() == wheelEvent.WHEEL_UNIT_SCROLL ) {
 		units = wheelEvent.getUnitsToScroll();
 	    }
-			
+
 	    if (!reset) {
 		transformGroup.getTransform(currXform);
-		
+
 		translation.z  = units*z_factor;
-		
+
 		transformX.set(translation);
-				
+
 		if (invert) {
 		    currXform.mul(currXform, transformX);
 		} else {
 		    currXform.mul(transformX, currXform);
 		}
-				
+
 		transformGroup.setTransform(currXform);
-		
+
 		transformChanged( currXform );
-		
+
 		if (callback!=null)
 		    callback.transformChanged( MouseBehaviorCallback.ZOOM,
 					       currXform );
-				
+
 	    }
 	    else {
 		reset = false;
-	    }		
+	    }
 	}
     }
-	
-	
+
+
     /**
      * Users can overload this method  which is called every time
      * the Behavior updates the transform
@@ -242,7 +242,7 @@ public class MouseWheelZoom extends MouseBehavior {
      */
     public void transformChanged( Transform3D transform ) {
     }
-	
+
     /**
      * The transformChanged method in the callback class will
      * be called every time the transform is updated

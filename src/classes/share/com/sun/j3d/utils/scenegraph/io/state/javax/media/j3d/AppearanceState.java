@@ -64,7 +64,7 @@ import javax.media.j3d.TextureUnitState;
 import javax.media.j3d.TransparencyAttributes;
 
 public class AppearanceState extends NodeComponentState {
-    
+
     private int polygonAttributes=0;
     private int renderingAttributes=0;
     private int coloringAttributes=0;
@@ -76,10 +76,10 @@ public class AppearanceState extends NodeComponentState {
     private int textureAttributes=0;
     private int[] textureUnitState;
     private int transparencyAttributes=0;
-    
+
     public AppearanceState( SymbolTableData symbol, Controller control ) {
         super(symbol, control);
-        
+
         if (node!=null) {       // Node is null during load
             Appearance app = (Appearance)node;
             polygonAttributes = control.getSymbolTable().addReference( app.getPolygonAttributes() );
@@ -96,14 +96,14 @@ public class AppearanceState extends NodeComponentState {
             if (texUnitState!=null) {
                 textureUnitState = new int[ texUnitState.length ];
                 for(int i=0; i<texUnitState.length; i++)
-                    textureUnitState[i] = control.getSymbolTable().addReference( texUnitState[i] );            
+                    textureUnitState[i] = control.getSymbolTable().addReference( texUnitState[i] );
             } else
                 textureUnitState = new int[ 0 ];
 
             transparencyAttributes = control.getSymbolTable().addReference( app.getTransparencyAttributes() );
         }
     }
-    
+
     public void writeObject( DataOutput out ) throws IOException {
         super.writeObject( out );
 
@@ -121,7 +121,7 @@ public class AppearanceState extends NodeComponentState {
             out.writeInt( textureUnitState[i] );
         out.writeInt( transparencyAttributes );
     }
-    
+
     public void readObject( DataInput in ) throws IOException {
         super.readObject( in );
         polygonAttributes = in.readInt();
@@ -138,7 +138,7 @@ public class AppearanceState extends NodeComponentState {
             textureUnitState[i] = in.readInt();
         transparencyAttributes = in.readInt();
     }
-    
+
     /**
      * Called when this component reference count is incremented.
      * Allows this component to update the reference count of any components
@@ -158,8 +158,8 @@ public class AppearanceState extends NodeComponentState {
             control.getSymbolTable().incNodeComponentRefCount( textureUnitState[i] );
         control.getSymbolTable().incNodeComponentRefCount( transparencyAttributes );
     }
-    
-    public void buildGraph() {        
+
+    public void buildGraph() {
         Appearance app = (Appearance)node;
         app.setPolygonAttributes( (PolygonAttributes)control.getSymbolTable().getJ3dNode(polygonAttributes) );
         app.setRenderingAttributes( (RenderingAttributes)control.getSymbolTable().getJ3dNode(renderingAttributes) );
@@ -170,19 +170,19 @@ public class AppearanceState extends NodeComponentState {
         app.setTexCoordGeneration( (TexCoordGeneration)control.getSymbolTable().getJ3dNode(texCoordGeneration) );
         app.setTextureAttributes( (TextureAttributes)control.getSymbolTable().getJ3dNode(textureAttributes) );
         app.setTexture( (Texture)control.getSymbolTable().getJ3dNode(texture) );
-        
+
         TextureUnitState[] texUnitState = new TextureUnitState[ textureUnitState.length ];
         for(int i=0; i<textureUnitState.length; i++)
             texUnitState[i] = (TextureUnitState)control.getSymbolTable().getJ3dNode(textureUnitState[i]);
-        
+
         if (texUnitState.length>0)          // TODO - remove if, workaround for bug in daily
             app.setTextureUnitState( texUnitState );
-        
+
         app.setTransparencyAttributes( (TransparencyAttributes)control.getSymbolTable().getJ3dNode(transparencyAttributes) );
 
         super.buildGraph(); // Must be last call in method
      }
-     
+
     protected javax.media.j3d.SceneGraphObject createNode() {
         return new Appearance();
     }

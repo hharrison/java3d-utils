@@ -168,7 +168,7 @@ class HuffmanNode {
 	} else
 	    return false ;
     }
-    
+
     int incrementLength() {
 	if (shift > 0)
 	    shift-- ;

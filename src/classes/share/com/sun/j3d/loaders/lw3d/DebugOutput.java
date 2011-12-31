@@ -50,7 +50,7 @@ package com.sun.j3d.loaders.lw3d;
  */
 
 class DebugOutput {
-	
+
     int validOutput = 0;
     final static int TRACE = 1, VALUES = 2, MISC = 4, LINE_TRACE = 8;
     final static int NONE = 0, EXCEPTION = 16, TIME = 32, WARNING = 64;
@@ -80,6 +80,6 @@ class DebugOutput {
 
 }
 
- 
+
 
 

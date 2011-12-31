@@ -53,33 +53,33 @@ import javax.media.j3d.SceneGraphObject;
 import javax.media.j3d.Texture3D;
 
 public class Texture3DState extends TextureState {
-    
+
     private int depth;
-    
+
     public Texture3DState( SymbolTableData symbol, Controller control ) {
         super(symbol, control);
     }
-    
+
     public void writeObject( DataOutput out ) throws IOException {
         super.writeObject( out );
         out.writeInt( ((Texture3D)node).getBoundaryModeR() );
     }
-    
+
     public void readObject( DataInput in ) throws IOException {
         super.readObject( in );
         ((Texture3D)node).setBoundaryModeR( in.readInt() );
     }
-    
+
     public void writeConstructorParams( DataOutput out ) throws IOException {
         super.writeConstructorParams( out );
         out.writeInt( ((Texture3D)node).getDepth() );
     }
-    
+
     public void readConstructorParams( DataInput in ) throws IOException {
         super.readConstructorParams( in );
         depth = in.readInt();
     }
-    
+
     public SceneGraphObject createNode( Class j3dClass ) {
         return createNode( j3dClass, new Class[] { Integer.TYPE,
                                                     Integer.TYPE,
@@ -94,10 +94,10 @@ public class Texture3DState extends TextureState {
                                                      new Integer( depth ),
 						     new Integer( boundaryWidth ) } );
     }
-    
+
     protected javax.media.j3d.SceneGraphObject createNode() {
         return new Texture3D( mipMapMode, format, width, height, depth, boundaryWidth );
     }
 
-    
+
 }

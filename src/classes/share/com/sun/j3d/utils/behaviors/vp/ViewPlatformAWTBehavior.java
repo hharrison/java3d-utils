@@ -78,7 +78,7 @@ import com.sun.j3d.utils.universe.*;
  * AWT Events are captured and placed in a queue.
  *
  * While there are pending events or motion the behavior will wake
- * up every frame, call processAWTEvents and integrateTransforms. 
+ * up every frame, call processAWTEvents and integrateTransforms.
  *
  * @since Java 3D 1.2.1
  */
@@ -86,7 +86,7 @@ public abstract class ViewPlatformAWTBehavior extends ViewPlatformBehavior
 implements MouseListener, MouseMotionListener, KeyListener, MouseWheelListener {
 
     private final static boolean DEBUG = false;
-    
+
     /**
      * Behavior PostId used in this behavior
      */
@@ -96,7 +96,7 @@ implements MouseListener, MouseMotionListener, KeyListener, MouseWheelListener {
      * The different criterion for the behavior to wakeup
      */
     protected WakeupOnElapsedFrames frameWakeup;
-    
+
     /**
      * The Or of the different criterion for the behavior to wakeup
      */
@@ -106,12 +106,12 @@ implements MouseListener, MouseMotionListener, KeyListener, MouseWheelListener {
      * The target Transform3D for this behavior
      */
     protected Transform3D targetTransform = new Transform3D();
-    
+
     /**
      * Boolean for whether the mouse is in motion
      */
     protected boolean motion = false;
-    
+
     /**
      * Flag indicating Behavior should listen for Mouse Events
      */
@@ -144,7 +144,7 @@ implements MouseListener, MouseMotionListener, KeyListener, MouseWheelListener {
     /**
      * Parameterless constructor for this behavior, intended for use by
      * subclasses instantiated through ConfiguredUniverse. Such a constructor
-     * is required for configurable behaviors.  
+     * is required for configurable behaviors.
      * @since Java 3D 1.3
      */
     protected ViewPlatformAWTBehavior() {
@@ -154,8 +154,8 @@ implements MouseListener, MouseMotionListener, KeyListener, MouseWheelListener {
     /**
      * Construct a behavior which listens for events specified by the given
      * flags, intended for use by subclasses instantiated through
-     * ConfiguredUniverse. 
-     * 
+     * ConfiguredUniverse.
+     *
      * @param listenerFlags Indicates which listener should be registered,
      * one or more of MOUSE_LISTENER, MOUSE_MOTION_LISTENER, KEY_LISTENER, MOUSE_WHEEL_LISTENER
      * @since Java 3D 1.3
@@ -167,7 +167,7 @@ implements MouseListener, MouseMotionListener, KeyListener, MouseWheelListener {
 
     /**
      * Constructs a new ViewPlatformAWTBehavior.
-     * 
+     *
      * @param c The Canvas3D on which to listen for events. If this is null a
      * NullPointerException will be thrown.
      * @param listenerFlags Indicates which listener should be registered,
@@ -175,14 +175,14 @@ implements MouseListener, MouseMotionListener, KeyListener, MouseWheelListener {
      */
     public ViewPlatformAWTBehavior(Canvas3D c, int listenerFlags ) {
         super();
-        
+
         if (c == null)
             throw new NullPointerException();
 
-        canvases = new Canvas3D[] { c };        
+        canvases = new Canvas3D[] { c };
 	setListenerFlags(listenerFlags);
-    }     
-    
+    }
+
     /**
      * Sets listener flags for this behavior.
      *
@@ -193,7 +193,7 @@ implements MouseListener, MouseMotionListener, KeyListener, MouseWheelListener {
     protected void setListenerFlags(int listenerFlags) {
         this.listenerFlags = listenerFlags;
     }
-    
+
     /**
      * Initializes the behavior.
      * NOTE: Applications should not call this method. It is called by the
@@ -202,12 +202,12 @@ implements MouseListener, MouseMotionListener, KeyListener, MouseWheelListener {
     public void initialize() {
         frameWakeup = new WakeupOnElapsedFrames( 0 );
         postWakeup = new WakeupOnBehaviorPost( this, POST_ID );
-        
+
 	wakeupOn(postWakeup);
     }
 
     /**
-     * Process a stimulus meant for this behavior. 
+     * Process a stimulus meant for this behavior.
      * NOTE: Applications should not call this method. It is called by the
      * Java 3D behavior scheduler.
      */
@@ -226,12 +226,12 @@ implements MouseListener, MouseMotionListener, KeyListener, MouseWheelListener {
                     eventQueue.clear();
 		}
                 processAWTEvents(events);
-                
+
                 if (motion)
                     integrateTransforms();
             }
         }
-        
+
         if (motion || hadPost) {
 	    // wake up on behavior posts and elapsed frames if in motion
             wakeupOn( frameWakeup );
@@ -240,7 +240,7 @@ implements MouseListener, MouseMotionListener, KeyListener, MouseWheelListener {
             wakeupOn( postWakeup );
 	}
     }
-    
+
     /**
      * Overload setEnable from Behavior.
      *
@@ -250,14 +250,14 @@ implements MouseListener, MouseMotionListener, KeyListener, MouseWheelListener {
     public void setEnable( boolean state ) {
         if (state==getEnable())
             return;
-        
+
         super.setEnable(state);
 
         if (canvases != null) {
 	    enableListeners(state);
 	}
     }
-    
+
     private void enableListeners( boolean enable ) {
         if (enable) {
 	    firstEvent = true ;
@@ -300,7 +300,7 @@ implements MouseListener, MouseMotionListener, KeyListener, MouseWheelListener {
      * called by the ViewingPlatform.
      * If a sub-calls overrides this method, it must call
      * super.setViewingPlatform(vp).
-     * NOTE: Applications should <i>not</i> call this method.    
+     * NOTE: Applications should <i>not</i> call this method.
      */
     public void setViewingPlatform(ViewingPlatform vp) {
         super.setViewingPlatform( vp );
@@ -328,7 +328,7 @@ implements MouseListener, MouseMotionListener, KeyListener, MouseWheelListener {
 	    }
         }
     }
-    
+
     /**
      * This is called once per frame if there are any AWT events to
      * process.
@@ -341,7 +341,7 @@ implements MouseListener, MouseMotionListener, KeyListener, MouseWheelListener {
      * arrived from AWT.
      */
     protected abstract void processAWTEvents( final java.awt.AWTEvent[] events );
-    
+
     /**
      * Called once per frame (if the view is moving) to calculate the new
      * view platform transform
@@ -369,15 +369,15 @@ implements MouseListener, MouseMotionListener, KeyListener, MouseWheelListener {
 	    }
 	}
     }
-    
+
     public void mouseClicked(final MouseEvent e) {
         queueAWTEvent( e );
     }
-    
+
     public void mouseEntered(final MouseEvent e) {
         queueAWTEvent( e );
     }
-    
+
     public void mouseExited(final MouseEvent e) {
         queueAWTEvent( e );
     }
@@ -401,17 +401,17 @@ implements MouseListener, MouseMotionListener, KeyListener, MouseWheelListener {
     public void keyReleased(final java.awt.event.KeyEvent e) {
         queueAWTEvent( e );
     }
-    
+
     public void keyPressed(final java.awt.event.KeyEvent e) {
         queueAWTEvent( e );
     }
-    
+
     public void keyTyped(final java.awt.event.KeyEvent e) {
         queueAWTEvent( e );
     }
 
     public void mouseWheelMoved( final java.awt.event.MouseWheelEvent e) {
 	queueAWTEvent( e );
-    }    
+    }
 }
 

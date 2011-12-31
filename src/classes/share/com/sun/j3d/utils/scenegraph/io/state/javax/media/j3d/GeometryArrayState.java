@@ -77,14 +77,14 @@ public abstract class GeometryArrayState extends GeometryState {
     private static final int FORMAT_4F = 8;
     private static final int FORMAT_2D = 9;
     private static final int FORMAT_3D = 10;
-    
+
     public GeometryArrayState( SymbolTableData symbol, Controller control ) {
 	super( symbol, control );
     }
 
     public void writeObject( DataOutput out ) throws IOException {
         super.writeObject( out );
-        
+
 	boolean nio = (vertexFormat & GeometryArray.USE_NIO_BUFFER) != 0;
 
 	if ( (vertexFormat & GeometryArray.INTERLEAVED)!=0 ) {
@@ -485,12 +485,12 @@ public abstract class GeometryArrayState extends GeometryState {
 	if ( (vertexFormat & GeometryArray.INTERLEAVED)!=0 ) {
 	    if ( !(node instanceof IndexedGeometryArray) )  {
 		((GeometryArray)node).setInitialVertexIndex( in.readInt() );
-		if ( !(node instanceof GeometryStripArray) ) 
+		if ( !(node instanceof GeometryStripArray) )
 		    ((GeometryArray)node).setValidVertexCount( in.readInt() );
 	    }
 	    if ( nio ) {
 		float[] floats = readFloatArray( in );
-		ByteBufferWrapper b = 
+		ByteBufferWrapper b =
 		    ByteBufferWrapper.allocateDirect( floats.length*4 );
 		FloatBufferWrapper f =
 		    b.order( ByteOrderWrapper.nativeOrder() ).asFloatBuffer();
@@ -502,7 +502,7 @@ public abstract class GeometryArrayState extends GeometryState {
 
 	    // We MUST check for COLOR_4 before we check for COLOR_3,
 	    // because the COLOR_3 test will pass for COLOR_4 objects
-	    
+
 	    if ( !(node instanceof IndexedGeometryArray) ) {
 		if ( !byRef )
 		    ((GeometryArray)node).setInitialVertexIndex( in.readInt() );
@@ -529,7 +529,7 @@ public abstract class GeometryArrayState extends GeometryState {
 			break;
 			case FORMAT_FLOAT: {
 			    float[] floats = readFloatArray( in );
-			    ByteBufferWrapper b = 
+			    ByteBufferWrapper b =
 				ByteBufferWrapper.allocateDirect( floats.length*4 );
 			    FloatBufferWrapper f =
 				b.order( ByteOrderWrapper.nativeOrder() ).asFloatBuffer();
@@ -601,7 +601,7 @@ public abstract class GeometryArrayState extends GeometryState {
 			break;
 			case FORMAT_FLOAT: {
 			    float[] floats = readFloatArray( in );
-			    ByteBufferWrapper b = 
+			    ByteBufferWrapper b =
 				ByteBufferWrapper.allocateDirect( floats.length*4 );
 			    FloatBufferWrapper f =
 				b.order( ByteOrderWrapper.nativeOrder() ).asFloatBuffer();
@@ -664,7 +664,7 @@ public abstract class GeometryArrayState extends GeometryState {
 			switch( in.readInt() ) {
 			case FORMAT_FLOAT: {
 			    float[] floats = readFloatArray( in );
-			    ByteBufferWrapper b = 
+			    ByteBufferWrapper b =
 				ByteBufferWrapper.allocateDirect( floats.length*4 );
 			    FloatBufferWrapper f =
 				b.order( ByteOrderWrapper.nativeOrder() ).asFloatBuffer();
@@ -674,7 +674,7 @@ public abstract class GeometryArrayState extends GeometryState {
 			break;
 			case FORMAT_DOUBLE: {
 			    double[] doubles = readDoubleArray( in );
-			    ByteBufferWrapper b = 
+			    ByteBufferWrapper b =
 				ByteBufferWrapper.allocateDirect( doubles.length*4 );
 			    DoubleBufferWrapper f =
 				b.order( ByteOrderWrapper.nativeOrder() ).asDoubleBuffer();
@@ -731,7 +731,7 @@ public abstract class GeometryArrayState extends GeometryState {
 		    if ( nio ) {
 			if ( in.readInt() == FORMAT_FLOAT ) {
 			    float[] floats = readFloatArray( in );
-			    ByteBufferWrapper b = 
+			    ByteBufferWrapper b =
 				ByteBufferWrapper.allocateDirect( floats.length*4 );
 			    FloatBufferWrapper f =
 				b.order( ByteOrderWrapper.nativeOrder() ).asFloatBuffer();
@@ -775,7 +775,7 @@ public abstract class GeometryArrayState extends GeometryState {
 			if ( nio ) {
 			    if ( in.readInt() == FORMAT_FLOAT ) {
 				float[] floats = readFloatArray( in );
-				ByteBufferWrapper b = 
+				ByteBufferWrapper b =
 				    ByteBufferWrapper.allocateDirect( floats.length*4 );
 				FloatBufferWrapper f = b.order(
 				    ByteOrderWrapper.nativeOrder() ).asFloatBuffer();
@@ -830,9 +830,9 @@ public abstract class GeometryArrayState extends GeometryState {
 	vertexFormat = ((GeometryArray)node).getVertexFormat();
         texCoordSetCount = ((GeometryArray)node).getTexCoordSetCount();
         texCoordSetMap = new int[ ((GeometryArray)node).getTexCoordSetMapLength() ];
-        
+
         ((GeometryArray)node).getTexCoordSetMap( texCoordSetMap );
-        
+
 	out.writeInt(vertexCount);
 	out.writeInt(vertexFormat);
         out.writeInt( texCoordSetCount );
@@ -853,16 +853,16 @@ public abstract class GeometryArrayState extends GeometryState {
        texCoordSetMap = new int[in.readInt()];
        for(int i=0; i<texCoordSetMap.length; i++)
            texCoordSetMap[i] = in.readInt();
-       
+
        super.readConstructorParams( in );
     }
-    
+
     protected void writeDoubleArray( DataOutput out, double[] array ) throws IOException {
 
         // Writing the array into a ByteArray in memory and then dumping
         // the byte array to DataOutput with a single call is MUCH quicker
         // than writing each double to DataOutput.
-        
+
         ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
         DataOutputStream dataOut = new DataOutputStream( byteStream );
 
@@ -870,32 +870,32 @@ public abstract class GeometryArrayState extends GeometryState {
         for(int i=0; i<array.length; i++)
             dataOut.writeDouble( array[i] );
         dataOut.close();
-        
+
         out.writeInt( byteStream.size() );
         out.write( byteStream.toByteArray() );
     }
-    
+
     protected double[] readDoubleArray( DataInput in ) throws IOException {
         byte[] buffer = new byte[ in.readInt() ];
         in.readFully( buffer );
         ByteArrayInputStream byteStream = new ByteArrayInputStream( buffer );
         DataInputStream dataIn = new DataInputStream( byteStream );
-        
+
         double[] array = new double[ dataIn.readInt() ];
         for(int i=0; i<array.length; i++)
             array[i] = dataIn.readDouble();
-        
+
         dataIn.close();
-        
+
         return array;
     }
-    
+
     protected void writeFloatArray( DataOutput out, float[] array ) throws IOException {
 
         // Writing the array into a ByteArray in memory and then dumping
         // the byte array to DataOutput with a single call is MUCH quicker
         // than writing each float to DataOutput.
-        
+
         ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
         DataOutputStream dataOut = new DataOutputStream( byteStream );
 
@@ -903,23 +903,23 @@ public abstract class GeometryArrayState extends GeometryState {
         for(int i=0; i<array.length; i++)
             dataOut.writeFloat( array[i] );
         dataOut.close();
-        
+
         out.writeInt( byteStream.size() );
         out.write( byteStream.toByteArray() );
     }
-    
+
     protected float[] readFloatArray( DataInput in ) throws IOException {
         byte[] buffer = new byte[ in.readInt() ];
         in.readFully( buffer );
         ByteArrayInputStream byteStream = new ByteArrayInputStream( buffer );
         DataInputStream dataIn = new DataInputStream( byteStream );
-        
+
         float[] array = new float[ dataIn.readInt() ];
         for(int i=0; i<array.length; i++)
             array[i] = dataIn.readFloat();
-        
+
         dataIn.close();
-        
+
         return array;
     }
 }

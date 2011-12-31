@@ -115,17 +115,17 @@ class CommandStream {
 
     /**
      * Add a compression command to this instance.<p>
-     * 
+     *
      * A compression command includes an 8-bit header and can range up to 72
      * bits in length.  The command with the maximum length is a 2-bit color
      * command with a 6-bit tag in the header, followed by four 16-bit color
      * components of data.<p>
-     * 
+     *
      * A subcommand is either a position, normal, or color, though in practice
      * a position subcommand can only be part of a vertex command.  Normal and
      * color subcommands can be parts of separate global normal and color
      * commands as well as parts of a vertex command.<p>
-     * 
+     *
      * A subcommand includes a 6-bit header.  Its length is 2 bits less than
      * the length of the corresponding command.
      *
@@ -147,7 +147,7 @@ class CommandStream {
 
     //
     // Add the rightmost bitCount bits of b to the end of the command stream.
-    // 
+    //
     private void addByte(int b, int bitCount) {
 	int bitsEmpty = 8 - bitOffset ;
 	b &= (int)CompressionStreamElement.lengthMask[bitCount] ;
@@ -173,14 +173,14 @@ class CommandStream {
 
     //
     // Add the rightmost bitCount bits of l to the end of the command stream.
-    // 
+    //
     private void addLong(long l, int bitCount) {
 	int byteCount = bitCount / 8 ;
 	int excessBits = bitCount - byteCount * 8 ;
 
 	if (excessBits > 0)
 	    addByte((int)(l >>> (byteCount * 8)), excessBits) ;
-	
+
 	while (byteCount > 0) {
 	    addByte((int)((l >>> ((byteCount - 1) * 8)) & 0xff), 8) ;
 	    byteCount-- ;
@@ -214,7 +214,7 @@ class CommandStream {
 	    int fillBytes = 8 - excessBytes ;
 	    padBits = (8 * fillBytes) + (8 - bitOffset) ;
 	}
-	
+
 	// The minimum length for a no-op command body is 5 bits.
 	if (padBits < 5)
 	    // Have to cross the next 64-bit boundary.
@@ -227,7 +227,7 @@ class CommandStream {
 	    addLong((padBits - 5) << (padBits - 5), padBits) ;
 	    return ;
 	}
-	
+
 	// The number of bits to pad at this point is [37..68].  Knock off 24
 	// bits with the body of the 1st no-op to reduce the number of pad
 	// bits to [13..44], which can be filled with 1 more no-op.

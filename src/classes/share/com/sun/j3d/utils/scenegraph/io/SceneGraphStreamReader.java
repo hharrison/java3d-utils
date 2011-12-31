@@ -59,7 +59,7 @@ import com.sun.j3d.utils.universe.ConfiguredUniverse;
  * Read and create a (set) of Java3D BranchGraphs or Universe from a Java Stream.
  */
 public class SceneGraphStreamReader extends java.lang.Object {
-    
+
     private StreamControl control;
     private DataInputStream in;
 
@@ -69,7 +69,7 @@ public class SceneGraphStreamReader extends java.lang.Object {
         control = new StreamControl( in );
         control.readStreamHeader();
     }
-    
+
     /**
      * Read and create the universe. If the BranchGraphs were written then
      * they will be added to the universe before it is returned.
@@ -77,7 +77,7 @@ public class SceneGraphStreamReader extends java.lang.Object {
     public ConfiguredUniverse readUniverse() throws IOException {
         return control.readUniverse(in, true, null);
     }
-    
+
     /**
      * Read and create the universe. If the BranchGraphs were written then
      * they will be added to the universe before it is returned.
@@ -86,7 +86,7 @@ public class SceneGraphStreamReader extends java.lang.Object {
     public ConfiguredUniverse readUniverse(Canvas3D canvas) throws IOException {
         return control.readUniverse(in, true, canvas);
     }
-    
+
     /**
      * Read and return the graph from the stream.
      * <code>namedObjects</code> map will be updated with any objects that
@@ -96,7 +96,7 @@ public class SceneGraphStreamReader extends java.lang.Object {
         return control.readBranchGraph( namedObjects );
     }
 
-    /** 
+    /**
       * Set the ClassLoader used to load the scene graph objects and
       * deserialize user data
       */
@@ -104,14 +104,14 @@ public class SceneGraphStreamReader extends java.lang.Object {
         control.setClassLoader( classLoader );
     }
 
-    /** 
+    /**
       * Get the ClassLoader used to load the scene graph objects and
       * deserialize user data
       */
     public ClassLoader getClassLoader() {
         return control.getClassLoader();
     }
- 
+
     /**
      * Close the SceneGraphStreamReader stream
      *
@@ -121,6 +121,6 @@ public class SceneGraphStreamReader extends java.lang.Object {
         in.close();
         control.close();
     }
-  
+
 }
 

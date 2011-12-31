@@ -56,26 +56,26 @@ public class ViewPlatformState extends LeafState {
 
     private int[] geometry;
     private int appearance;
-    
+
     public ViewPlatformState(SymbolTableData symbol,Controller control) {
         super( symbol, control );
     }
-    
+
     public void writeObject( DataOutput out ) throws IOException {
         super.writeObject( out );
-        
+
         out.writeFloat( ((ViewPlatform)node).getActivationRadius() );
         out.writeInt( ((ViewPlatform)node).getViewAttachPolicy() );
     }
-    
+
     public void readObject( DataInput in ) throws IOException {
         super.readObject( in );
-        
+
         ((ViewPlatform)node).setActivationRadius( in.readFloat() );
         ((ViewPlatform)node).setViewAttachPolicy( in.readInt() );
     }
-    
-    
+
+
     protected javax.media.j3d.SceneGraphObject createNode() {
         return new ViewPlatform();
     }

@@ -56,31 +56,31 @@ import com.sun.j3d.utils.scenegraph.io.retained.SymbolTableData;
 public abstract class ClipState extends LeafState {
 
     private int boundingLeaf;
-    
+
     public ClipState(SymbolTableData symbol,Controller control) {
         super( symbol, control );
-        
+
         if (node!=null)
             boundingLeaf = control.getSymbolTable().addReference( ((Clip)node).getApplicationBoundingLeaf() );
     }
-    
+
     public void writeObject( DataOutput out ) throws IOException {
         super.writeObject( out );
         out.writeInt( boundingLeaf );
         control.writeBounds( out, ((Clip)node).getApplicationBounds() );
         out.writeDouble( ((Clip)node).getBackDistance() );
     }
-    
+
     public void readObject( DataInput in ) throws IOException {
         super.readObject( in );
         boundingLeaf = in.readInt();
         ((Clip)node).setApplicationBounds( control.readBounds( in ));
         ((Clip)node).setBackDistance( in.readDouble() );
     }
-    
+
     public void buildGraph() {
         ((Clip)node).setApplicationBoundingLeaf( (BoundingLeaf)control.getSymbolTable().getJ3dNode( boundingLeaf ));
         super.buildGraph(); // Must be last call in method
     }
-    
+
 }

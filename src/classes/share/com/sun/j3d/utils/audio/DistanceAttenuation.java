@@ -53,7 +53,7 @@ package com.sun.j3d.utils.audio;
 
 import java.io.* ;
 import javax.vecmath.* ;
-import java.lang.String; 
+import java.lang.String;
 import javax.media.j3d.*;
 import com.sun.j3d.internal.J3dUtilsI18N;
 
@@ -74,7 +74,7 @@ public class DistanceAttenuation
    * recommend that the distance attenuation Point2f array is defined to
    * be allocated to be 10 for DOUBLE_DISTANCE_HALF_GAIN - since 1/(2^10)
    * exceeds 1/1000 scale that is agreed to be affective zero gain
-   * 
+   *
    * First method assumes that:
    *    type is half gain for every double of distance
    *    inner radius is 0.0 but region between 0th and 1st elements is constant
@@ -98,7 +98,7 @@ public class DistanceAttenuation
           distanceAttenuation[i].y = nextGain;
           nextDistance *= 2.0f;
           nextGain *= 0.5f;
-      } 
+      }
   }
 
   public void fillDistanceAttenuation(
@@ -121,7 +121,7 @@ public class DistanceAttenuation
           distanceAttenuation[i].y = nextGain;
           nextDistance *= 2.0f;
           nextGain *= 0.5f;
-      } 
+      }
   }
 
   public void fillDistanceAttenuation(

@@ -52,7 +52,7 @@ import javax.media.j3d.*;
 
 /**
  * The Thread Class extended for Audio Device engines that must process
- * calls dynamically, in 'real-time" to asynchronously change engine 
+ * calls dynamically, in 'real-time" to asynchronously change engine
  * parameters.
  *
  * <p>
@@ -69,9 +69,9 @@ public class AudioEngineThread extends Thread {
         if (debugFlag)
             System.out.println(message);
     }
- 
+
     /**
-     * The classification types.  
+     * The classification types.
      */
     protected static final int WORK_THREAD   = 0x01;
     protected static final int UPDATE_THREAD = 0x02;
@@ -82,13 +82,13 @@ public class AudioEngineThread extends Thread {
     protected static final int WAIT = 0;
 
     /**
-     * This runMonitor action notifies MasterControl that this thread 
+     * This runMonitor action notifies MasterControl that this thread
      * has completed and wait.
      */
     protected static final int NOTIFY_AND_WAIT = 1;
 
     /**
-     * This runMonitor action tells the thread to run N number of 
+     * This runMonitor action tells the thread to run N number of
      * iterations.
      */
     protected static final int RUN = 2;
@@ -199,7 +199,7 @@ public class AudioEngineThread extends Thread {
 	}
     }
 
-    /** 
+    /**
      * This causes the threads run method to exit.
      */
     public void finish() {
@@ -259,7 +259,7 @@ public class AudioEngineThread extends Thread {
 
     public void shutdown() {
     }
-    
+
     // default resource clean up method
     public void cleanup() {
 	active = false;
@@ -270,6 +270,6 @@ public class AudioEngineThread extends Thread {
 	args = null;
 	userStop = false;
 	referenceTime = 0;
-	
+
     }
 }

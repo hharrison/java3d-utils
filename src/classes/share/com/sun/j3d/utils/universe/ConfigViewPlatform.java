@@ -66,7 +66,7 @@ class ConfigViewPlatform extends ConfigObject {
      * The corresponding ViewingPlatform instance.
      */
     ViewingPlatform viewingPlatform = null ;
-     
+
     /**
      * Indicates the view attach policy specified in the configuration file.
      * If none is set, it remains -1 even though a default may be in effect.
@@ -77,7 +77,7 @@ class ConfigViewPlatform extends ConfigObject {
      * The associated ConfigViewPlatformBehavior, if any.
      */
     ConfigViewPlatformBehavior configBehavior = null ;
-    
+
     /**
      * Overrides initialize() to do nothing.
      */
@@ -88,7 +88,7 @@ class ConfigViewPlatform extends ConfigObject {
      * Processes attributes for this object.  Handles commands of the form:<p>
      * (ViewPlatformAttribute {instanceName} {attrName} {attrValue})<br>
      * (ViewPlatformProperty  {instanceName} {attrName} {attrValue})
-     * 
+     *
      * @param command the command that invoked this method
      */
     protected void setProperty(ConfigCommand command) {
@@ -177,7 +177,7 @@ class ConfigViewPlatform extends ConfigObject {
 
     /**
      * Creates a ViewingPlatform from attributes gathered by this object.
-     * 
+     *
      * @param transformCount the number of TransformGroups to attach to the
      *  ViewingPlatform
      * @return the new ViewingPlatform

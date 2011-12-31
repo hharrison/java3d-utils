@@ -60,7 +60,7 @@ import javax.vecmath.*;
  */
 
 public abstract class PickMouseBehavior extends Behavior {
-  
+
   protected PickCanvas pickCanvas;
 
   protected WakeupCriterion[] conditions;
@@ -70,8 +70,8 @@ public abstract class PickMouseBehavior extends Behavior {
   protected TransformGroup currGrp;
   protected static final boolean debug = false;
   protected MouseEvent mevent;
-  
-  /** 
+
+  /**
    * Creates a PickMouseBehavior given current canvas, root of the tree to
    * operate on, and the bounds.
    */
@@ -85,9 +85,9 @@ public abstract class PickMouseBehavior extends Behavior {
   }
 
   /**
-   * Sets the pick mode 
+   * Sets the pick mode
    * @see PickTool#setMode
-   **/  
+   **/
   public void setMode(int pickMode) {
     pickCanvas.setMode(pickMode);
   }
@@ -95,16 +95,16 @@ public abstract class PickMouseBehavior extends Behavior {
  /**
    * Returns the pickMode
    * @see PickTool#getMode
-   */ 
+   */
 
   public int getMode() {
     return pickCanvas.getMode();
   }
 
   /**
-   * Sets the pick tolerance 
+   * Sets the pick tolerance
    * @see PickCanvas#setTolerance
-   */  
+   */
   public void setTolerance(float tolerance) {
     pickCanvas.setTolerance(tolerance);
   }
@@ -112,7 +112,7 @@ public abstract class PickMouseBehavior extends Behavior {
   /**
     * Returns the pick tolerance
     * @see PickCanvas#getTolerance
-    */ 
+    */
   public float getTolerance() {
     return pickCanvas.getTolerance();
   }
@@ -126,7 +126,7 @@ public abstract class PickMouseBehavior extends Behavior {
 
     wakeupOn(wakeupCondition);
   }
-  
+
   private void processMouseEvent(MouseEvent evt) {
     buttonPress = false;
 
@@ -139,7 +139,7 @@ public abstract class PickMouseBehavior extends Behavior {
       // Process mouse move event
     }
   }
-  
+
   public void processStimulus (Enumeration criteria) {
     WakeupCriterion wakeup;
     AWTEvent[] evt = null;
@@ -150,7 +150,7 @@ public abstract class PickMouseBehavior extends Behavior {
       if (wakeup instanceof WakeupOnAWTEvent)
 	evt = ((WakeupOnAWTEvent)wakeup).getAWTEvent();
     }
-    
+
     if (evt[0] instanceof MouseEvent){
       mevent = (MouseEvent) evt[0];
 
@@ -160,17 +160,17 @@ public abstract class PickMouseBehavior extends Behavior {
       xpos = mevent.getPoint().x;
       ypos = mevent.getPoint().y;
     }
-    
+
     if (debug)
       System.out.println("mouse position " + xpos + " " + ypos);
-    
+
     if (buttonPress){
       updateScene(xpos, ypos);
     }
     wakeupOn (wakeupCondition);
   }
 
-  /** Subclasses shall implement this update function 
+  /** Subclasses shall implement this update function
    */
   public abstract void updateScene(int xpos, int ypos);
 

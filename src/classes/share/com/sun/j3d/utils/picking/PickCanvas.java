@@ -50,19 +50,19 @@ import javax.media.j3d.*;
 import com.sun.j3d.utils.geometry.*; // Cone, Cylinder
 
 /**
- * A subclass of PickTool, simplifies picking using mouse events from a canvas. 
- * This class allows picking using canvas x,y locations by generating the 
- * appropriate pick shape. 
+ * A subclass of PickTool, simplifies picking using mouse events from a canvas.
+ * This class allows picking using canvas x,y locations by generating the
+ * appropriate pick shape.
  * <p>
  * The pick tolerance specifies the distance from the
- * pick center to include in the pick shape.  A tolerance of 0.0 may speedup 
+ * pick center to include in the pick shape.  A tolerance of 0.0 may speedup
  * picking slightly, but also make it very difficult to pick points and lines.
- * <p> 
- * The pick canvas can be used to make a series of picks.  For example, to 
+ * <p>
+ * The pick canvas can be used to make a series of picks.  For example, to
  * initialize the pick canvas:
  * <blockquote><pre>
  *     PickCanvas pickCanvas = new PickCanvas(canvas, scene);
- *     pickCanvas.setMode(PickTool.GEOMETRY_INTERSECT_INFO); 
+ *     pickCanvas.setMode(PickTool.GEOMETRY_INTERSECT_INFO);
  *     pickCanvas.setTolerance(4.0f);
  * </pre></blockquote>
  * <p>
@@ -90,7 +90,7 @@ public class PickCanvas extends PickTool {
     float tolerance = 2.0f;
     int save_xpos;
     int save_ypos;
-    
+
     /** Constructor with Canvas3D for mouse events and BranchGroup to be picked.
      */
     public PickCanvas (Canvas3D c, BranchGroup b) {
@@ -113,7 +113,7 @@ public class PickCanvas extends PickTool {
     }
 
     /** Set the picking tolerance.  Objects within this distance
-     * (in pixels) 
+     * (in pixels)
      * to the mouse x,y location will be picked.  The default tolerance is 2.0.
      * @param t The tolerance
      * @exception IllegalArgumentException if the tolerance is less than 0.
@@ -128,10 +128,10 @@ public class PickCanvas extends PickTool {
 	    // reset pickShape
 	    pickShape = null;
 	    setShapeLocation(save_xpos, save_ypos);
-	} 
+	}
     }
 
-    /** Get the pick tolerance. 
+    /** Get the pick tolerance.
      */
     public float getTolerance() {
 	return tolerance;
@@ -157,7 +157,7 @@ public class PickCanvas extends PickTool {
 	boolean isParallel = false;
 	double radius = 0.0;
 	double spreadAngle = 0.0;
-	
+
 	this.save_xpos = xpos;
 	this.save_ypos = ypos;
 	canvas.getCenterEyeInImagePlate(eyePosn);
@@ -202,7 +202,7 @@ public class PickCanvas extends PickTool {
 
 	/*
 	System.out.println(motion + "\n");
-	System.out.println("after, mouse " + mousePosn + " eye " + eyePosn + 
+	System.out.println("after, mouse " + mousePosn + " eye " + eyePosn +
 		 " mouseVec " + mouseVec);
 		 */
 
@@ -218,12 +218,12 @@ public class PickCanvas extends PickTool {
 	    if (isParallel) {
 		// Parallel projection, use a PickCylinderRay
 	        distancePtToDelta *= motion.getScale();
-		if ((pickShape != null) && 
+		if ((pickShape != null) &&
 				(pickShape instanceof PickCylinderRay)) {
-		    ((PickCylinderRay)pickShape).set (eyePosn, mouseVec, 
+		    ((PickCylinderRay)pickShape).set (eyePosn, mouseVec,
 						distancePtToDelta);
 		} else {
-		    pickShape = (PickShape) new PickCylinderRay (eyePosn, 
+		    pickShape = (PickShape) new PickCylinderRay (eyePosn,
 						mouseVec, distancePtToDelta);
 		}
 	    } else {
@@ -232,13 +232,13 @@ public class PickCanvas extends PickTool {
 		// Calculate spread angle
 		spreadAngle = Math.atan (distancePtToDelta/distanceEyeToCanvas);
 
-		if ((pickShape != null) && 
+		if ((pickShape != null) &&
 				(pickShape instanceof PickConeRay)) {
-		    ((PickConeRay)pickShape).set (eyePosn, mouseVec, 
+		    ((PickConeRay)pickShape).set (eyePosn, mouseVec,
 							spreadAngle);
 		} else {
-		    pickShape = (PickShape) new PickConeRay (eyePosn, mouseVec, 
-						       spreadAngle); 
+		    pickShape = (PickShape) new PickConeRay (eyePosn, mouseVec,
+						       spreadAngle);
 		}
 	    }
 	}

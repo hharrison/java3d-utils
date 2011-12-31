@@ -53,30 +53,30 @@ import com.sun.j3d.utils.scenegraph.io.retained.Controller;
 import com.sun.j3d.utils.scenegraph.io.retained.SymbolTableData;
 
 public class GroupState extends NodeState {
-    
+
     protected SceneGraphObjectState[] groupChildren;        // State classes for all the children during load
 
     public GroupState( SymbolTableData symbol, Controller control ) {
-        super(symbol, control);        
+        super(symbol, control);
     }
 
   public void writeObject( DataOutput out) throws IOException {
     super.writeObject( out );
 
     control.writeBounds( out, ((Group)node).getCollisionBounds() );
-    
+
     int numChildren;
     if (checkProcessChildren())
         numChildren = ((Group)node).numChildren();
     else
         numChildren = 0;
-    
+
     out.writeInt( numChildren );
-        
+
     for(int i=0; i<numChildren; i++ ) {
         control.writeObject( out, control.createState( ((Group)node).getChild(i) ) );
     }
-    
+
     out.writeBoolean( ((Group)node).getAlternateCollisionTarget() );
   }
 
@@ -91,7 +91,7 @@ public class GroupState extends NodeState {
         groupChildren[i] = control.readObject( in );
         ((Group)node).addChild( (Node)groupChildren[i].getNode() );
     }
-    
+
     ((Group)node).setAlternateCollisionTarget( in.readBoolean() );
   }
 
@@ -101,19 +101,19 @@ public class GroupState extends NodeState {
       else
           return processChildren();
   }
-  
+
   /**
    * Returns true if the groups children should be saved.
    *
    * This is overridden by 'black box' groups such a geometry primitives
-   *  
+   *
    * When users create nodes that implement SceneGraphIO interface then this
    * method is superceded by saveChildren() in the SceneGraphIO interface
    */
   protected boolean processChildren() {
       return true;
   }
-  
+
   public void buildGraph() {
       for(int i=0; i<groupChildren.length; i++) {
           if (!groupChildren[i].getSymbol().graphBuilt) {
@@ -123,20 +123,20 @@ public class GroupState extends NodeState {
       }
       super.buildGraph(); // Must be last call in method
   }
-  
+
   public void cleanup() {
       for(int i=0; i<groupChildren.length; i++) {
           groupChildren[i].cleanup();
           groupChildren[i] = null;
       }
-      
+
       groupChildren = null;
       super.cleanup();
   }
-    
+
     protected javax.media.j3d.SceneGraphObject createNode() {
         return new Group();
     }
 
-  
+
 }

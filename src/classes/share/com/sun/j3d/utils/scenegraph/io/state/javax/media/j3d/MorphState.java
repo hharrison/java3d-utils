@@ -59,10 +59,10 @@ public class MorphState extends LeafState {
     private int[] geometry;
     private double[] weights;
     private int appearance;
-    
+
     public MorphState(SymbolTableData symbol,Controller control) {
         super( symbol, control );
-        
+
         if (node!=null) {
             appearance = control.getSymbolTable().addReference( ((Morph)node).getAppearance() );
             weights = ((Morph)node).getWeights();
@@ -71,22 +71,22 @@ public class MorphState extends LeafState {
                geometry[i] = control.getSymbolTable().addReference( ((Morph)node).getGeometryArray(i) );
         }
     }
-    
+
     public void writeObject( DataOutput out ) throws IOException {
         super.writeObject( out );
-        
+
         control.writeBounds( out, ((Morph)node).getCollisionBounds() );
-        
+
         out.writeInt( appearance );
         out.writeBoolean( ((Morph)node).getAppearanceOverrideEnable() );
-        
+
         out.writeInt( geometry.length );
         for(int i=0; i<geometry.length; i++) {
            out.writeInt( geometry[i] );
            out.writeDouble( weights[i] );
         }
     }
-    
+
     public void readObject( DataInput in ) throws IOException {
         super.readObject( in );
         ((Morph)node).setCollisionBounds( control.readBounds( in ));
@@ -112,20 +112,20 @@ public class MorphState extends LeafState {
 	for(int i=0; i<geometry.length; i++)
 	    control.getSymbolTable().incNodeComponentRefCount( geometry[ i ] );
     }
-    
+
     public void buildGraph() {
         ((Morph)node).setAppearance( (Appearance)control.getSymbolTable().getJ3dNode( appearance ) );
-        
+
         GeometryArray[] geom = new GeometryArray[ geometry.length ];
         for(int i=0; i<geometry.length; i++) {
             geom[i] =  (GeometryArray)control.getSymbolTable().getJ3dNode( geometry[i] );
         }
-        
+
         ((Morph)node).setGeometryArrays( geom );
         ((Morph)node).setWeights( weights );
         super.buildGraph(); // Must be last call in method
     }
-    
+
     protected javax.media.j3d.SceneGraphObject createNode() {
         return new Morph( null );
     }

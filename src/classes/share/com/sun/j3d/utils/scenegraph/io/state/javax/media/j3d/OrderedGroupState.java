@@ -77,7 +77,7 @@ public class OrderedGroupState extends GroupState {
 	}
 	((OrderedGroup)node).setChildIndexOrder( childIndexOrder );
     }
-    
+
     protected javax.media.j3d.SceneGraphObject createNode() {
         return new OrderedGroup();
     }

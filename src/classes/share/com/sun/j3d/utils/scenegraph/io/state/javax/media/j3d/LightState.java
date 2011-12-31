@@ -59,27 +59,27 @@ public abstract class LightState extends LeafState {
 
     public LightState( SymbolTableData symbol, Controller control ) {
 	super( symbol, control );
-        
+
     }
 
     public void writeObject( DataOutput out ) throws IOException {
 	super.writeObject( out );
-        
+
 	scope = new int[ ((Light)node).numScopes() ];
 	for(int i=0; i<((Light)node).numScopes(); i++) {
 	    scope[i] = control.getSymbolTable().addReference( ((Light)node).getScope(i) );;
 	}
         boundingLeaf = control.getSymbolTable().addReference( ((Light)node).getInfluencingBoundingLeaf() );
-        
+
 	Color3f color = new Color3f();
 	((Light)node).getColor( color );
 	control.writeColor3f( out, color );
 
 	out.writeBoolean( ((Light)node).getEnable() );
-        
+
         out.writeInt( boundingLeaf );
         control.writeBounds( out, ((Light)node).getInfluencingBounds() );
-        
+
         out.writeInt( scope.length );
         for( int i=0; i<scope.length; i++) {
            out.writeInt( scope[i] );
@@ -101,7 +101,7 @@ public abstract class LightState extends LeafState {
         }
 
     }
-    
+
     public void buildGraph() {
         ((Light)node).setInfluencingBoundingLeaf( (BoundingLeaf)control.getSymbolTable().getJ3dNode( boundingLeaf ));
         for(int i=0; i<scope.length; i++) {
@@ -109,5 +109,5 @@ public abstract class LightState extends LeafState {
         }
         super.buildGraph(); // Must be last call in method
     }
-    
+
 }

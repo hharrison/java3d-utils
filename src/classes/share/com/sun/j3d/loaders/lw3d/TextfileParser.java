@@ -55,7 +55,7 @@ import com.sun.j3d.loaders.ParsingErrorException;
 
 class TextfileParser {
 
-    // class variables 
+    // class variables
     static int WORD = StreamTokenizer.TT_WORD;
     static int NUMBER = StreamTokenizer.TT_NUMBER;
     int currentLevel = 3;
@@ -73,7 +73,7 @@ class TextfileParser {
 	debugOutputLn(VALUES, "lineSeparatorChar = " + (int)lineSeparatorChar);
     }
 
-    
+
     protected void debugOutputLn(int outputType, String theOutput) {
 	if (theOutput.equals(""))
 	    debugPrinter.println(outputType, theOutput);
@@ -89,7 +89,7 @@ class TextfileParser {
 
     /**
      * Utility method to advance the tokenizer until we see the given
-     * string.  This is used to skip by various parameters that we 
+     * string.  This is used to skip by various parameters that we
      * currently ignore in the loader.
      */
     void skipUntilString(StreamTokenizer st, String theString)
@@ -112,7 +112,7 @@ class TextfileParser {
     /**
      * Returns number from the tokenizer.  Note that we don't recognize
      * numbers in the tokenizer automatically because numbers might be in
-     * scientific notation, which isn't processed correctly by 
+     * scientific notation, which isn't processed correctly by
      * StreamTokenizer
      */
     double getNumber(StreamTokenizer st)
@@ -143,11 +143,11 @@ class TextfileParser {
 
     /**
      * Returns a "name" from the stream.  This is different from simply a
-     * String because the name could contain whitespace characters 
+     * String because the name could contain whitespace characters
      * (such as "object 1" or "objectname (sequence)") that would confuse
      * the string parser.  So we just grab all characters until EOL and
      * concatenate them together to form the name
-     */ 
+     */
     String getName(StreamTokenizer st) throws ParsingErrorException {
 	String theName = "";
 	st.ordinaryChar(lineSeparatorChar);
@@ -175,7 +175,7 @@ class TextfileParser {
     }
 
     /**
-     * Gets the next token and ensures that it is the string we were 
+     * Gets the next token and ensures that it is the string we were
      * expecting to see
      */
     void getAndCheckString(StreamTokenizer st, String expectedValue)
@@ -216,7 +216,7 @@ class TextfileParser {
 
     /**
      * Utility routine - gets next token, checks it against our expectation,
-     * then skips a given number of tokens.  This can be used to parse 
+     * then skips a given number of tokens.  This can be used to parse
      * through (and ignore) certain parameter/value sets in the files
      */
     void skip(StreamTokenizer st, String tokenString, int skipVals)
@@ -232,7 +232,7 @@ class TextfileParser {
 	    throw new ParsingErrorException(e.getMessage());
 	}
     }
-	
+
     /**
      * Utility method- used to check whether the current token is equal
      * to the given string
@@ -242,4 +242,4 @@ class TextfileParser {
 	    return (st.sval.equals(tokenString));
 	return false;
     }
-}	
+}

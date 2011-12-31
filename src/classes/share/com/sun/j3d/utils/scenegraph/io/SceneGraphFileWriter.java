@@ -57,11 +57,11 @@ import com.sun.j3d.utils.scenegraph.io.retained.RandomAccessFileControl;
 import com.sun.j3d.utils.universe.SimpleUniverse;
 
 /**
- * Write a (set) of Java3D BranchGraphs and/or Universe to a file. The BranchGraphs 
+ * Write a (set) of Java3D BranchGraphs and/or Universe to a file. The BranchGraphs
  * are stored in the order in which they are written, they can be read in any order
  * using SceneGraphFileReader.
  *
- * The API handles Nodes and NodeComponents that are shared between seperate 
+ * The API handles Nodes and NodeComponents that are shared between seperate
  * graphs. It will handle all Java3D 1.3 core classes and any user
  * subclass of a Node or NodeComponent that implements the SceneGraphIO
  * interface.
@@ -70,10 +70,10 @@ public class SceneGraphFileWriter extends java.lang.Object {
 
     private RandomAccessFileControl fileControl;
     private File file;
-    
+
     /** Creates new SceneGraphFileWriter and opens the file for writing.
      *
-     * <P>Writes the 
+     * <P>Writes the
      * Java3D Universe structure to the file. This includes the number and position of
      * the Locales, PlatformGeometry, ViewerAvatar, and the MultitransformGroup between
      * the ViewingPlatform and the View. However this
@@ -81,7 +81,7 @@ public class SceneGraphFileWriter extends java.lang.Object {
      * <code>universe</code> may be null.
      * This call will overwrite any existing universe, fileDescription and
      * userData in the file.</P>
-     * 
+     *
      * <P>close() MUST be called when IO is complete. If close() is not called
      * the file contents will be undefined.</P>
      *
@@ -105,13 +105,13 @@ public class SceneGraphFileWriter extends java.lang.Object {
         fileControl = new RandomAccessFileControl();
         this.file = file;
         file.createNewFile();
-        
+
         if (!file.canWrite())
             throw new IOException( "Can not Write to File" );
-        
+
         fileControl.createFile( file, universe, writeUniverseContent, fileDescription, fileUserData );
     }
-    
+
     /**
      * Write the graph to the end of the file.
      *
@@ -121,7 +121,7 @@ public class SceneGraphFileWriter extends java.lang.Object {
     public void writeBranchGraph( BranchGroup graph ) throws IOException {
         writeBranchGraph( graph, null );
     }
-    
+
     /**
      * Write a branch graph and some user associated data to the
      * end of the file.
@@ -133,7 +133,7 @@ public class SceneGraphFileWriter extends java.lang.Object {
                                   java.io.Serializable data ) throws IOException {
         fileControl.writeBranchGraph( graph, data );
     }
-    
+
     /**
      * Add a named reference to a SceneGraphObject in the file.
      *
@@ -146,12 +146,12 @@ public class SceneGraphFileWriter extends java.lang.Object {
     public void addObjectName( String name, SceneGraphObject object ) throws NamedObjectException {
         fileControl.addNamedObject( name, object );
     }
-    
+
     /**
      * Close the file and cleanup internal data structures.
      */
     public void close() throws IOException {
         fileControl.close();
     }
-    
+
 }

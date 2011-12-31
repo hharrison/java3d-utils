@@ -55,42 +55,42 @@ import com.sun.j3d.utils.scenegraph.io.retained.Controller;
 import com.sun.j3d.utils.scenegraph.io.retained.SymbolTableData;
 
 public class OrientedShape3DState extends Shape3DState {
-    
+
     public OrientedShape3DState(SymbolTableData symbol,Controller control) {
         super( symbol, control );
-        
+
     }
-    
+
     public void writeObject( DataOutput out ) throws IOException {
         super.writeObject( out );
-        
+
         out.writeInt( ((OrientedShape3D)node).getAlignmentMode() );
-        
+
         Vector3f vec = new Vector3f();
         ((OrientedShape3D)node).getAlignmentAxis( vec );
-        
+
         Point3f point = new Point3f();
         ((OrientedShape3D)node).getRotationPoint( point );
-        
+
         control.writeVector3f( out, vec );
         control.writePoint3f( out, point );
 	out.writeBoolean( ((OrientedShape3D)node).getConstantScaleEnable() );
 	out.writeDouble( ((OrientedShape3D)node).getScale() );
     }
-    
+
     public void readObject( DataInput in ) throws IOException {
         super.readObject( in );
-          
+
         ((OrientedShape3D)node).setAlignmentMode( in.readInt() );
         ((OrientedShape3D)node).setAlignmentAxis( control.readVector3f( in ) );
         ((OrientedShape3D)node).setRotationPoint( control.readPoint3f( in ) );
         ((OrientedShape3D)node).setConstantScaleEnable( in.readBoolean() );
         ((OrientedShape3D)node).setScale( in.readDouble() );
     }
-    
+
     protected javax.media.j3d.SceneGraphObject createNode() {
         return new OrientedShape3D();
     }
 
-        
+
 }

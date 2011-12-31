@@ -54,7 +54,7 @@ public class LineStripArrayState extends GeometryStripArrayState {
     public LineStripArrayState(SymbolTableData symbol,Controller control) {
         super( symbol, control );
     }
-    
+
     public SceneGraphObject createNode( Class j3dClass ) {
         return createNode( j3dClass, new Class[] {
                                             Integer.TYPE,
@@ -62,7 +62,7 @@ public class LineStripArrayState extends GeometryStripArrayState {
                                             Integer.TYPE,
                                             texCoordSetMap.getClass(),
                                             stripVertexCounts.getClass()
-                                        }, 
+                                        },
                                         new Object[] { new Integer( vertexCount ),
                                                      new Integer( vertexFormat ),
                                                      new Integer( texCoordSetCount ),
@@ -70,7 +70,7 @@ public class LineStripArrayState extends GeometryStripArrayState {
                                                      stripVertexCounts } );
     }
 
-    
+
     protected javax.media.j3d.SceneGraphObject createNode() {
         return new LineStripArray( vertexCount, vertexFormat, texCoordSetCount, texCoordSetMap, stripVertexCounts );
     }

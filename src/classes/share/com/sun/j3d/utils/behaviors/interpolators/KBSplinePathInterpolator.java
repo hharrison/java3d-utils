@@ -51,14 +51,14 @@ import com.sun.j3d.internal.J3dUtilsI18N;
 
 /**
  * KBSplinePathInterpolator behavior.  This class defines the base class for
- * all Kochanek-Bartels (also known as TCB or Tension-Continuity-Bias) 
- * Spline Path Interpolators.  
+ * all Kochanek-Bartels (also known as TCB or Tension-Continuity-Bias)
+ * Spline Path Interpolators.
  *
  * @since Java3D 1.2
  */
 
 public abstract class KBSplinePathInterpolator extends TransformInterpolator {
-  
+
     private   int             keysLength;
     /**
      * An array of KBKeyFrame for interpolator
@@ -66,7 +66,7 @@ public abstract class KBSplinePathInterpolator extends TransformInterpolator {
     protected KBKeyFrame[]    keyFrames;
 
     /**
-     * This value is the distance between knots 
+     * This value is the distance between knots
      * value which can be used in further calculations by the subclass.
      */
     protected float currentU;
@@ -88,7 +88,7 @@ public abstract class KBSplinePathInterpolator extends TransformInterpolator {
      */
     KBSplinePathInterpolator() {
     }
-  
+
 
     /**
      * @deprecated As of Java 3D version 1.3, replaced by
@@ -102,14 +102,14 @@ public abstract class KBSplinePathInterpolator extends TransformInterpolator {
      * Constructs a new KBSplinePathInterpolator object that interpolates
      * between keyframes with specified alpha, target and an default
      * axisOfTranform set to identity.
-     * It takes at least two key frames. The first key 
+     * It takes at least two key frames. The first key
      * frame's knot must have a value of 0.0 and the last knot must have a
-     * value of 1.0.  An intermediate key frame with index k must have a 
-     * knot value strictly greater than the knot value of a key frame with 
+     * value of 1.0.  An intermediate key frame with index k must have a
+     * knot value strictly greater than the knot value of a key frame with
      * index less than k. Once this constructor has all the valid key frames
      * it creates its own list of key fames that duplicates the first key frame
      * at the beginning of the list and the last key frame at the end of the
-     * list. 
+     * list.
      * @param alpha the alpha object for this interpolator
      * @param target the TransformGroup node affected by this interpolator
      * @param keys an array of KBKeyFrame. Requires at least two key frames.
@@ -120,18 +120,18 @@ public abstract class KBSplinePathInterpolator extends TransformInterpolator {
 	super(alpha, target);
 	processKeyFrames( keys );
     }
-    
+
     /**
      * Constructs a new KBSplinePathInterpolator object that interpolates
      * between keyframes with specified alpha, target and axisOfTransform.
-     * It takes at least two key frames. The first key 
+     * It takes at least two key frames. The first key
      * frame's knot must have a value of 0.0 and the last knot must have a
-     * value of 1.0.  An intermediate key frame with index k must have a 
-     * knot value strictly greater than the knot value of a key frame with 
+     * value of 1.0.  An intermediate key frame with index k must have a
+     * knot value strictly greater than the knot value of a key frame with
      * index less than k. Once this constructor has all the valid key frames
      * it creates its own list of key fames that duplicates the first key frame
      * at the beginning of the list and the last key frame at the end of the
-     * list. 
+     * list.
      * @param alpha the alpha object for this interpolator
      * @param target the TransformGroup node affected by this interpolator
      * @param axisOfTransform the transform that defines the local coordinate
@@ -159,46 +159,46 @@ public abstract class KBSplinePathInterpolator extends TransformInterpolator {
 
         }
 
-        // Make sure that the first key frame's knot is equal to 0.0 
+        // Make sure that the first key frame's knot is equal to 0.0
 	if (keys[0].knot < -0.0001 || keys[0].knot > 0.0001) {
 	    throw new IllegalArgumentException(J3dUtilsI18N.getString("KBSplinePathInterpolator1"));
 	}
-	
-        // Make sure that the last key frames knot is equal to 1.0 
+
+        // Make sure that the last key frames knot is equal to 1.0
 	if (keys[keysLength-1].knot -1.0 < -0.0001 || keys[keysLength-1].knot -1.0 > 0.0001) {
 	    throw new IllegalArgumentException(J3dUtilsI18N.getString("KBSplinePathInterpolator2"));
 	}
 
-        // Make sure that all the knots are in sequence 
+        // Make sure that all the knots are in sequence
 	for (int i = 0; i < keysLength; i++)  {
 	    if (i>0 && keys[i].knot < keys[i-1].knot) {
 		throw new IllegalArgumentException(J3dUtilsI18N.getString("KBSplinePathInterpolator3"));
 	    }
 	}
 
-        // Make space for a leading and trailing key frame in addition to 
+        // Make space for a leading and trailing key frame in addition to
         // the keys passed in
         keyFrames = new KBKeyFrame[keysLength+2];
         keyFrames[0] = new KBKeyFrame();
         keyFrames[0] = keys[0];
         for (int i = 1; i < keysLength+1; i++) {
-           keyFrames[i] = keys[i-1]; 
+           keyFrames[i] = keys[i-1];
         }
         keyFrames[keysLength+1] = new KBKeyFrame();
-        keyFrames[keysLength+1] = keys[keysLength-1]; 
+        keyFrames[keysLength+1] = keys[keysLength-1];
 
         // Make key frame length reflect the 2 added key frames
         keysLength += 2;
     }
-  
+
     /**
      * This method retrieves the length of the key frame array.
-     * @return the number of key frames 
+     * @return the number of key frames
      */
     public int getArrayLength(){
 	return keysLength-2;
     }
-  
+
     /**
      * This method retrieves the key frame at the specified index.
      * @param index the index of the key frame requested
@@ -239,21 +239,21 @@ public abstract class KBSplinePathInterpolator extends TransformInterpolator {
 
     /**
      * This method computes the bounding knot indices and interpolation value
-     * "CurrentU" given the current value of the knots[] array and the 
+     * "CurrentU" given the current value of the knots[] array and the
      * specified alpha value
      * @param alphaValue alpha value between 0.0 and 1.0
-     * 
+     *
      * @since Java 3D 1.3
      */
     protected void computePathInterpolation( float alphaValue ) {
 
-        // skip knots till we find the two we fall between  
+        // skip knots till we find the two we fall between
         int i = 1;
 	int len = keysLength - 2;
         while ((alphaValue > keyFrames[i].knot) && (i < len)) {
           i++;
         }
-	
+
         if (i == 1) {
             currentU = 0f;
             lowerKnot = 1;
@@ -271,7 +271,7 @@ public abstract class KBSplinePathInterpolator extends TransformInterpolator {
      * <code>originalNode</code> into
      * the current node.  This method is called from the
      * <code>cloneNode</code> method which is, in turn, called by the
-     * <code>cloneTree</code> method.<P> 
+     * <code>cloneTree</code> method.<P>
      *
      * @param originalNode the original node to duplicate.
      * @param forceDuplicate when set to <code>true</code>, causes the
@@ -289,7 +289,7 @@ public abstract class KBSplinePathInterpolator extends TransformInterpolator {
      */
     public void duplicateNode(Node originalNode, boolean forceDuplicate) {
         super.duplicateNode(originalNode, forceDuplicate);
-        KBSplinePathInterpolator originalSpline = 
+        KBSplinePathInterpolator originalSpline =
                                   (KBSplinePathInterpolator) originalNode;
         setAlpha(originalSpline.getAlpha());
         keysLength = originalSpline.keysLength;

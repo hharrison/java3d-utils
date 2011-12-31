@@ -54,27 +54,27 @@ import com.sun.j3d.utils.scenegraph.io.retained.Controller;
 import com.sun.j3d.utils.scenegraph.io.retained.SymbolTableData;
 
 public class ColorCubeState extends Shape3DState {
-    
+
     private double scale=1.0;
 
     public ColorCubeState(SymbolTableData symbol,Controller control) {
 	super( symbol, control );
-        
+
     }
 
     public void writeConstructorParams( DataOutput out ) throws IOException {
 	super.writeConstructorParams( out );
-        
+
         out.writeDouble( ((ColorCube)node).getScale() );
-        
+
     }
 
     public void readConstructorParams( DataInput in ) throws IOException {
        super.readConstructorParams(in);
-       
+
        scale = in.readDouble();
     }
-    
+
     /**
     * Returns true if the groups children should be saved.
     *
@@ -83,16 +83,16 @@ public class ColorCubeState extends Shape3DState {
     protected boolean processChildren() {
         return false;
     }
-  
+
     public SceneGraphObject createNode( Class j3dClass ) {
         Shape3D shape = (Shape3D) createNode( j3dClass, new Class[]{ Double.TYPE }, new Object[] { new Double(scale) } );
 
         return shape;
     }
-    
+
     protected javax.media.j3d.SceneGraphObject createNode() {
         return new ColorCube( scale );
     }
 
-    
+
 }

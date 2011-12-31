@@ -167,7 +167,7 @@ class ConfigScreen extends ConfigObject {
      * (ScreenProperty   {instanceName} {attrName} {attrValue})
      * (DisplayAttribute {instanceName} {attrName} {attrValue})
      * (DisplayProperty  {instanceName} {attrName} {attrValue})
-     * 
+     *
      * @param command the command that invoked this method
      */
     protected void setProperty(ConfigCommand command) {
@@ -182,7 +182,7 @@ class ConfigScreen extends ConfigObject {
 	}
 
 	if (!isName(command.argv[2])) {
-	    syntaxError("The second argument to " + command.commandName + 
+	    syntaxError("The second argument to " + command.commandName +
 			" must be a property name") ;
 	}
 
@@ -288,7 +288,7 @@ class ConfigScreen extends ConfigObject {
     /**
      * Initializes this object.  Handles commands of the form:<p>
      * (NewScreen {instanceName} {FrameBufferNumber}).
-     * 
+     *
      * @param command the command that invoked this method
      */
     protected void initialize(ConfigCommand command) {

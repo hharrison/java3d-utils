@@ -68,12 +68,12 @@ public class JavaSoundMixer extends AudioEngine3DL2 {
     // Debug print flags and methods
     static final boolean debugFlag = false;
     static final boolean internalErrors = false;
- 
+
     void debugPrint(String message) {
         if (debugFlag)
             System.out.println(message);
     }
- 
+
     void debugPrintln(String message) {
         if (debugFlag)
             System.out.println(message);
@@ -93,7 +93,7 @@ public class JavaSoundMixer extends AudioEngine3DL2 {
 
     /*
      * new fields in extended class
-     */  
+     */
     protected         float deviceGain = 1.0f;
 
     protected static  final int   NOT_PAUSED      = 0;
@@ -106,7 +106,7 @@ public class JavaSoundMixer extends AudioEngine3DL2 {
      * Construct a new JavaSoundMixer with the specified P.E.
      * @param physicalEnvironment the physical environment object where we
      * want access to this device.
-     */  
+     */
     public JavaSoundMixer(PhysicalEnvironment physicalEnvironment ) {
         super(physicalEnvironment);
         thread = new JSThread(Thread.currentThread().getThreadGroup(), this);
@@ -117,17 +117,17 @@ public class JavaSoundMixer extends AudioEngine3DL2 {
      * for this audio device.
      * Overridden method from AudioEngine.
      * @return number of maximum voices play simultaneously on JavaSound Mixer.
-     */  
+     */
     public int getTotalChannels() {
         if (thread != null)
             return thread.getTotalChannels();
         else
             return 32;
     }
- 
+
     /**
      * Code to initialize the device
-     * New interface to mixer/engine specific methods 
+     * New interface to mixer/engine specific methods
      * @return flag: true is initialized sucessfully, false if error
      */
     public boolean initialize() {
@@ -144,7 +144,7 @@ public class JavaSoundMixer extends AudioEngine3DL2 {
 
     /**
      * Code to close the device.
-     * New interface to mixer/engine specific methods 
+     * New interface to mixer/engine specific methods
      * @return flag: true is closed sucessfully, false if error
      */
     public boolean close() {
@@ -243,7 +243,7 @@ public class JavaSoundMixer extends AudioEngine3DL2 {
                 sample.setSoundData(soundData);
             }
         }
-        
+
         if (debugFlag)  {
             debugPrint("               prepareSound type = "+soundType);
             debugPrintln("JavaSoundMixer.prepareSound returned "+index);
@@ -254,7 +254,7 @@ public class JavaSoundMixer extends AudioEngine3DL2 {
     /**
      * Clears the fields associated with sample data for this sound.
      * Overriden method from AudioEngine3D.
-     */  
+     */
     public void clearSound(int index) {
         // TODO: call JSXXXX clear method
         JSSample sample = null;
@@ -329,9 +329,9 @@ public class JavaSoundMixer extends AudioEngine3DL2 {
         return;
     }
 
-    /*     
+    /*
      * Overriden method from AudioEngine3D.
-     */ 
+     */
     public void setDirection(int index, Vector3d direction) {
         if (debugFlag)
             debugPrintln("JavaSoundMixer: setDirection for index " + index);
@@ -345,28 +345,28 @@ public class JavaSoundMixer extends AudioEngine3DL2 {
         }
         return;
     }
- 
-    /*     
+
+    /*
      * Overriden method from AudioEngine3D.
-     */ 
+     */
     public void setReflectionCoefficient(float coefficient) {
         super.setReflectionCoefficient(coefficient);
         auralParams.reverbDirty |= JSAuralParameters.REFLECTION_COEFF_CHANGED;
         return;
     }
 
-    /*     
+    /*
      * Overriden method from AudioEngine3D.
-     */ 
+     */
     public void setReverbDelay(float reverbDelay) {
         super.setReverbDelay(reverbDelay);
         auralParams.reverbDirty |= JSAuralParameters.REVERB_DELAY_CHANGED;
         return;
     }
 
-    /*     
+    /*
      * Overriden method from AudioEngine3D.
-     */ 
+     */
     public void setReverbOrder(int reverbOrder) {
         super.setReverbOrder(reverbOrder);
         auralParams.reverbDirty |=  JSAuralParameters.REVERB_ORDER_CHANGED;
@@ -379,7 +379,7 @@ public class JavaSoundMixer extends AudioEngine3DL2 {
      *    Point and Cone sounds??
      *
      * For now background sounds are not reverberated
-     * 
+     *
      * Overriden method from AudioEngine3D.
      */
     public int   startSample(int index) {
@@ -390,7 +390,7 @@ public class JavaSoundMixer extends AudioEngine3DL2 {
 
         JSSample sample = null;
         if ( ( (sample = (JSSample)getSample(index)) == null) ||
-             thread == null ) 
+             thread == null )
             return JSSample.NULL_SAMPLE;
 
         int   soundType = sample.getSoundType();
@@ -409,7 +409,7 @@ public class JavaSoundMixer extends AudioEngine3DL2 {
             if (soundType != AudioDevice3D.BACKGROUND_SOUND)
                 setFilter(index, sample.getFilterFlag(), sample.getFilterFreq());
         }
- 
+
         boolean startSuccessful;
         startSuccessful = thread.startSample(sample);
 
@@ -417,7 +417,7 @@ public class JavaSoundMixer extends AudioEngine3DL2 {
 
         if (!startSuccessful) {
             if (internalErrors)
-                debugPrintln( 
+                debugPrintln(
                     "JavaSoundMixer: Internal Error startSample for index " +
                     index + " failed");
             return JSSample.NULL_SAMPLE;
@@ -426,7 +426,7 @@ public class JavaSoundMixer extends AudioEngine3DL2 {
             if (debugFlag)
                 debugPrintln("                startSample worked, " +
                        "returning " + startSuccessful);
-            // NOTE: Set AuralParameters AFTER sound started 
+            // NOTE: Set AuralParameters AFTER sound started
             // Setting AuralParameters before you start sound doesn't work
             if (!muted) {
                 if (auralParams.reverbDirty > 0) {
@@ -448,10 +448,10 @@ public class JavaSoundMixer extends AudioEngine3DL2 {
             return index;
         }
     }
-   
-    /*     
+
+    /*
      * Overriden method from AudioEngine3D.
-     */ 
+     */
     public int   stopSample(int index) {
 	// TODO: Rewrite this function
 
@@ -485,9 +485,9 @@ public class JavaSoundMixer extends AudioEngine3DL2 {
         }
     }
 
-    /*     
+    /*
      * Overriden method from AudioEngine3D.
-     */ 
+     */
     public void pauseSample(int index) {
         if (debugFlag)
             debugPrintln("JavaSoundMixer: PAUSESample for index " + index);
@@ -498,9 +498,9 @@ public class JavaSoundMixer extends AudioEngine3DL2 {
         thread.pauseSample(sample);
     }
 
-    /*     
+    /*
      * Overriden method from AudioEngine3D.
-     */ 
+     */
     public void unpauseSample(int index) {
         if (debugFlag)
             debugPrintln("JavaSoundMixer: UNPAUSESample for index " + index);
@@ -510,17 +510,17 @@ public class JavaSoundMixer extends AudioEngine3DL2 {
         thread.unpauseSample(sample);
     }
 
-    /*     
+    /*
      * Force thread to update sample.
      * Overriden method from AudioEngine3D.
-     */ 
+     */
 
     public void updateSample(int index) {
         if (debugFlag)
             debugPrintln("JavaSoundMixer: UPDATESample for index " + index);
         JSSample sample = null;
         if ( ( (sample = (JSSample)getSample(index)) == null) ||
-             thread == null ) 
+             thread == null )
             return;
 
         int   soundType = sample.getSoundType();
@@ -550,9 +550,9 @@ public class JavaSoundMixer extends AudioEngine3DL2 {
             setReverb(sample);  // ensure reverb is current/correct
 
             // TODO: For now sum left & rightGains for reverb gain
-            float reverbGain = 0.0f; 
-            if (!muted && auralParams.reverbFlag) { 
-               reverbGain = sample.getGain() * auralParams.reflectionCoefficient; 
+            float reverbGain = 0.0f;
+            if (!muted && auralParams.reverbFlag) {
+               reverbGain = sample.getGain() * auralParams.reflectionCoefficient;
             }
 
             sample.render(sample.getDirtyFlags(), getView(), auralParams);
@@ -567,9 +567,9 @@ public class JavaSoundMixer extends AudioEngine3DL2 {
         return;
     }
 
-    /*     
+    /*
      * Overriden method from AudioEngine3D.
-     */ 
+     */
     public void   muteSample(int index) {
         JSSample sample = null;
         if ((sample = (JSSample)getSample(index)) == null)
@@ -582,9 +582,9 @@ public class JavaSoundMixer extends AudioEngine3DL2 {
         return;
     }
 
-    /*     
+    /*
      * Overriden method from AudioEngine3D.
-     */ 
+     */
     public void   unmuteSample(int index) {
         JSSample sample = null;
         if ((sample = (JSSample)getSample(index)) == null)
@@ -606,9 +606,9 @@ public class JavaSoundMixer extends AudioEngine3DL2 {
         return;
     }
 
-    /*     
+    /*
      * Overriden method from AudioEngine3D.
-     */ 
+     */
     public long  getSampleDuration(int index) {
         JSSample sample = null;
         if ((sample = (JSSample)getSample(index)) == null)
@@ -624,24 +624,24 @@ public class JavaSoundMixer extends AudioEngine3DL2 {
         return duration;
     }
 
-    /*     
+    /*
      * Overriden method from AudioEngine3D.
-     */ 
+     */
     public int   getNumberOfChannelsUsed(int index) {
         /*
          * Calls same method with different signature containing the
          * sample's mute flag passed as the 2nd parameter.
-         */ 
+         */
         JSSample sample = null;
         if ((sample = (JSSample)getSample(index)) == null)
             return 0;
-        else 
+        else
             return getNumberOfChannelsUsed(index, sample.getMuteFlag());
     }
 
     /**
      * Overriden method from AudioEngine3D.
-     */ 
+     */
     public int   getNumberOfChannelsUsed(int index, boolean muted) {
         /*
          * The JavaSoundMixer implementation uses THREE channels to render
@@ -653,7 +653,7 @@ public class JavaSoundMixer extends AudioEngine3DL2 {
 	 *
          * TODO: When muted is implemented, that flag should be check
          * so that zero is returned.
-         */ 
+         */
         JSSample sample = null;
         if ((sample = (JSSample)getSample(index)) == null)
             return 0;
@@ -672,9 +672,9 @@ public class JavaSoundMixer extends AudioEngine3DL2 {
             return 3;
     }
 
-    /*     
+    /*
      * Overriden method from AudioEngine3D.
-     */ 
+     */
     public long  getStartTime(int index) {
         JSSample sample = null;
         if ((sample = (JSSample)getSample(index)) == null)
@@ -752,9 +752,9 @@ public class JavaSoundMixer extends AudioEngine3DL2 {
          * Remember Coeff change is choosen over Order change if BOTH made
          * otherwise the last one changed take precidence.
          */
-        if (auralParams.reflectionCoefficient == 0.0f || 
+        if (auralParams.reflectionCoefficient == 0.0f ||
             auralParams.reverbCoefficient == 0.0f)
-            auralParams.reverbFlag = false; 
+            auralParams.reverbFlag = false;
         else  {
             auralParams.reverbFlag = true;
             if (order > 0) {
@@ -787,7 +787,7 @@ public class JavaSoundMixer extends AudioEngine3DL2 {
         }
 
         if (debugFlag)
-            debugPrintln("JavaSoundMixer: setReverb for " + 
+            debugPrintln("JavaSoundMixer: setReverb for " +
                 sample + ", type = " + auralParams.reverbType + ", flag = " + auralParams.reverbFlag);
 
         auralParams.reverbDirty = 0;   // clear the attribute reverb dirty flags
@@ -804,7 +804,7 @@ public class JavaSoundMixer extends AudioEngine3DL2 {
          */
         int      soundType = sample.getSoundType();
         int      dataType = sample.getDataType();
- 
+
         // QUESTION: Should reverb be applied to background sounds?
         if ( (soundType == AudioDevice3D.CONE_SOUND) ||
              (soundType == AudioDevice3D.POINT_SOUND) ) {
@@ -814,7 +814,7 @@ public class JavaSoundMixer extends AudioEngine3DL2 {
             if (sample == null)
                 return;
             JSPositionalSample posSample = (JSPositionalSample)sample;
-            if (posSample.channel == null) 
+            if (posSample.channel == null)
                 return;
 
             /**********
@@ -831,9 +831,9 @@ public class JavaSoundMixer extends AudioEngine3DL2 {
             }
             /**********
             // TODO:
-            else if (dataType == JSSample.STREAMING_MIDI_DATA ||             
+            else if (dataType == JSSample.STREAMING_MIDI_DATA ||
                      dataType == JSSample.BUFFERED_MIDI_DATA) {
-                JSMidi.setSampleReverb(reverbIndex, 
+                JSMidi.setSampleReverb(reverbIndex,
                          auralParams.reverbType, auralParams.reverbFlag);
             }
             **********/
@@ -847,11 +847,11 @@ public class JavaSoundMixer extends AudioEngine3DL2 {
 
     // TEMPORARY: Override of method due to bug in Java Sound
     public void   setLoop(int index, int count) {
-        JSSample sample = null; 
-        if ((sample = (JSSample)getSample(index)) == null) 
+        JSSample sample = null;
+        if ((sample = (JSSample)getSample(index)) == null)
             return;
         int dataType = sample.getDataType();
- 
+
         // WORKAROUND:
         //     Bug in Java Sound engine hangs when INFINITE_LOOP count
         //     for Audio Wave data.  Leave count unchanged for Midi data.
@@ -873,9 +873,9 @@ public class JavaSoundMixer extends AudioEngine3DL2 {
     // TODO: remove assumption from method
     void setFilter(int index, boolean filterFlag, float filterFreq) {
         JSPositionalSample posSample = null;
-        if ((posSample = (JSPositionalSample)getSample(index)) == null) 
+        if ((posSample = (JSPositionalSample)getSample(index)) == null)
             return;
-        if (posSample.channel == null) 
+        if (posSample.channel == null)
             return;
         int dataType = posSample.getDataType();
 
@@ -926,7 +926,7 @@ public class JavaSoundMixer extends AudioEngine3DL2 {
     /*
      * Set sample specific sample rate scale factor gain
      * @since Java 3D 1.3
-     */  
+     */
     public void   setRateScaleFactor(int index, float rateScaleFactor) {
         JSSample sample = null;
         if ((sample = (JSSample)getSample(index)) == null)
@@ -940,7 +940,7 @@ public class JavaSoundMixer extends AudioEngine3DL2 {
      * threads.
      * Causes all cached sounds to be paused and all streaming sounds to be
      * stopped.
-     */  
+     */
     public void  pause() {
         pause = PAUSE_PENDING;
         // TODO: pause all sounds
@@ -950,7 +950,7 @@ public class JavaSoundMixer extends AudioEngine3DL2 {
      * Resumes audio device engine (if previously paused) without reinitializing     * the device.
      * Causes all paused cached sounds to be resumed and all streaming sounds
      * restarted.
-     */  
+     */
     public void resume() {
         pause = RESUME_PENDING;
         // TODO: unpause all sounds

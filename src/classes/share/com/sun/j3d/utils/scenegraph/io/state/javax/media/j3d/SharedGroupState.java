@@ -54,7 +54,7 @@ public class SharedGroupState extends GroupState {
     public SharedGroupState(SymbolTableData symbol,Controller control) {
         super( symbol, control );
     }
-    
+
     protected javax.media.j3d.SceneGraphObject createNode() {
         return new SharedGroup();
     }

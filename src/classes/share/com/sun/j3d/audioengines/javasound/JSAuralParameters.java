@@ -56,13 +56,13 @@ public class JSAuralParameters extends com.sun.j3d.audioengines.AuralParameters 
 
     /**
      * Reverb Parameters
-     *   
+     *
      * dirty flag checked and cleared by render()
-     */  
+     */
     static int REFLECTION_COEFF_CHANGED =  1;
     static int REVERB_DELAY_CHANGED     =  2;
     static int REVERB_ORDER_CHANGED     =  4;
- 
+
     int      reverbDirty = 0xFFFF;
     int      lastReverbSpeed = 0;  // TODO: NOT used yet
     boolean  reverbFlag = false;  // previously refered to as reverbOn

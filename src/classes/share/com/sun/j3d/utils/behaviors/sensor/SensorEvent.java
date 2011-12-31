@@ -59,7 +59,7 @@ import javax.media.j3d.Transform3D ;
  * behaviors that wake up every frame.  If a listener needs to retain the
  * event it must be copied using the <code>SensorEvent(SensorEvent)</code>
  * constructor.
- * 
+ *
  * @see SensorEventAgent
  * @see SensorButtonListener
  * @see SensorReadListener
@@ -104,7 +104,7 @@ public class SensorEvent {
 
     /**
      * Creates a new <code>SensorEvent</code>.
-     * 
+     *
      * @param source a reference to the originating object which
      *  instantiated the <code>SensorEventAgent</code>, usually a
      *  <code>Behavior</code>; may be null
@@ -192,7 +192,7 @@ public class SensorEvent {
      * Sets the fields of an ephemeral event.  No objects are copied.  An
      * <code>IllegalStateException</code> will be thrown if this event
      * is not ephemeral.
-     * 
+     *
      * @param source a reference to the originating object which
      *  instantiated the <code>SensorEventAgent</code>, usually a
      *  <code>Behavior</code>; may be null
@@ -252,7 +252,7 @@ public class SensorEvent {
     public int getID() {
 	return id ;
     }
-         
+
 
     /**
      * Gets a reference to the provoking sensor.
@@ -289,7 +289,7 @@ public class SensorEvent {
     /**
      * Copies the sensor's read value at the time of the event into the
      * given <code>Transform3D</code>.
-     * 
+     *
      * @param t the transform to receive the sensor read
      */
     public void getSensorRead(Transform3D t) {
@@ -311,7 +311,7 @@ public class SensorEvent {
     /**
      * Copies the state of the sensor's buttons at the time of the event
      * into the given array.  A 1 in the array indicates that the button
-     * at that index is down, while a 0 indicates that button is up.  
+     * at that index is down, while a 0 indicates that button is up.
      * @param buttonState the state of the sensor buttons
      */
     public void getButtonState(int[] buttonState) {

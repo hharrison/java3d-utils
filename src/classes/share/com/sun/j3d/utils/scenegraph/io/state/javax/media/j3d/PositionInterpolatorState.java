@@ -60,17 +60,17 @@ public class PositionInterpolatorState extends TransformInterpolatorState {
     public PositionInterpolatorState(SymbolTableData symbol,Controller control) {
         super( symbol, control );
     }
-    
+
     public void writeObject( DataOutput out ) throws IOException {
         super.writeObject( out );
 
 	out.writeFloat( ((PositionInterpolator)node).getStartPosition() );
 	out.writeFloat( ((PositionInterpolator)node).getEndPosition() );
     }
-    
+
     public void readObject( DataInput in ) throws IOException {
         super.readObject( in );
-                        
+
 	((PositionInterpolator)node).setStartPosition( in.readFloat() );
 	((PositionInterpolator)node).setEndPosition( in.readFloat() );
     }
@@ -81,7 +81,7 @@ public class PositionInterpolatorState extends TransformInterpolatorState {
                                       new Object[] { null,
                                                      null } );
     }
-    
+
     protected javax.media.j3d.SceneGraphObject createNode() {
         return new PositionInterpolator( null, null );
     }

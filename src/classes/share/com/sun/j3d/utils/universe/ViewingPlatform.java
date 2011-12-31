@@ -106,13 +106,13 @@ public class ViewingPlatform extends BranchGroup {
      */
     protected BranchGroup behaviors;
 
-    /** 
+    /**
      * The universe to which this viewing platform is attached
      *
      * @since Java 3D 1.3
      */
     protected SimpleUniverse universe;
-    
+
     /**
      * Creates a default ViewingPlatform object.  This consists of a
      * MultiTransfromGroup node with one transform and a ViewPlatform
@@ -212,7 +212,7 @@ public class ViewingPlatform extends BranchGroup {
      * with the ViewingPlatform.  If the ViewingPlatform is to be the
      * inside of a car, for instance, than the PlatformGeometry could be
      * the dashboard of the car.
-     * 
+     *
      * @param pg The geometry to be associated with this ViewingPlatform.
      *  Passing in null has the effect of deleting any geometry associated
      *  with this ViewingPlatform.
@@ -274,7 +274,7 @@ public class ViewingPlatform extends BranchGroup {
      * Sets the nominal viewing distance in the ViewPlatform transform based
      * on the current field of view.  If the ViewAttachPolicy is not the
      * default of View.NOMINAL_HEAD, then this method has no effect.<p>
-     * 
+     *
      * The ViewPlatform is moved back along Z so that objects at the origin
      * spanning the normalized X range of -1.0 to +1.0 can be fully viewed
      * across the width of the window.  This is done by setting a translation
@@ -282,7 +282,7 @@ public class ViewingPlatform extends BranchGroup {
      *
      * If there is no Viewer object associated with this ViewingPlatform
      * object the default field of view of PI/4.0 is used.<p>
-     * 
+     *
      * NOTE: Support for multiple Viewer objects is not available.  If
      * multiple viewers are attached to this ViewingPlatform than a
      * RuntimeException will be thrown.
@@ -401,7 +401,7 @@ public class ViewingPlatform extends BranchGroup {
     void removeViewer(Viewer viewer) {
 	viewerList.remove(viewer);
     }
-    
+
     /**
      * Adds a new ViewPlatformBehavior to the ViewingPlatform
      */
@@ -458,14 +458,14 @@ public class ViewingPlatform extends BranchGroup {
 	    else this.addChild(behaviors);
 	}
     }
-    
+
     /**
      * Returns the number of ViewPlatformBehaviors on the ViewingPlatform
      */
     int getViewPlatformBehaviorCount() {
 	return behaviors.numChildren();
     }
-    
+
     /**
      * Returns the ViewPlatformBehavior at the specified index
      */
@@ -485,7 +485,7 @@ public class ViewingPlatform extends BranchGroup {
 	}
 	return getViewPlatformBehavior(0);
     }
-    
+
     /**
      * Returns the Viewers attached to this ViewingPlatform
      *
@@ -496,7 +496,7 @@ public class ViewingPlatform extends BranchGroup {
 	if (viewerList.size() == 0) return null;
         return (Viewer[])viewerList.keySet().toArray( new Viewer[0] );
     }
-    
+
     /**
      * Returns the Universe to which this ViewingPlatform is attached
      *
@@ -506,7 +506,7 @@ public class ViewingPlatform extends BranchGroup {
     public SimpleUniverse getUniverse() {
         return universe;
     }
-    
+
     /**
      * Sets the Universe to which this ViewingPlatform is attached
      *

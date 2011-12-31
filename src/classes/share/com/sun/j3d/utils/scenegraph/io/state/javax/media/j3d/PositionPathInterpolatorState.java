@@ -58,14 +58,14 @@ import com.sun.j3d.utils.scenegraph.io.retained.SymbolTableData;
 public class PositionPathInterpolatorState extends PathInterpolatorState {
 
     private Point3f[] positions;
-    
+
     public PositionPathInterpolatorState(SymbolTableData symbol,Controller control) {
         super( symbol, control );
     }
-    
+
     public void writeConstructorParams( DataOutput out ) throws IOException {
         super.writeConstructorParams( out );
-                
+
         positions = new Point3f[ knots.length ];
         for(int i=0; i<positions.length; i++)
             positions[i] = new Point3f();
@@ -74,10 +74,10 @@ public class PositionPathInterpolatorState extends PathInterpolatorState {
         for(int i=0; i<positions.length; i++)
             control.writePoint3f( out, positions[i] );
     }
-    
+
     public void readConstructorParams( DataInput in ) throws IOException {
         super.readConstructorParams( in );
-        
+
         positions = new Point3f[ knots.length ];
         for(int i=0; i<positions.length; i++)
             positions[i] = control.readPoint3f( in );
@@ -95,7 +95,7 @@ public class PositionPathInterpolatorState extends PathInterpolatorState {
                                                      knots,
                                                      positions } );
     }
-    
+
     protected javax.media.j3d.SceneGraphObject createNode() {
         return new PositionPathInterpolator( null, null, new Transform3D(), knots, positions );
     }

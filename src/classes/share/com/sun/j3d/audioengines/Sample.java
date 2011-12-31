@@ -76,28 +76,28 @@ public class Sample {
 
     /**
      *  sound data associated with sound source
-     */  
+     */
     protected MediaContainer  soundData = null;
 
     /**
      *  sound data associated with sound source
-     */  
+     */
     protected int soundType = -1;
 
     /**
      *  Overall Scale Factor applied to sound gain.
-     */  
+     */
     protected float gain = 1.0f;  // Valid values are >= 0.0.
 
     /**
      *  Overall Scale Factor applied to sound.
      *  @since Java 3D 1.3
-     */  
+     */
     protected float rateScaleFactor = 1.0f;  // Valid values are >= 0.0.
 
     /**
      *  Number of times sound is looped/repeated during play
-     */ 
+     */
     protected int   loopCount = 0;  //  Range from 0 to POSITIVE_INFINITY(-1)
 
 
@@ -131,13 +131,13 @@ public class Sample {
     /*
      * Pairs of distances and gain scale factors that define piecewise linear
      * gain attenuation between each pair.
-     */  
-    protected double[]  attenuationDistance = null; 
+     */
+    protected double[]  attenuationDistance = null;
     protected float[]   attenuationGain = null;;
 
     /**
      * dirty flags denoting what has changed since last rendering
-     */  
+     */
     protected int dirtyFlags = 0xFFFF;
 
     /*
@@ -154,7 +154,7 @@ public class Sample {
      * Pairs of distances and gain scale factors that define piecewise linear
      * gain BACK attenuation between each pair.
      * These are used for defining elliptical attenuation regions.
-     */  
+     */
     protected double[]     backAttenuationDistance = null;
     protected float[]     backAttenuationGain = null;
 
@@ -173,10 +173,10 @@ public class Sample {
      *  Distance Filter
      *  Each sound source is attenuated by a filter based on it's distance
      *  from the listener.
-     *  For now the only supported filterType will be LOW_PASS frequency 
+     *  For now the only supported filterType will be LOW_PASS frequency
      *  cutoff.
      *  At some time full FIR filtering will be supported.
-     */ 
+     */
     public static final int  NO_FILTERING  = -1;
     public static final int  LOW_PASS      =  1;
 
@@ -188,22 +188,22 @@ public class Sample {
      * For now the only type of filtering supported is a low-pass filter
      * defined by a frequency cutoff value.
      * @since Java 3D 1.3
-     */  
+     */
     protected float obstructionGain = 1.0f;  // scale factor
     protected int   obstructionFilterType = NO_FILTERING;
     protected float obstructionFilterCutoff = Sound.NO_FILTER;
     protected float occlusionGain = 1.0f;  // scale factor
     protected int   occlusionFilterType = NO_FILTERING;
-    protected float occlusionFilterCutoff = Sound.NO_FILTER; 
+    protected float occlusionFilterCutoff = Sound.NO_FILTER;
 
     /*
      * Construct a new audio device Sample object
-     */  
+     */
     public Sample() {
         if (debugFlag)
             debugPrintln("Sample constructor");
     }
-    
+
     public long  getDuration() {
         return 0;
     }
@@ -266,11 +266,11 @@ public class Sample {
     }
 
     public void   setLoopCount(int count) {
-        loopCount = count; 
+        loopCount = count;
     }
 
     public int   getLoopCount() {
-        return loopCount; 
+        return loopCount;
     }
 
 
@@ -283,7 +283,7 @@ public class Sample {
 
 
     public void setDistanceGain(
-              double[] frontDistance, float[]  frontAttenuationScaleFactor, 
+              double[] frontDistance, float[]  frontAttenuationScaleFactor,
               double[] backDistance, float[]  backAttenuationScaleFactor) {
         if (frontDistance != null) {
             int size = frontDistance.length;
@@ -325,7 +325,7 @@ public class Sample {
     // TODO: no get method for Direction
 
 
-    public void setAngularAttenuation(int filterType, double[] angle, 
+    public void setAngularAttenuation(int filterType, double[] angle,
                  float[] attenuationScaleFactor, float[] filterCutoff) {
         if (angle != null) {
             int size = angle.length;
@@ -357,7 +357,7 @@ public class Sample {
     /*
      * Set Rate ScaleFactor
      * @since Java 3D 1.3
-     */  
+     */
     public void  setRateScaleFactor(float scaleFactor) {
         rateScaleFactor = scaleFactor;
     }
@@ -365,7 +365,7 @@ public class Sample {
     /*
      * Get Rate ScaleFactor
      * @since Java 3D 1.3
-     */  
+     */
     public float  getRateScaleFactor() {
         return rateScaleFactor;
     }
@@ -374,7 +374,7 @@ public class Sample {
     /*
      * Set Obstruction Gain
      * @since Java 3D 1.3
-     */  
+     */
     public void  setObstructionGain(float scaleFactor) {
         obstructionGain = scaleFactor;
     }
@@ -382,7 +382,7 @@ public class Sample {
     /*
      * Get Obstruction Gain
      * @since Java 3D 1.3
-     */  
+     */
     public float  getObstructionGain() {
         return obstructionGain;
     }
@@ -390,7 +390,7 @@ public class Sample {
     /*
      * Set Obstruction Filter Cutoff Frequency
      * @since Java 3D 1.3
-     */  
+     */
     public void  setObstructionFilter(float cutoffFrequency) {
         obstructionFilterType = LOW_PASS;
         obstructionFilterCutoff = cutoffFrequency;
@@ -402,7 +402,7 @@ public class Sample {
     /*
      * Set Occlusion Gain
      * @since Java 3D 1.3
-     */  
+     */
     public void  setOcclusionGain(float scaleFactor) {
         occlusionGain = scaleFactor;
     }
@@ -410,7 +410,7 @@ public class Sample {
     /*
      * Get Occlusion Gain
      * @since Java 3D 1.3
-     */  
+     */
     public float  getOcclusionGain() {
         return occlusionGain;
     }
@@ -418,7 +418,7 @@ public class Sample {
     /*
      * Set Occlusion Filter Cutoff Frequency
      * @since Java 3D 1.3
-     */  
+     */
     public void  setOcclusionFilter(float cutoffFrequency) {
         occlusionFilterType = LOW_PASS;
         occlusionFilterCutoff = cutoffFrequency;
@@ -431,14 +431,14 @@ public class Sample {
      * Clears/re-initialize fields associated with sample data
      * for this sound,
      * and frees any device specific data associated with this sample.
-     */  
+     */
     public void clear() {
         if (debugFlag)
             debugPrintln("Sample.clear() entered");
         soundData = (MediaContainer)null;
         soundType = NULL_SAMPLE;
         gain = 1.0f;
-        loopCount = 0; 
+        loopCount = 0;
         duration = DURATION_UNKNOWN;
         numberOfChannels = 0;
         vworldXfrm.setIdentity();
@@ -462,7 +462,7 @@ public class Sample {
 	    angularFilterCutoff[0] = Sound.NO_FILTER;
 	    angularFilterCutoff[1] = Sound.NO_FILTER;
 	}
-        obstructionGain = 1.0f; 
+        obstructionGain = 1.0f;
         obstructionFilterType = NO_FILTERING;
         obstructionFilterCutoff = Sound.NO_FILTER;
         occlusionGain = 1.0f;

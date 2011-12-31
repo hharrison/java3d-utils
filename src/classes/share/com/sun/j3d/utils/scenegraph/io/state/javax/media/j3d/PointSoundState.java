@@ -57,31 +57,31 @@ public class PointSoundState extends SoundState {
 
     public PointSoundState(SymbolTableData symbol,Controller control) {
         super( symbol, control );
-        
+
     }
-    
+
     public void writeObject( DataOutput out ) throws IOException {
         super.writeObject( out );
-        
+
         float[] distance = new float[ ((PointSound)node).getDistanceGainLength() ];
         float[] gain = new float[ distance.length ];
-        
+
         ((PointSound)node).getDistanceGain( distance, gain );
         out.writeInt( distance.length );
         for(int i=0; i<distance.length; i++) {
             out.writeFloat( distance[i] );
             out.writeFloat( gain[i] );
         }
-        
+
         Point3f pos = new Point3f();
-        
+
         ((PointSound)node).getPosition( pos );
         control.writePoint3f( out, pos );
     }
-    
+
     public void readObject( DataInput in ) throws IOException {
         super.readObject( in );
-                    
+
         float[] distance = new float[ in.readInt() ];
         float[] gain = new float[ distance.length ];
         for(int i=0; i<distance.length; i++) {
@@ -89,13 +89,13 @@ public class PointSoundState extends SoundState {
             gain[i] = in.readFloat();
         }
         ((PointSound)node).setDistanceGain( distance, gain );
-        
+
         ((PointSound)node).setPosition( control.readPoint3f( in ));
     }
-    
+
     protected javax.media.j3d.SceneGraphObject createNode() {
         return new PointSound();
     }
 
-    
+
 }

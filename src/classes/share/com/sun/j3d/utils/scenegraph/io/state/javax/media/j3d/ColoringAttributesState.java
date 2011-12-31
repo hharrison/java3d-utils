@@ -54,11 +54,11 @@ import javax.media.j3d.ColoringAttributes;
 import javax.vecmath.Color3f;
 
 public class ColoringAttributesState extends NodeComponentState {
-    
+
     public ColoringAttributesState( SymbolTableData symbol, Controller control ) {
         super(symbol, control);
     }
-    
+
     public void writeObject( DataOutput out ) throws IOException {
         super.writeObject( out );
         ColoringAttributes attr = (ColoringAttributes)node;
@@ -67,18 +67,18 @@ public class ColoringAttributesState extends NodeComponentState {
         control.writeColor3f( out, clr );
         out.writeInt( attr.getShadeModel() );
     }
-    
+
     public void readObject( DataInput in ) throws IOException {
         super.readObject( in );
         ColoringAttributes attr = (ColoringAttributes)node;
         attr.setColor( control.readColor3f(in) );
         attr.setShadeModel( in.readInt() );
     }
-    
+
     protected SceneGraphObject createNode() {
         return new ColoringAttributes();
     }
 
-    
+
 }
 

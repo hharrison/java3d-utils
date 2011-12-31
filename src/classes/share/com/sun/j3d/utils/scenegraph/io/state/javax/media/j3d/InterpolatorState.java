@@ -56,16 +56,16 @@ import com.sun.j3d.utils.scenegraph.io.retained.SymbolTableData;
 public abstract class InterpolatorState extends BehaviorState {
 
     private int alpha=0;
-    
+
     public InterpolatorState(SymbolTableData symbol,Controller control) {
         super( symbol, control );
     }
-    
+
     public void writeObject( DataOutput out ) throws IOException {
         super.writeObject( out );
         out.writeInt( control.getSymbolTable().addReference( ((Interpolator)node).getAlpha() ));
     }
-    
+
     public void readObject( DataInput in ) throws IOException {
         super.readObject( in );
         alpha = in.readInt();
@@ -79,7 +79,7 @@ public abstract class InterpolatorState extends BehaviorState {
     public void addSubReference() {
         control.getSymbolTable().incNodeComponentRefCount( alpha );
     }
-    
+
     public void buildGraph() {
         ((Interpolator)node).setAlpha( (Alpha)control.getSymbolTable().getJ3dNode( alpha ));
         super.buildGraph(); // Must be last call in method

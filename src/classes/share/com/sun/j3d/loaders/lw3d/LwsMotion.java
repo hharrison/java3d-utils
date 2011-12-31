@@ -160,7 +160,7 @@ class LwsMotion extends TextfileParser {
       * than PI/2 (one quarter rotation - no reason for this, but let's pick a
       * small value to give our resulting path interpolations a better chance
       * of behaving correctly), figure out how many frames we need to create to
-      * get increments of <= PI/2 between each frame.  
+      * get increments of <= PI/2 between each frame.
       * - Create these new frames
       * - Set the odl frames pointer to the new frames structures.
       */
@@ -185,48 +185,48 @@ class LwsMotion extends TextfileParser {
 	   double thisAngle = thisFrame.getHeading();
 	   double lastAngle = lastFrame.getHeading();
 	   double angleDifference = Math.abs(thisAngle - lastAngle);
-	   if (angleDifference > largestAngleDifference) 
+	   if (angleDifference > largestAngleDifference)
 	     largestAngleDifference = angleDifference;
 
 	   thisAngle = thisFrame.getPitch();
 	   lastAngle = lastFrame.getPitch();
 	   angleDifference = Math.abs(thisAngle - lastAngle);
-	   if (angleDifference > largestAngleDifference) 
+	   if (angleDifference > largestAngleDifference)
 	     largestAngleDifference = angleDifference;
 
 	   thisAngle = thisFrame.getBank();
 	   lastAngle = lastFrame.getBank();
 	   angleDifference = Math.abs(thisAngle - lastAngle);
-	   if (angleDifference > largestAngleDifference) 
+	   if (angleDifference > largestAngleDifference)
 	     largestAngleDifference = angleDifference;
 
 	   if (largestAngleDifference > halfPI) {
-		// Angles too big - create new frames 
+		// Angles too big - create new frames
 		addedFrames = true;
 		int numNewFrames = (int)(largestAngleDifference/halfPI);
 		double increment = 1.0/(double)(numNewFrames+1);
 		double currentRatio = increment;
 
                 double totalf = frames[numFrames-1].getFrameNum();
-                double tlength = (thisFrame.getFrameNum() - 
+                double tlength = (thisFrame.getFrameNum() -
                                             lastFrame.getFrameNum())/totalf;
-                double adj0; 
-                double adj1; 
+                double adj0;
+                double adj1;
 
-                // get the previous and next frames 
-                if ((i-1) < 1) { 
+                // get the previous and next frames
+                if ((i-1) < 1) {
                    prevFrame = frames[i-1];
                    adj0 = 0.0;
                 } else {
                    prevFrame = frames[i-2];
-                   adj0 = tlength/((thisFrame.getFrameNum() - 
-                                         prevFrame.getFrameNum())/totalf); 
+                   adj0 = tlength/((thisFrame.getFrameNum() -
+                                         prevFrame.getFrameNum())/totalf);
                 }
 
                 if ((i+1) < numFrames) {
                    nextFrame = frames[i+1];
-                   adj1 = tlength/((nextFrame.getFrameNum()- 
-                                         lastFrame.getFrameNum())/totalf); 
+                   adj1 = tlength/((nextFrame.getFrameNum()-
+                                         lastFrame.getFrameNum())/totalf);
                  } else {
                    nextFrame = frames[i];
                    adj1 = 1.0;
@@ -238,16 +238,16 @@ class LwsMotion extends TextfileParser {
 
                    // if linear interpolation
                    if (thisFrame.linearValue == 1) {
-  	              newFrame = new LwsFrame(lastFrame, 
+  	              newFrame = new LwsFrame(lastFrame,
                                               thisFrame, currentRatio);
-			         
+
                     // if spline interpolation
                     } else {
-		      newFrame = new LwsFrame(prevFrame, lastFrame, 
-                                              thisFrame, nextFrame, 
+		      newFrame = new LwsFrame(prevFrame, lastFrame,
+                                              thisFrame, nextFrame,
                                               currentRatio, adj0, adj1);
                     }
- 
+
 		    currentRatio += increment;
 		    newFramesList.add(newFrame);
 		}
@@ -304,7 +304,7 @@ class LwsMotion extends TextfileParser {
 	    frameNumber = number;
 	}
     }
-    
+
 
     /**
      * This method was added to account for animations that start after
@@ -445,7 +445,7 @@ class LwsMotion extends TextfileParser {
 	playWithFrameTimes(frameHolders);
 	long alphaAtOne = 0;
 
-        // determine looping 
+        // determine looping
 	int loopCount;
 	if (loop)
 	    loopCount = -1;
@@ -479,7 +479,7 @@ class LwsMotion extends TextfileParser {
 	Quat4f[] quats          = new Quat4f[numFrames];
         Point3f[] scales        = new Point3f[numFrames];
 	Transform3D yAxis       = new Transform3D();
-	Matrix4d mat            = new Matrix4d(); 
+	Matrix4d mat            = new Matrix4d();
         KBKeyFrame[] keyFrames  = new KBKeyFrame[numFrames];
 
 	for (int i=0; i < numFrames; ++i) {
@@ -489,7 +489,7 @@ class LwsMotion extends TextfileParser {
 
             // copy position
 	    positions[i] = frame.getPosition();
- 
+
             // copy scale
 	    // Used to hardcode no-scale:   scales[i] = 1.0f, 1.0f, 1.0f;
             // Note that we can't do non-uniform scaling in the current Path
@@ -504,16 +504,16 @@ class LwsMotion extends TextfileParser {
 	    quats[i].set(mat);
 	    debugOutputLn(VALUES, " and quat = " + quats[i]);
 
-            // calculate knot points from frame numbers 
+            // calculate knot points from frame numbers
 	    if (i == 0)
 	      knots[i] = 0.0f;
-	    else	
+	    else
 	      knots[i] = (float)(frameHolder.frameNumber)/
 				(float)(lastFrameHolder.frameNumber);
 
              // Create KB key frames
-             keyFrames[i] = new KBKeyFrame(knots[i], frame.linearValue,  
-                                                     positions[i], 
+             keyFrames[i] = new KBKeyFrame(knots[i], frame.linearValue,
+                                                     positions[i],
                                                      (float)frame.heading,
                                                      (float)frame.pitch,
                                                      (float)frame.bank,
@@ -530,7 +530,7 @@ class LwsMotion extends TextfileParser {
         KBRotPosScaleSplinePathInterpolator b = new
                    KBRotPosScaleSplinePathInterpolator(theAlpha,
 					               target,
-					               yAxis, 
+					               yAxis,
                                                        keyFrames);
         if (b != null) {
 	  behaviors = b;
@@ -541,7 +541,7 @@ class LwsMotion extends TextfileParser {
 	  target.addChild(behaviors);
         }
     }
-    
+
     /**
      * Create j3d behaviors for the data stored in this animation.  This is
      * done by creating a RotPosScalePathInterpolator object that contains
@@ -578,7 +578,7 @@ class LwsMotion extends TextfileParser {
 	    debugOutputLn(VALUES, " lastFrame = " +
 			  frames[numFrames-1].getFrameNum());
 
-	    if (!loop) 
+	    if (!loop)
 		alphaAtOne = (long)(1000.0*totalTime - animTime);
 	    Alpha theAlpha =
 		new Alpha(loopCount, Alpha.INCREASING_ENABLE,
@@ -591,7 +591,7 @@ class LwsMotion extends TextfileParser {
             Point3f[] scales        = new Point3f[numFrames];
 	    Transform3D yAxis       = new Transform3D();
 	    Matrix4d mat            = new Matrix4d();
-            KBKeyFrame[] keyFrames  = new KBKeyFrame[numFrames]; 
+            KBKeyFrame[] keyFrames  = new KBKeyFrame[numFrames];
 
 	    for (int i=0; i < numFrames; ++i) {
 
@@ -611,7 +611,7 @@ class LwsMotion extends TextfileParser {
 		quats[i] = new Quat4f();
 		quats[i].set(mat);
 		debugOutputLn(VALUES, " and quat = " + quats[i]);
-		
+
                 // calculate knot points from frame numbers
 		if (i == 0)
 		   knots[i] = 0.0f;
@@ -621,7 +621,7 @@ class LwsMotion extends TextfileParser {
 
                 // Create KB key frames
                 keyFrames[i] = new KBKeyFrame(knots[i],frames[i].linearValue,
-                                              positions[i], 
+                                              positions[i],
                                               (float)frames[i].heading,
                                               (float)frames[i].pitch,
                                               (float)frames[i].bank,
@@ -629,7 +629,7 @@ class LwsMotion extends TextfileParser {
                                               (float)frames[i].tension,
                                               (float)frames[i].continuity,
                                               (float)frames[i].bias);
- 
+
 
 		debugOutputLn(VALUES, "pos, knots, quat = " +
 				   positions[i] + knots[i] + quats[i]);
@@ -639,7 +639,7 @@ class LwsMotion extends TextfileParser {
             KBRotPosScaleSplinePathInterpolator b = new
                    KBRotPosScaleSplinePathInterpolator(theAlpha,
 					               target,
-					               yAxis, 
+					               yAxis,
                                                        keyFrames);
             if (b != null) {
 	      behaviors = b;
@@ -659,7 +659,7 @@ class LwsMotion extends TextfileParser {
     Behavior getBehaviors() {
 	return behaviors;
     }
-    
+
     /**
      * Returns the first LwsFrame object (which contains the initial
      * setup for a given object)
@@ -685,4 +685,4 @@ class LwsMotion extends TextfileParser {
 	}
     }
 
-}	
+}

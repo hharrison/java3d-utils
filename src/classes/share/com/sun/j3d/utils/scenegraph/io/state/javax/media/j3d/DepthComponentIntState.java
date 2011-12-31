@@ -56,7 +56,7 @@ public class DepthComponentIntState extends NodeComponentState {
 
     private int height;
     private int width;
-    
+
     public DepthComponentIntState ( SymbolTableData symbol, Controller control ) {
         super(symbol, control);
     }
@@ -102,10 +102,10 @@ public class DepthComponentIntState extends NodeComponentState {
 				     new Object[] { new Integer( width ),
 						    new Integer( height ) } );
     }
-    
+
     protected javax.media.j3d.SceneGraphObject createNode() {
         return new DepthComponentInt( width, height );
     }
 
-    
+
 }

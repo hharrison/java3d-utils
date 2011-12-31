@@ -66,7 +66,7 @@ public interface SceneGraphIO {
      * @param ref provides methods to create references to a SceneGraphObject
      */
     public void createSceneGraphObjectReferences( SceneGraphObjectReferenceControl ref );
-    
+
     /**
      * Within this method the user should restore references to the SceneGraphObjects
      * whose nodeID's were created with createSceneGraphObjectReferences
@@ -76,18 +76,18 @@ public interface SceneGraphIO {
      * @param ref provides methods to resolve references to a SceneGraphObject
      */
     public void restoreSceneGraphObjectReferences( SceneGraphObjectReferenceControl ref );
-    
+
     /**
      * This method should store all the local state of the object and any references
      * to other SceneGraphObjects into <code>out</code>.
      *
      * This is called after data for the parent SceneGraphObject has been written to
-     * the <code>out</code>. 
+     * the <code>out</code>.
      *
      * @param out the output stream
      */
     public void writeSceneGraphObject( java.io.DataOutput out ) throws java.io.IOException;
-    
+
     /**
      * This is called after the object has been constructed and the superclass SceneGraphObject
      * data has been read from <code>in</code>.
@@ -97,7 +97,7 @@ public interface SceneGraphIO {
      * @param in the input stream
      */
     public void readSceneGraphObject( java.io.DataInput in ) throws java.io.IOException;
-    
+
     /**
      * Flag indicating for children of this object should be saved
      *

@@ -57,14 +57,14 @@ import javax.media.j3d.TexCoordGeneration;
 import javax.vecmath.Color3f;
 
 public class TextureUnitStateState extends NodeComponentState {
-    
+
     private int texCoordGeneration;
     private int texture;
     private int textureAttributes;
-    
+
     public TextureUnitStateState(SymbolTableData symbol,Controller control) {
         super(symbol, control);
-        
+
         if (node!=null) {
             TextureUnitState attr = (TextureUnitState)node;
             texCoordGeneration = control.getSymbolTable().addReference( attr.getTexCoordGeneration() );
@@ -72,14 +72,14 @@ public class TextureUnitStateState extends NodeComponentState {
             textureAttributes =control.getSymbolTable().addReference( attr.getTextureAttributes() );
         }
     }
-    
+
     public void writeObject( DataOutput out ) throws IOException {
         super.writeObject( out );
         out.writeInt( texCoordGeneration );
         out.writeInt( texture );
         out.writeInt( textureAttributes );
     }
-    
+
     public void readObject( DataInput in ) throws IOException {
         super.readObject( in );
         TextureUnitState attr = (TextureUnitState)node;
@@ -87,25 +87,25 @@ public class TextureUnitStateState extends NodeComponentState {
         texture = in.readInt();
         textureAttributes = in.readInt();
     }
-    
+
     public void addSubReference() {
         control.getSymbolTable().incNodeComponentRefCount( texCoordGeneration );
         control.getSymbolTable().incNodeComponentRefCount( texture );
         control.getSymbolTable().incNodeComponentRefCount( textureAttributes );
     }
-    
+
     public void buildGraph() {
         TextureUnitState attr = (TextureUnitState)node;
         attr.setTexCoordGeneration( (TexCoordGeneration)control.getSymbolTable().getJ3dNode( texCoordGeneration ));
         attr.setTexture( (Texture)control.getSymbolTable().getJ3dNode( texture ));
-        attr.setTextureAttributes( (TextureAttributes)control.getSymbolTable().getJ3dNode( textureAttributes ));        
+        attr.setTextureAttributes( (TextureAttributes)control.getSymbolTable().getJ3dNode( textureAttributes ));
         super.buildGraph();     // Must be last call in method
     }
-    
+
     protected javax.media.j3d.SceneGraphObject createNode() {
         return new TextureUnitState();
     }
 
-    
+
 }
 

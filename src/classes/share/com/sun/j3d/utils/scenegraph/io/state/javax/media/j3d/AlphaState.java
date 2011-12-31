@@ -53,11 +53,11 @@ import javax.media.j3d.SceneGraphObject;
 import javax.media.j3d.Alpha;
 
 public class AlphaState extends NodeComponentState {
-    
+
     public AlphaState(SymbolTableData symbol,Controller control) {
         super(symbol, control);
     }
-    
+
     public void writeObject( DataOutput out ) throws IOException {
         super.writeObject( out );
         Alpha alpha = (Alpha)node;
@@ -74,7 +74,7 @@ public class AlphaState extends NodeComponentState {
         out.writeLong( alpha.getTriggerTime() );
 	out.writeLong( alpha.getPauseTime() );
     }
-    
+
     public void readObject( DataInput in ) throws IOException {
         super.readObject( in );
         Alpha alpha = (Alpha)node;
@@ -92,7 +92,7 @@ public class AlphaState extends NodeComponentState {
 	long x = in.readLong();
 	if (x!=0L) alpha.pause(x);
     }
-    
+
     protected SceneGraphObject createNode() {
         return new Alpha();
     }

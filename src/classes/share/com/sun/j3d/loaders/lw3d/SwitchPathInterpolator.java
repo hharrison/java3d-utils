@@ -44,7 +44,7 @@
 
  package com.sun.j3d.loaders.lw3d;
 
- 
+
 import javax.vecmath.*;
 import java.util.BitSet;
 import java.util.Enumeration;
@@ -59,7 +59,7 @@ import com.sun.j3d.internal.J3dUtilsI18N;
 /**
  * This class was used in conjunction with SequenceReader to create
  * Tloop functionality inside of Lightwave files.  This behavior handles
- * the switching between objects defined in separate lines of a 
+ * the switching between objects defined in separate lines of a
  * sequence file.  That is, each line in a sequence file has the name
  * of an object (or an object sequence, if the name ends in "000")
  * and details the start and end frames that that object should be active.
@@ -74,7 +74,7 @@ class SwitchPathInterpolator extends FloatValueInterpolator {
     int lastSwitchIndex;
     int currentChild;
     int childCount;
-    
+
     /**
       * Constructs a new SwitchPathInterpolator object.
       * @param alpha the alpha object for this interpolator
@@ -95,7 +95,7 @@ class SwitchPathInterpolator extends FloatValueInterpolator {
 
     /**
      * This method sets the correct child for the Switch node according
-     * to alpha  
+     * to alpha
      * @param criteria enumeration of criteria that have triggered this wakeup
      */
 
@@ -103,18 +103,18 @@ class SwitchPathInterpolator extends FloatValueInterpolator {
 
 	int child;
 
-        // Handle stimulus 
+        // Handle stimulus
         if (this.getAlpha() != null) {
 
             // Let PathInterpolator calculate the correct
-            // interpolated knot point 
+            // interpolated knot point
             computePathInterpolation();
 
 	    if (currentKnotIndex > 0)
 	        child = currentKnotIndex - 1;
 	    else
 	        child = 0;
-	
+
 	    if (target.getWhichChild() != child) {
 	        target.setWhichChild(child);
 	    }

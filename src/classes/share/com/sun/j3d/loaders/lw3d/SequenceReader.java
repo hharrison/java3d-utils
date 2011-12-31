@@ -50,10 +50,10 @@ import java.util.Hashtable;
 import java.util.Vector;
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader; 
-import java.io.StreamTokenizer; 
-import java.io.IOException; 
-import javax.media.j3d.*; 
+import java.io.FileReader;
+import java.io.StreamTokenizer;
+import java.io.IOException;
+import javax.media.j3d.*;
 import javax.vecmath.Point3d;
 
 import com.sun.j3d.loaders.IncorrectFormatException;
@@ -74,7 +74,7 @@ class SequenceReader {
     Vector         sequenceLines;
     float          totalTime;
     int            totalFrames;
-	
+
     TransformGroup objectTransform;
     Vector         behaviorVector;
 
@@ -108,7 +108,7 @@ class SequenceReader {
 
 	/**
 	* Creates Java3D objects from the data defined in the sequence
-	* file.  Calls each sequenceLine object to create its own 
+	* file.  Calls each sequenceLine object to create its own
 	* j3d objects, then puts all of those objects in a single Switch
 	* node.  Finally, it creates a SwitchPathInterpolator object which
 	* handles switching between each object/s defined by each line
@@ -142,7 +142,7 @@ class SequenceReader {
 	Alpha theAlpha = new Alpha(-1, Alpha.INCREASING_ENABLE,
 		                    0, 0, (long)(1000f * totalTime), 0,
 		                    0, 0, 0, 0);
-	
+
 	SwitchPathInterpolator switchPath =
 	    new SwitchPathInterpolator(theAlpha,
 				       knots,
@@ -161,7 +161,7 @@ class SequenceReader {
     Vector getObjectBehaviors() {
 	return behaviorVector;
     }
-    
+
     void printLines() {
 	Enumeration e = sequenceLines.elements();
 	while (e.hasMoreElements()) {

@@ -58,7 +58,7 @@ import javax.vecmath.Vector3f ;
  * A Shape3D representing a gnomon pointing along each coordinate
  * axis.  The base of the gnomon is a cube, and the coordinate axes are
  * represented by pyramids attached to each face of the cube.
- * 
+ *
  * @since Java 3D 1.3
  */
 public class SensorGnomonEcho extends Shape3D {
@@ -66,7 +66,7 @@ public class SensorGnomonEcho extends Shape3D {
      * Constructs a SensorGnomonEcho.  Read and write capabilities are
      * granted for the Appearance, Material, TransparencyAttributes,
      * and TransparencyAttributes mode and value.
-     * 
+     *
      * @param transform translation and/or rotation to apply to the gnomon
      *  geometry; this should be the position and orientation of the sensor
      *  hotspot in the sensor's local coordinate system
@@ -91,7 +91,7 @@ public class SensorGnomonEcho extends Shape3D {
 	Point3f[] axes = new Point3f[6] ;
 	float length = (float)axisLength ;
 
-	axes[FRONT]  = new Point3f(0f, 0f,  length) ; 
+	axes[FRONT]  = new Point3f(0f, 0f,  length) ;
 	axes[BACK]   = new Point3f(0f, 0f, -length) ;
 	axes[LEFT]   = new Point3f(-length, 0f, 0f) ;
 	axes[RIGHT]  = new Point3f( length, 0f, 0f) ;
@@ -157,7 +157,7 @@ public class SensorGnomonEcho extends Shape3D {
 	    vertices[v++] = cube[i][0] ;
 	    vertices[v++] = axes[i] ;
 	}
-        
+
 	int vertexFormat ;
 	Material m = new Material() ;
 	m.setCapability(Material.ALLOW_COMPONENT_READ) ;

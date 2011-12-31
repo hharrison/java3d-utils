@@ -113,7 +113,7 @@ import com.sun.j3d.utils.behaviors.sensor.* ;
  * <code>TranslateBackward</code> - Translates the view platform backwards
  * along the direction the sensor is pointing; the virtual world appears to
  * move away from the sensor.  The default is button 2 if three buttons are
- * available. 
+ * available.
  * </li>
  * <li>
  * <code>RotateCCW</code> - Rotates the view platform counter-clockwise about
@@ -245,13 +245,13 @@ public class WandViewBehavior extends ViewPlatformBehavior {
 
     /**
      * Indicates that a 2D sensor button or read action should be bound
-     * to translation.  
+     * to translation.
      */
     public static final int TRANSLATION = 8 ;
 
     /**
      * Indicates that a 2D sensor button or read action should be bound
-     * to scaling.  
+     * to scaling.
      */
     public static final int SCALE = 9 ;
 
@@ -288,13 +288,13 @@ public class WandViewBehavior extends ViewPlatformBehavior {
      * Indicates that rotation speed should be in radians.
      */
     public static final int RADIANS = 15 ;
-    
+
     /**
      * Indicates that rotation speed should be in degrees.  This is the
      * default.
      */
     public static final int DEGREES = 16 ;
-    
+
     /**
      * Indicates that rotation should occur in view platform
      * coordinates.
@@ -330,7 +330,7 @@ public class WandViewBehavior extends ViewPlatformBehavior {
      * default.
      */
     public static final int ECHO = 22 ;
-    
+
     /**
      * Indicates that the echo type is a gnomon displaying the
      * directions of the sensor's local coordinate system axes at the location
@@ -364,7 +364,7 @@ public class WandViewBehavior extends ViewPlatformBehavior {
     private boolean configured = false ;
 
     // The rest of these private fields are all configurable through
-    // ConfiguredUniverse. 
+    // ConfiguredUniverse.
     private Sensor sensor6D = null ;
     private Sensor sensor2D = null ;
     private int x2D = 3 ;
@@ -431,7 +431,7 @@ public class WandViewBehavior extends ViewPlatformBehavior {
      * instantiated from a configuration file then it must then be explicitly
      * attached to a <code>ViewingPlatform</code> instance with the
      * <code>ViewingPlatform.setViewPlatformBehavior</code> method.
-     * 
+     *
      * @param sensor6D a six degree of freedom sensor which generates reads
      *  relative to the tracker base in physical units; may be
      *  <code>null</code>
@@ -471,7 +471,7 @@ public class WandViewBehavior extends ViewPlatformBehavior {
      * transform and to read, write, and extend its children will be set.  The
      * echo geometry is assumed to incorporate the position and orientation of
      * the 6DOF sensor hotspot.
-     * 
+     *
      * @param sensor6D a six degree of freedom sensor which generates reads
      *  relative to the tracker base in physical units; may be
      *  <code>null</code>
@@ -515,13 +515,13 @@ public class WandViewBehavior extends ViewPlatformBehavior {
      * responsible for adding the echo to the virtual universe.  The echo
      * geometry is assumed to incorporate the position and orientation of the
      * 6DOF sensor hotspot.
-     * 
+     *
      * @param sensor6D a six degree of freedom sensor which generates reads
      *  relative to the tracker base in physical units; may be
      *  <code>null</code>
      * @param sensor2D 2D valuator which generates X and Y reads ranging from
      *  [-1.0 .. +1.0]; may be <code>null</code>
-     * @param view a reference to the <code>View</code> attached to the 
+     * @param view a reference to the <code>View</code> attached to the
      *  <code>ViewPlatform</code> to be manipulated by this behavior
      * @param viewTransform a <code>TransformGroup</code> containing the view
      *  platform transform; appropriate capabilities to update the transform
@@ -586,7 +586,7 @@ public class WandViewBehavior extends ViewPlatformBehavior {
     }
 
     /**
-     * Processes a stimulus meant for this behavior.  
+     * Processes a stimulus meant for this behavior.
      * NOTE: Applications should <i>not</i> call this method. It is called by
      * the Java 3D behavior scheduler.
      */
@@ -614,7 +614,7 @@ public class WandViewBehavior extends ViewPlatformBehavior {
 	}
         super.setEnable(enable) ;
     }
-    
+
     /**
      * Sets the <code>ViewingPlatform</code> for this behavior.  If a subclass
      * overrides this method, it must call
@@ -659,7 +659,7 @@ public class WandViewBehavior extends ViewPlatformBehavior {
 
 	attachEcho() ;
     }
-    
+
     /**
      * Attaches the echo BranchGroup to the ViewingPlatform if appropriate.
      */
@@ -699,14 +699,14 @@ public class WandViewBehavior extends ViewPlatformBehavior {
         if (universe != null && universe instanceof ConfiguredUniverse) {
             // Check if sensors were instantiated from a config file.
             Map sensorMap = ((ConfiguredUniverse)universe).getNamedSensors() ;
-            
+
             if (sensor2D == null && sensor2DName != null) {
                 sensor2D = (Sensor)sensorMap.get(sensor2DName) ;
                 if (sensor2D == null)
                     throw new IllegalArgumentException
                         ("\nsensor " + sensor2DName + " not found") ;
             }
-            
+
             if (sensor6D == null && sensor6DName != null) {
                 sensor6D = (Sensor)sensorMap.get(sensor6DName) ;
                 if (sensor6D == null)
@@ -734,7 +734,7 @@ public class WandViewBehavior extends ViewPlatformBehavior {
                 throw new IllegalArgumentException
                     ("\nbutton index " + (buttonActionCount-1) +
                      " >= number of buttons (" + buttonCount +")") ;
-            
+
             // Assign default button actions.
             if (buttonCount > 2 &&
                 (buttonActionCount < 3 || buttonActions6D.get(2) == null))
@@ -760,7 +760,7 @@ public class WandViewBehavior extends ViewPlatformBehavior {
                             sbls[i] = new GrabViewListener6D() ;
                         else if (action == TRANSLATE_FORWARD)
                             sbls[i] = new TranslationListener6D(false) ;
-                        else if (action == TRANSLATE_BACKWARD) 
+                        else if (action == TRANSLATE_BACKWARD)
                             sbls[i] = new TranslationListener6D(true) ;
 			else if (action == ROTATE_CCW)
 			    sbls[i] = new RotationListener6D(false) ;
@@ -944,7 +944,7 @@ public class WandViewBehavior extends ViewPlatformBehavior {
          * Initializes the listener action.  Subclasses must call this before
          * starting the action, either from <code>pressed</code> or when a 2D
          * valuator exits the deadzone threshold.
-         * 
+         *
          * @param s reference to a 6DOF sensor if used by the listener; may
          *  be <code>null</code>
 	 */
@@ -969,7 +969,7 @@ public class WandViewBehavior extends ViewPlatformBehavior {
          * Ends the action.  Subclasses must be call this from
          * <code>released</code> or when a 2D valuator enters the deadzone
          * threshold.
-         * 
+         *
          * @param s reference to a 6DOF sensor if used by the listener; may
          *  be <code>null</code>
 	 */
@@ -1092,7 +1092,7 @@ public class WandViewBehavior extends ViewPlatformBehavior {
 		closestToOne = 1 ;
 	    if (Math.abs(s3Tmp[2] - 1.0) < Math.abs(s3Tmp[closestToOne] - 1.0))
 		closestToOne = 2 ;
-            
+
 	    double scale ;
 	    for (int i = 0 ; i < 3 ; i++) {
 		if (i == closestToOne) continue ;
@@ -1101,13 +1101,13 @@ public class WandViewBehavior extends ViewPlatformBehavior {
 		m16Tmp[i+4] *= scale ;
 		m16Tmp[i+8] *= scale ;
 	    }
-                
+
 	    // Set the view transform and bail out if unsuccessful.
 	    viewPlatformToVworld.set(m16Tmp) ;
 	    if ((viewPlatformToVworld.getType() & Transform3D.CONGRUENT) == 0)
 		goHome() ;
 	    else
-		targetTG.setTransform(viewPlatformToVworld) ; 
+		targetTG.setTransform(viewPlatformToVworld) ;
 	}
     }
 
@@ -1135,7 +1135,7 @@ public class WandViewBehavior extends ViewPlatformBehavior {
             Sensor s = e.getSensor() ;
             s.getRead(sensorToTracker) ;
             sensorToVworld.mul(trackerToVworld, sensorToTracker) ;
-                    
+
             // Solve for T, where T x initialSensorToVworld = sensorToVworld
             t3d.mul(sensorToVworld, initialVworldToSensor) ;
 
@@ -1251,7 +1251,7 @@ public class WandViewBehavior extends ViewPlatformBehavior {
      * about a Y axis.  This axis can be relative to the sensor, user head, or
      * view platform.  The rotation center can be the sensor hotspot or a
      * fixed point in virtual world coordinates.
-     * 
+     *
      * @see #setButtonAction6D
      * @see #setRotationCoords
      * @see #setTransformCenterSource
@@ -1382,7 +1382,7 @@ public class WandViewBehavior extends ViewPlatformBehavior {
      * Implements a 6DOF sensor button listener that scales the view platform.
      * The center of scaling can be the sensor hotspot or a fixed location in
      * virtual world coordinates.
-     * 
+     *
      * @see #setButtonAction6D
      * @see #setTransformCenterSource
      * @see #setTransformCenter
@@ -1483,7 +1483,7 @@ public class WandViewBehavior extends ViewPlatformBehavior {
     /**
      * Implements a 6DOF sensor read listener that updates the orientation and
      * position of the sensor's echo in the virtual world.
-     * 
+     *
      * @see #setEchoType
      * @see #setEchoSize
      * @see #setReadAction6D
@@ -1568,9 +1568,9 @@ public class WandViewBehavior extends ViewPlatformBehavior {
 
         /**
          * Construct an instance of this class with the specified sensors.
-         * 
+         *
          * @param sensor2D the 2D valuator whose X and Y values drive the
-         *  rotation 
+         *  rotation
          * @param sensor6D the 6DOF sensor to use if the rotation coordinate
          *  system is set to <code>SENSOR</code> or the rotation center source
 	 *  is <code>HOTSPOT</code>;  may be <code>null</code>
@@ -1593,7 +1593,7 @@ public class WandViewBehavior extends ViewPlatformBehavior {
                 m[y2D] > threshold2D || m[y2D] < -threshold2D) {
                 // Initialize action on threshold crossing.
                 if (!isActive()) initAction(sensor6D) ;
-                
+
                 // m[x2D] is the X valuator value and m[y2D] is the Y valuator
                 // value.  Use these to construct the rotation axis.
                 double length = Math.sqrt(m[x2D]*m[x2D] + m[y2D]*m[y2D]) ;
@@ -1692,7 +1692,7 @@ public class WandViewBehavior extends ViewPlatformBehavior {
      * occurs along the basis vectors of the 6DOF sensor's coordinate system;
      * otherwise, the translation occurs along the view platform's basis
      * vectors.
-     * 
+     *
      * @see #setReadAction2D
      * @see #setButtonAction2D
      * @see #setTranslationSpeed
@@ -1725,7 +1725,7 @@ public class WandViewBehavior extends ViewPlatformBehavior {
 
         /**
          * Construct an instance of this class using the specified sensors.
-         * 
+         *
          * @param sensor2D 2D valuator sensor for translation
          * @param sensor6D 6DOF sensor for translation direction; may be
          * <code>null</code>
@@ -1831,7 +1831,7 @@ public class WandViewBehavior extends ViewPlatformBehavior {
      * called with the value <code>HOTSPOT</code>, then scaling is about the
      * 6DOF sensor's hotspot; otherwise, the scaling center is the value set
      * by <code>setTransformCenter</code>.
-     * 
+     *
      * @see #setReadAction2D
      * @see #setButtonAction2D
      * @see #setScaleSpeed
@@ -1865,7 +1865,7 @@ public class WandViewBehavior extends ViewPlatformBehavior {
 
         /**
          * Construct an instance of this class with the specified sensors.
-         * 
+         *
          * @param sensor2D the 2D valuator whose Y value drive the scaling
          * @param sensor6D the 6DOF sensor to use if the rotation/scale center
          *  source is <code>HOTSPOT</code>; may be <code>null</code>
@@ -1960,7 +1960,7 @@ public class WandViewBehavior extends ViewPlatformBehavior {
     /**
      * Resets the view back to the home transform when a specified number of
      * buttons are down simultaneously.
-     * 
+     *
      * @see #setResetViewButtonCount6D
      * @see ViewPlatformBehavior#setHomeTransform
      *  ViewPlatformBehavior.setHomeTransform
@@ -2007,7 +2007,7 @@ public class WandViewBehavior extends ViewPlatformBehavior {
      * sensor hotspot position if applicable.  This implementation assumes the
      * hotspot position and orientation have been incorporated into the echo
      * geometry.
-     * 
+     *
      * @param sensor the sensor to be echoed
      * @param sensorToVworld transform from sensor coordinates to virtual
      *  world coordinates
@@ -2037,7 +2037,7 @@ public class WandViewBehavior extends ViewPlatformBehavior {
      * <p>
      * <b>Alternative Syntax:</b><br>(ViewPlatformBehaviorProperty
      * <i>&lt;name&gt;</i> Sensor6D (Sensor <i>&lt;sensorName&gt;</i>))
-     * 
+     *
      * @param sensor array of length 1 containing a <code>String</code> or
      *  a <code>Sensor</code>
      */
@@ -2054,11 +2054,11 @@ public class WandViewBehavior extends ViewPlatformBehavior {
 	    throw new IllegalArgumentException
 		("Sensor6D must be a name or a Sensor instance") ;
     }
-    
+
     /**
      * Returns a reference to the 6DOF sensor used for manipulating the view
      * platform.
-     * 
+     *
      * @return the 6DOF sensor
      */
     public Sensor getSensor6D() {
@@ -2087,7 +2087,7 @@ public class WandViewBehavior extends ViewPlatformBehavior {
      * <p>
      * <b>Alternative Syntax:</b><br>(ViewPlatformBehaviorProperty
      * <i>&lt;name&gt;</i> Sensor2D (Sensor <i>&lt;sensorName&gt;</i>))
-     * 
+     *
      * @param sensor array of length 1 containing a <code>String</code> or
      *  a <code>Sensor</code>
      */
@@ -2108,7 +2108,7 @@ public class WandViewBehavior extends ViewPlatformBehavior {
     /**
      * Returns a reference to the 2D valuator used for manipulating the view
      * platform.
-     * 
+     *
      * @return the 2D valuator
      */
     public Sensor getSensor2D() {
@@ -2144,10 +2144,10 @@ public class WandViewBehavior extends ViewPlatformBehavior {
      * <code>ConfiguredUniverse</code>.
      * <p>
      * <b>Syntax:</b><br>(ViewPlatformBehaviorProperty <i>&lt;name&gt;</i>
-     * ButtonAction6D <i>&lt;button index&gt;</i> 
+     * ButtonAction6D <i>&lt;button index&gt;</i>
      * [GrabView | TranslateForward | TranslateBackward | RotateCCW |
      * RotateCW | ScaleUp | ScaleDown | None])
-     * 
+     *
      * @param action array of length 2 containing a <code>Double</code> and a
      *  <code>String</code>.
      * @see #setButtonAction6D
@@ -2155,7 +2155,7 @@ public class WandViewBehavior extends ViewPlatformBehavior {
      * @see #TranslationSpeed TranslationSpeed
      * @see #AccelerationTime AccelerationTime
      * @see #ConstantSpeedTime ConstantSpeedTime
-     * @see #FastSpeedFactor FastSpeedFactor 
+     * @see #FastSpeedFactor FastSpeedFactor
      * @see #RotationSpeed RotationSpeed
      * @see #RotationCoords RotationCoords
      * @see #ScaleSpeed ScaleSpeed
@@ -2171,7 +2171,7 @@ public class WandViewBehavior extends ViewPlatformBehavior {
                action[0] instanceof Double && action[1] instanceof String))
             throw new IllegalArgumentException
                 ("\nButtonAction6D must be a number and a string") ;
-        
+
         int button = ((Double)action[0]).intValue() ;
         String actionString = (String)action[1] ;
 
@@ -2197,7 +2197,7 @@ public class WandViewBehavior extends ViewPlatformBehavior {
                  "TranslateBackward, RotateCCW, RotateCW, ScaleUp, " +
 		 "ScaleDown, or None") ;
     }
-    
+
     /**
      * Sets a button action for the 6DOF sensor.  The choices are
      * <code>TRANSLATE_FORWARD</code>, <code>TRANSLATE_BACKWARD</code>,
@@ -2227,8 +2227,8 @@ public class WandViewBehavior extends ViewPlatformBehavior {
      * <p>
      * This method only configures the button listeners pre-defined by
      * this behavior.  For complete control over the button actions, access
-     * the <code>SensorEventAgent</code> used by this behavior directly.  
-     * 
+     * the <code>SensorEventAgent</code> used by this behavior directly.
+     *
      * @param button index of the button to bind
      * @param action either <code>TRANSLATE_FORWARD</code>,
      *  <code>TRANSLATE_BACKWARD</code>, <code>GRAB_VIEW</code>,
@@ -2268,7 +2268,7 @@ public class WandViewBehavior extends ViewPlatformBehavior {
 
     /**
      * Gets the action associated with the specified button on the 6DOF sensor.
-     * 
+     *
      * @return the action associated with the button
      */
     public int getButtonAction6D(int button) {
@@ -2331,7 +2331,7 @@ public class WandViewBehavior extends ViewPlatformBehavior {
      * <p>
      * <b>Syntax:</b><br>(ViewPlatformBehaviorProperty <i>&lt;name&gt;</i>
      * ReadAction2D [Rotation | Translation | Scale | None])
-     * 
+     *
      * @param action array of length 1 containing a <code>String</code>
      * @see #setReadAction2D
      * @see #RotationCoords RotationCoords
@@ -2350,7 +2350,7 @@ public class WandViewBehavior extends ViewPlatformBehavior {
         if (! (action.length == 1 && action[0] instanceof String))
             throw new IllegalArgumentException
                 ("\nReadAction2D must be a String") ;
-        
+
         String actionString = (String)action[0] ;
 
         if (actionString.equals("Rotation"))
@@ -2412,8 +2412,8 @@ public class WandViewBehavior extends ViewPlatformBehavior {
      * <p>
      * This method only configures the read listeners pre-defined by
      * this behavior.  For complete control over the read actions, access
-     * the <code>SensorEventAgent</code> used by this behavior directly.  
-     * 
+     * the <code>SensorEventAgent</code> used by this behavior directly.
+     *
      * @param action either <code>ROTATION</code>, <code>TRANSLATION</code>,
      * <code>SCALE</code>, or <code>NONE</code>
      * @see #setRotationCoords
@@ -2441,7 +2441,7 @@ public class WandViewBehavior extends ViewPlatformBehavior {
 
     /**
      * Gets the configured 2D valuator read action.
-     * 
+     *
      * @return the action associated with the sensor read
      */
     public int getReadAction2D() {
@@ -2467,9 +2467,9 @@ public class WandViewBehavior extends ViewPlatformBehavior {
      * <code>ConfiguredUniverse</code>.
      * <p>
      * <b>Syntax:</b><br>(ViewPlatformBehaviorProperty <i>&lt;name&gt;</i>
-     * ButtonAction2D <i>&lt;button index&gt;</i> 
+     * ButtonAction2D <i>&lt;button index&gt;</i>
      * [Rotation | Translation | Scale | None])
-     * 
+     *
      * @param action array of length 2 containing a <code>Double</code> and a
      *  <code>String</code>.
      * @see #setButtonAction2D
@@ -2491,7 +2491,7 @@ public class WandViewBehavior extends ViewPlatformBehavior {
                action[0] instanceof Double && action[1] instanceof String))
             throw new IllegalArgumentException
                 ("\nButtonAction2D must be a number and a string") ;
-        
+
         int button = ((Double)action[0]).intValue() ;
         String actionString = (String)action[1] ;
 
@@ -2508,7 +2508,7 @@ public class WandViewBehavior extends ViewPlatformBehavior {
                 ("\nButtonAction2D must be Rotation, Translation, Scale " +
                  "or None") ;
     }
-    
+
     /**
      * Sets a button action for the 2D valuator.  The possible values are
      * <code>ROTATION</code>, <code>TRANSLATION</code>, <code>SCALE</code>, or
@@ -2522,8 +2522,8 @@ public class WandViewBehavior extends ViewPlatformBehavior {
      * <p>
      * This method only configures the button listeners pre-defined by
      * this behavior.  For complete control over the button actions, access
-     * the <code>SensorEventAgent</code> used by this behavior directly.  
-     * 
+     * the <code>SensorEventAgent</code> used by this behavior directly.
+     *
      * @param button index of the button to bind
      * @param action either <code>ROTATION</code>, <code>TRANSLATION</code>,
      *  <code>SCALE</code>, or <code>NONE</code>
@@ -2556,7 +2556,7 @@ public class WandViewBehavior extends ViewPlatformBehavior {
 
     /**
      * Gets the action associated with the specified button on the 2D valuator.
-     * 
+     *
      * @return the action associated with the button
      */
     public int getButtonAction2D(int button) {
@@ -2585,7 +2585,7 @@ public class WandViewBehavior extends ViewPlatformBehavior {
      * <p>
      * <b>Syntax:</b><br>(ViewPlatformBehaviorProperty <i>&lt;name&gt;</i>
      * ReadAction6D [Echo | None])
-     * 
+     *
      * @param action array of length 1 containing a <code>String</code>
      * @see #setReadAction6D
      * @see EchoReadListener6D
@@ -2594,7 +2594,7 @@ public class WandViewBehavior extends ViewPlatformBehavior {
         if (! (action.length == 1 && action[0] instanceof String))
             throw new IllegalArgumentException
                 ("\nReadAction6D must be a String") ;
-        
+
         String actionString = (String)action[0] ;
 
         if (actionString.equals("Echo"))
@@ -2617,8 +2617,8 @@ public class WandViewBehavior extends ViewPlatformBehavior {
      * <p>
      * This method only configures the read listeners pre-defined by
      * this behavior.  For complete control over the read actions, access
-     * the <code>SensorEventAgent</code> used by this behavior directly.  
-     * 
+     * the <code>SensorEventAgent</code> used by this behavior directly.
+     *
      * @param action either <code>ECHO</code> or <code>NONE</code>
      * @see EchoReadListener6D
      * @see #getSensorEventAgent
@@ -2633,7 +2633,7 @@ public class WandViewBehavior extends ViewPlatformBehavior {
 
     /**
      * Gets the configured 6DOF sensor read action.
-     * 
+     *
      * @return the configured 6DOF sensor read action
      */
     public int getReadAction6D() {
@@ -2651,7 +2651,7 @@ public class WandViewBehavior extends ViewPlatformBehavior {
      * <b>Syntax:</b><br>(ViewPlatformBehaviorProperty <i>&lt;name&gt;</i>
      * TranslationSpeed <i>&lt;speed&gt;</i> [PhysicalMeters | VirtualUnits]
      * [PerFrame | PerSecond])
-     * 
+     *
      * @param speed array of length 3; first element is a <code>Double</code>
      *  for the speed, the second is a <code>String</code> for the units, and
      *  the third is a <code>String</code> for the time base
@@ -2662,7 +2662,7 @@ public class WandViewBehavior extends ViewPlatformBehavior {
                speed[1] instanceof String && speed[2] instanceof String))
             throw new IllegalArgumentException
                 ("\nTranslationSpeed must be number, units, and time base") ;
-        
+
         double v = ((Double)speed[0]).doubleValue() ;
         String unitsString = (String)speed[1] ;
         String timeBaseString = (String)speed[2] ;
@@ -2691,7 +2691,7 @@ public class WandViewBehavior extends ViewPlatformBehavior {
     /**
      * Sets the normal translation speed.  The default is 0.1 physical
      * meters/second.
-     * 
+     *
      * @param speed how fast to translate
      * @param units either <code>PHYSICAL_METERS</code> or
      *  <code>VIRTUAL_UNITS</code>
@@ -2717,7 +2717,7 @@ public class WandViewBehavior extends ViewPlatformBehavior {
 
     /**
      * Gets the normal speed at which to translate the view platform.
-     * 
+     *
      * @return the normal translation speed
      */
     public double getTranslationSpeed() {
@@ -2726,7 +2726,7 @@ public class WandViewBehavior extends ViewPlatformBehavior {
 
     /**
      * Gets the translation speed units.
-     * 
+     *
      * @return the translation units
      */
     public int getTranslationUnits() {
@@ -2735,7 +2735,7 @@ public class WandViewBehavior extends ViewPlatformBehavior {
 
     /**
      * Gets the time base for translation speed.
-     * 
+     *
      * @return the translation time base
      */
     public int getTranslationTimeBase() {
@@ -2748,10 +2748,10 @@ public class WandViewBehavior extends ViewPlatformBehavior {
      * the normal and fast translation speeds.  The default is 1 second.  This
      * property is set in the configuration file read by
      * <code>ConfiguredUniverse</code>.<p>
-     * 
+     *
      * <b>Syntax:</b><br>(ViewPlatformBehaviorProperty <i>&lt;name&gt;</i>
      * AccelerationTime <i>&lt;seconds&gt;</i>)
-     * 
+     *
      * @param time array of length 1 containing a <code>Double</code>
      * @see #setAccelerationTime
      */
@@ -2759,7 +2759,7 @@ public class WandViewBehavior extends ViewPlatformBehavior {
         if (! (time.length == 1 && time[0] instanceof Double))
             throw new IllegalArgumentException
                 ("\nAccelerationTime must be a number") ;
-        
+
         setAccelerationTime(((Double)time[0]).doubleValue()) ;
     }
 
@@ -2767,7 +2767,7 @@ public class WandViewBehavior extends ViewPlatformBehavior {
      * Sets the time interval for accelerating to the translation, rotation,
      * or scale speeds and for transitioning between the normal and fast
      * translation speeds.  The default is 1 second.
-     * 
+     *
      * @param time number of seconds to accelerate to normal or fast speed
      */
     public void setAccelerationTime(double time) {
@@ -2777,7 +2777,7 @@ public class WandViewBehavior extends ViewPlatformBehavior {
     /**
      * Gets the time interval for accelerating to normal speed and for
      * transitioning between the normal and fast translation speeds.
-     * 
+     *
      * @return the acceleration time
      */
     public double getAccelerationTime() {
@@ -2791,7 +2791,7 @@ public class WandViewBehavior extends ViewPlatformBehavior {
      * <p>
      * <b>Syntax:</b><br>(ViewPlatformBehaviorProperty <i>&lt;name&gt;</i>
      * ConstantSpeedTime <i>&lt;seconds&gt;</i>)
-     * 
+     *
      * @param time array of length 1 containing a <code>Double</code>
      * @see #setConstantSpeedTime
      */
@@ -2799,14 +2799,14 @@ public class WandViewBehavior extends ViewPlatformBehavior {
         if (! (time.length == 1 && time[0] instanceof Double))
             throw new IllegalArgumentException
                 ("\nConstantSpeedTime must be a number") ;
-        
+
         setConstantSpeedTime(((Double)time[0]).doubleValue()) ;
     }
 
     /**
      * Sets the time interval for which the translation occurs at the normal
      * speed.  The default is 8 seconds.
-     * 
+     *
      * @param time number of seconds to translate at a constant speed
      */
     public void setConstantSpeedTime(double time) {
@@ -2816,7 +2816,7 @@ public class WandViewBehavior extends ViewPlatformBehavior {
     /**
      * Gets the time interval for which the translation occurs at the
      * normal speed.
-     * 
+     *
      * @return the constant speed time
      */
     public double getConstantSpeedTime() {
@@ -2830,7 +2830,7 @@ public class WandViewBehavior extends ViewPlatformBehavior {
      * <p>
      * <b>Syntax:</b><br>(ViewPlatformBehaviorProperty <i>&lt;name&gt;</i>
      * FastSpeedFactor <i>&lt;factor&gt;</i>)
-     * 
+     *
      * @param factor array of length 1 containing a <code>Double</code>
      * @see #setFastSpeedFactor
      */
@@ -2838,14 +2838,14 @@ public class WandViewBehavior extends ViewPlatformBehavior {
         if (! (factor.length == 1 && factor[0] instanceof Double))
             throw new IllegalArgumentException
                 ("\nFastSpeedFactor must be a number") ;
-        
+
         setFastSpeedFactor(((Double)factor[0]).doubleValue()) ;
     }
 
     /**
      * Sets the fast translation speed factor.  The default is 10 times the
      * normal speed.
-     * 
+     *
      * @param factor scale by which the normal translation speed is multiplied
      */
     public void setFastSpeedFactor(double factor) {
@@ -2855,7 +2855,7 @@ public class WandViewBehavior extends ViewPlatformBehavior {
     /**
      * Gets the factor by which the normal translation speed is multiplied
      * after the constant speed time interval.
-     * 
+     *
      * @return the fast speed factor
      */
     public double getFastSpeedFactor() {
@@ -2870,7 +2870,7 @@ public class WandViewBehavior extends ViewPlatformBehavior {
      * <p>
      * <b>Syntax:</b><br>(ViewPlatformBehaviorProperty <i>&lt;name&gt;</i>
      * Threshold2D <i>&lt;threshold&gt;</i>)
-     * 
+     *
      * @param threshold array of length 1 containing a <code>Double</code>
      * @see #setThreshold2D
      */
@@ -2885,7 +2885,7 @@ public class WandViewBehavior extends ViewPlatformBehavior {
     /**
      * Sets the threshold for 2D valuator reads.  The default is 0.0.  It can
      * be set higher to handle noisy valuators.
-     * 
+     *
      * @param threshold if the absolute values of both the X and Y valuator
      *  reads are less than this value then the values are ignored
      */
@@ -2895,7 +2895,7 @@ public class WandViewBehavior extends ViewPlatformBehavior {
 
     /**
      * Gets the 2D valuator threshold.
-     * 
+     *
      * @return the threshold value
      */
     public double getThreshold2D() {
@@ -2911,7 +2911,7 @@ public class WandViewBehavior extends ViewPlatformBehavior {
      * <p>
      * <b>Syntax:</b><br>(ViewPlatformBehaviorProperty <i>&lt;name&gt;</i>
      * MatrixIndices2D <i>&lt;X index&gt; &lt;Y index&gt;</i>)
-     * 
+     *
      * @param indices array of length 2 containing <code>Doubles</code>
      * @see #setMatrixIndices2D
      */
@@ -2920,16 +2920,16 @@ public class WandViewBehavior extends ViewPlatformBehavior {
                indices[0] instanceof Double && indices[1] instanceof Double))
             throw new IllegalArgumentException
                 ("\nMatrixIndices2D must be a numbers") ;
-        
+
         setMatrixIndices2D(((Double)indices[0]).intValue(),
                            ((Double)indices[1]).intValue()) ;
     }
-    
+
     /**
      * Specifies where to find the X and Y values in the matrix read generated
      * by a 2D valuator.  The defaults are along the translation components of
      * the matrix, at indices 3 and 7.
-     * 
+     *
      * @param xIndex index of the X valuator value
      * @param yIndex index of the Y valuator value
      */
@@ -2941,7 +2941,7 @@ public class WandViewBehavior extends ViewPlatformBehavior {
     /**
      * Gets the index where the X value of a 2D valuator read matrix can be
      * found.
-     * 
+     *
      * @return the X index in the read matrix
      */
     public int getMatrixXIndex2D() {
@@ -2951,7 +2951,7 @@ public class WandViewBehavior extends ViewPlatformBehavior {
     /**
      * Gets the index where the Y value of a 2D valuator read matrix can be
      * found.
-     * 
+     *
      * @return the Y index in the read matrix
      */
     public int getMatrixYIndex2D() {
@@ -2966,7 +2966,7 @@ public class WandViewBehavior extends ViewPlatformBehavior {
      * <b>Syntax:</b><br>(ViewPlatformBehaviorProperty <i>&lt;name&gt;</i>
      * RotationSpeed <i>&lt;speed&gt;</i> [Degrees | Radians]
      * [PerFrame | PerSecond])
-     * 
+     *
      * @param speed array of length 3; first element is a <code>Double</code>
      *  for the speed, the second is a <code>String</code> for the units, and
      *  the third is a <code>String</code> for the time base
@@ -2977,7 +2977,7 @@ public class WandViewBehavior extends ViewPlatformBehavior {
                speed[1] instanceof String && speed[2] instanceof String))
             throw new IllegalArgumentException
                 ("\nRotationSpeed must be number, units, and time base") ;
-        
+
         double v = ((Double)speed[0]).doubleValue() ;
         String unitsString = (String)speed[1] ;
         String timeBaseString = (String)speed[2] ;
@@ -3004,7 +3004,7 @@ public class WandViewBehavior extends ViewPlatformBehavior {
 
     /**
      * Sets the rotation speed.  The default is 180 degrees/second.
-     * 
+     *
      * @param speed how fast to rotate
      * @param units either <code>DEGREES</code> or <code>RADIANS</code>
      * @param timeBase either <code>PER_SECOND</code> or <code>PER_FRAME</code>
@@ -3036,7 +3036,7 @@ public class WandViewBehavior extends ViewPlatformBehavior {
 
     /**
      * Gets the rotation speed units
-     * 
+     *
      * @return the rotation units
      */
     public int getRotationUnits() {
@@ -3045,7 +3045,7 @@ public class WandViewBehavior extends ViewPlatformBehavior {
 
     /**
      * Gets the time base for rotation speed.
-     * 
+     *
      * @return the rotation time base
      */
     public int getRotationTimeBase() {
@@ -3066,7 +3066,7 @@ public class WandViewBehavior extends ViewPlatformBehavior {
      * <p>
      * <b>Syntax:</b><br>(ViewPlatformBehaviorProperty <i>&lt;name&gt;</i>
      * RotationCoords [Sensor | ViewPlatform | Head])
-     * 
+     *
      * @param coords array of length 1 containing a <code>String</code>
      * @see #setRotationCoords
      */
@@ -3074,7 +3074,7 @@ public class WandViewBehavior extends ViewPlatformBehavior {
         if (! (coords.length == 1 && coords[0] instanceof String))
             throw new IllegalArgumentException
                 ("\nRotationCoords must be a String") ;
-        
+
         String coordsString = (String)coords[0] ;
 
         if (coordsString.equals("Sensor"))
@@ -3096,7 +3096,7 @@ public class WandViewBehavior extends ViewPlatformBehavior {
      * to the XY plane of the view platform.  The latter is also the fallback
      * if a 6DOF sensor is not specified.  If the value is <code>HEAD</code>,
      * then rotation occurs in head coordinates.
-     * 
+     *
      * @param coords either <code>SENSOR</code>, <code>VIEW_PLATFORM</code>, or
      *  <code>HEAD</code>
      */
@@ -3110,7 +3110,7 @@ public class WandViewBehavior extends ViewPlatformBehavior {
 
     /**
      * Gets the rotation coordinate system.
-     * 
+     *
      * @return the rotation coordinate system
      */
     public int getRotationCoords() {
@@ -3121,7 +3121,7 @@ public class WandViewBehavior extends ViewPlatformBehavior {
      * Property which sets the scaling speed.  The default is 2.0 per second,
      * which means magnification doubles the apparent size of the virtual
      * world every second, and minification halves the apparent size of the
-     * virtual world every second.  
+     * virtual world every second.
      * <p>
      * The scaling applied with each frame is <code>Math.pow(scaleSpeed,
      * frameTime)</code>, where <code>frameTime</code> is the time in seconds
@@ -3139,7 +3139,7 @@ public class WandViewBehavior extends ViewPlatformBehavior {
      * <p>
      * <b>Syntax:</b><br>(ViewPlatformBehaviorProperty <i>&lt;name&gt;</i>
      * ScaleSpeed <i>&lt;speed&gt;</i> [PerFrame | PerSecond])
-     * 
+     *
      * @param speed array of length 2; first element is a <code>Double</code>
      *  for the speed, and the second is a <code>String</code> for the time
      *  base
@@ -3150,7 +3150,7 @@ public class WandViewBehavior extends ViewPlatformBehavior {
                speed[0] instanceof Double && speed[1] instanceof String))
             throw new IllegalArgumentException
                 ("\nScalingSpeed must be a number and a string") ;
-        
+
         double v = ((Double)speed[0]).doubleValue() ;
         String timeBaseString = (String)speed[2] ;
         int timeBase ;
@@ -3182,7 +3182,7 @@ public class WandViewBehavior extends ViewPlatformBehavior {
      * exponent.  If scaling is performed by the 6DOF sensor, then the scale
      * speed can be inverted with a negative exponent by using the appropriate
      * listener constructor flag.
-     * 
+     *
      * @param speed specifies the scale speed
      * @param timeBase either <code>PER_SECOND</code> or <code>PER_FRAME</code>
      */
@@ -3198,7 +3198,7 @@ public class WandViewBehavior extends ViewPlatformBehavior {
 
     /**
      * Gets the scaling speed.
-     * 
+     *
      * @return the scaling speed
      */
     public double getScaleSpeed() {
@@ -3207,7 +3207,7 @@ public class WandViewBehavior extends ViewPlatformBehavior {
 
     /**
      * Gets the time base for scaling speed.
-     * 
+     *
      * @return the scaling time base
      */
     public int getScaleTimeBase() {
@@ -3226,7 +3226,7 @@ public class WandViewBehavior extends ViewPlatformBehavior {
      * <p>
      * <b>Syntax:</b><br>(ViewPlatformBehaviorProperty <i>&lt;name&gt;</i>
      * TransformCenterSource [Hotspot | VworldFixed])
-     * 
+     *
      * @param source array of length 1 containing a <code>String</code>
      * @see #setTransformCenterSource
      */
@@ -3234,7 +3234,7 @@ public class WandViewBehavior extends ViewPlatformBehavior {
         if (! (source.length == 1 && source[0] instanceof String))
             throw new IllegalArgumentException
                 ("\nTransformCenterSource must be a String") ;
-        
+
         String sourceString = (String)source[0] ;
 
         if (sourceString.equals("Hotspot"))
@@ -3257,7 +3257,7 @@ public class WandViewBehavior extends ViewPlatformBehavior {
      * <p>
      * The transform center source can be dynamically updated while the
      * behavior is running.
-     * 
+     *
      * @param source either <code>HOTSPOT</code> or <code>VWORLD_FIXED</code>
      */
     public void setTransformCenterSource(int source) {
@@ -3271,7 +3271,7 @@ public class WandViewBehavior extends ViewPlatformBehavior {
 
     /**
      * Gets the rotation/scale center source.
-     * 
+     *
      * @return the rotation/scale center source
      */
     public int getTransformCenterSource() {
@@ -3287,7 +3287,7 @@ public class WandViewBehavior extends ViewPlatformBehavior {
      * <p>
      * <b>Syntax:</b><br>(ViewPlatformBehaviorProperty <i>&lt;name&gt;</i>
      * TransformCenter <i>&lt;Point3d&gt;</i>)
-     * 
+     *
      * @param center array of length 1 containing a <code>Point3d</code>
      * @see #setTransformCenter
      */
@@ -3295,7 +3295,7 @@ public class WandViewBehavior extends ViewPlatformBehavior {
         if (! (center.length == 1 && center[0] instanceof Point3d))
             throw new IllegalArgumentException
                 ("\nTransformCenter must be a Point3d") ;
-        
+
         setTransformCenter((Point3d)center[0]) ;
     }
 
@@ -3306,7 +3306,7 @@ public class WandViewBehavior extends ViewPlatformBehavior {
      * default is (0.0, 0.0, 0.0) in virtual world coordinates.
      * <p>
      * The transform center can be dynamically updated while the behavior is
-     * running. 
+     * running.
      *
      * @param center point in virtual world coordinates about which to rotate
      *  and scale
@@ -3359,7 +3359,7 @@ public class WandViewBehavior extends ViewPlatformBehavior {
      * <b>Syntax:</b><br>(ViewPlatformBehaviorProperty <i>&lt;name&gt;</i>
      * NominalSensorRotation [<i>&lt;Matrix4d&gt;</i> |
      * <i>&lt;Matrix3d&gt;</i>])
-     * 
+     *
      * @param matrix array of length 1 containing a <code>Matrix4d</code> or
      *  <code>Matrix3d</code>
      * @see #setNominalSensorRotation
@@ -3369,14 +3369,14 @@ public class WandViewBehavior extends ViewPlatformBehavior {
                                       matrix[0] instanceof Matrix4d)))
             throw new IllegalArgumentException
                 ("\nNominalSensorRotation must be a Matrix3d or Matrix4d") ;
-        
+
         Transform3D t3d = new Transform3D() ;
 
         if (matrix[0] instanceof Matrix3d)
             t3d.set((Matrix3d)matrix[0]) ;
         else
             t3d.set((Matrix4d)matrix[0]) ;
-            
+
         setNominalSensorRotation(t3d) ;
     }
 
@@ -3408,7 +3408,7 @@ public class WandViewBehavior extends ViewPlatformBehavior {
      * defined in this behavior; for compatibility with the core Java 3D API,
      * sensor reads and the sensor hotspot location are still expressed in the
      * sensor's local coordinate system.
-     * 
+     *
      * @param transform Rotates vectors from the nominal sensor coordinate
      *  system system to the sensor's local coordinate system; only the
      *  rotational components are used.  May be set <code>null</code> for
@@ -3419,7 +3419,7 @@ public class WandViewBehavior extends ViewPlatformBehavior {
             nominalSensorRotation = null ;
             return ;
         }
-            
+
         if (nominalSensorRotation == null)
             nominalSensorRotation = new Transform3D() ;
 
@@ -3430,7 +3430,7 @@ public class WandViewBehavior extends ViewPlatformBehavior {
 
     /**
      * Gets the nominal sensor transform.
-     * 
+     *
      * @param t3d <code>Transform3D</code> to receive a copy of the
      *  nominal sensor transform
      */
@@ -3451,7 +3451,7 @@ public class WandViewBehavior extends ViewPlatformBehavior {
      * <p>
      * <b>Syntax:</b><br>(ViewPlatformBehaviorProperty <i>&lt;name&gt;</i>
      * ResetViewButtonCount6D [<i>&lt;count&gt;</i> | None])
-     * 
+     *
      * @param count array of length 1 containing a <code>Double</code> or
      *  <code>String</code>
      * @see #setResetViewButtonCount6D
@@ -3482,10 +3482,10 @@ public class WandViewBehavior extends ViewPlatformBehavior {
      * on the 6DOF sensor in order to reset the view back to the home
      * transform.  The value must be greater than 1; the default is 3.  A
      * value of <code>NONE</code> disables this action.
-     * 
+     *
      * @param count either <code>NONE</code> or button count > 1
      * @see ViewPlatformBehavior#setHomeTransform
-     *  ViewPlatformBehavior.setHomeTransform 
+     *  ViewPlatformBehavior.setHomeTransform
      */
     public void setResetViewButtonCount6D(int count) {
         if (count == NONE || count > 1) {
@@ -3501,13 +3501,13 @@ public class WandViewBehavior extends ViewPlatformBehavior {
      * Gets the number of buttons to be pressed simultaneously on the 6DOF
      * sensor in order to reset the view back to the home transform.  A value
      * of <code>NONE</code> indicates this action is disabled.
-     * 
+     *
      * @return the number of buttons to press simultaneously for a view reset
      */
     public int getResetViewButtonCount6D() {
         return resetViewButtonCount6D ;
     }
-    
+
     /**
      * Property which sets the number of buttons to be pressed simultaneously
      * on the 2D valuator in order to reset the view back to the home
@@ -3518,7 +3518,7 @@ public class WandViewBehavior extends ViewPlatformBehavior {
      * <p>
      * <b>Syntax:</b><br>(ViewPlatformBehaviorProperty <i>&lt;name&gt;</i>
      * ResetViewButtonCount2D [<i>&lt;count&gt;</i> | None])
-     * 
+     *
      * @param count array of length 1 containing a <code>Double</code> or
      *  <code>String</code>
      * @see #setResetViewButtonCount2D
@@ -3549,7 +3549,7 @@ public class WandViewBehavior extends ViewPlatformBehavior {
      * valuator in order to reset the view back to the home transform.  The
      * value must be greater than 1; the default is <code>NONE</code>.  A
      * value of <code>NONE</code> disables this action.
-     * 
+     *
      * @param count either <code>NONE</code> or button count > 1
      * @see ViewPlatformBehavior#setHomeTransform
      *  ViewPlatformBehavior.setHomeTransform
@@ -3568,13 +3568,13 @@ public class WandViewBehavior extends ViewPlatformBehavior {
      * Gets the number of buttons to be pressed simultaneously on the 2D
      * valuator in order to reset the view back to the home transform.  A value
      * of <code>NONE</code> indicates this action is disabled.
-     * 
+     *
      * @return the number of buttons to press simultaneously for a view reset
      */
     public int getResetViewButtonCount2D() {
         return resetViewButtonCount2D ;
     }
-    
+
     /**
      * Property which sets the 6DOF sensor echo type.  The default is
      * <code>Gnomon</code>, which displays an object with points indicating
@@ -3589,7 +3589,7 @@ public class WandViewBehavior extends ViewPlatformBehavior {
      * <p>
      * <b>Syntax:</b><br>(ViewPlatformBehaviorProperty <i>&lt;name&gt;</i>
      * EchoType [Gnomon | Beam | None])
-     * 
+     *
      * @param type array of length 1 containing a <code>String</code>
      * @see #setEchoType
      */
@@ -3597,7 +3597,7 @@ public class WandViewBehavior extends ViewPlatformBehavior {
         if (! (type.length == 1 && type[0] instanceof String))
             throw new IllegalArgumentException
                 ("\nEchoType must be a String") ;
-        
+
         String typeString = (String)type[0] ;
 
         if (typeString.equals("Gnomon"))
@@ -3620,7 +3620,7 @@ public class WandViewBehavior extends ViewPlatformBehavior {
      * hotspot must not be (0, 0, 0) or an
      * <code>IllegalArgumentException</code> will result.  The width of each
      * of these echo types is specified by <code>setEchoSize</code>.
-     * 
+     *
      * @param type <code>GNOMON</code>, <code>BEAM</code>, or
      *  <code>NONE</code> are recognized
      */
@@ -3630,7 +3630,7 @@ public class WandViewBehavior extends ViewPlatformBehavior {
 
     /**
      * Gets the echo type.
-     * 
+     *
      * @return the echo type
      */
     public int getEchoType() {
@@ -3645,7 +3645,7 @@ public class WandViewBehavior extends ViewPlatformBehavior {
      * <p>
      * <b>Syntax:</b><br>(ViewPlatformBehaviorProperty <i>&lt;name&gt;</i>
      * EchoSize <i>&lt;size&gt;</i>)
-     * 
+     *
      * @param echoSize array of length 1 containing a <code>Double</code>
      * @see #setEchoSize
      */
@@ -3653,15 +3653,15 @@ public class WandViewBehavior extends ViewPlatformBehavior {
         if (! (echoSize.length == 1 && echoSize[0] instanceof Double))
             throw new IllegalArgumentException
                 ("\nEchoSize must be a Double") ;
-        
+
         setEchoSize(((Double)echoSize[0]).doubleValue()) ;
     }
-    
+
     /**
      * Sets the size of the 6DOF sensor echo in physical meters.  This is used
      * for the width of the gnomon and beam echoes.  The default is 1
      * centimeter.
-     * 
+     *
      * @param echoSize the size in meters
      */
     public void setEchoSize(double echoSize) {
@@ -3670,13 +3670,13 @@ public class WandViewBehavior extends ViewPlatformBehavior {
 
     /**
      * Gets the size of the 6DOF sensor echo in meters.
-     * 
+     *
      * @return the echo size
      */
     public double getEchoSize() {
         return echoSize ;
     }
-    
+
     /**
      * Property which sets the color of the 6DOF sensor echo.  The default is
      * white.  This property is set in the configuration file read by
@@ -3684,7 +3684,7 @@ public class WandViewBehavior extends ViewPlatformBehavior {
      * <p>
      * <b>Syntax:</b><br>(ViewPlatformBehaviorProperty <i>&lt;name&gt;</i>
      * EchoColor <i>&lt;red&gt; &lt;green&gt; &lt;blue&gt;</i>)
-     * 
+     *
      * @param color array of length 3 containing <code>Doubles</code>
      * @see #setEchoColor
      */
@@ -3693,17 +3693,17 @@ public class WandViewBehavior extends ViewPlatformBehavior {
                color[1] instanceof Double && color[2] instanceof Double))
             throw new IllegalArgumentException
                 ("\nEchoColor must be 3 numbers for red, green, and blue") ;
-        
+
         setEchoColor(new Color3f(((Double)color[0]).floatValue(),
                                  ((Double)color[1]).floatValue(),
                                  ((Double)color[2]).floatValue())) ;
     }
-    
+
     /**
      * Sets the color of the 6DOF sensor echo.  The default is white.  This
      * can be called to set the color before or after the echo geometry is
      * created.
-     * 
+     *
      * @param color the echo color
      */
     public void setEchoColor(Color3f color) {
@@ -3721,7 +3721,7 @@ public class WandViewBehavior extends ViewPlatformBehavior {
 
     /**
      * Gets the 6DOF sensor echo color.
-     * 
+     *
      * @param color the <code>Color3f</code> into which to copy the echo color
      */
     public void getEchoColor(Color3f color) {
@@ -3730,7 +3730,7 @@ public class WandViewBehavior extends ViewPlatformBehavior {
         else
             color.set(echoColor) ;
     }
-    
+
     /**
      * Property which sets the 6DOF sensor echo transparency.  The default is
      * opaque.  A value of 0.0 is fully opaque and 1.0 is fully transparent.
@@ -3739,7 +3739,7 @@ public class WandViewBehavior extends ViewPlatformBehavior {
      * <p>
      * <b>Syntax:</b><br>(ViewPlatformBehaviorProperty <i>&lt;name&gt;</i>
      * EchoTransparency <i>&lt;transparency&gt;</i>)
-     * 
+     *
      * @param transparency array of length 1 containing a <code>Double</code>
      * @see #setEchoTransparency
      */
@@ -3747,16 +3747,16 @@ public class WandViewBehavior extends ViewPlatformBehavior {
         if (! (transparency.length == 1 && transparency[0] instanceof Double))
             throw new IllegalArgumentException
                 ("\nEchoTransparency must be a number") ;
-        
+
         setEchoTransparency(((Double)transparency[0]).floatValue()) ;
     }
-    
+
     /**
      * Sets the 6DOF sensor echo transparency.  The default is opaque.  A
      * value of 0.0 is fully opaque and 1.0 is fully transparent.  This can be
      * called to set the transparency before or after the echo geometry is
      * created.
-     * 
+     *
      * @param transparency the transparency value
      */
     public void setEchoTransparency(float transparency) {
@@ -3781,13 +3781,13 @@ public class WandViewBehavior extends ViewPlatformBehavior {
 
     /**
      * Gets the 6DOF sensor echo transparency value.
-     * 
+     *
      * @return the transparency value
      */
     public float getEchoTransparency() {
         return echoTransparency ;
     }
-    
+
     /**
      * Sets the transform group containing a 6DOF sensor's echo geometry.
      * This is used to specify a custom echo.  Its transform will be
@@ -3797,7 +3797,7 @@ public class WandViewBehavior extends ViewPlatformBehavior {
      * <p>
      * This method must be called before the behavior is made live in order to
      * have an effect.
-     * 
+     *
      * @param echo the <code>TransformGroup</code> containing the
      *  echo geometry
      */
@@ -3813,7 +3813,7 @@ public class WandViewBehavior extends ViewPlatformBehavior {
      * Gets the transform group containing a 6DOF sensor's echo geometry.
      * Capabilities to write its transform and read, write, and extend its
      * children are granted.
-     * 
+     *
      * @return the echo's transform group
      */
     public TransformGroup getEchoTransformGroup() {
@@ -3826,7 +3826,7 @@ public class WandViewBehavior extends ViewPlatformBehavior {
      * read and write.  If a custom echo was supplied by providing the echo
      * transform group directly then the return value will be
      * <code>null</code>.
-     * 
+     *
      * @return the echo geometry, or <code>null</code> if a custom echo was
      *  supplied
      */
@@ -3838,7 +3838,7 @@ public class WandViewBehavior extends ViewPlatformBehavior {
      * Gets the <code>SensorEventAgent</code> used by this behavior.  Sensor
      * event generation is delegated to this agent.  This can be accessed to
      * manipulate the sensor button and read action bindings directly.
-     * 
+     *
      * @return the sensor event agent
      */
     public SensorEventAgent getSensorEventAgent() {

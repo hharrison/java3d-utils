@@ -57,24 +57,24 @@ import com.sun.j3d.internal.J3dUtilsI18N;
  */
 
 public class TCBKeyFrame {
-  
+
     // Position, Rotation and Scale
-    public Point3f position; 
+    public Point3f position;
     public Quat4f  quat;
-    public Point3f scale; 
+    public Point3f scale;
 
     // Tension, Continuity & Bias
     public float  tension;
     public float  continuity;
     public float  bias;
 
-    // Sample Time 
+    // Sample Time
     public float  knot;
 
     // Interpolation type (linear = 0 -> spline interpolation)
-    public int linear; 
+    public int linear;
 
-    // default constructor 
+    // default constructor
     TCBKeyFrame () {
         tension = continuity = bias = 0.0f;
     }
@@ -82,13 +82,13 @@ public class TCBKeyFrame {
     public TCBKeyFrame (TCBKeyFrame kf) {
         this(kf.knot, kf.linear, kf.position, kf.quat, kf.scale,
                      kf.tension, kf.continuity, kf.bias);
-        
+
     }
 
     /**
-     * Creates a key frame using the given inputs. 
+     * Creates a key frame using the given inputs.
      *
-     * @param k knot value for this key frame 
+     * @param k knot value for this key frame
      * @param l the linear flag (0 - Spline Interp, 1, Linear Interp
      * @param pos the position at the key frame
      * @param q the rotations at the key frame
@@ -97,10 +97,10 @@ public class TCBKeyFrame {
      * @param c continuity (-1.0 < c < 1.0)
      * @param b bias (-1.0 < b < 1.0)
      */
-    public TCBKeyFrame (float k, int l, Point3f pos, Quat4f q, Point3f s, 
+    public TCBKeyFrame (float k, int l, Point3f pos, Quat4f q, Point3f s,
                         float t, float c, float b) {
 
-        knot     = k; 
+        knot     = k;
         linear   = l;
         position = new Point3f(pos);
         quat     = new Quat4f(q);
@@ -126,19 +126,19 @@ public class TCBKeyFrame {
     }
 
     /**
-     * Prints information comtained in this key frame 
+     * Prints information comtained in this key frame
      * @param tag string tag for identifying debug message
      */
     public void debugPrint (String tag) {
-        System.out.println ("\n" + tag); 
-        System.out.println (" knot = " + knot); 
-        System.out.println (" linear = " + linear); 
-        System.out.println (" position(x,y,z) = " + position.x + " " 
+        System.out.println ("\n" + tag);
+        System.out.println (" knot = " + knot);
+        System.out.println (" linear = " + linear);
+        System.out.println (" position(x,y,z) = " + position.x + " "
                                + position.y + " " + position.z);
-              
-        System.out.println (" tension = " + tension); 
-        System.out.println (" continuity = " + continuity); 
-        System.out.println (" bias = " + bias); 
+
+        System.out.println (" tension = " + tension);
+        System.out.println (" continuity = " + continuity);
+        System.out.println (" bias = " + bias);
     }
 }
 

@@ -94,7 +94,7 @@ public class KeyNavigatorBehavior extends Behavior implements KeyListener {
 	WakeupCriterion genericEvt;
 	AWTEvent[] events;
 	boolean sawFrame = false;
-   
+
 	while (criteria.hasMoreElements()) {
 	    genericEvt = (WakeupCriterion) criteria.nextElement();
 	    if (genericEvt instanceof WakeupOnAWTEvent) {
@@ -184,7 +184,7 @@ public class KeyNavigatorBehavior extends Behavior implements KeyListener {
 	if (c != null) {
 	    c.addKeyListener(this);
 	}
-	listener = true;	
+	listener = true;
     }
 
     public void keyPressed(KeyEvent evt) {

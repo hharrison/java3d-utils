@@ -65,14 +65,14 @@ import java.awt.*;
 public class ImageComponent2DState extends ImageComponentState {
 
     private BufferedImage bufferedImage;
-    
+
     public ImageComponent2DState( SymbolTableData symbol, Controller control ) {
 	super( symbol, control );
     }
 
-    public void writeConstructorParams( DataOutput out ) throws 
+    public void writeConstructorParams( DataOutput out ) throws
 							IOException {
-        super.writeConstructorParams( out );    
+        super.writeConstructorParams( out );
 	ImageComponent2D ic = ((ImageComponent2D)node);
 
 	// If the BufferedImage is associated with the ImageComponent2D by
@@ -84,17 +84,17 @@ public class ImageComponent2DState extends ImageComponentState {
 		ic.getFormat(), ic.getRenderedImage(), false, ic.isYUp() );
 	    bufferedImage = noByRef.getImage();
 	} else bufferedImage = ic.getImage();
-        
+
         writeBufferedImage( out, bufferedImage );
     }
 
     public void readConstructorParams( DataInput in ) throws
 							IOException {
 
-       super.readConstructorParams( in ); 
-       
+       super.readConstructorParams( in );
+
        bufferedImage = (BufferedImage)readBufferedImage( in );
-       
+
     }
 
     protected SceneGraphObject createNode( Class j3dClass ) {
@@ -107,7 +107,7 @@ public class ImageComponent2DState extends ImageComponentState {
                                                            new Boolean( byReference ),
                                                            new Boolean( yUp ) } );
     }
-    
+
     protected javax.media.j3d.SceneGraphObject createNode() {
         return new ImageComponent2D( format, bufferedImage, byReference, yUp );
     }

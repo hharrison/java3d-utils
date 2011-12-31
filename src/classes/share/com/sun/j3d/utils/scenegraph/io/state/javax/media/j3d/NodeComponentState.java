@@ -54,25 +54,25 @@ import javax.media.j3d.NodeComponent;
 import javax.media.j3d.SceneGraphObject;
 
 public abstract class NodeComponentState extends SceneGraphObjectState {
-    
+
     public NodeComponentState( SymbolTableData symbol, Controller control ) {
         super(symbol, control);
     }
-    
+
     public void readObject( DataInput in ) throws IOException {
         super.readObject( in );
- 
+
         // This fix was added in file version 2
         if (control.getCurrentFileVersion()>1)
             ((NodeComponent)this.node).setDuplicateOnCloneTree(in.readBoolean());
 
     }
 
-    public void writeObject( DataOutput out ) throws IOException {  
+    public void writeObject( DataOutput out ) throws IOException {
         super.writeObject(out);
         out.writeBoolean(((NodeComponent)this.node).getDuplicateOnCloneTree());
     }
-    
+
     /**
      * Called when this component reference count is incremented.
      * Allows this component to update the reference count of any components
@@ -80,6 +80,6 @@ public abstract class NodeComponentState extends SceneGraphObjectState {
      */
     public void addSubReference() {
     }
-    
+
 }
 

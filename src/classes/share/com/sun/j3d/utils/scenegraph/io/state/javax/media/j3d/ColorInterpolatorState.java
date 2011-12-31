@@ -57,17 +57,17 @@ import com.sun.j3d.utils.scenegraph.io.retained.SymbolTableData;
 public class ColorInterpolatorState extends InterpolatorState {
 
     private int target;
-    
+
     public ColorInterpolatorState(SymbolTableData symbol,Controller control) {
         super( symbol, control );
-        
+
         if (node!=null)
             target = control.getSymbolTable().addReference( ((ColorInterpolator)node).getTarget() );
     }
-    
+
     public void writeObject( DataOutput out ) throws IOException {
         super.writeObject( out );
-        
+
         out.writeInt( target );
         Color3f clr = new Color3f();
         ((ColorInterpolator)node).getStartColor( clr );
@@ -75,15 +75,15 @@ public class ColorInterpolatorState extends InterpolatorState {
         ((ColorInterpolator)node).getEndColor( clr );
         control.writeColor3f( out, clr );
     }
-    
+
     public void readObject( DataInput in ) throws IOException {
         super.readObject( in );
-                        
+
         target = in.readInt();
         ((ColorInterpolator)node).setStartColor( control.readColor3f( in ) );
         ((ColorInterpolator)node).setEndColor( control.readColor3f( in ) );
     }
-    
+
     /**
      * Called when this component reference count is incremented.
      * Allows this component to update the reference count of any components
@@ -92,20 +92,20 @@ public class ColorInterpolatorState extends InterpolatorState {
     public void addSubReference() {
         control.getSymbolTable().incNodeComponentRefCount( target );
     }
-    
+
     public void buildGraph() {
         ((ColorInterpolator)node).setTarget( (Material)control.getSymbolTable().getJ3dNode( target ));
         super.buildGraph(); // Must be last call in method
     }
-    
+
     public SceneGraphObject createNode( Class j3dClass ) {
         return createNode( j3dClass, new Class[] { javax.media.j3d.Alpha.class,
                                                     javax.media.j3d.Material.class },
                                       new Object[] { null,
                                                      null } );
-                                                    
+
     }
-    
+
     protected SceneGraphObject createNode() {
         return new ColorInterpolator( null, null );
     }

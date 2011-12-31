@@ -83,7 +83,7 @@ import javax.media.j3d.*;
  * SimpleUniverse.  If one or more Canvas3D objects are provided, it will use
  * them instead of creating new ones.  All of the constructors provided by
  * SimpleUniverse are also available here.<p>
- * 
+ *
  * The syntax and description of the configuration file may be found
  * <A href="doc-files/config-syntax.html">here.</a> Example config files can
  * be found <A href="doc-files/config-examples.html">here.</a>
@@ -143,7 +143,7 @@ public class ConfiguredUniverse extends SimpleUniverse {
      * the given Canvas3D instance.
      *
      * @param canvas the canvas to associate with the Viewer object;
-     *  passing in null will cause this parameter to be ignored and a canvas 
+     *  passing in null will cause this parameter to be ignored and a canvas
      *  to be created by the utility
      *
      * @see SimpleUniverse#SimpleUniverse(Canvas3D)
@@ -161,7 +161,7 @@ public class ConfiguredUniverse extends SimpleUniverse {
      * transforms, and a Viewer object with the given Canvas3D.
      *
      * @param canvas the canvas to associate with the Viewer object;
-     *  passing in null will cause this parameter to be ignored and a canvas 
+     *  passing in null will cause this parameter to be ignored and a canvas
      *  to be created by the utility
      * @param transformCount the number of transforms in the
      *  MultiTransformGroup object to be created
@@ -219,10 +219,10 @@ public class ConfiguredUniverse extends SimpleUniverse {
 
     /**
      * Creates a Locale, a single ViewingPlatform, and a Viewer object from
-     * the given array of Canvas3D instances.  
+     * the given array of Canvas3D instances.
      *
      * @param canvases the canvases to associate with the Viewer object;
-     *  passing in null will cause this parameter to be ignored and a canvas 
+     *  passing in null will cause this parameter to be ignored and a canvas
      *  to be created by the utility
      *
      * @see Locale
@@ -236,10 +236,10 @@ public class ConfiguredUniverse extends SimpleUniverse {
     /**
      * Creates a Locale, a single ViewingPlatform with the specified number of
      * transforms, and a Viewer object using the given array of Canvas3D
-     * instances.  
+     * instances.
      *
      * @param canvases the canvases to associate with the Viewer object;
-     *  passing in null will cause this parameter to be ignored and a canvas 
+     *  passing in null will cause this parameter to be ignored and a canvas
      *  to be created by the utility
      * @param transformCount the number of transforms in the
      *  MultiTransformGroup object to be created
@@ -256,10 +256,10 @@ public class ConfiguredUniverse extends SimpleUniverse {
     /**
      * Creates a Locale, a single ViewingPlatform with the specified number of
      * transforms, and a Viewer object using the given array of Canvas3D
-     * instances.  
+     * instances.
      *
      * @param canvases the canvases to associate with the Viewer object;
-     *  passing in null will cause this parameter to be ignored and a canvas 
+     *  passing in null will cause this parameter to be ignored and a canvas
      *  to be created by the utility
      * @param transformCount the number of transforms in the
      *  MultiTransformGroup object to be created
@@ -475,7 +475,7 @@ public class ConfiguredUniverse extends SimpleUniverse {
      * @param userConfig container holding viewing configuration components;
      *  must not be null
      * @param localeFactory the factory object used to create the Locale, or
-     *  null 
+     *  null
      * @param origin the origin used to set the origin of the Locale object;
      *  if this object is null, then 0.0 is used
      *
@@ -497,7 +497,7 @@ public class ConfiguredUniverse extends SimpleUniverse {
                     "no views defined in configuration file");
 
 	viewer = (Viewer[])c.toArray(new Viewer[1]);
-	
+
 	c = configContainer.getViewingPlatforms();
 	if (c == null || c.size() == 0) {
 	    createDefaultViewingPlatform
@@ -522,7 +522,7 @@ public class ConfiguredUniverse extends SimpleUniverse {
      * @param transformCount the number of transforms in the
      *  MultiTransformGroup object to be created
      * @param canvases the canvases to associate with the Viewer object;
-     *  passing in null will cause this parameter to be ignored and a canvas 
+     *  passing in null will cause this parameter to be ignored and a canvas
      *  to be created by the utility
      * @param userConfig the URL to the user's configuration file; passing in
      *  null causes the default values to be used.
@@ -605,7 +605,7 @@ public class ConfiguredUniverse extends SimpleUniverse {
      * attaches the platform to the Locale.
      *
      * @param transformCount number of TransformGroups to create in the
-     *  ViewingPlatform 
+     *  ViewingPlatform
      */
     private void createDefaultViewingPlatform(int transformCount) {
 	ViewingPlatform vp = new ViewingPlatform(transformCount);
@@ -617,7 +617,7 @@ public class ConfiguredUniverse extends SimpleUniverse {
 
     /**
      * Sets a view attach policy appropriate for a window eyepoint policy.
-     * 
+     *
      * @param v Viewer to which the ViewingPlatform will be attached
      * @param vp ViewingPlatform to which the Viewer will be attached
      */
@@ -633,7 +633,7 @@ public class ConfiguredUniverse extends SimpleUniverse {
      * Returns the Viewer object specified by the given index.
      *
      * @param index The index of which Viewer object to return.
-     * 
+     *
      * @return The Viewer object specified by the given index.
      */
     public Viewer getViewer(int index) {
@@ -641,8 +641,8 @@ public class ConfiguredUniverse extends SimpleUniverse {
     }
 
     /**
-     * Returns all of the Viewer objects associated with this scene graph.  
-     * 
+     * Returns all of the Viewer objects associated with this scene graph.
+     *
      * @return The Viewer objects associated with this scene graph.
      */
     public Viewer[] getViewers() {
@@ -716,7 +716,7 @@ public class ConfiguredUniverse extends SimpleUniverse {
      * the Sensor array maintained by PhysicalEnvironment.  The head tracker
      * Sensor is the only one read by the Java 3D core and must generate reads
      * with a full 6 degrees of freedom (3D position and 3D orientation).<p>
-     * 
+     *
      * Other Sensors need not generate reads with a full 6 degrees of freedom,
      * although their reads must be expressed using Transform3D.  Some
      * joysticks may provide only 2D relative X and Y axis movement; dials,

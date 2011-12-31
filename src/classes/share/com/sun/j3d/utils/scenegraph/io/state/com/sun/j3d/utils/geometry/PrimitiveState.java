@@ -51,30 +51,30 @@ import com.sun.j3d.utils.scenegraph.io.retained.SymbolTableData;
 import com.sun.j3d.utils.scenegraph.io.state.javax.media.j3d.GroupState;
 
 public class PrimitiveState extends GroupState {
-    
+
     protected int primflags;
 
     public PrimitiveState( SymbolTableData symbol, Controller control ) {
 	super( symbol, control );
-        
+
     }
 
     public void writeConstructorParams( DataOutput out ) throws IOException {
 	super.writeConstructorParams( out );
-        
+
         out.writeInt( ((Primitive)node).getPrimitiveFlags() );
     }
 
     public void readConstructorParams( DataInput in ) throws IOException {
        super.readConstructorParams(in);
-       
+
        primflags = in.readInt();
     }
-    
-    public void buildGraph() {        
+
+    public void buildGraph() {
         super.buildGraph(); // This must be the last call in the method
     }
-    
+
   /**
    * Returns true if the groups children should be saved.
    *

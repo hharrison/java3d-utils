@@ -74,7 +74,7 @@ public class SimpleUniverseState extends java.lang.Object {
     private int totalBGs=0;
     private PlatformGeometryState platformGeom;
     private ViewerAvatarState viewerAvatar;
-    
+
     /**
      * Creates new SimpleUniverseState for writing.
      */
@@ -82,7 +82,7 @@ public class SimpleUniverseState extends java.lang.Object {
         this.universe = universe;
         this.control = control;
     }
-    
+
     /**
      * Creates new SimpleUniverseState for writing.
      */
@@ -90,14 +90,14 @@ public class SimpleUniverseState extends java.lang.Object {
         this.universe = universe;
         this.control = control;
     }
-    
+
     /**
      * Creates new SimpleUniverseState for reading.
      */
     public SimpleUniverseState( Controller control ) {
         this.control = control;
     }
-    
+
     public void writeObject( DataOutput out ) throws IOException {
         MultiTransformGroup mtg = universe.getViewingPlatform().getMultiTransformGroup();
         int mtgSize = mtg.getNumTransforms();
@@ -110,15 +110,15 @@ public class SimpleUniverseState extends java.lang.Object {
             TransformGroup tg = mtg.getTransformGroup( i );
             tg.getTransform( trans );
             trans.get( matrix );
-            control.writeMatrix4d( out, matrix );            
+            control.writeMatrix4d( out, matrix );
         }
-        
+
         control.writeObject( out, control.createState( universe.getViewingPlatform().getPlatformGeometry() ));
         control.writeObject( out, control.createState( universe.getViewer().getAvatar() ));
-        
+
         writeLocales( out );
     }
-    
+
     public void readObject( DataInput in, Canvas3D canvas ) throws IOException {
         int mtgSize = in.readInt();         // MultiTransformGroup size
 	if ( canvas!=null) {
@@ -127,34 +127,34 @@ public class SimpleUniverseState extends java.lang.Object {
 	    universe = new ConfiguredUniverse( ConfiguredUniverse.getConfigURL(), mtgSize);
 	}
         MultiTransformGroup mtg = universe.getViewingPlatform().getMultiTransformGroup();
-        
+
         // Read and set the matrix for each MTG transfrom
         Matrix4d matrix = new Matrix4d();
         for(int i=0; i<mtgSize; i++) {
             TransformGroup tg = mtg.getTransformGroup( i );
             matrix = control.readMatrix4d( in );
             Transform3D trans = new Transform3D( matrix );
-            tg.setTransform( trans );            
+            tg.setTransform( trans );
         }
 
         SceneGraphObjectState tmp = control.readObject(in);
-        
+
         if (tmp instanceof PlatformGeometryState)
             platformGeom = (PlatformGeometryState)tmp;
         else
             platformGeom = null;
-        
+
         tmp = control.readObject(in);
         if (tmp instanceof ViewerAvatarState)
             viewerAvatar = (ViewerAvatarState)tmp;
         else
             viewerAvatar = null;
-        
+
         readLocales( in );
     }
-    
+
     private void writeLocales( DataOutput out ) throws IOException {
-    
+
         Enumeration allLocales = universe.getAllLocales();
         out.writeInt( universe.numLocales() );
         localeBGs = new ArrayList( universe.numLocales() );
@@ -185,21 +185,21 @@ public class SimpleUniverseState extends java.lang.Object {
             localeBGs.add( bgs );
         }
     }
-    
+
     private void readLocales( DataInput in ) throws IOException {
         int numLocales = in.readInt();
         localeBGs = new ArrayList( numLocales );
         Locale locale;
         for(int i=0; i<numLocales; i++) {
             HiResCoord hiRes = readHiResCoord( in );
-            
+
             if (i==0){       // SimpleUniverse is constructed with a locale so just set its HiRes.
                 locale = universe.getLocale();
                 locale.setHiRes( hiRes );
-            } else { 
+            } else {
                 locale = new Locale( universe, hiRes );
             }
-            
+
             int numBG = in.readInt();
             int[] bgs = new int[numBG];
             for(int n=0; n<numBG; n++) {
@@ -207,10 +207,10 @@ public class SimpleUniverseState extends java.lang.Object {
                 totalBGs++;
             }
             localeBGs.add( bgs );
-            
+
         }
     }
-    
+
     /**
      * Called once IO is complete, attaches all the branchgroups to the locales
      */
@@ -221,13 +221,13 @@ public class SimpleUniverseState extends java.lang.Object {
             locale = (Locale)e.nextElement();
             int[] bgs = (int[])localeBGs.get(i);
             for(int j=0; j<bgs.length; j++) {
-                SymbolTableData symbol = control.getSymbolTable().getBranchGraphRoot( bgs[j] );               
+                SymbolTableData symbol = control.getSymbolTable().getBranchGraphRoot( bgs[j] );
                 locale.addBranchGraph((BranchGroup)symbol.j3dNode );
             }
         }
-        
+
         if (viewerAvatar!=null) {
-            viewerAvatar.buildGraph();        
+            viewerAvatar.buildGraph();
             universe.getViewer().setAvatar( (ViewerAvatar)viewerAvatar.getNode());
         }
 
@@ -236,7 +236,7 @@ public class SimpleUniverseState extends java.lang.Object {
             platformGeom.buildGraph();
         }
     }
-    
+
     /**
      * Return all the branchgraph id's for all Locales in the universe
      *
@@ -245,23 +245,23 @@ public class SimpleUniverseState extends java.lang.Object {
     public int[] getAllGraphIDs() {
         int[] ret = new int[totalBGs];
         int c = 0;
-        
+
         for( int i=0; i<localeBGs.size(); i++) {
             int[] bgs = (int[])localeBGs.get(i);
             for(int j=0; j<bgs.length; j++) {
                 ret[ c++ ] = bgs[j];
             }
         }
-        
+
         return ret;
     }
-    
+
     /**
      * Detach each BranchGraph from the Locale(s)
      */
     public void detachAllGraphs() {
         int c = 0;
-        
+
         try {
             for( int i=0; i<localeBGs.size(); i++) {
                 int[] bgs = (int[])localeBGs.get(i);
@@ -275,14 +275,14 @@ public class SimpleUniverseState extends java.lang.Object {
 		"Locale BranchGraphs MUST have ALLOW_DETACH capability set" );
         }
     }
-    
+
     /**
      * Reattach each BranchGraph to the Locale(s)
      */
     public void attachAllGraphs() {
         Enumeration e = universe.getAllLocales();
         Locale locale;
-        
+
         for( int i=0; i<localeBGs.size(); i++) {
             locale = (Locale)e.nextElement();
             int[] bgs = (int[])localeBGs.get(i);
@@ -292,17 +292,17 @@ public class SimpleUniverseState extends java.lang.Object {
             }
         }
     }
-    
+
     /**
      * Return the 'node', ie the virtual universe.  Returns null if currently writing a
      * SimpleUniverse.
      */
     public ConfiguredUniverse getNode() {
-	if ( universe instanceof ConfiguredUniverse ) 
+	if ( universe instanceof ConfiguredUniverse )
 	    return (ConfiguredUniverse)universe;
 	else return null;
     }
-    
+
     private void writeHiResCoord( DataOutput out, HiResCoord hiRes ) throws IOException {
         int[] x = new int[8];
         int[] y = new int[8];
@@ -314,7 +314,7 @@ public class SimpleUniverseState extends java.lang.Object {
             out.writeInt( z[i] );
         }
     }
-    
+
     private HiResCoord readHiResCoord( DataInput in ) throws IOException {
         int[] x = new int[8];
         int[] y = new int[8];
@@ -324,7 +324,7 @@ public class SimpleUniverseState extends java.lang.Object {
             y[i] = in.readInt();
             z[i] = in.readInt();
         }
-        
+
         return new HiResCoord( x, y, z );
     }
 
