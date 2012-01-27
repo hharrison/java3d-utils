@@ -44,7 +44,6 @@
 
 package com.sun.j3d.utils.geometry.compression;
 
-import javax.media.j3d.BoundingBox;
 import javax.media.j3d.GeometryArray;
 
 /**
@@ -102,9 +101,6 @@ class CompressedGeometryRetained extends Object {
     // is made even when by-reference semantics have been requested.
     private byte[] originalCompressedGeometry = null ;
 
-    // Geometric bounds
-    private BoundingBox geoBounds = new BoundingBox();
-
     // True if by-reference data access mode is in effect.
     private boolean byReference = false ;
 
@@ -112,10 +108,6 @@ class CompressedGeometryRetained extends Object {
      * The package-scoped constructor.
      */
     CompressedGeometryRetained() {
-	// Compressed geometry is always bounded by [-1..1] on each axis, so
-	// set that as the initial bounding box.
-	geoBounds.setUpper( 1.0, 1.0, 1.0) ;
-	geoBounds.setLower(-1.0,-1.0,-1.0) ;
     }
 
     /**
@@ -166,12 +158,6 @@ class CompressedGeometryRetained extends Object {
 				  byte[] geometry, boolean byReference) {
 
 	this.byReference = byReference ;
-
-	if (hdr.lowerBound != null)
-	    this.geoBounds.setLower(hdr.lowerBound) ;
-
-	if (hdr.upperBound != null)
-	    this.geoBounds.setUpper(hdr.upperBound) ;
 
 ////	this.centroid.set(geoBounds.getCenter());
 ////	recompCentroid = false;
