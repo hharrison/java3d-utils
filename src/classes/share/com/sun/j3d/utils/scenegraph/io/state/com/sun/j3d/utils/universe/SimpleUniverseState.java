@@ -157,13 +157,13 @@ public class SimpleUniverseState extends java.lang.Object {
 
     private void writeLocales( DataOutput out ) throws IOException {
 
-        Enumeration allLocales = universe.getAllLocales();
+	Enumeration<Locale> allLocales = universe.getAllLocales();
         out.writeInt( universe.numLocales() );
         localeBGs = new ArrayList( universe.numLocales() );
         int currentLocale = 0;
         int graphID = 0;
         while( allLocales.hasMoreElements() ) {
-            Locale locale = (Locale)allLocales.nextElement();
+		Locale locale = allLocales.nextElement();
             HiResCoord hiRes = new HiResCoord();
             writeHiResCoord( out, hiRes );
             int bgs[];
@@ -218,9 +218,9 @@ public class SimpleUniverseState extends java.lang.Object {
      */
     public void buildGraph() {
         Locale locale;
-        Enumeration e = universe.getAllLocales();
+	Enumeration<Locale> e = universe.getAllLocales();
         for( int i=0; i<localeBGs.size(); i++) {
-            locale = (Locale)e.nextElement();
+		locale = e.nextElement();
             int[] bgs = (int[])localeBGs.get(i);
             for(int j=0; j<bgs.length; j++) {
                 SymbolTableData symbol = control.getSymbolTable().getBranchGraphRoot( bgs[j] );
@@ -282,11 +282,11 @@ public class SimpleUniverseState extends java.lang.Object {
      * Reattach each BranchGraph to the Locale(s)
      */
     public void attachAllGraphs() {
-        Enumeration e = universe.getAllLocales();
+	Enumeration<Locale> e = universe.getAllLocales();
         Locale locale;
 
         for( int i=0; i<localeBGs.size(); i++) {
-            locale = (Locale)e.nextElement();
+		locale = e.nextElement();
             int[] bgs = (int[])localeBGs.get(i);
             for(int j=0; j<bgs.length; j++) {
                 SymbolTableData symbol = control.getSymbolTable().getBranchGraphRoot( bgs[j] );
