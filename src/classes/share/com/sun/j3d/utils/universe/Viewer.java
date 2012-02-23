@@ -373,10 +373,10 @@ public class Viewer {
 	// Create a graphics template requesting the desired capabilities.
 	GraphicsConfigTemplate3D tpl3D = new GraphicsConfigTemplate3D();
 	if (cv.stereoEnable) {
-	    tpl3D.setStereo(tpl3D.PREFERRED);
+	    tpl3D.setStereo(GraphicsConfigTemplate3D.PREFERRED);
 	}
         if (cv.antialiasingEnable) {
-            tpl3D.setSceneAntialiasing(tpl3D.PREFERRED);
+            tpl3D.setSceneAntialiasing(GraphicsConfigTemplate3D.PREFERRED);
         }
 
 	// Loop through all screens.  Set up the Swing component structure and

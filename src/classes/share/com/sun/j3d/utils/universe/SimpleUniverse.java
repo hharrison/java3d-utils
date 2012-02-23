@@ -419,9 +419,9 @@ public class SimpleUniverse extends VirtualUniverse {
         // update template based on properties.
         if (stereo != null) {
             if (stereo.equals("REQUIRED"))
-                template.setStereo(template.REQUIRED);
+                template.setStereo(GraphicsConfigTemplate3D.REQUIRED);
             else if (stereo.equals("PREFERRED"))
-                template.setStereo(template.PREFERRED);
+                template.setStereo(GraphicsConfigTemplate3D.PREFERRED);
         }
 
         // Return the GraphicsConfiguration that best fits our needs.
