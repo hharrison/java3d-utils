@@ -405,18 +405,16 @@ public class SimpleUniverse extends VirtualUniverse {
      */
     public static GraphicsConfiguration getPreferredConfiguration() {
         GraphicsConfigTemplate3D template = new GraphicsConfigTemplate3D();
-        String stereo;
 
         // Check if the user has set the Java 3D stereo option.
         // Getting the system properties causes appletviewer to fail with a
         //  security exception without a try/catch.
-
-        stereo = (String) java.security.AccessController.doPrivileged(
-           new java.security.PrivilegedAction() {
-           public Object run() {
-               return System.getProperty("j3d.stereo");
-           }
-        });
+	String stereo = java.security.AccessController.doPrivileged(
+			new java.security.PrivilegedAction<String>() {
+				public String run() {
+					return System.getProperty("j3d.stereo");
+				}
+			});
 
         // update template based on properties.
         if (stereo != null) {
