@@ -68,7 +68,6 @@ import javax.media.j3d.Transform3D;
 import javax.media.j3d.View;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.JWindow;
 
 import com.sun.j3d.audioengines.AudioEngine3DL2;
 
@@ -207,21 +206,17 @@ public class Viewer {
 	    GraphicsConfiguration config =
 		ConfiguredUniverse.getPreferredConfiguration();
 
-	    canvases = new Canvas3D[1];
-	    canvases[0] = new Canvas3D(config);
-            try {
-	        canvases[0].setFocusable( true );
-            } catch(NoSuchMethodError e) {}
+		canvases = new Canvas3D[1];
+		canvases[0] = new Canvas3D(config);
+		canvases[0].setFocusable(true);
 	    createFramesAndPanels(setVisible);
         }
 	else {
 	    canvases = new Canvas3D[userCanvases.length];
 	    for (int i=0; i<userCanvases.length; i++) {
-		canvases[i] = userCanvases[i];
-                try {
-	            canvases[i].setFocusable( true );
-                } catch(NoSuchMethodError e) {}
-	    }
+			canvases[i] = userCanvases[i];
+			canvases[i].setFocusable(true);
+		}
 	}
 
         // Create a View and attach the Canvas3D and the physical
@@ -292,9 +287,7 @@ public class Viewer {
             canvases[0] = userCanvas;
 	}
 
-	try {
-	    canvases[0].setFocusable( true );
-        } catch(NoSuchMethodError e) {}
+	canvases[0].setFocusable(true);
 
         // Create a View and attach the Canvas3D and the physical
         // body and environment to the view.
@@ -406,20 +399,10 @@ public class Viewer {
 		new JFrame(cs[i].instanceName, defCfg);
 
 	    if (cs[i].noBorderFullScreen) {
-		try {
-		    // Required by JDK 1.4 AWT for borderless full screen.
-		    j3dJFrames[i].setUndecorated(true);
+			j3dJFrames[i].setUndecorated(true);
 
-		    cs[i].j3dWindow = j3dWindows[i] = j3dJFrames[i];
-		    contentPane = j3dJFrames[i].getContentPane();
-		}
-		catch (NoSuchMethodError e) {
-		    // Handle borderless full screen running under JDK 1.3.1.
-		    JWindow jwin = new JWindow(j3dJFrames[i], cfg);
-
-		    cs[i].j3dWindow = j3dWindows[i] = jwin;
-		    contentPane = jwin.getContentPane();
-		}
+			cs[i].j3dWindow = j3dWindows[i] = j3dJFrames[i];
+			contentPane = j3dJFrames[i].getContentPane();
 
 		contentPane.setLayout(new BorderLayout());
  		j3dWindows[i].setSize(bounds.width, bounds.height);
@@ -483,14 +466,7 @@ public class Viewer {
 	    // Add a windowListener to detect the window close event.
 	    addWindowCloseListener(j3dWindows[i]);
 
-	    // Set Canvas3D focus as required by the JDK 1.4 focus model for
-	    // full screen frames.  JDK 1.3.1 sets the focus automatically for
-	    // full screen components.
-	    try {
-		canvases[i].setFocusable(true) ;
-	    }
-	    catch (NoSuchMethodError e) {
-	    }
+		canvases[i].setFocusable(true);
 
 	    if (debug) {
 		System.out.println("Viewer: created Canvas3D for screen " +
