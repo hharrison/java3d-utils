@@ -453,8 +453,6 @@ public class SimpleUniverse extends VirtualUniverse {
         viewer[0].setViewingPlatform(null);
 	removeAllLocales();
 
-	// viewerMap cleanup here to prevent memory leak problem.
-	Viewer.clearViewerMap();
         Primitive.clearGeometryCache();
 
     }

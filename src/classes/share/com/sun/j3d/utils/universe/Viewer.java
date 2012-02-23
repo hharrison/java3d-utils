@@ -57,7 +57,6 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.lang.reflect.Constructor;
 import java.net.URL;
-import java.util.HashMap;
 
 import javax.media.j3d.AudioDevice;
 import javax.media.j3d.Canvas3D;
@@ -131,170 +130,6 @@ public class Viewer {
     private        JPanel[]                  j3dJPanels          = null;
     private        Window[]                  j3dWindows          = null;
     private        ViewingPlatform           viewingPlatform     = null;
-
-
-    static HashMap viewerMap = new HashMap(5);
-    private float dvrFactor = 1.0f;
-    private boolean doDvr = false;
-    private boolean doDvrResizeCompensation = true;
-
-
-    /**
-     * Get the Viewer associated with the view object.
-     *
-     * @param view The View object for inquiry.
-     * @return The Viewer object associated with this View object.
-     *
-     * Note: This method is targeted for SUN framebuffer XVR-4000 and later
-     * hardware that support video size extension.
-     *
-     * @since Java 3D 1.3.1
-     */
-    // To support a back door for DVR support.
-    public static Viewer getViewer(View view) {
-	Viewer viewer = null;
-	synchronized (viewerMap) {
-	    //System.out.println("Viewer.getViewer viewerMap's size is " + viewerMap.size());
-	    viewer =  (Viewer) (viewerMap.get(view));
-	}
-	return viewer;
-    }
-
-
-    /**
-     * Removes the entry associated with the view object.
-     *
-     * @param view The View object to be removed.
-     * @return The Viewer object associated with this View object.
-     *
-     * Note: This method is targeted for SUN framebuffer XVR-4000 and later
-     * hardware that support video size extension.
-     *
-     * @since Java 3D 1.3.1
-     */
-    // To support a back door for DVR support.
-    public static Viewer removeViewerMapEntry(View view) {
-	Viewer viewer = null;
-	synchronized (viewerMap) {
-
-	    viewer =  (Viewer) (viewerMap.remove(view));
-	}
-	// System.out.println("viewerMap.size() " + viewerMap.size());
-
-	return viewer;
-    }
-
-
-    /**
-     * Removes all Viewer mappings from the Viewer map.
-     *
-     * Note: This method is targeted for SUN framebuffer XVR-4000 and later
-     * hardware that support video size extension.
-     *
-     * @since Java 3D 1.3.1
-     */
-    // To support a back door for DVR support.
-    public static void clearViewerMap() {
-	synchronized (viewerMap) {
-	    viewerMap.clear();
-	}
-	// System.out.println("clearViewerMap - viewerMap.size() " + viewerMap.size());
-
-    }
-
-
-    /**
-     * Returns a status flag indicating whether or not dynamic video size
-     * is enabled.
-     *
-     * Note: This method is targeted for SUN framebuffer XVR-4000 and later
-     * hardware that support video size extension.
-     *
-     * @since Java 3D 1.3.1
-     */
-    // To support a back door for DVR support.
-    public boolean isDvrEnabled() {
-	return doDvr;
-    }
-
-    /**
-     * Turns on or off dynamic video size.
-     *
-     * Note: This method is targeted for SUN framebuffer XVR-4000 and later
-     * hardware that support video size extension.
-     *
-     * @param dvr enables or disables dynamic video size.
-     *
-     * @since Java 3D 1.3.1
-     */
-    // To support a back door for DVR support.
-    public void setDvrEnable(boolean dvr) {
-	doDvr = dvr;
-	view.repaint();
-
-    }
-
-    /**
-     * Retrieves the dynamic video resize factor of this
-     * viewer.
-     *
-     * Note: This method is targeted for SUN framebuffer XVR-4000 and later
-     * hardware that support video size extension.
-     *
-     * @since Java 3D 1.3.1
-     */
-    // To support a back door for DVR support.
-    public float getDvrFactor() {
-	return dvrFactor;
-    }
-
-
-    /**
-     * Set the dynamic video resize factor for this viewer.
-     *
-     * Note: This method is targeted for SUN framebuffer XVR-4000 and later
-     * hardware that support video size extension.
-     *
-     * @param dvr set the dynamic video resize factor for this viewer.
-     *
-     * @since Java 3D 1.3.1
-     */
-    // To support a back door for DVR support.
-    public void setDvrFactor(float dvr) {
-	dvrFactor = dvr;
-	view.repaint();
-
-    }
-
-    /**
-     * Turns on or off dynamic video resize compensation.
-     *
-     * Note: This method is targeted for SUN framebuffer XVR-4000 and later
-     * hardware that support video size extension.
-     *
-     * @param dvrRCE enables or disables dynamic video resize compensation.
-     *
-     * @since Java 3D 1.3.1
-     */
-    // To support a back door for DVR support.
-    public void setDvrResizeCompensationEnable(boolean dvrRCE) {
-	doDvrResizeCompensation = dvrRCE;
-	view.repaint();
-    }
-
-    /**
-     * Returns a status flag indicating whether or not dynamic video resize
-     * compensation is enabled.
-     *
-     * Note: This method is targeted for SUN framebuffer XVR-4000 and later
-     * hardware that support video size extension.
-     *
-     * @since Java 3D 1.3.1
-     */
-    // To support a back door for DVR support.
-    public boolean getDvrResizeCompensationEnable() {
-	return doDvrResizeCompensation;
-    }
 
     /**
      * Creates a default viewer object. The default values are used to create
@@ -396,10 +231,6 @@ public class Viewer {
         // Fix to issue 424
         view.setUserHeadToVworldEnable(true);
 
-	// Add it to the Viewer's HashMap.
-	synchronized (viewerMap) {
-	    Viewer.viewerMap.put(view, this);
-	}
 	for (int i=0; i<canvases.length; i++) {
 	    view.addCanvas3D(canvases[i]);
 	}
@@ -472,10 +303,6 @@ public class Viewer {
         // Fix to issue 424
         view.setUserHeadToVworldEnable(true);
 
-	// Add it to the Viewer's HashMap.
-	synchronized (viewerMap) {
-	    Viewer.viewerMap.put(view, this);
-	}
         view.addCanvas3D(canvases[0]);
         view.setPhysicalBody(physicalBody);
         view.setPhysicalEnvironment(physicalEnvironment);
@@ -497,10 +324,6 @@ public class Viewer {
 	// Retrieve the J3D View object from the ConfigView object.
 	// The physical body and environment have already been set there.
 	view = cv.j3dView;
-	// Add it to the Viewer's HashMap.
-	synchronized (viewerMap) {
-	    Viewer.viewerMap.put(view, this);
-	}
 
 	// Set this Viewer's references to the physical body and environment.
 	physicalBody = cv.physicalBody;

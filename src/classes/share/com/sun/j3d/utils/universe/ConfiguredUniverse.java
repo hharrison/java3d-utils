@@ -786,7 +786,6 @@ public class ConfiguredUniverse extends SimpleUniverse {
 
 	locale = null;
 	removeAllLocales();
-	Viewer.clearViewerMap();
 
 	configContainer.clear();
 	configContainer = null;
