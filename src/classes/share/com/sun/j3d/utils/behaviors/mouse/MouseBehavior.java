@@ -1,6 +1,4 @@
 /*
- * $RCSfile$
- *
  * Copyright (c) 2007 Sun Microsystems, Inc. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -37,9 +35,6 @@
  * intended for use in the design, construction, operation or
  * maintenance of any nuclear facility.
  *
- * $Revision$
- * $Date$
- * $State$
  */
 
 package com.sun.j3d.utils.behaviors.mouse;
