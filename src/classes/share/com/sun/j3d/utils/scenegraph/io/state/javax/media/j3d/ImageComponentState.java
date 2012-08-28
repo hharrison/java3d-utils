@@ -60,11 +60,9 @@ import java.io.IOException;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
+import javax.imageio.ImageIO;
 import javax.media.j3d.ImageComponent;
 
-import com.sun.image.codec.jpeg.JPEGCodec;
-import com.sun.image.codec.jpeg.JPEGImageDecoder;
-import com.sun.image.codec.jpeg.JPEGImageEncoder;
 import com.sun.j3d.utils.scenegraph.io.retained.Controller;
 import com.sun.j3d.utils.scenegraph.io.retained.SGIORuntimeException;
 import com.sun.j3d.utils.scenegraph.io.retained.SymbolTableData;
@@ -206,9 +204,7 @@ public abstract class ImageComponentState extends NodeComponentState {
 
     private void writeBufferedImageJpegCompression( DataOutput out, BufferedImage image ) throws IOException {
         ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-        JPEGImageEncoder encoder = JPEGCodec.createJPEGEncoder( byteStream );
-
-        encoder.encode( image );
+        ImageIO.write(image, "jpeg", byteStream);
         byteStream.close();
 
         byte[] buffer = byteStream.toByteArray();
@@ -265,10 +261,7 @@ public abstract class ImageComponentState extends NodeComponentState {
         in.readFully( buffer );
         ByteArrayInputStream byteStream = new ByteArrayInputStream( buffer );
 
-        JPEGImageDecoder decoder = JPEGCodec.createJPEGDecoder( byteStream );
-        byteStream.close();
-
-        return decoder.decodeAsBufferedImage();
+        return ImageIO.read(byteStream);
     }
 
     private void writeColorModel( DataOutput out, ColorModel colorModel ) throws IOException {
