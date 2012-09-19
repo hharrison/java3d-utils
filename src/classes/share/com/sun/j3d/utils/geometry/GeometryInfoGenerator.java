@@ -39,6 +39,10 @@
 
 package com.sun.j3d.utils.geometry;
 
+import java.nio.ByteBuffer;
+import java.nio.DoubleBuffer;
+import java.nio.FloatBuffer;
+
 import javax.media.j3d.GeometryArray;
 import javax.media.j3d.GeometryStripArray;
 import javax.media.j3d.IndexedGeometryArray;
@@ -64,9 +68,6 @@ import javax.vecmath.TexCoord4f;
 import javax.vecmath.Vector3f;
 
 import com.sun.j3d.internal.BufferWrapper;
-import com.sun.j3d.internal.ByteBufferWrapper;
-import com.sun.j3d.internal.DoubleBufferWrapper;
-import com.sun.j3d.internal.FloatBufferWrapper;
 import com.sun.j3d.internal.J3dUtilsI18N;
 
 
@@ -177,7 +178,7 @@ class GeometryInfoGenerator extends Object {
       float[] d;
       if ((vertexFormat & GeometryArray.USE_NIO_BUFFER) != 0) {
 	J3DBuffer b = geomArray.getInterleavedVertexBuffer();
-	FloatBufferWrapper w = new FloatBufferWrapper(b);
+	FloatBuffer w = (FloatBuffer)b.getBuffer();
 	d = new float[w.limit()];
 	w.position( 0 );
 	w.get(d);
@@ -289,7 +290,7 @@ class GeometryInfoGenerator extends Object {
 	  switch (BufferWrapper.getBufferType(buf)) {
 
 	  case BufferWrapper.TYPE_FLOAT: {
-	    FloatBufferWrapper bb = new FloatBufferWrapper(buf);
+	    FloatBuffer bb = (FloatBuffer)buf.getBuffer();
 	    float[] c = new float[valid * 3];
 	    bb.position(initial * 3);
 	    bb.get(c, 0, valid * 3);
@@ -303,7 +304,7 @@ class GeometryInfoGenerator extends Object {
 	  break;
 
 	  case BufferWrapper.TYPE_DOUBLE: {
-	    DoubleBufferWrapper bb = new DoubleBufferWrapper( buf );
+	    DoubleBuffer bb = (DoubleBuffer)buf.getBuffer();
 	    double[] c = new double[valid * 3];
 	    bb.position(initial * 3);
 	    bb.get(c, 0, valid * 3);
@@ -373,7 +374,7 @@ class GeometryInfoGenerator extends Object {
 	    J3DBuffer buf = geomArray.getNormalRefBuffer();
 
 	    if (BufferWrapper.getBufferType(buf) == BufferWrapper.TYPE_FLOAT) {
-	      FloatBufferWrapper bb = new FloatBufferWrapper(buf);
+	      FloatBuffer bb = (FloatBuffer)buf.getBuffer();
 	      float[] c = new float[valid * 3];
 	      bb.position(initial * 3);
 	      bb.get(c, 0, valid * 3);
@@ -431,7 +432,7 @@ class GeometryInfoGenerator extends Object {
 	    switch (BufferWrapper.getBufferType(buf)) {
 
 	    case BufferWrapper.TYPE_FLOAT: {
-	      FloatBufferWrapper bb = new FloatBufferWrapper(buf);
+	      FloatBuffer bb = (FloatBuffer)buf.getBuffer();
 	      float[] c = new float[valid * 4];
 	      bb.position(initial * 4);
 	      bb.get(c, 0, valid * 4);
@@ -446,7 +447,7 @@ class GeometryInfoGenerator extends Object {
 	    break;
 
 	    case BufferWrapper.TYPE_BYTE: {
-	      ByteBufferWrapper bb = new ByteBufferWrapper(buf);
+	      ByteBuffer bb = (ByteBuffer)buf.getBuffer();
 	      byte[] c = new byte[valid * 4];
 	      bb.position(initial * 4);
 	      bb.get(c, 0, valid * 4);
@@ -523,7 +524,7 @@ class GeometryInfoGenerator extends Object {
 	    switch (BufferWrapper.getBufferType(buf)) {
 
 	    case BufferWrapper.TYPE_FLOAT: {
-	      FloatBufferWrapper bb = new FloatBufferWrapper(buf);
+	      FloatBuffer bb = (FloatBuffer)buf.getBuffer();
 	      float[] c = new float[valid * 3];
 	      bb.position(initial * 3);
 	      bb.get(c, 0, valid * 3);
@@ -537,7 +538,7 @@ class GeometryInfoGenerator extends Object {
 	    break;
 
 	    case BufferWrapper.TYPE_BYTE: {
-	      ByteBufferWrapper bb = new ByteBufferWrapper(buf);
+	      ByteBuffer bb = (ByteBuffer)buf.getBuffer();
 	      byte[] c = new byte[valid * 3];
 	      bb.position(initial * 3);
 	      bb.get(c, 0, valid * 3);
@@ -612,7 +613,7 @@ class GeometryInfoGenerator extends Object {
 	      J3DBuffer buf = geomArray.getTexCoordRefBuffer(i);
 
 	      if (BufferWrapper.getBufferType(buf) == BufferWrapper.TYPE_FLOAT) {
-		FloatBufferWrapper bb = new FloatBufferWrapper(buf);
+		FloatBuffer bb = (FloatBuffer)buf.getBuffer();
 		float[] c = new float[valid * 4];
 		bb.position(initial * 4);
 		bb.get(c, 0, valid * 4);
@@ -666,7 +667,7 @@ class GeometryInfoGenerator extends Object {
 	      J3DBuffer buf = geomArray.getTexCoordRefBuffer(i);
 
 	      if (BufferWrapper.getBufferType(buf) == BufferWrapper.TYPE_FLOAT) {
-		FloatBufferWrapper bb = new FloatBufferWrapper(buf);
+		FloatBuffer bb = (FloatBuffer)buf.getBuffer();
 		float[] c = new float[valid * 3];
 		bb.position(initial * 3);
 		bb.get(c, 0, valid * 3);
@@ -726,7 +727,7 @@ class GeometryInfoGenerator extends Object {
 	      J3DBuffer buf = geomArray.getTexCoordRefBuffer(i);
 
 	      if (BufferWrapper.getBufferType(buf) == BufferWrapper.TYPE_FLOAT) {
-		FloatBufferWrapper bb = new FloatBufferWrapper(buf);
+		FloatBuffer bb = (FloatBuffer)buf.getBuffer();
 		float[] c = new float[valid * 2];
 		bb.position(initial * 2);
 		bb.get(c, 0, valid * 2);

@@ -39,6 +39,9 @@
 
 package com.sun.j3d.utils.compression;
 
+import java.nio.ByteBuffer;
+import java.nio.DoubleBuffer;
+import java.nio.FloatBuffer;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -73,9 +76,6 @@ import javax.vecmath.Point3i;
 import javax.vecmath.Vector3f;
 
 import com.sun.j3d.internal.BufferWrapper;
-import com.sun.j3d.internal.ByteBufferWrapper;
-import com.sun.j3d.internal.DoubleBufferWrapper;
-import com.sun.j3d.internal.FloatBufferWrapper;
 import com.sun.j3d.utils.geometry.GeometryInfo;
 
 /**
@@ -1478,14 +1478,14 @@ public class CompressionStream {
      * interleaved NIO geometry arrays.
      */
     private class InterleavedGeometryNIO extends InterleavedGeometry {
-	FloatBufferWrapper fbw = null ;
+	FloatBuffer fbw = null ;
 
 	InterleavedGeometryNIO(GeometryArray ga) {
 	    super(ga) ;
 	    J3DBuffer buffer = ga.getInterleavedVertexBuffer() ;
 	    if (BufferWrapper.getBufferType(buffer) ==
 		BufferWrapper.TYPE_FLOAT) {
-		fbw = new FloatBufferWrapper(buffer) ;
+		fbw = (FloatBuffer)buffer.getBuffer();
 	    }
 	    else {
 		throw new IllegalArgumentException
@@ -1695,11 +1695,11 @@ public class CompressionStream {
     private class ByRefGeometryNIO implements GeometryAccessor {
 	VertexCopy vc = new VertexCopy() ;
 
-	ByteBufferWrapper   colorsB    = null ;
-	FloatBufferWrapper  colorsF    = null ;
-	FloatBufferWrapper  normals    = null ;
-	FloatBufferWrapper  positionsF = null ;
-	DoubleBufferWrapper positionsD = null ;
+	ByteBuffer          colorsB    = null ;
+	FloatBuffer         colorsF    = null ;
+	FloatBuffer         normals    = null ;
+	FloatBuffer         positionsF = null ;
+	DoubleBuffer        positionsD = null ;
 
 	int initialPositionIndex = 0 ;
 	int initialNormalIndex   = 0 ;
@@ -1712,11 +1712,11 @@ public class CompressionStream {
 
 	    switch (BufferWrapper.getBufferType(buffer)) {
 	    case BufferWrapper.TYPE_FLOAT:
-		positionsF = new FloatBufferWrapper(buffer) ;
+		positionsF = (FloatBuffer)buffer.getBuffer();
 		if (debug) System.out.println("float positions buffer") ;
 		break ;
 	    case BufferWrapper.TYPE_DOUBLE:
-		positionsD = new DoubleBufferWrapper(buffer) ;
+		positionsD = (DoubleBuffer)buffer.getBuffer();
 		if (debug) System.out.println("double positions buffer") ;
 		break ;
 	    default:
@@ -1730,11 +1730,11 @@ public class CompressionStream {
 
 		switch (BufferWrapper.getBufferType(buffer)) {
 		case BufferWrapper.TYPE_BYTE:
-		    colorsB = new ByteBufferWrapper(buffer) ;
+		    colorsB = (ByteBuffer)buffer.getBuffer();
 		    if (debug) System.out.println("byte colors buffer") ;
 		    break ;
 		case BufferWrapper.TYPE_FLOAT:
-		    colorsF = new FloatBufferWrapper(buffer) ;
+		    colorsF = (FloatBuffer)buffer.getBuffer();
 		    if (debug) System.out.println("float colors buffer") ;
 		    break ;
 		default:
@@ -1749,7 +1749,7 @@ public class CompressionStream {
 
 		switch (BufferWrapper.getBufferType(buffer)) {
 		case BufferWrapper.TYPE_FLOAT:
-		    normals = new FloatBufferWrapper(buffer) ;
+		    normals = (FloatBuffer)buffer.getBuffer();
 		    if (debug) System.out.println("float normals buffer") ;
 		    break ;
 		default:

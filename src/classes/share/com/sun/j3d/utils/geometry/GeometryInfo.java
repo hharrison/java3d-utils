@@ -39,7 +39,9 @@
 
 package com.sun.j3d.utils.geometry;
 
+import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import java.nio.FloatBuffer;
 import java.util.HashMap;
 
 import javax.media.j3d.GeometryArray;
@@ -48,6 +50,7 @@ import javax.media.j3d.IndexedQuadArray;
 import javax.media.j3d.IndexedTriangleArray;
 import javax.media.j3d.IndexedTriangleFanArray;
 import javax.media.j3d.IndexedTriangleStripArray;
+import javax.media.j3d.J3DBuffer;
 import javax.media.j3d.QuadArray;
 import javax.media.j3d.TriangleArray;
 import javax.media.j3d.TriangleFanArray;
@@ -67,8 +70,6 @@ import javax.vecmath.Tuple3f;
 import javax.vecmath.Tuple4f;
 import javax.vecmath.Vector3f;
 
-import com.sun.j3d.internal.ByteBufferWrapper;
-import com.sun.j3d.internal.FloatBufferWrapper;
 import com.sun.j3d.internal.J3dUtilsI18N;
 
 /**
@@ -2311,46 +2312,42 @@ public class GeometryInfo {
 	}
 	// Register reference to array of interleaved data
 	if (nio) {
-	  ByteBufferWrapper b = ByteBufferWrapper.allocateDirect(d.length * 4);
-	  FloatBufferWrapper f =
-	    b.order( ByteOrder.nativeOrder() ).asFloatBuffer();
+	  ByteBuffer b = ByteBuffer.allocateDirect(d.length * 4);
+	  FloatBuffer f = b.order(ByteOrder.nativeOrder()).asFloatBuffer();
 	  f.put(d);
-	  ga.setInterleavedVertexBuffer(f.getJ3DBuffer());
+	  ga.setInterleavedVertexBuffer(new J3DBuffer(f));
 	} else ga.setInterleavedVertices(d);
       } else if (nio) {
 
-	ByteBufferWrapper b =
-	  ByteBufferWrapper.allocateDirect(coordinates.length * 4 * 3);
-	FloatBufferWrapper f =
-	  b.order( ByteOrder.nativeOrder() ).asFloatBuffer();
+	ByteBuffer b = ByteBuffer.allocateDirect(coordinates.length * 4 * 3);
+	FloatBuffer f = b.order(ByteOrder.nativeOrder()).asFloatBuffer();
 	f.put(vecmathToFloat(coordinates));
-	ga.setCoordRefBuffer(f.getJ3DBuffer());
+	ga.setCoordRefBuffer(new J3DBuffer(f));
 
 	if (colors3 != null) {
-	  b = ByteBufferWrapper.allocateDirect(colors3.length * 4 * 3);
-	  f = b.order( ByteOrder.nativeOrder() ).asFloatBuffer();
+	  b = ByteBuffer.allocateDirect(colors3.length * 4 * 3);
+	  f = b.order(ByteOrder.nativeOrder()).asFloatBuffer();
 	  f.put(vecmathToFloat(colors3));
-	  ga.setColorRefBuffer(f.getJ3DBuffer());
+	  ga.setColorRefBuffer(new J3DBuffer(f));
 	} else if (colors4 != null) {
-	  b = ByteBufferWrapper.allocateDirect(colors4.length * 4 * 4);
-	  f = b.order( ByteOrder.nativeOrder() ).asFloatBuffer();
+	  b = ByteBuffer.allocateDirect(colors4.length * 4 * 4);
+	  f = b.order(ByteOrder.nativeOrder()).asFloatBuffer();
 	  f.put(vecmathToFloat(colors4));
-	  ga.setColorRefBuffer(f.getJ3DBuffer());
+	  ga.setColorRefBuffer(new J3DBuffer(f));
 	}
 
 	if (normals != null) {
-	  b = ByteBufferWrapper.allocateDirect(normals.length * 4 * 3);
-	  f = b.order( ByteOrder.nativeOrder() ).asFloatBuffer();
+	  b = ByteBuffer.allocateDirect(normals.length * 4 * 3);
+	  f = b.order(ByteOrder.nativeOrder()).asFloatBuffer();
 	  f.put(vecmathToFloat(normals));
-	  ga.setNormalRefBuffer(f.getJ3DBuffer());
+	  ga.setNormalRefBuffer(new J3DBuffer(f));
 	}
 
 	for (int i = 0 ; i < texCoordSetCount ; i++) {
-	  b = ByteBufferWrapper.allocateDirect(
-	    texCoordSets[i].length * 4 * texCoordDim);
-	  f = b.order( ByteOrder.nativeOrder() ).asFloatBuffer();
+	  b = ByteBuffer.allocateDirect(texCoordSets[i].length * 4 * texCoordDim);
+	  f = b.order(ByteOrder.nativeOrder()).asFloatBuffer();
 	  f.put(vecmathToFloat(texCoordSets[i]));
-	  ga.setTexCoordRefBuffer(i, f.getJ3DBuffer());
+	  ga.setTexCoordRefBuffer(i, new J3DBuffer(f));
 	}
       } else if (byRef) {
 	// Need to copy the data into float arrays - GeometryArray

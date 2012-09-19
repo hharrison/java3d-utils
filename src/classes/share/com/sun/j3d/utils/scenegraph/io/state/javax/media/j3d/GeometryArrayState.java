@@ -66,9 +66,6 @@ import javax.vecmath.TexCoord3f;
 import javax.vecmath.Vector3f;
 
 import com.sun.j3d.internal.BufferWrapper;
-import com.sun.j3d.internal.ByteBufferWrapper;
-import com.sun.j3d.internal.DoubleBufferWrapper;
-import com.sun.j3d.internal.FloatBufferWrapper;
 import com.sun.j3d.utils.scenegraph.io.retained.Controller;
 import com.sun.j3d.utils.scenegraph.io.retained.SymbolTableData;
 
@@ -109,8 +106,7 @@ public abstract class GeometryArrayState extends GeometryState {
 	    }
 
 	    if ( nio ) {
-		FloatBufferWrapper x = new FloatBufferWrapper(
-		    ((GeometryArray)node).getInterleavedVertexBuffer());
+		FloatBuffer x = (FloatBuffer)((GeometryArray)node).getInterleavedVertexBuffer().getBuffer();
 		float[] f = new float[x.limit()];
 		x.position( 0 );
 		x.get( f );
@@ -138,7 +134,7 @@ public abstract class GeometryArrayState extends GeometryState {
 			switch( BufferWrapper.getBufferType( buf ) ) {
 			case BufferWrapper.TYPE_BYTE: {
 			    out.writeInt( FORMAT_BYTE );
-			    ByteBufferWrapper bb = new ByteBufferWrapper( buf );
+			    ByteBuffer bb = (ByteBuffer)buf.getBuffer();
 			    byte[] bytes = new byte[ bb.limit() ];
 			    bb.position( 0 );
 			    bb.get( bytes );
@@ -148,7 +144,7 @@ public abstract class GeometryArrayState extends GeometryState {
 			break;
 			case BufferWrapper.TYPE_FLOAT: {
 			    out.writeInt( FORMAT_FLOAT );
-			    FloatBufferWrapper bb = new FloatBufferWrapper( buf );
+			    FloatBuffer bb = (FloatBuffer)buf.getBuffer();
 			    float[] floats = new float[ bb.limit() ];
 			    bb.position( 0 );
 			    bb.get( floats );
@@ -209,7 +205,7 @@ public abstract class GeometryArrayState extends GeometryState {
 			switch( BufferWrapper.getBufferType( buf ) ) {
 			case BufferWrapper.TYPE_BYTE: {
 			    out.writeInt( FORMAT_BYTE );
-			    ByteBufferWrapper bb = new ByteBufferWrapper( buf );
+			    ByteBuffer bb = (ByteBuffer)buf.getBuffer();
 			    byte[] bytes = new byte[ bb.limit() ];
 			    bb.position( 0 );
 			    bb.get( bytes );
@@ -219,7 +215,7 @@ public abstract class GeometryArrayState extends GeometryState {
 			break;
 			case BufferWrapper.TYPE_FLOAT: {
 			    out.writeInt( FORMAT_FLOAT );
-			    FloatBufferWrapper bb = new FloatBufferWrapper( buf );
+			    FloatBuffer bb = (FloatBuffer)buf.getBuffer();
 			    float[] floats = new float[ bb.limit() ];
 			    bb.position( 0 );
 			    bb.get( floats );
@@ -281,7 +277,7 @@ public abstract class GeometryArrayState extends GeometryState {
 			switch( BufferWrapper.getBufferType( buf ) ) {
 			case BufferWrapper.TYPE_FLOAT: {
 			    out.writeInt( FORMAT_FLOAT );
-			    FloatBufferWrapper bb = new FloatBufferWrapper( buf );
+			    FloatBuffer bb = (FloatBuffer)buf.getBuffer();
 			    float[] floats = new float[ bb.limit() ];
 			    bb.position( 0 );
 			    bb.get( floats );
@@ -290,7 +286,7 @@ public abstract class GeometryArrayState extends GeometryState {
 			break;
 			case BufferWrapper.TYPE_DOUBLE: {
 			    out.writeInt( FORMAT_DOUBLE );
-			    DoubleBufferWrapper bb = new DoubleBufferWrapper( buf );
+			    DoubleBuffer bb = (DoubleBuffer)buf.getBuffer();
 			    double[] doubles = new double[ bb.limit() ];
 			    bb.position( 0 );
 			    bb.get( doubles );
@@ -349,7 +345,7 @@ public abstract class GeometryArrayState extends GeometryState {
 			    out.writeInt( FORMAT_NULL );
 			else {
 			    out.writeInt( FORMAT_FLOAT );
-			    FloatBufferWrapper bb = new FloatBufferWrapper( buf );
+			    FloatBuffer bb = (FloatBuffer)buf.getBuffer();
 			    float[] floats = new float[ bb.limit() ];
 			    bb.position( 0 );
 			    bb.get( floats );
@@ -390,7 +386,7 @@ public abstract class GeometryArrayState extends GeometryState {
 				out.writeInt( FORMAT_NULL );
 			    else {
 				out.writeInt( FORMAT_FLOAT );
-				FloatBufferWrapper bb = new FloatBufferWrapper( buf );
+				FloatBuffer bb = (FloatBuffer)buf.getBuffer();
 				float[] floats = new float[ bb.limit() ];
 				bb.position( 0 );
 				bb.get( floats );
@@ -429,7 +425,7 @@ public abstract class GeometryArrayState extends GeometryState {
 				out.writeInt( FORMAT_NULL );
 			    else {
 				out.writeInt( FORMAT_FLOAT );
-				FloatBufferWrapper bb = new FloatBufferWrapper( buf );
+				FloatBuffer bb = (FloatBuffer)buf.getBuffer();
 				float[] floats = new float[ bb.limit() ];
 				bb.position( 0 );
 				bb.get( floats );
@@ -469,7 +465,7 @@ public abstract class GeometryArrayState extends GeometryState {
 				out.writeInt( FORMAT_NULL );
 			    else {
 				out.writeInt( FORMAT_FLOAT );
-				FloatBufferWrapper bb = new FloatBufferWrapper( buf );
+				FloatBuffer bb = (FloatBuffer)buf.getBuffer();
 				float[] floats = new float[ bb.limit() ];
 				bb.position( 0 );
 				bb.get( floats );
@@ -503,12 +499,10 @@ public abstract class GeometryArrayState extends GeometryState {
 	    }
 	    if ( nio ) {
 		float[] floats = readFloatArray( in );
-		ByteBufferWrapper b =
-		    ByteBufferWrapper.allocateDirect( floats.length*4 );
-		FloatBufferWrapper f =
-		    b.order( ByteOrder.nativeOrder() ).asFloatBuffer();
-		f.put( floats );
-		((GeometryArray)node).setInterleavedVertexBuffer( f.getJ3DBuffer() );
+		ByteBuffer b = ByteBuffer.allocateDirect(floats.length * 4);
+		FloatBuffer f = b.order(ByteOrder.nativeOrder()).asFloatBuffer();
+		f.put(floats);
+		((GeometryArray)node).setInterleavedVertexBuffer(new J3DBuffer(f));
 	    } else ((GeometryArray)node).setInterleavedVertices( readFloatArray( in ) );
 	} else {
 	    boolean byRef = (vertexFormat & GeometryArray.BY_REFERENCE) != 0;
