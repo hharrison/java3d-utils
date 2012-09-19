@@ -46,6 +46,7 @@ import java.io.DataInputStream;
 import java.io.DataOutput;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.nio.ByteOrder;
 
 import javax.media.j3d.GeometryArray;
 import javax.media.j3d.GeometryStripArray;
@@ -63,7 +64,6 @@ import javax.vecmath.Vector3f;
 
 import com.sun.j3d.internal.BufferWrapper;
 import com.sun.j3d.internal.ByteBufferWrapper;
-import com.sun.j3d.internal.ByteOrderWrapper;
 import com.sun.j3d.internal.DoubleBufferWrapper;
 import com.sun.j3d.internal.FloatBufferWrapper;
 import com.sun.j3d.utils.scenegraph.io.retained.Controller;
@@ -503,7 +503,7 @@ public abstract class GeometryArrayState extends GeometryState {
 		ByteBufferWrapper b =
 		    ByteBufferWrapper.allocateDirect( floats.length*4 );
 		FloatBufferWrapper f =
-		    b.order( ByteOrderWrapper.nativeOrder() ).asFloatBuffer();
+		    b.order( ByteOrder.nativeOrder() ).asFloatBuffer();
 		f.put( floats );
 		((GeometryArray)node).setInterleavedVertexBuffer( f.getJ3DBuffer() );
 	    } else ((GeometryArray)node).setInterleavedVertices( readFloatArray( in ) );
@@ -542,7 +542,7 @@ public abstract class GeometryArrayState extends GeometryState {
 			    ByteBufferWrapper b =
 				ByteBufferWrapper.allocateDirect( floats.length*4 );
 			    FloatBufferWrapper f =
-				b.order( ByteOrderWrapper.nativeOrder() ).asFloatBuffer();
+				b.order( ByteOrder.nativeOrder() ).asFloatBuffer();
 			    f.put( floats );
 			    ((GeometryArray)node).setColorRefBuffer( f.getJ3DBuffer() );
 			}
@@ -614,7 +614,7 @@ public abstract class GeometryArrayState extends GeometryState {
 			    ByteBufferWrapper b =
 				ByteBufferWrapper.allocateDirect( floats.length*4 );
 			    FloatBufferWrapper f =
-				b.order( ByteOrderWrapper.nativeOrder() ).asFloatBuffer();
+				b.order( ByteOrder.nativeOrder() ).asFloatBuffer();
 			    f.put( floats );
 			    ((GeometryArray)node).setColorRefBuffer( f.getJ3DBuffer() );
 			}
@@ -677,7 +677,7 @@ public abstract class GeometryArrayState extends GeometryState {
 			    ByteBufferWrapper b =
 				ByteBufferWrapper.allocateDirect( floats.length*4 );
 			    FloatBufferWrapper f =
-				b.order( ByteOrderWrapper.nativeOrder() ).asFloatBuffer();
+				b.order( ByteOrder.nativeOrder() ).asFloatBuffer();
 			    f.put( floats );
 			    ((GeometryArray)node).setCoordRefBuffer( f.getJ3DBuffer() );
 			}
@@ -687,7 +687,7 @@ public abstract class GeometryArrayState extends GeometryState {
 			    ByteBufferWrapper b =
 				ByteBufferWrapper.allocateDirect( doubles.length*4 );
 			    DoubleBufferWrapper f =
-				b.order( ByteOrderWrapper.nativeOrder() ).asDoubleBuffer();
+				b.order( ByteOrder.nativeOrder() ).asDoubleBuffer();
 			    f.put( doubles );
 			    ((GeometryArray)node).setCoordRefBuffer( f.getJ3DBuffer() );
 			}
@@ -744,7 +744,7 @@ public abstract class GeometryArrayState extends GeometryState {
 			    ByteBufferWrapper b =
 				ByteBufferWrapper.allocateDirect( floats.length*4 );
 			    FloatBufferWrapper f =
-				b.order( ByteOrderWrapper.nativeOrder() ).asFloatBuffer();
+				b.order( ByteOrder.nativeOrder() ).asFloatBuffer();
 			    f.put( floats );
 			    ((GeometryArray)node).setNormalRefBuffer( f.getJ3DBuffer() );
 			}
@@ -788,7 +788,7 @@ public abstract class GeometryArrayState extends GeometryState {
 				ByteBufferWrapper b =
 				    ByteBufferWrapper.allocateDirect( floats.length*4 );
 				FloatBufferWrapper f = b.order(
-				    ByteOrderWrapper.nativeOrder() ).asFloatBuffer();
+				    ByteOrder.nativeOrder() ).asFloatBuffer();
 				f.put( floats );
 				((GeometryArray)node).setTexCoordRefBuffer( set,
 				    f.getJ3DBuffer() );

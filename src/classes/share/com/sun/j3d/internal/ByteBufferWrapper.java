@@ -143,18 +143,16 @@ public class ByteBufferWrapper extends BufferWrapper {
     /**
      * Returns the byte order of this buffer.
      */
-    public ByteOrderWrapper order() {
-	if ( buffer.order()==ByteOrder.BIG_ENDIAN ) return ByteOrderWrapper.BIG_ENDIAN;
-	else return ByteOrderWrapper.LITTLE_ENDIAN;
+    public ByteOrder order() {
+		return buffer.order();
     }
 
     /**
      * Modifies this buffer's byte order.
      */
-    public ByteBufferWrapper order(ByteOrderWrapper bo)
+    public ByteBufferWrapper order(ByteOrder bo)
     {
-	if ( bo == ByteOrderWrapper.BIG_ENDIAN ) buffer.order( ByteOrder.BIG_ENDIAN );
-	else buffer.order( ByteOrder.LITTLE_ENDIAN );
+	buffer.order( bo );
 	return this;
     }
 
