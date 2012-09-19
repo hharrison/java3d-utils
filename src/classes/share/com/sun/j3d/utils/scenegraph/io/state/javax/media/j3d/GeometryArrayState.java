@@ -46,7 +46,10 @@ import java.io.DataInputStream;
 import java.io.DataOutput;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import java.nio.DoubleBuffer;
+import java.nio.FloatBuffer;
 
 import javax.media.j3d.GeometryArray;
 import javax.media.j3d.GeometryStripArray;
@@ -531,20 +534,17 @@ public abstract class GeometryArrayState extends GeometryState {
 			case FORMAT_BYTE: {
 			    byte[] bytes = new byte[ in.readInt() ];
 			    in.readFully( bytes );
-			    ByteBufferWrapper b =
-				ByteBufferWrapper.allocateDirect( bytes.length );
-			    b.put( bytes );
-			    ((GeometryArray)node).setColorRefBuffer( b.getJ3DBuffer() );
+			    ByteBuffer b = ByteBuffer.allocateDirect(bytes.length);
+			    b.put(bytes);
+			    ((GeometryArray) node).setColorRefBuffer(new J3DBuffer(b));
 			}
 			break;
 			case FORMAT_FLOAT: {
 			    float[] floats = readFloatArray( in );
-			    ByteBufferWrapper b =
-				ByteBufferWrapper.allocateDirect( floats.length*4 );
-			    FloatBufferWrapper f =
-				b.order( ByteOrder.nativeOrder() ).asFloatBuffer();
+			    ByteBuffer b = ByteBuffer.allocateDirect(floats.length * 4);
+			    FloatBuffer f = b.order(ByteOrder.nativeOrder()).asFloatBuffer();
 			    f.put( floats );
-			    ((GeometryArray)node).setColorRefBuffer( f.getJ3DBuffer() );
+			    ((GeometryArray)node).setColorRefBuffer(new J3DBuffer(f));
 			}
 			break;
 			}
@@ -603,20 +603,17 @@ public abstract class GeometryArrayState extends GeometryState {
 			case FORMAT_BYTE: {
 			    byte[] bytes = new byte[ in.readInt() ];
 			    in.readFully( bytes );
-			    ByteBufferWrapper b =
-				ByteBufferWrapper.allocateDirect( bytes.length );
-			    b.put( bytes );
-			    ((GeometryArray)node).setColorRefBuffer( b.getJ3DBuffer() );
+			    ByteBuffer b = ByteBuffer.allocateDirect(bytes.length);
+			    b.put(bytes);
+			    ((GeometryArray)node).setColorRefBuffer(new J3DBuffer(b));
 			}
 			break;
 			case FORMAT_FLOAT: {
 			    float[] floats = readFloatArray( in );
-			    ByteBufferWrapper b =
-				ByteBufferWrapper.allocateDirect( floats.length*4 );
-			    FloatBufferWrapper f =
-				b.order( ByteOrder.nativeOrder() ).asFloatBuffer();
-			    f.put( floats );
-			    ((GeometryArray)node).setColorRefBuffer( f.getJ3DBuffer() );
+			    ByteBuffer b = ByteBuffer.allocateDirect(floats.length * 4);
+			    FloatBuffer f = b.order(ByteOrder.nativeOrder()).asFloatBuffer();
+			    f.put(floats);
+			    ((GeometryArray)node).setColorRefBuffer(new J3DBuffer(f));
 			}
 			break;
 			}
@@ -674,22 +671,18 @@ public abstract class GeometryArrayState extends GeometryState {
 			switch( in.readInt() ) {
 			case FORMAT_FLOAT: {
 			    float[] floats = readFloatArray( in );
-			    ByteBufferWrapper b =
-				ByteBufferWrapper.allocateDirect( floats.length*4 );
-			    FloatBufferWrapper f =
-				b.order( ByteOrder.nativeOrder() ).asFloatBuffer();
-			    f.put( floats );
-			    ((GeometryArray)node).setCoordRefBuffer( f.getJ3DBuffer() );
+			    ByteBuffer b = ByteBuffer.allocateDirect(floats.length * 4);
+			    FloatBuffer f = b.order(ByteOrder.nativeOrder()).asFloatBuffer();
+			    f.put(floats);
+			    ((GeometryArray)node).setCoordRefBuffer(new J3DBuffer(f));
 			}
 			break;
 			case FORMAT_DOUBLE: {
 			    double[] doubles = readDoubleArray( in );
-			    ByteBufferWrapper b =
-				ByteBufferWrapper.allocateDirect(doubles.length * 8);
-			    DoubleBufferWrapper f =
-				b.order( ByteOrder.nativeOrder() ).asDoubleBuffer();
-			    f.put( doubles );
-			    ((GeometryArray)node).setCoordRefBuffer( f.getJ3DBuffer() );
+			    ByteBuffer b = ByteBuffer.allocateDirect(doubles.length * 8);
+			    DoubleBuffer f = b.order(ByteOrder.nativeOrder()).asDoubleBuffer();
+			    f.put(doubles);
+			    ((GeometryArray)node).setCoordRefBuffer(new J3DBuffer(f));
 			}
 			break;
 			}
@@ -741,12 +734,10 @@ public abstract class GeometryArrayState extends GeometryState {
 		    if ( nio ) {
 			if ( in.readInt() == FORMAT_FLOAT ) {
 			    float[] floats = readFloatArray( in );
-			    ByteBufferWrapper b =
-				ByteBufferWrapper.allocateDirect( floats.length*4 );
-			    FloatBufferWrapper f =
-				b.order( ByteOrder.nativeOrder() ).asFloatBuffer();
-			    f.put( floats );
-			    ((GeometryArray)node).setNormalRefBuffer( f.getJ3DBuffer() );
+			    ByteBuffer b = ByteBuffer.allocateDirect(floats.length * 4);
+			    FloatBuffer f = b.order(ByteOrder.nativeOrder()).asFloatBuffer();
+			    f.put(floats);
+			    ((GeometryArray)node).setNormalRefBuffer(new J3DBuffer(f));
 			}
 		    } else {
 			switch( in.readInt() ) {
@@ -785,13 +776,10 @@ public abstract class GeometryArrayState extends GeometryState {
 			if ( nio ) {
 			    if ( in.readInt() == FORMAT_FLOAT ) {
 				float[] floats = readFloatArray( in );
-				ByteBufferWrapper b =
-				    ByteBufferWrapper.allocateDirect( floats.length*4 );
-				FloatBufferWrapper f = b.order(
-				    ByteOrder.nativeOrder() ).asFloatBuffer();
-				f.put( floats );
-				((GeometryArray)node).setTexCoordRefBuffer( set,
-				    f.getJ3DBuffer() );
+				ByteBuffer b = ByteBuffer.allocateDirect(floats.length * 4);
+				FloatBuffer f = b.order(ByteOrder.nativeOrder()).asFloatBuffer();
+				f.put(floats);
+				((GeometryArray)node).setTexCoordRefBuffer(set, new J3DBuffer(f));
 			    }
 			} else {
 			    switch( in.readInt() ) {
