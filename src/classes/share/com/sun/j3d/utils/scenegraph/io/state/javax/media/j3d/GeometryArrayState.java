@@ -685,7 +685,7 @@ public abstract class GeometryArrayState extends GeometryState {
 			case FORMAT_DOUBLE: {
 			    double[] doubles = readDoubleArray( in );
 			    ByteBufferWrapper b =
-				ByteBufferWrapper.allocateDirect( doubles.length*4 );
+				ByteBufferWrapper.allocateDirect(doubles.length * 8);
 			    DoubleBufferWrapper f =
 				b.order( ByteOrder.nativeOrder() ).asDoubleBuffer();
 			    f.put( doubles );
