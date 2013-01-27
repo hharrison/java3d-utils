@@ -151,7 +151,7 @@ public abstract class AudioEngine3D extends AudioEngine implements AudioDevice3D
      * @param trans is a reference to virtual world composite transform
      */
     public void  setVworldXfrm(int index, Transform3D trans) {
-         Sample sample = (Sample)getSample(index);
+         Sample sample = getSample(index);
          if (sample != null)
              sample.vworldXfrm.set(trans);
          return;
@@ -214,7 +214,7 @@ public abstract class AudioEngine3D extends AudioEngine implements AudioDevice3D
      * @param scaleFactor floating point multiplier applied to sample amplitude
      */
     public void  setSampleGain(int index, float scaleFactor) {
-        Sample sample = (Sample)getSample(index);
+        Sample sample = getSample(index);
         if (sample != null)
             sample.setGain(scaleFactor);
         return;
@@ -226,7 +226,7 @@ public abstract class AudioEngine3D extends AudioEngine implements AudioDevice3D
      * @param count number of times sample is repeated
      */
     public void   setLoop(int index, int count) {
-        Sample sample = (Sample)getSample(index);
+        Sample sample = getSample(index);
         if (sample != null)
             sample.setLoopCount(count);
         return;
@@ -238,7 +238,7 @@ public abstract class AudioEngine3D extends AudioEngine implements AudioDevice3D
      * @param position point location in virtual world coordinate of sample
      */
     public void  setPosition(int index, Point3d position) {
-        Sample sample = (Sample)getSample(index);
+        Sample sample = getSample(index);
         if (sample != null)
             sample.setPosition(position);
         return;
@@ -256,7 +256,7 @@ public abstract class AudioEngine3D extends AudioEngine implements AudioDevice3D
     public void setDistanceGain(int index,
               double[] frontDistance, float[] frontAttenuationScaleFactor,
               double[] backDistance, float[] backAttenuationScaleFactor) {
-        Sample sample = (Sample)getSample(index);
+        Sample sample = getSample(index);
         if (sample != null)
             sample.setDistanceGain(frontDistance, frontAttenuationScaleFactor,
                                    backDistance, backAttenuationScaleFactor);
@@ -269,7 +269,7 @@ public abstract class AudioEngine3D extends AudioEngine implements AudioDevice3D
      * @param direction vector in virtual world coordinate.
      */
     public void setDirection(int index, Vector3d direction) {
-        Sample sample = (Sample)getSample(index);
+        Sample sample = getSample(index);
         if (sample != null)
             sample.setDirection(direction);
         return;
@@ -288,7 +288,7 @@ public abstract class AudioEngine3D extends AudioEngine implements AudioDevice3D
      */
     public void setAngularAttenuation(int index, int filterType,
           double[] angle, float[] attenuationScaleFactor, float[] filterCutoff) {
-        Sample sample = (Sample)getSample(index);
+        Sample sample = getSample(index);
         if (sample != null)
             sample.setAngularAttenuation(filterType, angle,
                        attenuationScaleFactor, filterCutoff);
@@ -377,7 +377,7 @@ public abstract class AudioEngine3D extends AudioEngine implements AudioDevice3D
      */
     public int    getNumberOfChannelsUsed(int index) {
         // This method must be overridden by device specific implementation
-        Sample sample = (Sample)getSample(index);
+        Sample sample = getSample(index);
         if (sample != null)
             return (sample.getNumberOfChannelsUsed());
         else
@@ -396,7 +396,7 @@ public abstract class AudioEngine3D extends AudioEngine implements AudioDevice3D
      */
     public int    getNumberOfChannelsUsed(int index, boolean muteFlag) {
         // This method must be overridden by device specific implementation
-        Sample sample = (Sample)getSample(index);
+        Sample sample = getSample(index);
         if (sample != null)
             return (sample.getNumberOfChannelsUsed());
         else
@@ -409,7 +409,7 @@ public abstract class AudioEngine3D extends AudioEngine implements AudioDevice3D
      * @return length of sample in milliseconds
      */
     public long  getSampleDuration(int index) {
-        Sample sample = (Sample)getSample(index);
+        Sample sample = getSample(index);
         if (sample != null)
             return (sample.getDuration());
         else
@@ -422,7 +422,7 @@ public abstract class AudioEngine3D extends AudioEngine implements AudioDevice3D
      * @return system clock time sample started
      */
     public long  getStartTime(int index) {
-        Sample sample = (Sample)getSample(index);
+        Sample sample = getSample(index);
         if (sample != null)
             return (sample.getStartTime());
         else

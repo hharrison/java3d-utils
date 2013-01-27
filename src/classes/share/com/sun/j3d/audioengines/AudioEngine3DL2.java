@@ -124,7 +124,7 @@ public abstract class AudioEngine3DL2 extends AudioEngine3D implements AudioDevi
      * @see Sound#setRateScaleFactor
      */
     public void  setRateScaleFactor(int index, float scaleFactor) {
-        Sample sample = (Sample)getSample(index);
+        Sample sample = getSample(index);
         if (sample != null)
             sample.setRateScaleFactor(scaleFactor);
         return;
@@ -234,7 +234,7 @@ public abstract class AudioEngine3DL2 extends AudioEngine3D implements AudioDevi
      * @param scaleFactor non-negative factor applied to direct sound gain
      */
     public void setObstructionGain(int index, float scaleFactor) {
-        Sample sample = (Sample)getSample(index);
+        Sample sample = getSample(index);
         if (sample != null)
             sample.setObstructionGain(scaleFactor);
         return;
@@ -253,7 +253,7 @@ public abstract class AudioEngine3DL2 extends AudioEngine3D implements AudioDevi
      */
 
     public void setObstructionFilter(int index, float frequencyCutoff) {
-        Sample sample = (Sample)getSample(index);
+        Sample sample = getSample(index);
         if (sample != null)
             sample.setObstructionFilter(frequencyCutoff);
         return;
@@ -269,7 +269,7 @@ public abstract class AudioEngine3DL2 extends AudioEngine3D implements AudioDevi
      * @param  scaleFactor non-negative factor applied to direct sound gain
      */
     public void setOcclusionGain(int index, float scaleFactor) {
-        Sample sample = (Sample)getSample(index);
+        Sample sample = getSample(index);
         if (sample != null)
             sample.setObstructionGain(scaleFactor);
         return;
@@ -287,7 +287,7 @@ public abstract class AudioEngine3DL2 extends AudioEngine3D implements AudioDevi
      * low-pass filter is applied.
      */
     public void  setOcclusionFilter(int index, float frequencyCutoff) {
-        Sample sample = (Sample)getSample(index);
+        Sample sample = getSample(index);
         if (sample != null)
             sample.setObstructionFilter(frequencyCutoff);
         return;
