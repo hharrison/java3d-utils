@@ -214,13 +214,12 @@ public class JCanvas3D extends JPanel implements AncestorListener {
             this.template.setDepthSize(template.getDepthSize());
             this.template.setSceneAntialiasing(template.getSceneAntialiasing());
             this.template.setStencilSize(template.getStencilSize());
-//            this.template.setDoubleBuffer(template.getDoubleBuffer());
+            this.template.setDoubleBuffer(template.getDoubleBuffer());
 //            this.template.setStereo(template.getStereo());
         }
 
         // Force double-buffer and stereo to UNNECESSARY
         this.template.setStereo(GraphicsConfigTemplate.UNNECESSARY);
-        this.template.setDoubleBuffer(GraphicsConfigTemplate.UNNECESSARY);
 
         graphicsConfig = this.device.getBestConfiguration(this.template);
 
