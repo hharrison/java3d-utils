@@ -47,7 +47,7 @@ public class J3dUtilsI18N {
    static public String getString(String key) {
 	String s;
 	try {
-	    s = (String) ResourceBundle.getBundle("com.sun.j3d.ExceptionStrings").getString(key);
+	    s = ResourceBundle.getBundle("com.sun.j3d.ExceptionStrings").getString(key);
 	}
 	catch (MissingResourceException e) {
 	    System.err.println("J3dUtilsI18N: Error looking up: " + key);
