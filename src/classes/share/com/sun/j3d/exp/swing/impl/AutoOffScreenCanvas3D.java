@@ -51,5 +51,4 @@ package com.sun.j3d.exp.swing.impl;
  *
  * @since Java 3D 1.5
  */
-public interface AutoOffScreenCanvas3D {
-}
+public interface AutoOffScreenCanvas3D extends javax.media.j3d.AutoOffScreenCanvas3D {}
