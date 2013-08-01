@@ -92,6 +92,7 @@ public abstract class GeometryArrayState extends GeometryState {
 	super( symbol, control );
     }
 
+    @Override
     public void writeObject( DataOutput out ) throws IOException {
         super.writeObject( out );
 
@@ -486,6 +487,7 @@ public abstract class GeometryArrayState extends GeometryState {
 	}
     }
 
+    @Override
     public void readObject( DataInput in ) throws IOException {
         super.readObject( in );
 
@@ -816,6 +818,7 @@ public abstract class GeometryArrayState extends GeometryState {
 	}
     }
 
+    @Override
     protected void writeConstructorParams( DataOutput out ) throws
 								IOException {
 	vertexCount = ((GeometryArray)node).getVertexCount();
@@ -834,6 +837,7 @@ public abstract class GeometryArrayState extends GeometryState {
         super.writeConstructorParams( out );
     }
 
+    @Override
     protected void readConstructorParams( DataInput in ) throws
 							IOException {
        // Load VertexCount and format first beause

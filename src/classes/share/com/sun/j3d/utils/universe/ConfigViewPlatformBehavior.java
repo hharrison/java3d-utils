@@ -63,6 +63,7 @@ class ConfigViewPlatformBehavior extends ConfigObject {
      *
      * @param command the command that invoked this method
      */
+    @Override
     protected void setProperty(ConfigCommand cmd) {
 
 	int argc = cmd.argc ;

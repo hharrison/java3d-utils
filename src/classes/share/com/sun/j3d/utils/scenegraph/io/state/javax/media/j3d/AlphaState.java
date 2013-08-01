@@ -55,6 +55,7 @@ public class AlphaState extends NodeComponentState {
         super(symbol, control);
     }
 
+    @Override
     public void writeObject( DataOutput out ) throws IOException {
         super.writeObject( out );
         Alpha alpha = (Alpha)node;
@@ -72,6 +73,7 @@ public class AlphaState extends NodeComponentState {
 	out.writeLong( alpha.getPauseTime() );
     }
 
+    @Override
     public void readObject( DataInput in ) throws IOException {
         super.readObject( in );
         Alpha alpha = (Alpha)node;
@@ -90,6 +92,7 @@ public class AlphaState extends NodeComponentState {
 	if (x!=0L) alpha.pause(x);
     }
 
+    @Override
     protected SceneGraphObject createNode() {
         return new Alpha();
     }

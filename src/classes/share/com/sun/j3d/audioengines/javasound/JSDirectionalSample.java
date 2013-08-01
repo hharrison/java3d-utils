@@ -585,6 +585,7 @@ class JSDirectionalSample extends JSPositionalSample
      * both front and back attenuation linear distance and gain scale factor
      * arrays.
      */
+    @Override
     float calculateDistanceAttenuation(float distance) {
         float factor = findFactor(distance, this.attenuationDistance,
                        this.attenuationGain, this.backAttenuationDistance,
@@ -600,6 +601,7 @@ class JSDirectionalSample extends JSPositionalSample
      * Simply calls generic (for PointSound) 'findFactor()' with
      * a single set of angular attenuation distance and gain scalefactor arrays.
      */
+    @Override
     float calculateAngularGain() {
         float angle = findAngularOffset();
         float factor = findFactor(angle, this.angularDistance, this.angularGain);
@@ -653,6 +655,7 @@ class JSDirectionalSample extends JSPositionalSample
      *  Calculate Filter
      *
      * *****************/
+    @Override
     /*
      *  Calculates the low-pass cutoff frequency filter value applied to the
      *  a sound based on both:

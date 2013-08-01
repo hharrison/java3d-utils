@@ -770,6 +770,7 @@ public class ConfiguredUniverse extends SimpleUniverse {
      * Cleanup memory references used by ConfiguredUniverse.
      * @since Java 3D 1.3.1
      */
+    @Override
     public void cleanup() {
 	if (viewer != null) {
 	    for (int i = 0 ; i < viewer.length ; i++) {

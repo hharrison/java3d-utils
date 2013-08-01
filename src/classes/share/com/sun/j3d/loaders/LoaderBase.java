@@ -84,6 +84,7 @@ public abstract class LoaderBase implements Loader {
      * Note: Users of setBaseUrl() would then use load(URL)
      * as opposed to load(String).
      */
+    @Override
     public void setBaseUrl(URL url) {
 	baseUrl = url;
     }
@@ -97,6 +98,7 @@ public abstract class LoaderBase implements Loader {
      * Note: Users of setBasePath() would then use load(String)
      * as opposed to load(URL).
      */
+    @Override
     public void setBasePath(String pathName) {
 	basePath = pathName;
     }
@@ -104,6 +106,7 @@ public abstract class LoaderBase implements Loader {
     /**
      * Returns the current base URL setting.
      */
+    @Override
     public URL getBaseUrl() {
 	return baseUrl;
     }
@@ -111,6 +114,7 @@ public abstract class LoaderBase implements Loader {
     /**
      * Returns the current base path setting.
      */
+    @Override
     public String getBasePath() {
 	return basePath;
     }
@@ -119,6 +123,7 @@ public abstract class LoaderBase implements Loader {
      * This method sets the load flags for the file.  The flags should
      * equal 0 by default (which tells the loader to only load geometry).
      */
+    @Override
     public void setFlags(int flags) {
 	loadFlags = flags;
     }
@@ -126,6 +131,7 @@ public abstract class LoaderBase implements Loader {
     /**
      * Returns the current loading flags setting.
      */
+    @Override
     public int getFlags() {
 	return loadFlags;
     }

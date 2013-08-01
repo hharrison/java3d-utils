@@ -137,6 +137,7 @@ public class MouseWheelZoom extends MouseBehavior {
 		super(c, flags);
 	}
 
+	@Override
 	public void initialize() {
 	    super.initialize();
 	    if ((flags & INVERT_INPUT) == INVERT_INPUT) {
@@ -160,6 +161,7 @@ public class MouseWheelZoom extends MouseBehavior {
     }
 
 
+    @Override
     public void processStimulus(Enumeration criteria) {
 	WakeupCriterion wakeup;
 	AWTEvent[] events;

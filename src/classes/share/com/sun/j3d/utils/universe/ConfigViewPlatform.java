@@ -76,6 +76,7 @@ class ConfigViewPlatform extends ConfigObject {
     /**
      * Overrides initialize() to do nothing.
      */
+    @Override
     protected void initialize(ConfigCommand command) {
     }
 
@@ -86,6 +87,7 @@ class ConfigViewPlatform extends ConfigObject {
      *
      * @param command the command that invoked this method
      */
+    @Override
     protected void setProperty(ConfigCommand command) {
 
 	int argc = command.argc ;

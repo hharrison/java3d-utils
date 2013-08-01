@@ -77,6 +77,7 @@ public abstract class TextureState extends NodeComponentState {
 
     }
 
+    @Override
     public void writeConstructorParams( DataOutput out ) throws IOException {
         super.writeConstructorParams( out );
         out.writeInt( ((Texture)node).getMipMapMode() );
@@ -86,6 +87,7 @@ public abstract class TextureState extends NodeComponentState {
         out.writeInt( ((Texture)node).getBoundaryWidth() );
     }
 
+    @Override
     public void readConstructorParams( DataInput in ) throws IOException {
         super.readConstructorParams( in );
 
@@ -96,6 +98,7 @@ public abstract class TextureState extends NodeComponentState {
 	boundaryWidth = in.readInt();
     }
 
+    @Override
     public void writeObject( DataOutput out ) throws IOException {
         super.writeObject( out );
         Texture attr = (Texture)node;
@@ -147,6 +150,7 @@ public abstract class TextureState extends NodeComponentState {
 	}
     }
 
+    @Override
     public void readObject( DataInput in ) throws IOException {
         super.readObject( in );
         Texture attr = (Texture)node;
@@ -205,6 +209,7 @@ public abstract class TextureState extends NodeComponentState {
 	}
     }
 
+    @Override
     public void addSubReference() {
 	if ( !(node instanceof TextureCubeMap) ) {
 	    for( int i=0; i<imageComponents.length; i++)
@@ -212,6 +217,7 @@ public abstract class TextureState extends NodeComponentState {
 	}
     }
 
+    @Override
     public void buildGraph() {
 	if ( !(node instanceof TextureCubeMap) ) {
 	    for(int i=0; i<imageComponents.length; i++) {

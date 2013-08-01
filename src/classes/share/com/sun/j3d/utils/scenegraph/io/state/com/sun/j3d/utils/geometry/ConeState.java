@@ -68,18 +68,21 @@ public class ConeState extends PrimitiveState {
         }
     }
 
+    @Override
     public void writeObject( DataOutput out ) throws IOException {
 	super.writeObject( out );
         out.writeInt( bodyAppearance );
         out.writeInt( capAppearance );
     }
 
+    @Override
     public void readObject( DataInput in ) throws IOException {
        super.readObject(in);
        bodyAppearance = in.readInt();
        capAppearance = in.readInt();
     }
 
+    @Override
     public void writeConstructorParams( DataOutput out ) throws IOException {
 	super.writeConstructorParams( out );
 
@@ -89,6 +92,7 @@ public class ConeState extends PrimitiveState {
         out.writeInt( ((Cone)node).getYdivisions() );
     }
 
+    @Override
     public void readConstructorParams( DataInput in ) throws IOException {
        super.readConstructorParams(in);
 
@@ -98,6 +102,7 @@ public class ConeState extends PrimitiveState {
        ydivision = in.readInt();
     }
 
+    @Override
     public void buildGraph() {
 
         if (bodyAppearance == capAppearance ) {
@@ -110,6 +115,7 @@ public class ConeState extends PrimitiveState {
         super.buildGraph(); // This must be the last call in the method
     }
 
+    @Override
     public SceneGraphObject createNode( Class j3dClass ) {
         // Create the node with a null appearance, we will add the appearance
         // during build graph
@@ -131,6 +137,7 @@ public class ConeState extends PrimitiveState {
         return cone;
     }
 
+    @Override
     protected javax.media.j3d.SceneGraphObject createNode() {
         return new Cone( radius, height, primflags, xdivision, ydivision, null );
     }

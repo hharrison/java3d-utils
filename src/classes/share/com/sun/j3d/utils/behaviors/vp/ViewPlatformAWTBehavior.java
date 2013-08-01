@@ -185,6 +185,7 @@ implements MouseListener, MouseMotionListener, KeyListener, MouseWheelListener {
      * NOTE: Applications should not call this method. It is called by the
      * Java 3D behavior scheduler.
      */
+    @Override
     public void initialize() {
         frameWakeup = new WakeupOnElapsedFrames( 0 );
         postWakeup = new WakeupOnBehaviorPost( this, POST_ID );
@@ -197,6 +198,7 @@ implements MouseListener, MouseMotionListener, KeyListener, MouseWheelListener {
      * NOTE: Applications should not call this method. It is called by the
      * Java 3D behavior scheduler.
      */
+    @Override
     public void processStimulus( java.util.Enumeration behEnum ) {
         boolean hadPost = false;
 
@@ -233,6 +235,7 @@ implements MouseListener, MouseMotionListener, KeyListener, MouseWheelListener {
      * Adds/Removes the AWT listeners depending on the requested
      * state.
      */
+    @Override
     public void setEnable( boolean state ) {
         if (state==getEnable())
             return;
@@ -288,6 +291,7 @@ implements MouseListener, MouseMotionListener, KeyListener, MouseWheelListener {
      * super.setViewingPlatform(vp).
      * NOTE: Applications should <i>not</i> call this method.
      */
+    @Override
     public void setViewingPlatform(ViewingPlatform vp) {
         super.setViewingPlatform( vp );
 
@@ -356,46 +360,57 @@ implements MouseListener, MouseMotionListener, KeyListener, MouseWheelListener {
 	}
     }
 
+    @Override
     public void mouseClicked(final MouseEvent e) {
         queueAWTEvent( e );
     }
 
+    @Override
     public void mouseEntered(final MouseEvent e) {
         queueAWTEvent( e );
     }
 
+    @Override
     public void mouseExited(final MouseEvent e) {
         queueAWTEvent( e );
     }
 
+    @Override
     public void mousePressed(final MouseEvent e) {
         queueAWTEvent( e );
     }
 
+    @Override
     public void mouseReleased(final MouseEvent e) {
         queueAWTEvent( e );
     }
 
+    @Override
     public void mouseDragged(final MouseEvent e) {
         queueAWTEvent( e );
     }
 
+    @Override
     public void mouseMoved(final MouseEvent e) {
         queueAWTEvent( e );
     }
 
+    @Override
     public void keyReleased(final java.awt.event.KeyEvent e) {
         queueAWTEvent( e );
     }
 
+    @Override
     public void keyPressed(final java.awt.event.KeyEvent e) {
         queueAWTEvent( e );
     }
 
+    @Override
     public void keyTyped(final java.awt.event.KeyEvent e) {
         queueAWTEvent( e );
     }
 
+    @Override
     public void mouseWheelMoved( final java.awt.event.MouseWheelEvent e) {
 	queueAWTEvent( e );
     }

@@ -63,6 +63,7 @@ public class Font3DState extends NodeComponentState {
         super(symbol, control);
     }
 
+    @Override
     public void writeConstructorParams(DataOutput out) throws IOException {
         super.writeConstructorParams(out);
 
@@ -125,6 +126,7 @@ public class Font3DState extends NodeComponentState {
         }
     }
 
+    @Override
     public void readConstructorParams(DataInput in) throws IOException {
         super.readConstructorParams(in);
 
@@ -163,12 +165,14 @@ public class Font3DState extends NodeComponentState {
             extrudePath = null;
     }
 
+    @Override
     public SceneGraphObject createNode(Class j3dClass) {
         return createNode(j3dClass, new Class[] { Font.class, Double.TYPE,
                 FontExtrusion.class }, new Object[] { font,
                 new Double(tesselationTolerance), extrudePath });
     }
 
+    @Override
     protected SceneGraphObject createNode() {
         return new Font3D(font, tesselationTolerance, extrudePath);
     }

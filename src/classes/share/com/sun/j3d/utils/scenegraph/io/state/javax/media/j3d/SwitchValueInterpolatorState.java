@@ -61,6 +61,7 @@ public class SwitchValueInterpolatorState extends InterpolatorState {
             target = control.getSymbolTable().addReference( ((SwitchValueInterpolator)node).getTarget() );
     }
 
+    @Override
     public void writeObject( DataOutput out ) throws IOException {
         super.writeObject( out );
 
@@ -69,6 +70,7 @@ public class SwitchValueInterpolatorState extends InterpolatorState {
         out.writeInt( ((SwitchValueInterpolator)node).getLastChildIndex() );
     }
 
+    @Override
     public void readObject( DataInput in ) throws IOException {
         super.readObject( in );
 
@@ -78,11 +80,13 @@ public class SwitchValueInterpolatorState extends InterpolatorState {
     }
 
 
+    @Override
     public void buildGraph() {
         ((SwitchValueInterpolator)node).setTarget( (Switch)control.getSymbolTable().getJ3dNode( target ));
         super.buildGraph(); // Must be last call in method
     }
 
+    @Override
     public SceneGraphObject createNode( Class j3dClass ) {
         return createNode( j3dClass, new Class[] { javax.media.j3d.Alpha.class,
                                                     javax.media.j3d.Switch.class },
@@ -90,6 +94,7 @@ public class SwitchValueInterpolatorState extends InterpolatorState {
                                                      null } );
     }
 
+    @Override
     protected javax.media.j3d.SceneGraphObject createNode() {
         return new SwitchValueInterpolator( null, null );
     }

@@ -138,6 +138,7 @@ public class Sphere extends Primitive {
    * @return The Shape3D object associated with the partId.  If an
    * invalid partId is passed in, null is returned.
    */
+  @Override
   public Shape3D getShape(int partId) {
     if (partId != BODY) return null;
 //     return (Shape3D)((Group)getChild(0)).getChild(BODY);
@@ -153,6 +154,7 @@ public class Sphere extends Primitive {
 
   /** Sets appearance of the Sphere.
    */
+  @Override
   public void setAppearance(Appearance ap) {
 //     ((Shape3D)((Group)getChild(0)).getChild(BODY)).setAppearance(ap);
       ((Shape3D)getChild(BODY)).setAppearance(ap);
@@ -168,6 +170,7 @@ public class Sphere extends Primitive {
      *
      * @since Java 3D 1.2.1
      */
+    @Override
     public Appearance getAppearance(int partId) {
 	if (partId != BODY) return null;
 	return getShape(partId).getAppearance();
@@ -306,6 +309,7 @@ public class Sphere extends Primitive {
      * @see Node#duplicateNode
      * @see NodeComponent#setDuplicateOnCloneTree
      */
+    @Override
     public Node cloneNode(boolean forceDuplicate) {
         Sphere s = new Sphere(radius, flags, divisions, getAppearance());
         s.duplicateNode(this, forceDuplicate);
@@ -339,6 +343,7 @@ public class Sphere extends Primitive {
      * @see Node#cloneNode
      * @see NodeComponent#setDuplicateOnCloneTree
      */
+    @Override
     public void duplicateNode(Node originalNode, boolean forceDuplicate) {
         super.duplicateNode(originalNode, forceDuplicate);
     }

@@ -121,6 +121,7 @@ public abstract class PickMouseBehavior extends Behavior {
 	return pickCanvas.getTolerance();
     }
 
+    @Override
     public void initialize() {
 
 	conditions = new WakeupCriterion[2];
@@ -144,6 +145,7 @@ public abstract class PickMouseBehavior extends Behavior {
 	}
     }
 
+    @Override
     public void processStimulus (Enumeration criteria) {
 	WakeupCriterion wakeup;
 	AWTEvent[] evt = null;

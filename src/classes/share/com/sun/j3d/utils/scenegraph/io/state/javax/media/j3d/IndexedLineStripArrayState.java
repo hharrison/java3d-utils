@@ -52,6 +52,7 @@ public class IndexedLineStripArrayState extends IndexedGeometryStripArrayState {
         super( symbol, control );
     }
 
+    @Override
     public SceneGraphObject createNode( Class j3dClass ) {
         return super.createNode( j3dClass, new Class[] { Integer.TYPE,
                                                           Integer.TYPE,
@@ -67,6 +68,7 @@ public class IndexedLineStripArrayState extends IndexedGeometryStripArrayState {
                                                           stripIndexCounts } );
     }
 
+    @Override
     protected javax.media.j3d.SceneGraphObject createNode() {
         return new IndexedLineStripArray( vertexCount, vertexFormat, texCoordSetCount, texCoordSetMap, indexCount, stripIndexCounts );
     }

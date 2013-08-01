@@ -67,6 +67,7 @@ public class SimpleDistanceComparator implements Comparator {
      * @param o2 TransparencySortGeom object 2
      *
      */
+    @Override
     public int compare(Object o1, Object o2) {
         TransparencySortGeom t1 = (TransparencySortGeom)o1;
         TransparencySortGeom t2 = (TransparencySortGeom)o2;

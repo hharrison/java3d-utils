@@ -272,6 +272,7 @@ class ConfigCommand {
     static String setJavaProperty(final String key, final String value) {
 	return (String)java.security.AccessController.doPrivileged
 	    (new java.security.PrivilegedAction() {
+		@Override
 		public Object run() {
 		    return System.setProperty(key, value) ;
 		}
@@ -288,6 +289,7 @@ class ConfigCommand {
     static String evaluateJavaProperty(final String key) {
 	return (String)java.security.AccessController.doPrivileged
 	    (new java.security.PrivilegedAction() {
+		@Override
 		public Object run() {
 		    return System.getProperty(key) ;
 		}
@@ -381,6 +383,7 @@ class ConfigCommand {
      *
      * @return string representing this command
      */
+    @Override
     public String toString() {
 	String[] lines = null ;
 	StringBuffer sb = new StringBuffer("(") ;

@@ -407,6 +407,7 @@ class ObjectFileMaterials implements ImageObserver {
      * Implement the ImageObserver interface.  Needed to load jpeg and gif
      * files using the Toolkit.
      */
+    @Override
     public boolean imageUpdate(Image img, int flags,
 			       int x, int y, int w, int h) {
 

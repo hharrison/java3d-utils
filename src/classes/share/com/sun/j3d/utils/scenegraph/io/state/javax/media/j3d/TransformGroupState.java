@@ -56,6 +56,7 @@ public class TransformGroupState extends GroupState {
         super( symbol, control );
     }
 
+    @Override
     public void writeObject( DataOutput out ) throws IOException {
         super.writeObject( out );
         Transform3D trans = new Transform3D();
@@ -68,6 +69,7 @@ public class TransformGroupState extends GroupState {
 
     }
 
+    @Override
     public void readObject( DataInput in ) throws IOException {
         super.readObject( in );
         Transform3D trans = new Transform3D();
@@ -80,6 +82,7 @@ public class TransformGroupState extends GroupState {
         ((TransformGroup)node).setTransform( trans );
     }
 
+    @Override
     protected javax.media.j3d.SceneGraphObject createNode() {
         return new TransformGroup();
     }

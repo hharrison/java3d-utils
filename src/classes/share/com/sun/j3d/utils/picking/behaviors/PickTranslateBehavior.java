@@ -109,6 +109,7 @@ public class PickTranslateBehavior extends PickMouseBehavior implements MouseBeh
    * @param xpos Current mouse X pos.
    * @param ypos Current mouse Y pos.
    **/
+  @Override
   public void updateScene(int xpos, int ypos){
     TransformGroup tg = null;
 
@@ -137,6 +138,7 @@ public class PickTranslateBehavior extends PickMouseBehavior implements MouseBeh
     * Callback method from MouseTranslate
     * This is used when the Picking callback is enabled
     */
+  @Override
   public void transformChanged( int type, Transform3D transform ) {
       callback.transformChanged( PickingCallback.TRANSLATE, currentTG );
   }

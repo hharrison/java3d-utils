@@ -56,14 +56,17 @@ public class BackgroundSoundState extends SoundState {
 
     }
 
+    @Override
     public void writeObject( DataOutput out ) throws IOException {
         super.writeObject( out );
     }
 
+    @Override
     public void readObject( DataInput in ) throws IOException {
         super.readObject( in );
     }
 
+    @Override
     protected SceneGraphObject createNode() {
         return new BackgroundSound();
     }

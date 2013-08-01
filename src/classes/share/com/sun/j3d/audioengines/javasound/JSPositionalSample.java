@@ -179,9 +179,11 @@ class JSPositionalSample extends JSSample
     /*
      * Process request for Filtering fields
      */
+    @Override
     boolean  getFilterFlag() {
         return filterFlag;
     }
+    @Override
     float  getFilterFreq() {
         return filterFreq;
     }
@@ -191,6 +193,7 @@ class JSPositionalSample extends JSSample
      * Clears the fields associated with sample data for this sound, and
      * frees any device specific data associated with this sample.
      */
+    @Override
     public void clear() {
         if (debugFlag)
             debugPrint("JSPositionalSample.clear() enter");
@@ -215,6 +218,7 @@ class JSPositionalSample extends JSSample
      * Reset time and count based fields associated with sample data
      * for this sound
      */
+    @Override
     void reset() {
         if (debugFlag)
             debugPrint("JSPositionalSample.reset() enter");
@@ -645,6 +649,7 @@ class JSPositionalSample extends JSSample
      * Calculate the audiodevice parameters necessary to spatially play this
      * sound.
      */
+    @Override
     public void render(int dirtyFlags, View view, AuralParameters attribs) {
         if (debugFlag)
             debugPrint("JSPositionalSample.render");

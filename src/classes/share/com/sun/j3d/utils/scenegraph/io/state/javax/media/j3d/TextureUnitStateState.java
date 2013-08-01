@@ -68,6 +68,7 @@ public class TextureUnitStateState extends NodeComponentState {
         }
     }
 
+    @Override
     public void writeObject( DataOutput out ) throws IOException {
         super.writeObject( out );
         out.writeInt( texCoordGeneration );
@@ -75,6 +76,7 @@ public class TextureUnitStateState extends NodeComponentState {
         out.writeInt( textureAttributes );
     }
 
+    @Override
     public void readObject( DataInput in ) throws IOException {
         super.readObject( in );
         TextureUnitState attr = (TextureUnitState)node;
@@ -83,12 +85,14 @@ public class TextureUnitStateState extends NodeComponentState {
         textureAttributes = in.readInt();
     }
 
+    @Override
     public void addSubReference() {
         control.getSymbolTable().incNodeComponentRefCount( texCoordGeneration );
         control.getSymbolTable().incNodeComponentRefCount( texture );
         control.getSymbolTable().incNodeComponentRefCount( textureAttributes );
     }
 
+    @Override
     public void buildGraph() {
         TextureUnitState attr = (TextureUnitState)node;
         attr.setTexCoordGeneration( (TexCoordGeneration)control.getSymbolTable().getJ3dNode( texCoordGeneration ));
@@ -97,6 +101,7 @@ public class TextureUnitStateState extends NodeComponentState {
         super.buildGraph();     // Must be last call in method
     }
 
+    @Override
     protected javax.media.j3d.SceneGraphObject createNode() {
         return new TextureUnitState();
     }

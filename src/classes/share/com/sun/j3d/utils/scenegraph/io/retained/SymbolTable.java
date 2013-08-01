@@ -493,6 +493,7 @@ public class SymbolTable extends java.lang.Object implements SceneGraphObjectRef
      * Add a refernce to the specified node
      * Also returns the nodes id
      */
+    @Override
     public int addReference( SceneGraphObject node ) {
         if (node==null) return 0;
 
@@ -727,6 +728,7 @@ public class SymbolTable extends java.lang.Object implements SceneGraphObjectRef
         map.putAll( namedObjects );
     }
 
+    @Override
     public String toString() {
         StringBuffer buf = new StringBuffer();
 
@@ -837,6 +839,7 @@ public class SymbolTable extends java.lang.Object implements SceneGraphObjectRef
  *
  * Use only during the load cycle
  */
+    @Override
     public javax.media.j3d.SceneGraphObject resolveReference(int nodeID) {
         return getJ3dNode( nodeID );
     }

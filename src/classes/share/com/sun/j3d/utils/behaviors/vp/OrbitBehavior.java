@@ -283,6 +283,7 @@ public class OrbitBehavior extends ViewPlatformAWTBehavior {
 	}
     }
 
+    @Override
     protected synchronized void processAWTEvents( final AWTEvent[] events ) {
         motion = false;
         for(int i=0; i<events.length; i++)
@@ -460,6 +461,7 @@ public class OrbitBehavior extends ViewPlatformAWTBehavior {
 	rotateTransform.set( rotMatrix );
     }
 
+    @Override
     protected synchronized void integrateTransforms() {
 	// Check if the transform has been changed by another
 	// behavior

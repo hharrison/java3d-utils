@@ -167,6 +167,7 @@ public class SceneBase implements Scene {
      * This method returns the BranchGroup containing the overall
      * scene loaded by the loader.
      */
+    @Override
     public BranchGroup getSceneGroup() {
 	return sceneGroup;
     }
@@ -179,6 +180,7 @@ public class SceneBase implements Scene {
      * information for the given ViewPlatform and the ViewPlatform
      * holds an view-specific information, such as Field of View.
      */
+    @Override
     public TransformGroup[] getViewGroups() {
 	if (viewVector.isEmpty())
 	    return null;
@@ -192,6 +194,7 @@ public class SceneBase implements Scene {
      * field of view values for each corresponding entry in the array of
      * view groups returned by the method getViewGroups.
      */
+    @Override
     public float[] getHorizontalFOVs() {
 	if (hfovVector.isEmpty())
 	    return null;
@@ -213,6 +216,7 @@ public class SceneBase implements Scene {
     /**
      * This method returns an array of all Lights defined in the file.
      */
+    @Override
     public Light[] getLightNodes() {
 	if (lightVector.isEmpty())
 	    return null;
@@ -229,6 +233,7 @@ public class SceneBase implements Scene {
      * such names as the DEF names of Vrml or filenames of subjects (as
      * in Lightwave 3D).
      */
+    @Override
     public Hashtable getNamedObjects() {
 	return namedObjects;
     }
@@ -238,6 +243,7 @@ public class SceneBase implements Scene {
      * This method returns an array of all Background nodes defined in the
      * file.
      */
+    @Override
     public Background[] getBackgroundNodes() {
 	if (backgroundVector.isEmpty())
 	    return null;
@@ -251,6 +257,7 @@ public class SceneBase implements Scene {
      * This method returns an array of all Fog nodes defined in the
      * file.
      */
+    @Override
     public Fog[] getFogNodes() {
 	if (fogVector.isEmpty())
 	    return null;
@@ -264,6 +271,7 @@ public class SceneBase implements Scene {
      * This method returns a group containing all of the Behavior nodes
      * in the scene.
      */
+    @Override
     public Behavior[] getBehaviorNodes() {
 	if (behaviorVector.isEmpty())
 	    return null;
@@ -278,6 +286,7 @@ public class SceneBase implements Scene {
      * This method returns an array of all of the Sound nodes defined
      * in the file.
      */
+    @Override
     public Sound[] getSoundNodes() {
 	if (soundVector.isEmpty())
 	    return null;
@@ -291,6 +300,7 @@ public class SceneBase implements Scene {
      * This method returns the text description of the file.  If no
      * such description exists, this method should return null.
      */
+    @Override
     public String getDescription() {
 	return description;
     }

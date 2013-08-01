@@ -62,6 +62,7 @@ public class RotPosScaleTCBSplinePathInterpolatorState extends TransformInterpol
         super( symbol, control );
     }
 
+    @Override
     public void writeConstructorParams( DataOutput out ) throws IOException {
         super.writeConstructorParams( out );
 
@@ -83,6 +84,7 @@ public class RotPosScaleTCBSplinePathInterpolatorState extends TransformInterpol
         }
     }
 
+    @Override
     public void readConstructorParams( DataInput in ) throws IOException {
         super.readConstructorParams( in );
 
@@ -101,6 +103,7 @@ public class RotPosScaleTCBSplinePathInterpolatorState extends TransformInterpol
         }
     }
 
+    @Override
     public SceneGraphObject createNode( Class j3dClass ) {
         return createNode( j3dClass, new Class[] { javax.media.j3d.Alpha.class,
                                                     TransformGroup.class,
@@ -113,6 +116,7 @@ public class RotPosScaleTCBSplinePathInterpolatorState extends TransformInterpol
 
     }
 
+    @Override
     protected javax.media.j3d.SceneGraphObject createNode() {
         return new RotPosScaleTCBSplinePathInterpolator( null, null, axisOfTranslation, keyFrames );
     }

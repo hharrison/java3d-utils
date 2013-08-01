@@ -60,6 +60,7 @@ public abstract class FogState extends SceneGraphObjectState {
         super(symbol, control);
     }
 
+    @Override
     public void writeObject( DataOutput out ) throws
 							IOException {
 
@@ -79,6 +80,7 @@ public abstract class FogState extends SceneGraphObjectState {
        control.writeColor3f( out, clr );
     }
 
+    @Override
     public void readObject( DataInput in ) throws
 							IOException {
        super.readObject(in);
@@ -92,6 +94,7 @@ public abstract class FogState extends SceneGraphObjectState {
        ((Fog)node).setColor( control.readColor3f(in) );
     }
 
+    @Override
     public void buildGraph() {
         for(int i=0; i<scopes.length; i++)
             ((Fog)node).addScope( (Group)control.getSymbolTable().getJ3dNode( scopes[i] ) );

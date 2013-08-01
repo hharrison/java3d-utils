@@ -1443,6 +1443,7 @@ public class ConfigContainer {
 
         urlString = (String)java.security.AccessController.doPrivileged
 	    (new java.security.PrivilegedAction() {
+		@Override
 		public Object run() {
 		    return System.getProperty("j3d.configURL", defProp) ;
 		}
@@ -1471,20 +1472,24 @@ public class ConfigContainer {
 	}
 
 	// overridden for efficiency
+	@Override
 	public Object get(Object key) {
 	    return map.get(key) ;
 	}
 
 	// overridden for efficiency
+	@Override
 	public boolean containsKey(Object key) {
 	    return map.containsKey(key) ;
 	}
 
 	// overridden for efficiency
+	@Override
 	public boolean containsValue(Object value) {
 	    return map.containsValue(value) ;
 	}
 
+	@Override
 	public Set entrySet() {
 	    if (entrySet == null)
 		entrySet = new ReadOnlySet(map.entrySet()) ;
@@ -1502,10 +1507,12 @@ public class ConfigContainer {
 	    this.collection = c ;
 	}
 
+	@Override
 	public int size() {
 	    return collection.size() ;
 	}
 
+	@Override
 	public Iterator iterator() {
 	    return new ReadOnlyIterator(collection.iterator()) ;
 	}
@@ -1519,14 +1526,17 @@ public class ConfigContainer {
 	    this.i = i ;
 	}
 
+	@Override
 	public boolean hasNext() {
 	    return i.hasNext() ;
 	}
 
+	@Override
 	public Object next() {
 	    return i.next() ;
 	}
 
+	@Override
 	public void remove() {
 	    throw new UnsupportedOperationException() ;
 	}

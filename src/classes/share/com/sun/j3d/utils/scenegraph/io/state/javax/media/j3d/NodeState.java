@@ -54,6 +54,7 @@ public class NodeState extends SceneGraphObjectState {
         super(symbol, control);
     }
 
+    @Override
     public void writeObject( DataOutput out ) throws
 							IOException {
 
@@ -67,6 +68,7 @@ public class NodeState extends SceneGraphObjectState {
 
     }
 
+    @Override
     public void readObject( DataInput in ) throws
 							IOException {
        super.readObject(in);

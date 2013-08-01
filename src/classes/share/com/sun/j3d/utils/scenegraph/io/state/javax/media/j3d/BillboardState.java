@@ -64,6 +64,7 @@ public class BillboardState extends BehaviorState {
 
     }
 
+    @Override
     public void writeObject( DataOutput out ) throws IOException {
         super.writeObject( out );
 
@@ -81,6 +82,7 @@ public class BillboardState extends BehaviorState {
         out.writeInt( target );
     }
 
+    @Override
     public void readObject( DataInput in ) throws IOException {
         super.readObject( in );
 
@@ -91,11 +93,13 @@ public class BillboardState extends BehaviorState {
         target = in.readInt();
     }
 
+    @Override
     public void buildGraph() {
         ((Billboard)node).setTarget( (TransformGroup)control.getSymbolTable().getJ3dNode( target ));
         super.buildGraph();     // Must be last call in method
     }
 
+    @Override
     protected SceneGraphObject createNode() {
         return new Billboard();
     }

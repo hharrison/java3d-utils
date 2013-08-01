@@ -52,6 +52,7 @@ public class DecalGroupState extends GroupState {
         super( symbol, control );
     }
 
+    @Override
     protected SceneGraphObject createNode() {
         return new DecalGroup();
     }

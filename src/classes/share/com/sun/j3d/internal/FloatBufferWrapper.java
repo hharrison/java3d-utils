@@ -78,6 +78,7 @@ public class FloatBufferWrapper extends BufferWrapper {
      * Returns the java.nio.Buffer contained within this
      * FloatBufferWrapper.
      */
+    @Override
     public java.nio.Buffer getBuffer() {
 	return this.buffer;
     }

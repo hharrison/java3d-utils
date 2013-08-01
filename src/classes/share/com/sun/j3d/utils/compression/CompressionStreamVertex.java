@@ -149,6 +149,7 @@ class CompressionStreamVertex extends CompressionStreamElement {
      * @param table HuffmanTable for collecting data about the quantized
      * representation of this element
      */
+    @Override
     void quantize(CompressionStream stream, HuffmanTable huffmanTable) {
 	double px, py, pz ;
 
@@ -247,6 +248,7 @@ class CompressionStreamVertex extends CompressionStreamElement {
      * compressed encodings
      * @param output CommandStream for collecting compressed output
      */
+    @Override
     void outputCommand(HuffmanTable huffmanTable, CommandStream outputBuffer) {
 
 	HuffmanNode t ;
@@ -301,6 +303,7 @@ class CompressionStreamVertex extends CompressionStreamElement {
 	    color.outputSubcommand(huffmanTable, outputBuffer) ;
     }
 
+    @Override
     public String toString() {
 	String d = absolute? "" : "delta " ;
 	String c = (color  == null? "": "\n\n " + color.toString()) ;

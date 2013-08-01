@@ -191,11 +191,13 @@ class GeneralizedVertexList implements GeneralizedStripFlags {
     }
 
     // GeneralizedStripFlags interface implementation
+    @Override
     public int getFlagCount() {
 	return vertices.size() ;
     }
 
     // GeneralizedStripFlags interface implementation
+    @Override
     public int getFlag(int index) {
 	return ((Vertex)vertices.get(index)).flag ;
     }

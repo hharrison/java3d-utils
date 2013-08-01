@@ -56,6 +56,7 @@ public abstract class GeometryStripArrayState extends GeometryArrayState {
 	super( symbol, control );
     }
 
+    @Override
     protected void writeConstructorParams( DataOutput out ) throws
 								IOException {
         super.writeConstructorParams( out );
@@ -68,6 +69,7 @@ public abstract class GeometryStripArrayState extends GeometryArrayState {
             out.writeInt( stripVertexCounts[i] );
     }
 
+    @Override
     protected void readConstructorParams( DataInput in ) throws
 							IOException {
        super.readConstructorParams( in );

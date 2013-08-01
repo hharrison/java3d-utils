@@ -266,6 +266,7 @@ public abstract class TCBSplinePathInterpolator extends TransformInterpolator {
      * @see Node#cloneTree
      * @see NodeComponent#setDuplicateOnCloneTree
      */
+    @Override
     public void duplicateNode(Node originalNode, boolean forceDuplicate) {
         super.duplicateNode(originalNode, forceDuplicate);
 	TCBSplinePathInterpolator originalSpline = (TCBSplinePathInterpolator) originalNode;

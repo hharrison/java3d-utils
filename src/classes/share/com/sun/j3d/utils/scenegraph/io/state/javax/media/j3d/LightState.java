@@ -61,6 +61,7 @@ public abstract class LightState extends LeafState {
 
     }
 
+    @Override
     public void writeObject( DataOutput out ) throws IOException {
 	super.writeObject( out );
 
@@ -85,6 +86,7 @@ public abstract class LightState extends LeafState {
         }
     }
 
+    @Override
     public void readObject( DataInput in ) throws IOException {
        super.readObject(in);
        ((Light)node).setColor( control.readColor3f(in) );
@@ -101,6 +103,7 @@ public abstract class LightState extends LeafState {
 
     }
 
+    @Override
     public void buildGraph() {
         ((Light)node).setInfluencingBoundingLeaf( (BoundingLeaf)control.getSymbolTable().getJ3dNode( boundingLeaf ));
         for(int i=0; i<scope.length; i++) {

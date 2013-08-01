@@ -70,6 +70,7 @@ public class CylinderState extends PrimitiveState {
         }
     }
 
+    @Override
     public void writeObject( DataOutput out ) throws IOException {
 	super.writeObject( out );
         out.writeInt( topAppearance );
@@ -77,6 +78,7 @@ public class CylinderState extends PrimitiveState {
         out.writeInt( bottomAppearance );
     }
 
+    @Override
     public void readObject( DataInput in ) throws IOException {
        super.readObject(in);
        topAppearance = in.readInt();
@@ -84,6 +86,7 @@ public class CylinderState extends PrimitiveState {
        bottomAppearance = in.readInt();
     }
 
+    @Override
     public void writeConstructorParams( DataOutput out ) throws IOException {
 	super.writeConstructorParams( out );
 
@@ -93,6 +96,7 @@ public class CylinderState extends PrimitiveState {
         out.writeInt( ((Cylinder)node).getYdivisions() );
     }
 
+    @Override
     public void readConstructorParams( DataInput in ) throws IOException {
        super.readConstructorParams(in);
 
@@ -102,6 +106,7 @@ public class CylinderState extends PrimitiveState {
        ydivision = in.readInt();
     }
 
+    @Override
     public void buildGraph() {
         if (bodyAppearance == topAppearance && bodyAppearance == bottomAppearance ) {
             ((Cylinder)node).setAppearance( (Appearance)control.getSymbolTable().getJ3dNode( bodyAppearance ));
@@ -113,6 +118,7 @@ public class CylinderState extends PrimitiveState {
         super.buildGraph(); // This must be the last call in the method
     }
 
+    @Override
     public SceneGraphObject createNode( Class j3dClass ) {
         // Create the node with a null appearance, we will add the appearance
         // during build graph
@@ -134,6 +140,7 @@ public class CylinderState extends PrimitiveState {
         return cylinder;
     }
 
+    @Override
     protected javax.media.j3d.SceneGraphObject createNode() {
         return new Cylinder( radius, height, primflags, xdivision, ydivision, null );
     }

@@ -64,6 +64,7 @@ public class Text3DState extends GeometryState {
         }
     }
 
+    @Override
     public void writeObject(DataOutput out) throws IOException {
         super.writeObject(out);
 
@@ -80,6 +81,7 @@ public class Text3DState extends GeometryState {
         out.writeUTF(((Text3D) node).getString());
     }
 
+    @Override
     public void readObject(DataInput in) throws IOException {
         super.readObject(in);
 
@@ -98,10 +100,12 @@ public class Text3DState extends GeometryState {
      * component to update the reference count of any components that it
      * references.
      */
+    @Override
     public void addSubReference() {
         control.getSymbolTable().incNodeComponentRefCount(font3d);
     }
 
+    @Override
     public void buildGraph() {
         ((Text3D) node).setFont3D(((Font3D) control.getSymbolTable()
                 .getJ3dNode(font3d)));
@@ -111,6 +115,7 @@ public class Text3DState extends GeometryState {
         super.buildGraph(); // Must be last call in method
     }
 
+    @Override
     protected javax.media.j3d.SceneGraphObject createNode() {
         return new Text3D();
     }

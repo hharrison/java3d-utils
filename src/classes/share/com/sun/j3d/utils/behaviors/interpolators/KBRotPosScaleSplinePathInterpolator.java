@@ -141,6 +141,7 @@ public class KBRotPosScaleSplinePathInterpolator
      * @param index Index of the key frame to change
      * @param keyFrame The new key frame
      */
+    @Override
     public void setKeyFrame( int index, KBKeyFrame keyFrame ) {
 	super.setKeyFrame( index, keyFrame );
 
@@ -154,6 +155,7 @@ public class KBRotPosScaleSplinePathInterpolator
      * Set all the key frames
      * @param keyFrame The new key frames
      */
+    @Override
     public void setKeyFrames( KBKeyFrame[] keyFrame ) {
 	super.setKeyFrames( keyFrame );
 
@@ -172,6 +174,7 @@ public class KBRotPosScaleSplinePathInterpolator
      *
      * @since Java 3D 1.3
      */
+    @Override
     public void computeTransform(float alphaValue, Transform3D transform) {
 	// compute the current value of u from alpha and the
 	// determine lower and upper knot points
@@ -270,6 +273,7 @@ public class KBRotPosScaleSplinePathInterpolator
      * @see Node#cloneTree
      * @see NodeComponent#setDuplicateOnCloneTree
      */
+    @Override
     public Node cloneNode(boolean forceDuplicate) {
         KBRotPosScaleSplinePathInterpolator spline =
           new KBRotPosScaleSplinePathInterpolator();
@@ -299,6 +303,7 @@ public class KBRotPosScaleSplinePathInterpolator
      * @see Node#cloneTree
      * @see NodeComponent#setDuplicateOnCloneTree
      */
+    @Override
     public void duplicateNode(Node originalNode, boolean forceDuplicate) {
         super.duplicateNode(originalNode, forceDuplicate);
 

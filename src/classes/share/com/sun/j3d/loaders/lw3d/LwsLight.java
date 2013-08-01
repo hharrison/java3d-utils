@@ -250,6 +250,7 @@ class LwsLight extends TextfileParser implements LwsPrimitive {
 	}
     }
 
+    @Override
     public TransformGroup getObjectNode()
 	{
 	    return objectTransform;
@@ -259,6 +260,7 @@ class LwsLight extends TextfileParser implements LwsPrimitive {
 	return light;
     }
 
+    @Override
     public Vector getObjectBehaviors()
 	{
 	    debugOutputLn(TRACE, "getObjectBehaviors()");

@@ -57,6 +57,7 @@ public class ViewPlatformState extends LeafState {
         super( symbol, control );
     }
 
+    @Override
     public void writeObject( DataOutput out ) throws IOException {
         super.writeObject( out );
 
@@ -64,6 +65,7 @@ public class ViewPlatformState extends LeafState {
         out.writeInt( ((ViewPlatform)node).getViewAttachPolicy() );
     }
 
+    @Override
     public void readObject( DataInput in ) throws IOException {
         super.readObject( in );
 
@@ -72,6 +74,7 @@ public class ViewPlatformState extends LeafState {
     }
 
 
+    @Override
     protected javax.media.j3d.SceneGraphObject createNode() {
         return new ViewPlatform();
     }

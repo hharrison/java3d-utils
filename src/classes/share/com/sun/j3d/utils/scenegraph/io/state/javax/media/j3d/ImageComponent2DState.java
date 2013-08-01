@@ -58,6 +58,7 @@ public class ImageComponent2DState extends ImageComponentState {
 	super( symbol, control );
     }
 
+    @Override
     public void writeConstructorParams( DataOutput out ) throws
 							IOException {
         super.writeConstructorParams( out );
@@ -76,6 +77,7 @@ public class ImageComponent2DState extends ImageComponentState {
         writeBufferedImage( out, bufferedImage );
     }
 
+    @Override
     public void readConstructorParams( DataInput in ) throws
 							IOException {
 
@@ -85,6 +87,7 @@ public class ImageComponent2DState extends ImageComponentState {
 
     }
 
+    @Override
     protected SceneGraphObject createNode( Class j3dClass ) {
         return super.createNode( j3dClass, new Class[] { Integer.TYPE,
                                                           bufferedImage.getClass(),
@@ -96,6 +99,7 @@ public class ImageComponent2DState extends ImageComponentState {
                                                            new Boolean( yUp ) } );
     }
 
+    @Override
     protected javax.media.j3d.SceneGraphObject createNode() {
         return new ImageComponent2D( format, bufferedImage, byReference, yUp );
     }

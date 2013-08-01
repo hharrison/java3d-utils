@@ -78,16 +78,19 @@ public class Text2DState extends LeafState {
         }
     }
 
+    @Override
     public void writeObject( DataOutput out ) throws IOException {
 	super.writeObject( out );
         control.writeBounds( out, ((Shape3D)node).getCollisionBounds() );
     }
 
+    @Override
     public void readObject( DataInput in ) throws IOException {
        super.readObject(in);
         ((Shape3D)node).setCollisionBounds( control.readBounds( in ));
     }
 
+    @Override
     public void writeConstructorParams( DataOutput out ) throws IOException {
 	super.writeConstructorParams( out );
 
@@ -98,6 +101,7 @@ public class Text2DState extends LeafState {
         out.writeInt( fontStyle );
     }
 
+    @Override
     public void readConstructorParams( DataInput in ) throws IOException {
        super.readConstructorParams(in);
 
@@ -108,6 +112,7 @@ public class Text2DState extends LeafState {
        fontStyle = in.readInt();
     }
 
+    @Override
     public SceneGraphObject createNode( Class j3dClass ) {
         // Create the node with a null appearance, we will add the appearance
         // during build graph
@@ -128,6 +133,7 @@ public class Text2DState extends LeafState {
         return text2D;
     }
 
+    @Override
     protected javax.media.j3d.SceneGraphObject createNode() {
         return new Text2D( text, color, fontName, fontSize, fontStyle );
     }

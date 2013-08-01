@@ -100,6 +100,7 @@ public class AppearanceState extends NodeComponentState {
         }
     }
 
+    @Override
     public void writeObject( DataOutput out ) throws IOException {
         super.writeObject( out );
 
@@ -118,6 +119,7 @@ public class AppearanceState extends NodeComponentState {
         out.writeInt( transparencyAttributes );
     }
 
+    @Override
     public void readObject( DataInput in ) throws IOException {
         super.readObject( in );
         polygonAttributes = in.readInt();
@@ -140,6 +142,7 @@ public class AppearanceState extends NodeComponentState {
      * Allows this component to update the reference count of any components
      * that it references.
      */
+    @Override
     public void addSubReference() {
         control.getSymbolTable().incNodeComponentRefCount( polygonAttributes );
         control.getSymbolTable().incNodeComponentRefCount( renderingAttributes );
@@ -155,6 +158,7 @@ public class AppearanceState extends NodeComponentState {
         control.getSymbolTable().incNodeComponentRefCount( transparencyAttributes );
     }
 
+    @Override
     public void buildGraph() {
         Appearance app = (Appearance)node;
         app.setPolygonAttributes( (PolygonAttributes)control.getSymbolTable().getJ3dNode(polygonAttributes) );
@@ -179,6 +183,7 @@ public class AppearanceState extends NodeComponentState {
         super.buildGraph(); // Must be last call in method
      }
 
+    @Override
     protected javax.media.j3d.SceneGraphObject createNode() {
         return new Appearance();
     }

@@ -56,6 +56,7 @@ public class PositionInterpolatorState extends TransformInterpolatorState {
         super( symbol, control );
     }
 
+    @Override
     public void writeObject( DataOutput out ) throws IOException {
         super.writeObject( out );
 
@@ -63,6 +64,7 @@ public class PositionInterpolatorState extends TransformInterpolatorState {
 	out.writeFloat( ((PositionInterpolator)node).getEndPosition() );
     }
 
+    @Override
     public void readObject( DataInput in ) throws IOException {
         super.readObject( in );
 
@@ -70,6 +72,7 @@ public class PositionInterpolatorState extends TransformInterpolatorState {
 	((PositionInterpolator)node).setEndPosition( in.readFloat() );
     }
 
+    @Override
     public SceneGraphObject createNode( Class j3dClass ) {
         return createNode( j3dClass, new Class[] { javax.media.j3d.Alpha.class,
                                                     TransformGroup.class },
@@ -77,6 +80,7 @@ public class PositionInterpolatorState extends TransformInterpolatorState {
                                                      null } );
     }
 
+    @Override
     protected javax.media.j3d.SceneGraphObject createNode() {
         return new PositionInterpolator( null, null );
     }

@@ -102,6 +102,7 @@ class CompressionStreamColor extends CompressionStreamElement {
      * @param table HuffmanTable for collecting data about the quantized
      * representation of this element
      */
+    @Override
     void quantize(CompressionStream stream, HuffmanTable huffmanTable) {
 	// Clamp quantization.
 	int quant =
@@ -184,6 +185,7 @@ class CompressionStreamColor extends CompressionStreamElement {
      * compressed encodings
      * @param output CommandStream for collecting compressed output
      */
+    @Override
     void outputCommand(HuffmanTable table, CommandStream output) {
 	outputColor(table, output, CommandStream.SET_COLOR, 8) ;
     }
@@ -253,6 +255,7 @@ class CompressionStreamColor extends CompressionStreamElement {
 			  colorSubcommand, subcommandLength)  ;
     }
 
+    @Override
     public String toString() {
 	String d = absolute? "" : "delta " ;
 	String c = (colorR + " " + colorG + " " + colorB +

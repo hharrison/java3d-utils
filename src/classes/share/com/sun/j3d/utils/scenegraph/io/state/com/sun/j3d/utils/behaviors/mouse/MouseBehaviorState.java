@@ -58,18 +58,21 @@ public class MouseBehaviorState extends BehaviorState {
         super( symbol, control );
     }
 
+    @Override
     public void writeObject( DataOutput out ) throws IOException {
         super.writeObject( out );
 
 	out.writeInt( control.getSymbolTable().addReference( ((MouseBehavior)node).getTransformGroup() ) );
     }
 
+    @Override
     public void readObject( DataInput in ) throws IOException {
         super.readObject( in );
 
 	target = in.readInt();
     }
 
+    @Override
     public void buildGraph() {
 	((MouseBehavior)node).setTransformGroup(
 	    (TransformGroup)control.getSymbolTable().getJ3dNode( target ) );

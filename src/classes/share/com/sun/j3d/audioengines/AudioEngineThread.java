@@ -209,6 +209,7 @@ public class AudioEngineThread extends Thread {
      * This thread controls the syncing of all the canvases attached to
      * this view.
      */
+    @Override
     public void run() {
         if (debugFlag)
             debugPrint("AudioEngineThread.run");

@@ -54,6 +54,7 @@ public class PointAttributesState extends NodeComponentState {
         super(symbol, control);
     }
 
+    @Override
     public void writeObject( DataOutput out ) throws IOException {
         super.writeObject( out );
         PointAttributes attr = (PointAttributes)node;
@@ -61,6 +62,7 @@ public class PointAttributesState extends NodeComponentState {
         out.writeFloat( attr.getPointSize() );
     }
 
+    @Override
     public void readObject( DataInput in ) throws IOException {
         super.readObject( in );
         PointAttributes attr = (PointAttributes)node;
@@ -68,6 +70,7 @@ public class PointAttributesState extends NodeComponentState {
         attr.setPointSize( in.readFloat() );
     }
 
+    @Override
     protected javax.media.j3d.SceneGraphObject createNode() {
         return new PointAttributes();
     }

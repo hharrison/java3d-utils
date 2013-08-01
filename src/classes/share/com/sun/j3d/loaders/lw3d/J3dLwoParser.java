@@ -98,6 +98,7 @@ class J3dLwoParser extends LwoParser {
 	    super(url, debugVals);
     }
 
+    @Override
     void getSurf(int length) throws FileNotFoundException {
 	super.getSurf(length);
     }

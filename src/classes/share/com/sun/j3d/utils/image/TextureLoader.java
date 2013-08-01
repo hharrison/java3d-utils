@@ -344,6 +344,7 @@ public class TextureLoader extends Object {
         bufferedImage = (BufferedImage)
             java.security.AccessController.doPrivileged(
  	        new java.security.PrivilegedAction() {
+                    @Override
                     public Object run() {
                         try {
                             return ImageIO.read(new File(fname));
@@ -432,6 +433,7 @@ public class TextureLoader extends Object {
         bufferedImage = (BufferedImage)
             java.security.AccessController.doPrivileged(
  	        new java.security.PrivilegedAction() {
+                    @Override
                     public Object run() {
                         try {
                             return ImageIO.read(url);

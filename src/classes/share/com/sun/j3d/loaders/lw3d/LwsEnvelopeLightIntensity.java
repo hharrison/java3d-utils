@@ -124,11 +124,13 @@ class LwsEnvelopeLightIntensity extends LwsEnvelope {
     }
 
 
+    @Override
     Behavior getBehaviors() {
 	return behaviors;
     }
 
 
+    @Override
     LwsEnvelopeFrame getFirstFrame() {
 	if (numFrames > 0)
 	    return frames[0];
@@ -137,6 +139,7 @@ class LwsEnvelopeLightIntensity extends LwsEnvelope {
     }
 
 
+    @Override
     void printVals() {
 	debugOutputLn(VALUES, "   name = " + name);
 	debugOutputLn(VALUES, "   numChannels = " + numChannels);

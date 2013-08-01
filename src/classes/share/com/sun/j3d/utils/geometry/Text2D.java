@@ -135,6 +135,7 @@ public class Text2D extends Shape3D {
     }
 
     // issue 655
+    @Override
     public Node cloneNode(boolean forceDuplicate) {
         Text2D t2d = new Text2D();
 

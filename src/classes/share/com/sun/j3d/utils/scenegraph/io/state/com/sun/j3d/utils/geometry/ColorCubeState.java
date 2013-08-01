@@ -60,6 +60,7 @@ public class ColorCubeState extends Shape3DState {
 
     }
 
+    @Override
     public void writeConstructorParams( DataOutput out ) throws IOException {
 	super.writeConstructorParams( out );
 
@@ -67,6 +68,7 @@ public class ColorCubeState extends Shape3DState {
 
     }
 
+    @Override
     public void readConstructorParams( DataInput in ) throws IOException {
        super.readConstructorParams(in);
 
@@ -82,12 +84,14 @@ public class ColorCubeState extends Shape3DState {
         return false;
     }
 
+    @Override
     public SceneGraphObject createNode( Class j3dClass ) {
         Shape3D shape = (Shape3D) createNode( j3dClass, new Class[]{ Double.TYPE }, new Object[] { new Double(scale) } );
 
         return shape;
     }
 
+    @Override
     protected javax.media.j3d.SceneGraphObject createNode() {
         return new ColorCube( scale );
     }

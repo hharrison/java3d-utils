@@ -180,6 +180,7 @@ public class RandomAccessFileControl extends Controller {
      * RandomAccessFileControl will read the graphs in the array,
      * StreamControl will read all graphs in the stream
      */
+    @Override
     protected void readBranchGraphs( int[] graphs ) throws IOException {
         for(int i=0; i<graphs.length; i++) {
             readBranchGraph( graphs[i] );
@@ -193,6 +194,7 @@ public class RandomAccessFileControl extends Controller {
         return symbolTable.getBranchGraphCount();
     }
 
+    @Override
     public void writeBranchGraph( BranchGroup bg, java.io.Serializable userData ) throws IOException {
         long filePointer = raf.getFilePointer();
         raf.writeInt( 0 );          // Node count
@@ -340,6 +342,7 @@ public class RandomAccessFileControl extends Controller {
      * Write all the unsaved NodeComponents and SharedGroups to DataOutput.
      * Mark all the NodeComponents as saved.
      */
+    @Override
     protected void writeNodeComponents( DataOutput out ) throws IOException {
         // The RandomAccessFileControl version sets throws the pointer to
         // the next NodeComponent correctly
@@ -366,6 +369,7 @@ public class RandomAccessFileControl extends Controller {
     /**
      * Read in all the node components in this block
      */
+    @Override
     protected void readNodeComponents( DataInput in ) throws IOException {
         int count = in.readInt();
 
@@ -384,6 +388,7 @@ public class RandomAccessFileControl extends Controller {
 
     //static java.util.LinkedList objSizeTracker = new java.util.LinkedList();
 
+    @Override
     public void writeObject( DataOutput out, SceneGraphObjectState obj ) throws IOException {
         symbolTable.setFilePosition( raf.getFilePointer(), obj );
         try {
@@ -444,6 +449,7 @@ public class RandomAccessFileControl extends Controller {
         }
     }
 
+    @Override
     public void close() throws IOException {
         try {
             if (writeMode)
@@ -475,6 +481,7 @@ public class RandomAccessFileControl extends Controller {
         raf.writeInt( symbolTable.getBranchGraphCount() );
     }
 
+    @Override
     public long getFilePointer() {
         try {
             return raf.getFilePointer();

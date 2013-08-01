@@ -54,6 +54,7 @@ public abstract class NodeComponentState extends SceneGraphObjectState {
         super(symbol, control);
     }
 
+    @Override
     public void readObject( DataInput in ) throws IOException {
         super.readObject( in );
 
@@ -63,6 +64,7 @@ public abstract class NodeComponentState extends SceneGraphObjectState {
 
     }
 
+    @Override
     public void writeObject( DataOutput out ) throws IOException {
         super.writeObject(out);
         out.writeBoolean(((NodeComponent)this.node).getDuplicateOnCloneTree());

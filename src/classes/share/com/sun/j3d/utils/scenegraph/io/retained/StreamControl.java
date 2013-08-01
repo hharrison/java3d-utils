@@ -108,6 +108,7 @@ public class StreamControl extends Controller {
      * However the data in the userData field of the BranchGroup will be
      * stored in the stream
      */
+    @Override
     public void writeBranchGraph( BranchGroup bg, java.io.Serializable userData ) throws IOException {
         try {
             SymbolTableData symbol = symbolTable.getSymbol( bg );
@@ -162,6 +163,7 @@ public class StreamControl extends Controller {
      * StreamControl expects the graphs to follow the universe in the
      * stream so it will read graphs.length branchgraphs.
      */
+    @Override
     protected void readBranchGraphs( int[] graphs ) throws IOException {
         for(int i=0; i<graphs.length; i++)
             readBranchGraph( null );
@@ -175,6 +177,7 @@ public class StreamControl extends Controller {
         throw new java.io.IOException("Unable to load individual NodeComponents from Stream");
     }
 
+    @Override
     public void close() throws IOException {
         super.reset();
     }
@@ -184,6 +187,7 @@ public class StreamControl extends Controller {
      *
      * Always returns 0
      */
+    @Override
     public long getFilePointer() {
         return 0L;
     }

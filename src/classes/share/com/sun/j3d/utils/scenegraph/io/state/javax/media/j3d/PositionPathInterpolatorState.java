@@ -60,6 +60,7 @@ public class PositionPathInterpolatorState extends PathInterpolatorState {
         super( symbol, control );
     }
 
+    @Override
     public void writeConstructorParams( DataOutput out ) throws IOException {
         super.writeConstructorParams( out );
 
@@ -72,6 +73,7 @@ public class PositionPathInterpolatorState extends PathInterpolatorState {
             control.writePoint3f( out, positions[i] );
     }
 
+    @Override
     public void readConstructorParams( DataInput in ) throws IOException {
         super.readConstructorParams( in );
 
@@ -80,6 +82,7 @@ public class PositionPathInterpolatorState extends PathInterpolatorState {
             positions[i] = control.readPoint3f( in );
     }
 
+    @Override
     public SceneGraphObject createNode( Class j3dClass ) {
         return createNode( j3dClass, new Class[] { javax.media.j3d.Alpha.class,
                                                     TransformGroup.class,
@@ -93,6 +96,7 @@ public class PositionPathInterpolatorState extends PathInterpolatorState {
                                                      positions } );
     }
 
+    @Override
     protected javax.media.j3d.SceneGraphObject createNode() {
         return new PositionPathInterpolator( null, null, new Transform3D(), knots, positions );
     }

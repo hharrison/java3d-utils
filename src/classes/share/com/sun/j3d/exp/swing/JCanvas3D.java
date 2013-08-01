@@ -237,6 +237,7 @@ public class JCanvas3D extends JPanel implements AncestorListener {
      *
      * @param event {@inheritDoc}
      */
+    @Override
     public void ancestorAdded(javax.swing.event.AncestorEvent event) {
         //        if ( true == isVisible(  ) ) // check if the component itself is visible.
         {
@@ -262,6 +263,7 @@ public class JCanvas3D extends JPanel implements AncestorListener {
      *
      * @param event {@inheritDoc}
      */
+    @Override
     public void ancestorMoved(javax.swing.event.AncestorEvent event) {
     }
 
@@ -270,6 +272,7 @@ public class JCanvas3D extends JPanel implements AncestorListener {
      *
      * @param event {@inheritDoc}
      */
+    @Override
     public void ancestorRemoved(javax.swing.event.AncestorEvent event) {
         hasBeenAdded = false;
         canvas.removeNotify();
@@ -394,6 +397,7 @@ public class JCanvas3D extends JPanel implements AncestorListener {
      *
      * @param g {@inheritDoc}
      */
+    @Override
     public void paintComponent(java.awt.Graphics g) {
         super.paintComponent(g); //paint background
 
@@ -420,6 +424,7 @@ public class JCanvas3D extends JPanel implements AncestorListener {
      *
      * @param e {@inheritDoc}
      */
+    @Override
     protected void processComponentKeyEvent(java.awt.event.KeyEvent e) {
         super.processComponentKeyEvent(e);
 
@@ -434,6 +439,7 @@ public class JCanvas3D extends JPanel implements AncestorListener {
      *
      * @param e {@inheritDoc}
      */
+    @Override
     protected void processFocusEvent(java.awt.event.FocusEvent e) {
         super.processFocusEvent(e);
 
@@ -448,6 +454,7 @@ public class JCanvas3D extends JPanel implements AncestorListener {
      *
      * @param e {@inheritDoc}
      */
+    @Override
     protected void processInputMethodEvent(java.awt.event.InputMethodEvent e) {
         super.processInputMethodEvent(e);
 
@@ -462,6 +469,7 @@ public class JCanvas3D extends JPanel implements AncestorListener {
      *
      * @param e {@inheritDoc}
      */
+    @Override
     protected void processKeyEvent(java.awt.event.KeyEvent e) {
         super.processKeyEvent(e);
 
@@ -476,6 +484,7 @@ public class JCanvas3D extends JPanel implements AncestorListener {
      *
      * @param e {@inheritDoc}
      */
+    @Override
     protected void processMouseEvent(java.awt.event.MouseEvent e) {
         super.processMouseEvent(e);
 
@@ -490,6 +499,7 @@ public class JCanvas3D extends JPanel implements AncestorListener {
      *
      * @param e {@inheritDoc}
      */
+    @Override
     protected void processMouseMotionEvent(java.awt.event.MouseEvent e) {
         super.processMouseMotionEvent(e);
 
@@ -504,6 +514,7 @@ public class JCanvas3D extends JPanel implements AncestorListener {
      *
      * @param e {@inheritDoc}
      */
+    @Override
     protected void processMouseWheelEvent(java.awt.event.MouseWheelEvent e) {
         super.processMouseWheelEvent(e);
 
@@ -521,6 +532,7 @@ public class JCanvas3D extends JPanel implements AncestorListener {
      * @param width {@inheritDoc}
      * @param height {@inheritDoc}
      */
+    @Override
     public void setBounds(int x, int y, int width, int height) {
         super.setBounds(x, y, width, height);
 
@@ -667,6 +679,7 @@ public class JCanvas3D extends JPanel implements AncestorListener {
         /**
          * {@inheritDoc}
          */
+        @Override
         public void addNotify() {
             if (false == addNotifyFlag) {
                 throw new UnsupportedOperationException("CHANGE ME");
@@ -686,6 +699,7 @@ public class JCanvas3D extends JPanel implements AncestorListener {
          *         null if the component is not created or if it has no
          *         parent.
          */
+        @Override
         public java.awt.Container getParent() {
             if (null == this.lwCanvas) {
                 return null;
@@ -697,6 +711,7 @@ public class JCanvas3D extends JPanel implements AncestorListener {
         /**
          * Blocks the retrieval of the render buffer.
          */
+        @Override
         public void postRender() {
             imageReadyBis = false;
         }
@@ -705,6 +720,7 @@ public class JCanvas3D extends JPanel implements AncestorListener {
          * Retrieves the buffer from canvas, if possible, and
          * calls/notifies component to be repainted, if necessary.
          */
+        @Override
         synchronized public void postSwap() {
             if (true == isRendererRunning()) { // as weird as it can look, there can be postswaps without rendered running. (?!!) Anyway, in that case we should not refresh.
                 bi = getOffScreenBuffer().getImage();
@@ -726,6 +742,7 @@ public class JCanvas3D extends JPanel implements AncestorListener {
          *
          * @param e {@inheritDoc}
          */
+        @Override
         protected void processComponentEvent(java.awt.event.ComponentEvent e) {
             super.processComponentEvent(e);
         }
@@ -735,6 +752,7 @@ public class JCanvas3D extends JPanel implements AncestorListener {
          *
          * @param e {@inheritDoc}
          */
+        @Override
         protected void processFocusEvent(java.awt.event.FocusEvent e) {
             super.processFocusEvent(e);
         }
@@ -744,6 +762,7 @@ public class JCanvas3D extends JPanel implements AncestorListener {
          *
          * @param e {@inheritDoc}
          */
+        @Override
         protected void processInputMethodEvent(
             java.awt.event.InputMethodEvent e) {
             super.processInputMethodEvent(e);
@@ -754,6 +773,7 @@ public class JCanvas3D extends JPanel implements AncestorListener {
          *
          * @param e {@inheritDoc}
          */
+        @Override
         protected void processKeyEvent(java.awt.event.KeyEvent e) {
             super.processKeyEvent(e);
         }
@@ -763,6 +783,7 @@ public class JCanvas3D extends JPanel implements AncestorListener {
          *
          * @param e {@inheritDoc}
          */
+        @Override
         protected void processMouseEvent(java.awt.event.MouseEvent e) {
             super.processMouseEvent(e);
         }
@@ -772,6 +793,7 @@ public class JCanvas3D extends JPanel implements AncestorListener {
          *
          * @param e {@inheritDoc}
          */
+        @Override
         protected void processMouseMotionEvent(java.awt.event.MouseEvent e) {
             super.processMouseMotionEvent(e);
         }
@@ -781,6 +803,7 @@ public class JCanvas3D extends JPanel implements AncestorListener {
          *
          * @param e {@inheritDoc}
          */
+        @Override
         protected void processMouseWheelEvent(java.awt.event.MouseWheelEvent e) {
             super.processMouseWheelEvent(e);
         }
@@ -847,6 +870,7 @@ public class JCanvas3D extends JPanel implements AncestorListener {
         /**
          * {@inheritDoc}
          */
+        @Override
         public void run() {
             canvas.createCanvas(width, height);
         }
@@ -916,6 +940,7 @@ public class JCanvas3D extends JPanel implements AncestorListener {
         /**
          * {@inheritDoc}
          */
+        @Override
         public void run() {
             try {
                 while (true == sizeChanged) // the double loop is made so that if a change of size arrives while the canvas is already resizing, the same thread can keep up with subsequent resizes.

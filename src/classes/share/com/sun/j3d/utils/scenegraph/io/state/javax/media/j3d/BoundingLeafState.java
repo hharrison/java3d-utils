@@ -55,6 +55,7 @@ public abstract class BoundingLeafState extends SceneGraphObjectState {
         super(symbol, control);
     }
 
+    @Override
     public void writeObject( DataOutput out ) throws
 							IOException {
 
@@ -63,6 +64,7 @@ public abstract class BoundingLeafState extends SceneGraphObjectState {
         control.writeBounds( out, ((BoundingLeaf)node).getRegion() );
     }
 
+    @Override
     public void readObject( DataInput in ) throws
 							IOException {
        super.readObject(in);
@@ -70,6 +72,7 @@ public abstract class BoundingLeafState extends SceneGraphObjectState {
        ((BoundingLeaf)node).setRegion( control.readBounds(in) );
     }
 
+    @Override
     protected SceneGraphObject createNode() {
         return new BoundingLeaf();
     }

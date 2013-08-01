@@ -907,6 +907,7 @@ public class PickIntersection {
     /**
      * String representation of this object
      */
+    @Override
     public String toString() {
 	String rt = new String ("PickIntersection: ");
 	rt += " IntersectionInfo = "+ iInfo + "\n";

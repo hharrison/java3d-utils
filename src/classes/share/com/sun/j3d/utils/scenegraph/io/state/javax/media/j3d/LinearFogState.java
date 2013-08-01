@@ -54,6 +54,7 @@ public class LinearFogState extends FogState {
         super( symbol, control );
     }
 
+    @Override
     public void writeObject( DataOutput out ) throws IOException {
         super.writeObject( out );
 
@@ -61,6 +62,7 @@ public class LinearFogState extends FogState {
         out.writeDouble( ((LinearFog)node).getFrontDistance() );
     }
 
+    @Override
     public void readObject( DataInput in ) throws IOException {
         super.readObject( in );
 
@@ -68,6 +70,7 @@ public class LinearFogState extends FogState {
         ((LinearFog)node).setFrontDistance( in.readDouble() );
     }
 
+    @Override
     protected javax.media.j3d.SceneGraphObject createNode() {
         return new LinearFog();
     }

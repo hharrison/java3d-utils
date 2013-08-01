@@ -62,6 +62,7 @@ public abstract class IndexedGeometryArrayState extends GeometryArrayState {
 	super( symbol, control );
     }
 
+    @Override
     public void writeObject( DataOutput out ) throws IOException {
         super.writeObject( out );
 
@@ -100,6 +101,7 @@ public abstract class IndexedGeometryArrayState extends GeometryArrayState {
 	out.writeInt( ((IndexedGeometryArray)node).getInitialIndexIndex() );
     }
 
+    @Override
     public void readObject( DataInput in ) throws IOException {
         super.readObject( in );
 
@@ -138,12 +140,14 @@ public abstract class IndexedGeometryArrayState extends GeometryArrayState {
 	((IndexedGeometryArray)node).setInitialIndexIndex( in.readInt() );
     }
 
+    @Override
     protected void writeConstructorParams( DataOutput out ) throws
 								IOException {
         super.writeConstructorParams( out );
         out.writeInt( ((IndexedGeometryArray)node).getIndexCount() );
     }
 
+    @Override
     protected void readConstructorParams( DataInput in ) throws
 							IOException {
         super.readConstructorParams( in );

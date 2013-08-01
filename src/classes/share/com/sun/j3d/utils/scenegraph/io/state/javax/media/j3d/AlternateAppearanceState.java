@@ -71,6 +71,7 @@ public class AlternateAppearanceState extends LeafState {
         }
     }
 
+    @Override
     public void writeObject( DataOutput out ) throws IOException {
         super.writeObject( out );
 
@@ -83,6 +84,7 @@ public class AlternateAppearanceState extends LeafState {
         control.writeBounds( out, ((AlternateAppearance)node).getInfluencingBounds() );
     }
 
+    @Override
     public void readObject( DataInput in ) throws IOException {
         super.readObject( in );
 
@@ -106,6 +108,7 @@ public class AlternateAppearanceState extends LeafState {
 	control.getSymbolTable().incNodeComponentRefCount( appearance );
     }
 
+    @Override
     public void buildGraph() {
         for(int i=0; i<scopes.length; i++)
             ((AlternateAppearance)node).addScope( (Group)control.getSymbolTable().getJ3dNode( scopes[i] ));
@@ -116,6 +119,7 @@ public class AlternateAppearanceState extends LeafState {
 
     }
 
+    @Override
     protected SceneGraphObject createNode() {
         return new AlternateAppearance();
     }

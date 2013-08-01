@@ -89,6 +89,7 @@ public class ByteBufferWrapper extends BufferWrapper {
      * Returns the java.nio.Buffer contained within this
      * ByteBufferWrapper.
      */
+    @Override
     public java.nio.Buffer getBuffer() {
 	return this.buffer;
     }

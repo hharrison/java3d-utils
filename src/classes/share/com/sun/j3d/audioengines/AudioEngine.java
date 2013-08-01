@@ -104,12 +104,14 @@ public abstract class AudioEngine implements AudioDevice {
      * Code to initialize the device
      * @return flag: true is initialized sucessfully, false if error
      */
+    @Override
     public abstract boolean initialize();
 
     /**
      * Code to close the device
      * @return flag: true is closed sucessfully, false if error
      */
+    @Override
     public abstract boolean close();
 
     /*
@@ -120,6 +122,7 @@ public abstract class AudioEngine implements AudioDevice {
      *     Valid types are HEADPHONE, MONO_SPEAKER, STEREO_SPEAKERS
      * @param type of audio output device
      */
+    @Override
     public void setAudioPlaybackType(int type) {
         audioPlaybackType = type;
     }
@@ -128,6 +131,7 @@ public abstract class AudioEngine implements AudioDevice {
      * Get Type of Audio Playback Output Device
      * returns audio playback type to which sound is currently output
      */
+    @Override
     public int getAudioPlaybackType() {
         return audioPlaybackType;
     }
@@ -136,6 +140,7 @@ public abstract class AudioEngine implements AudioDevice {
      * Set Distance from the Center Ear to a Speaker
      * @param distance from the center ear and to the speaker
      */
+    @Override
     public void setCenterEarToSpeaker(float distance) {
         distanceToSpeaker = distance;
     }
@@ -144,6 +149,7 @@ public abstract class AudioEngine implements AudioDevice {
      * Get Distance from Ear to Speaker
      * returns value set as distance from listener's ear to speaker
      */
+    @Override
     public float getCenterEarToSpeaker() {
         return distanceToSpeaker;
     }
@@ -151,6 +157,7 @@ public abstract class AudioEngine implements AudioDevice {
     /**
      * Set Angle Offset To Speaker
      * @param angle in radian between head coordinate Z axis and vector to speaker   */
+    @Override
     public void setAngleOffsetToSpeaker(float angle) {
         angleOffsetToSpeaker = angle;
     }
@@ -159,6 +166,7 @@ public abstract class AudioEngine implements AudioDevice {
      * Get Angle Offset To Speaker
      * returns value set as angle between vector to speaker and Z head axis
      */
+    @Override
     public float getAngleOffsetToSpeaker() {
         return angleOffsetToSpeaker;
     }
@@ -169,6 +177,7 @@ public abstract class AudioEngine implements AudioDevice {
      * returns number of maximum sound channels you can run with this
      * library/device-driver.
      */
+    @Override
     public int getTotalChannels() {
         // this method should be overridden by a device specific implementation
         return (totalChannels);
@@ -179,6 +188,7 @@ public abstract class AudioEngine implements AudioDevice {
      * returns number of sound channels currently available (number
      * not being used by active sounds.
      */
+    @Override
     public int getChannelsAvailable() {
         return (channelsAvailable);
     }
@@ -190,6 +200,7 @@ public abstract class AudioEngine implements AudioDevice {
      * returns number of sound channels used by a specific Sound node
      * @deprecated This method is now part of the Sound class
      */
+    @Override
     public int getChannelsUsedForSound(Sound sound) {
         if (sound != null)
             return sound.getNumberOfChannelsUsed();

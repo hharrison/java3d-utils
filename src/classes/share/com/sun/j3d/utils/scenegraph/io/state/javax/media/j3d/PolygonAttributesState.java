@@ -54,6 +54,7 @@ public class PolygonAttributesState extends NodeComponentState {
         super(symbol, control);
     }
 
+    @Override
     public void writeObject( DataOutput out ) throws IOException {
         super.writeObject( out );
         PolygonAttributes polyAttr = (PolygonAttributes)node;
@@ -64,6 +65,7 @@ public class PolygonAttributesState extends NodeComponentState {
         out.writeFloat( polyAttr.getPolygonOffsetFactor() );
     }
 
+    @Override
     public void readObject( DataInput in ) throws IOException {
         super.readObject( in );
         PolygonAttributes polyAttr = (PolygonAttributes)node;
@@ -74,6 +76,7 @@ public class PolygonAttributesState extends NodeComponentState {
         polyAttr.setPolygonOffsetFactor( in.readFloat() );
     }
 
+    @Override
     protected javax.media.j3d.SceneGraphObject createNode() {
         return new PolygonAttributes();
     }

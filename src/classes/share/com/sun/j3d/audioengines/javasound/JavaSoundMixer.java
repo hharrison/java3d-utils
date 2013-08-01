@@ -116,6 +116,7 @@ public class JavaSoundMixer extends AudioEngine3DL2 {
      * Overridden method from AudioEngine.
      * @return number of maximum voices play simultaneously on JavaSound Mixer.
      */
+    @Override
     public int getTotalChannels() {
         if (thread != null)
             return thread.getTotalChannels();
@@ -128,6 +129,7 @@ public class JavaSoundMixer extends AudioEngine3DL2 {
      * New interface to mixer/engine specific methods
      * @return flag: true is initialized sucessfully, false if error
      */
+    @Override
     public boolean initialize() {
         if (thread == null) {
             return false;
@@ -145,6 +147,7 @@ public class JavaSoundMixer extends AudioEngine3DL2 {
      * New interface to mixer/engine specific methods
      * @return flag: true is closed sucessfully, false if error
      */
+    @Override
     public boolean close() {
         if (thread == null)
             return false;
@@ -177,6 +180,7 @@ public class JavaSoundMixer extends AudioEngine3DL2 {
      *     Store a reference to JSXxxxSample object in samples list.
      * @return index to the sample in samples list.
      */
+    @Override
     public int prepareSound(int soundType, MediaContainer soundData) {
         int   index = JSSample.NULL_SAMPLE;
         int   methodType = ADD_TO_LIST;
@@ -253,6 +257,7 @@ public class JavaSoundMixer extends AudioEngine3DL2 {
      * Clears the fields associated with sample data for this sound.
      * Overriden method from AudioEngine3D.
      */
+    @Override
     public void clearSound(int index) {
         // TODO: call JSXXXX clear method
         JSSample sample = null;
@@ -268,6 +273,7 @@ public class JavaSoundMixer extends AudioEngine3DL2 {
      * Save a reference to the local to virtual world coordinate space
      * Overriden method from AudioEngine3D.
      */
+    @Override
     public void  setVworldXfrm(int index, Transform3D trans) {
         if (debugFlag)
             debugPrintln("JavaSoundMixer: setVworldXfrm for index " + index);
@@ -312,6 +318,7 @@ public class JavaSoundMixer extends AudioEngine3DL2 {
     /*
      * Overriden method from AudioEngine3D.
      */
+    @Override
     public void   setPosition(int index, Point3d position) {
         if (debugFlag)
             debugPrintln("JavaSoundMixer: setPosition for index " + index);
@@ -330,6 +337,7 @@ public class JavaSoundMixer extends AudioEngine3DL2 {
     /*
      * Overriden method from AudioEngine3D.
      */
+    @Override
     public void setDirection(int index, Vector3d direction) {
         if (debugFlag)
             debugPrintln("JavaSoundMixer: setDirection for index " + index);
@@ -347,6 +355,7 @@ public class JavaSoundMixer extends AudioEngine3DL2 {
     /*
      * Overriden method from AudioEngine3D.
      */
+    @Override
     public void setReflectionCoefficient(float coefficient) {
         super.setReflectionCoefficient(coefficient);
         auralParams.reverbDirty |= JSAuralParameters.REFLECTION_COEFF_CHANGED;
@@ -356,6 +365,7 @@ public class JavaSoundMixer extends AudioEngine3DL2 {
     /*
      * Overriden method from AudioEngine3D.
      */
+    @Override
     public void setReverbDelay(float reverbDelay) {
         super.setReverbDelay(reverbDelay);
         auralParams.reverbDirty |= JSAuralParameters.REVERB_DELAY_CHANGED;
@@ -365,6 +375,7 @@ public class JavaSoundMixer extends AudioEngine3DL2 {
     /*
      * Overriden method from AudioEngine3D.
      */
+    @Override
     public void setReverbOrder(int reverbOrder) {
         super.setReverbOrder(reverbOrder);
         auralParams.reverbDirty |=  JSAuralParameters.REVERB_ORDER_CHANGED;
@@ -380,6 +391,7 @@ public class JavaSoundMixer extends AudioEngine3DL2 {
      *
      * Overriden method from AudioEngine3D.
      */
+    @Override
     public int   startSample(int index) {
 	// TODO: Rewrite this function
 
@@ -450,6 +462,7 @@ public class JavaSoundMixer extends AudioEngine3DL2 {
     /*
      * Overriden method from AudioEngine3D.
      */
+    @Override
     public int   stopSample(int index) {
 	// TODO: Rewrite this function
 
@@ -486,6 +499,7 @@ public class JavaSoundMixer extends AudioEngine3DL2 {
     /*
      * Overriden method from AudioEngine3D.
      */
+    @Override
     public void pauseSample(int index) {
         if (debugFlag)
             debugPrintln("JavaSoundMixer: PAUSESample for index " + index);
@@ -499,6 +513,7 @@ public class JavaSoundMixer extends AudioEngine3DL2 {
     /*
      * Overriden method from AudioEngine3D.
      */
+    @Override
     public void unpauseSample(int index) {
         if (debugFlag)
             debugPrintln("JavaSoundMixer: UNPAUSESample for index " + index);
@@ -513,6 +528,7 @@ public class JavaSoundMixer extends AudioEngine3DL2 {
      * Overriden method from AudioEngine3D.
      */
 
+    @Override
     public void updateSample(int index) {
         if (debugFlag)
             debugPrintln("JavaSoundMixer: UPDATESample for index " + index);
@@ -568,6 +584,7 @@ public class JavaSoundMixer extends AudioEngine3DL2 {
     /*
      * Overriden method from AudioEngine3D.
      */
+    @Override
     public void   muteSample(int index) {
         JSSample sample = null;
         if ((sample = (JSSample)getSample(index)) == null)
@@ -583,6 +600,7 @@ public class JavaSoundMixer extends AudioEngine3DL2 {
     /*
      * Overriden method from AudioEngine3D.
      */
+    @Override
     public void   unmuteSample(int index) {
         JSSample sample = null;
         if ((sample = (JSSample)getSample(index)) == null)
@@ -607,6 +625,7 @@ public class JavaSoundMixer extends AudioEngine3DL2 {
     /*
      * Overriden method from AudioEngine3D.
      */
+    @Override
     public long  getSampleDuration(int index) {
         JSSample sample = null;
         if ((sample = (JSSample)getSample(index)) == null)
@@ -625,6 +644,7 @@ public class JavaSoundMixer extends AudioEngine3DL2 {
     /*
      * Overriden method from AudioEngine3D.
      */
+    @Override
     public int   getNumberOfChannelsUsed(int index) {
         /*
          * Calls same method with different signature containing the
@@ -640,6 +660,7 @@ public class JavaSoundMixer extends AudioEngine3DL2 {
     /**
      * Overriden method from AudioEngine3D.
      */
+    @Override
     public int   getNumberOfChannelsUsed(int index, boolean muted) {
         /*
          * The JavaSoundMixer implementation uses THREE channels to render
@@ -673,6 +694,7 @@ public class JavaSoundMixer extends AudioEngine3DL2 {
     /*
      * Overriden method from AudioEngine3D.
      */
+    @Override
     public long  getStartTime(int index) {
         JSSample sample = null;
         if ((sample = (JSSample)getSample(index)) == null)
@@ -844,6 +866,7 @@ public class JavaSoundMixer extends AudioEngine3DL2 {
     }
 
     // TEMPORARY: Override of method due to bug in Java Sound
+    @Override
     public void   setLoop(int index, int count) {
         JSSample sample = null;
         if ((sample = (JSSample)getSample(index)) == null)
@@ -913,6 +936,7 @@ public class JavaSoundMixer extends AudioEngine3DL2 {
     // Set overall gain for device
     // @since Java 3D 1.3
     //
+    @Override
     public void  setGain(float scaleFactor) {
         float oldDeviceGain = deviceGain;
         float gainFactor = scaleFactor/oldDeviceGain;
@@ -925,6 +949,7 @@ public class JavaSoundMixer extends AudioEngine3DL2 {
      * Set sample specific sample rate scale factor gain
      * @since Java 3D 1.3
      */
+    @Override
     public void   setRateScaleFactor(int index, float rateScaleFactor) {
         JSSample sample = null;
         if ((sample = (JSSample)getSample(index)) == null)
@@ -939,6 +964,7 @@ public class JavaSoundMixer extends AudioEngine3DL2 {
      * Causes all cached sounds to be paused and all streaming sounds to be
      * stopped.
      */
+    @Override
     public void  pause() {
         pause = PAUSE_PENDING;
         // TODO: pause all sounds
@@ -949,6 +975,7 @@ public class JavaSoundMixer extends AudioEngine3DL2 {
      * Causes all paused cached sounds to be resumed and all streaming sounds
      * restarted.
      */
+    @Override
     public void resume() {
         pause = RESUME_PENDING;
         // TODO: unpause all sounds

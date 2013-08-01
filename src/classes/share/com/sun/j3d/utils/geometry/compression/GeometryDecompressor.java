@@ -136,6 +136,7 @@ abstract class GeometryDecompressor {
 	int tagLength, dataLength ;
 	int rightShift, absolute ;
 
+	@Override
 	public String toString() {
 	    return
 		" tag length: "  + tagLength  +

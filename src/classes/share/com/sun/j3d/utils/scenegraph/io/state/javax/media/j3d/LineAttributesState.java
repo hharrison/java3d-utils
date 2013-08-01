@@ -54,6 +54,7 @@ public class LineAttributesState extends NodeComponentState {
         super(symbol, control);
     }
 
+    @Override
     public void writeObject( DataOutput out ) throws IOException {
         super.writeObject( out );
         LineAttributes attr = (LineAttributes)node;
@@ -64,6 +65,7 @@ public class LineAttributesState extends NodeComponentState {
         out.writeInt( attr.getPatternScaleFactor() );
     }
 
+    @Override
     public void readObject( DataInput in ) throws IOException {
         super.readObject( in );
         LineAttributes attr = (LineAttributes)node;
@@ -74,6 +76,7 @@ public class LineAttributesState extends NodeComponentState {
         attr.setPatternScaleFactor( in.readInt() );
     }
 
+    @Override
     protected javax.media.j3d.SceneGraphObject createNode() {
         return new LineAttributes();
     }

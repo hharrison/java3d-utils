@@ -151,6 +151,7 @@ class LwsCamera extends TextfileParser implements LwsPrimitive {
     /**
      * Returns TransformGroup of camera
      */
+    @Override
     public TransformGroup getObjectNode()
     {
 	return objectTransform;
@@ -159,6 +160,7 @@ class LwsCamera extends TextfileParser implements LwsPrimitive {
     /**
      * Returns animation behaviors for camera
      */
+    @Override
     public Vector getObjectBehaviors()
     {
 	debugOutputLn(TRACE, "getObjectBehaviors()");

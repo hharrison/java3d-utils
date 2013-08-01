@@ -172,6 +172,7 @@ public class SensorEventAgent {
 		(new SensorReadListener[readBindingsList.size()]) ;
 	}
 
+	@Override
 	public String toString() {
 	    String s = new String() ;
 	    s = "sensor " + sensor + "\nbutton listener arrays:\n" ;
@@ -211,6 +212,7 @@ public class SensorEventAgent {
 	    this.multiButton = multiButtonEnable ;
 	}
 
+	@Override
 	public String toString() {
 	    String s = new String() ;
 	    s = "  length " + listeners.length +
@@ -700,6 +702,7 @@ public class SensorEventAgent {
 	}
     }
 
+    @Override
     public String toString() {
 	String s = "SensorEventAgent@" + Integer.toHexString(hashCode()) ;
 	s += "\nsensor bindings:\n\n" ;

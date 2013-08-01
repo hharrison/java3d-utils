@@ -493,6 +493,7 @@ public class PickResult {
       Returns String representation
       @return string representation of this object
       */
+    @Override
     public String toString () {
 	String rt = new String ("PickResult: sgp:"+pickedSceneGraphPath+"\n");
 	if (pickedNode != null) rt += " node:"+pickedNode;

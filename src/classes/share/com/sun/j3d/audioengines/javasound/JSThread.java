@@ -106,6 +106,7 @@ class JSThread extends com.sun.j3d.audioengines.AudioEngineThread {
      * increment/decrement changes in rate (and other future parameters)
      * until the target value is reached.
      */
+    @Override
     synchronized public void doWork() {
         if (debugFlag)
             debugPrint("JSThread.doWork()");
@@ -817,6 +818,7 @@ leftDelay, rightDelay
      * This initializes this thread.  Once this method returns, the thread is
      * ready to do work.
      */
+    @Override
     public void initialize() {
         super.initialize();
         // this.setPriority(Thread.MAX_PRIORITY);
@@ -835,6 +837,7 @@ leftDelay, rightDelay
         return false;
     }
 
+    @Override
     public void shutdown() {
     }
 
@@ -842,6 +845,7 @@ leftDelay, rightDelay
 
 
     // default resource clean up method
+    @Override
     public void cleanup() {
         super.cleanup();
         if (debugFlag)

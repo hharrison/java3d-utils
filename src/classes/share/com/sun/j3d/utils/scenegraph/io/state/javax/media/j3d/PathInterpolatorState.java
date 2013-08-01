@@ -59,6 +59,7 @@ public abstract class PathInterpolatorState extends TransformInterpolatorState {
     // PathInterpolator.setKnots(float[]) is protected so we can only set the
     // knots in the constructor
 
+    @Override
     public void writeConstructorParams( DataOutput out ) throws IOException {
         super.writeConstructorParams( out );
         knots = new float[ ((PathInterpolator)node).getArrayLengths() ];
@@ -68,6 +69,7 @@ public abstract class PathInterpolatorState extends TransformInterpolatorState {
             out.writeFloat( knots[i] );
     }
 
+    @Override
     public void readConstructorParams( DataInput in ) throws IOException {
         super.readConstructorParams( in );
         knots = new float[ in.readInt() ];

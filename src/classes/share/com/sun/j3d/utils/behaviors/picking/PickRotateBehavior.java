@@ -146,6 +146,7 @@ public class PickRotateBehavior extends PickMouseBehavior implements MouseBehavi
    * @param xpos Current mouse X pos.
    * @param ypos Current mouse Y pos.
    **/
+  @Override
   public void updateScene(int xpos, int ypos){
     TransformGroup tg = null;
 
@@ -172,6 +173,7 @@ public class PickRotateBehavior extends PickMouseBehavior implements MouseBehavi
     * Callback method from MouseRotate
     * This is used when the Picking callback is enabled
     */
+  @Override
   public void transformChanged( int type, Transform3D transform ) {
       callback.transformChanged( PickingCallback.ROTATE, currentTG );
   }

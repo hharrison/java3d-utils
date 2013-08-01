@@ -54,6 +54,7 @@ public class SwitchState extends GroupState {
         super(symbol, control);
     }
 
+    @Override
     public void writeObject( DataOutput out ) throws IOException {
         super.writeObject( out );
         Switch attr = (Switch)node;
@@ -61,6 +62,7 @@ public class SwitchState extends GroupState {
         out.writeInt( attr.getWhichChild() );
     }
 
+    @Override
     public void readObject( DataInput in ) throws IOException {
         super.readObject( in );
         Switch attr = (Switch)node;
@@ -69,6 +71,7 @@ public class SwitchState extends GroupState {
         attr.setWhichChild( in.readInt() );
     }
 
+    @Override
     protected javax.media.j3d.SceneGraphObject createNode() {
         return new Switch();
     }

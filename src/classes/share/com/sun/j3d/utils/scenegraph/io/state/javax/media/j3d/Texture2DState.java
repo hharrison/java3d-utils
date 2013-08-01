@@ -64,6 +64,7 @@ public class Texture2DState extends TextureState {
 	}
     }
 
+    @Override
     public void writeObject( DataOutput out ) throws IOException {
 	super.writeObject( out );
 
@@ -83,6 +84,7 @@ public class Texture2DState extends TextureState {
 	}
     }
 
+    @Override
     public void readObject( DataInput in ) throws IOException {
 	super.readObject( in );
 
@@ -105,17 +107,20 @@ public class Texture2DState extends TextureState {
      * Allows this component to update the reference count of any components
      * that it references.
      */
+    @Override
     public void addSubReference() {
 	control.getSymbolTable().incNodeComponentRefCount( detailImage );
     }
 
     // Set up references during load
+    @Override
     public void buildGraph() {
 	Texture2D t = (Texture2D)node;
 	t.setDetailImage( (ImageComponent2D)control.getSymbolTable().getJ3dNode( detailImage ) );
 	super.buildGraph();  // Must be last call in method
     }
 
+    @Override
     public SceneGraphObject createNode( Class j3dClass ) {
         return createNode( j3dClass, new Class[] { Integer.TYPE,
                                                    Integer.TYPE,
@@ -129,6 +134,7 @@ public class Texture2DState extends TextureState {
 						    new Integer( boundaryWidth ) } );
     }
 
+    @Override
     protected javax.media.j3d.SceneGraphObject createNode() {
         return new Texture2D( mipMapMode, format, width, height, boundaryWidth );
     }

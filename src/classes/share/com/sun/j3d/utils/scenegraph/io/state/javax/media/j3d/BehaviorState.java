@@ -59,6 +59,7 @@ public class BehaviorState extends LeafState {
 
     }
 
+    @Override
     protected SceneGraphObject createNode( String className ) {
         SceneGraphObject ret;
         try {
@@ -70,6 +71,7 @@ public class BehaviorState extends LeafState {
         return ret;
     }
 
+    @Override
     public void writeObject( DataOutput out ) throws IOException {
         super.writeObject( out );
         Behavior beh = (Behavior)node;
@@ -85,6 +87,7 @@ public class BehaviorState extends LeafState {
 	out.writeInt( beh.getSchedulingInterval() );
     }
 
+    @Override
     public void readObject( DataInput in ) throws IOException {
         super.readObject( in );
         Behavior beh = (Behavior)node;
@@ -95,6 +98,7 @@ public class BehaviorState extends LeafState {
 	beh.setSchedulingInterval( in.readInt() );
     }
 
+    @Override
     public void buildGraph() {
         ((Behavior)node).setSchedulingBoundingLeaf( (BoundingLeaf)control.getSymbolTable().getJ3dNode( boundingLeaf ));
         super.buildGraph(); // Must be last call in method

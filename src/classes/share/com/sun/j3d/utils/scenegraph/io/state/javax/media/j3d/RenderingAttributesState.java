@@ -54,6 +54,7 @@ public class RenderingAttributesState extends NodeComponentState {
         super(symbol, control);
     }
 
+    @Override
     public void writeObject( DataOutput out ) throws IOException {
         super.writeObject( out );
         RenderingAttributes attr = (RenderingAttributes)node;
@@ -67,6 +68,7 @@ public class RenderingAttributesState extends NodeComponentState {
         out.writeBoolean( attr.getVisible() );
     }
 
+    @Override
     public void readObject( DataInput in ) throws IOException {
         super.readObject( in );
         RenderingAttributes attr = (RenderingAttributes)node;
@@ -80,6 +82,7 @@ public class RenderingAttributesState extends NodeComponentState {
         attr.setVisible( in.readBoolean() );
     }
 
+    @Override
     protected javax.media.j3d.SceneGraphObject createNode() {
         return new RenderingAttributes();
     }

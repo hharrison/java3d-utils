@@ -77,6 +77,7 @@ public class KeyNavigatorBehavior extends Behavior implements KeyListener {
     /**
      *  Override Behavior's initialize method to setup wakeup criteria.
      */
+    @Override
     public void initialize() {
 	// Establish initial wakeup criteria
 	if (listener) {
@@ -93,6 +94,7 @@ public class KeyNavigatorBehavior extends Behavior implements KeyListener {
     /**
      *  Override Behavior's stimulus method to handle the event.
      */
+    @Override
     public void processStimulus(Enumeration criteria) {
 	WakeupOnAWTEvent ev;
 	WakeupCriterion genericEvt;
@@ -191,6 +193,7 @@ public class KeyNavigatorBehavior extends Behavior implements KeyListener {
 	listener = true;
     }
 
+    @Override
     public void keyPressed(KeyEvent evt) {
 // 	System.out.println("keyPressed");
 
@@ -203,6 +206,7 @@ public class KeyNavigatorBehavior extends Behavior implements KeyListener {
 	}
     }
 
+    @Override
     public void keyReleased(KeyEvent evt) {
 // 	System.out.println("keyReleased");
 
@@ -215,6 +219,7 @@ public class KeyNavigatorBehavior extends Behavior implements KeyListener {
 	}
     }
 
+    @Override
     public void keyTyped(KeyEvent evt) {}
 
 }

@@ -60,6 +60,7 @@ public class MediaContainerState extends NodeComponentState {
 		super(symbol, control);
 	}
 
+	@Override
 	public void writeObject(DataOutput out) throws IOException {
 		super.writeObject(out);
 
@@ -81,6 +82,7 @@ public class MediaContainerState extends NodeComponentState {
 		out.writeInt(INPUT_STREAM);
 	}
 
+	@Override
 	public void readObject(DataInput in) throws IOException {
 		super.readObject(in);
 
@@ -106,6 +108,7 @@ public class MediaContainerState extends NodeComponentState {
 
 	}
 
+	@Override
 	protected javax.media.j3d.SceneGraphObject createNode() {
 		return new MediaContainer();
 	}

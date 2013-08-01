@@ -64,6 +64,7 @@ public class LinkState extends LeafState {
         }
     }
 
+    @Override
     public void writeObject( DataOutput out ) throws IOException {
         super.writeObject( out );
 
@@ -76,6 +77,7 @@ public class LinkState extends LeafState {
         }
     }
 
+    @Override
     public void readObject( DataInput in ) throws IOException {
         super.readObject( in );
         sharedGroup = in.readInt();
@@ -85,6 +87,7 @@ public class LinkState extends LeafState {
         }
     }
 
+    @Override
     public void buildGraph() {
         sharedGroupSymbol = control.getSymbolTable().getSymbol( sharedGroup );
         ((SharedGroupState)sharedGroupSymbol.nodeState).buildGraph();
@@ -92,6 +95,7 @@ public class LinkState extends LeafState {
         super.buildGraph(); // Must be last call in method
     }
 
+    @Override
     protected javax.media.j3d.SceneGraphObject createNode() {
         return new Link();
     }

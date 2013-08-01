@@ -68,58 +68,72 @@ public class J3fOutputStream implements java.io.DataOutput {
         return positionOutputStream.getFilePointer();
     }
 
+    @Override
     public void write(byte[] p1,int p2,int p3) throws java.io.IOException {
         dataOutputStream.write( p1, p2, p3 );
     }
 
+    @Override
     public void writeFloat(float p1) throws java.io.IOException {
         dataOutputStream.writeFloat(p1);
     }
 
+    @Override
     public void write(int p1) throws java.io.IOException {
         dataOutputStream.write(p1 );
     }
 
+    @Override
     public void writeShort(int p1) throws java.io.IOException {
         dataOutputStream.writeShort( p1 );
     }
 
+    @Override
     public void writeBytes(java.lang.String p1) throws java.io.IOException {
         dataOutputStream.writeBytes( p1 );
     }
 
+    @Override
     public void writeChar(int p1) throws java.io.IOException {
         dataOutputStream.writeChar( p1 );
     }
 
+    @Override
     public void writeByte(int p1) throws java.io.IOException {
         dataOutputStream.writeByte( p1 );
     }
 
+    @Override
     public void writeLong(long p1) throws java.io.IOException {
         dataOutputStream.writeLong( p1 );
     }
 
+    @Override
     public void writeBoolean(boolean p1) throws java.io.IOException {
         dataOutputStream.writeBoolean( p1 );
     }
 
+    @Override
     public void writeUTF(java.lang.String p1) throws java.io.IOException {
         dataOutputStream.writeUTF( p1 );
     }
 
+    @Override
     public void writeInt(int p1) throws java.io.IOException {
         dataOutputStream.writeInt( p1 );
     }
 
+    @Override
     public void writeChars(java.lang.String p1) throws java.io.IOException {
         dataOutputStream.writeChars( p1 );
     }
 
+    @Override
     public void write(byte[] p1) throws java.io.IOException {
         dataOutputStream.write( p1 );
     }
 
+    @Override
     public void writeDouble(double p1) throws java.io.IOException {
         dataOutputStream.writeDouble( p1 );
     }

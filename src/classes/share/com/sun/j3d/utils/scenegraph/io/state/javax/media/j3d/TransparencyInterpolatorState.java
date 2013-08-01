@@ -61,6 +61,7 @@ public class TransparencyInterpolatorState extends InterpolatorState {
             target = control.getSymbolTable().addReference( ((TransparencyInterpolator)node).getTarget() );
     }
 
+    @Override
     public void writeObject( DataOutput out ) throws IOException {
         super.writeObject( out );
 
@@ -69,6 +70,7 @@ public class TransparencyInterpolatorState extends InterpolatorState {
         out.writeFloat( ((TransparencyInterpolator)node).getMaximumTransparency() );
     }
 
+    @Override
     public void readObject( DataInput in ) throws IOException {
         super.readObject( in );
 
@@ -82,15 +84,18 @@ public class TransparencyInterpolatorState extends InterpolatorState {
      * Allows this component to update the reference count of any components
      * that it references.
      */
+    @Override
     public void addSubReference() {
         control.getSymbolTable().incNodeComponentRefCount( target );
     }
 
+    @Override
     public void buildGraph() {
         ((TransparencyInterpolator)node).setTarget( (TransparencyAttributes)control.getSymbolTable().getJ3dNode( target ));
         super.buildGraph(); // Must be last call in method
     }
 
+    @Override
     public SceneGraphObject createNode( Class j3dClass ) {
         return createNode( j3dClass, new Class[] { javax.media.j3d.Alpha.class,
                                                     javax.media.j3d.TransparencyAttributes.class },
@@ -98,6 +103,7 @@ public class TransparencyInterpolatorState extends InterpolatorState {
                                                      null } );
     }
 
+    @Override
     protected javax.media.j3d.SceneGraphObject createNode() {
         return new TransparencyInterpolator( null, null );
     }

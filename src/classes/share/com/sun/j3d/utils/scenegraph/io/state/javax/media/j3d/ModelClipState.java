@@ -68,6 +68,7 @@ public class ModelClipState extends LeafState {
         }
     }
 
+    @Override
     public void writeObject( DataOutput out ) throws IOException {
         super.writeObject( out );
 
@@ -90,6 +91,7 @@ public class ModelClipState extends LeafState {
         }
     }
 
+    @Override
     public void readObject( DataInput in ) throws IOException {
         super.readObject( in );
 
@@ -112,6 +114,7 @@ public class ModelClipState extends LeafState {
         ((ModelClip)node).setPlanes( planes );
     }
 
+    @Override
     public void buildGraph() {
         for(int i=0; i<scopes.length; i++)
             ((ModelClip)node).addScope( (Group)control.getSymbolTable().getJ3dNode( scopes[i] ));
@@ -120,6 +123,7 @@ public class ModelClipState extends LeafState {
  	super.buildGraph();
     }
 
+    @Override
     protected javax.media.j3d.SceneGraphObject createNode() {
         return new ModelClip();
     }

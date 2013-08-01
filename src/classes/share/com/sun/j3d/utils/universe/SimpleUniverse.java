@@ -406,6 +406,7 @@ public class SimpleUniverse extends VirtualUniverse {
         //  security exception without a try/catch.
 	String stereo = java.security.AccessController.doPrivileged(
 			new java.security.PrivilegedAction<String>() {
+				@Override
 				public String run() {
 					return System.getProperty("j3d.stereo");
 				}

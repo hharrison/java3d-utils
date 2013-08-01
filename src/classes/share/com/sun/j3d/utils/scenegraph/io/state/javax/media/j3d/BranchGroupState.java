@@ -52,6 +52,7 @@ public class BranchGroupState extends GroupState {
         super( symbol, control );
     }
 
+    @Override
     protected SceneGraphObject createNode() {
         return new BranchGroup();
     }

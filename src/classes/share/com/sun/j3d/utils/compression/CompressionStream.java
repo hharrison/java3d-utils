@@ -716,6 +716,7 @@ public class CompressionStream {
 	    this.value = value ;
 	}
 
+	@Override
 	void quantize(CompressionStream s, HuffmanTable t) {
 	    positionQuant = value ;
 	    positionQuantChanged = true ;
@@ -725,6 +726,7 @@ public class CompressionStream {
 		(((double)((1 << (value-1)) - 1))/((double)(1 << (value-1)))) ;
 	}
 
+	@Override
 	public String toString() {
 	    return "positionQuant: " + value ;
 	}
@@ -740,11 +742,13 @@ public class CompressionStream {
 	    this.value = value ;
 	}
 
+	@Override
 	void quantize(CompressionStream s, HuffmanTable t) {
 	    normalQuant = value ;
 	    normalQuantChanged = true ;
 	}
 
+	@Override
 	public String toString() {
 	    return "normalQuant: " + value ;
 	}
@@ -760,11 +764,13 @@ public class CompressionStream {
 	    this.value = value ;
 	}
 
+	@Override
 	void quantize(CompressionStream s, HuffmanTable t) {
 	    colorQuant = value ;
 	    colorQuantChanged = true ;
 	}
 
+	@Override
 	public String toString() {
 	    return "colorQuant: " + value ;
 	}
@@ -782,6 +788,7 @@ public class CompressionStream {
 	    meshReferenceCount++ ;
 	}
 
+	@Override
 	void quantize(CompressionStream s, HuffmanTable t) {
 	    // Retrieve the vertex from the mesh buffer mirror and set up the
 	    // data needed for the next stream element to compute its deltas.
@@ -812,6 +819,7 @@ public class CompressionStream {
 	    }
 	}
 
+	@Override
 	void outputCommand(HuffmanTable t, CommandStream outputBuffer) {
 	    int command = CommandStream.MESH_B_R ;
 	    long data = stripFlag & 0x1 ;
@@ -820,6 +828,7 @@ public class CompressionStream {
 	    outputBuffer.addCommand(command, 8, data, 1) ;
 	}
 
+	@Override
 	public String toString() {
 	    return
 		"meshReference: stripFlag " + stripFlag +
@@ -1148,6 +1157,7 @@ public class CompressionStream {
 	    }
 	}
 
+	@Override
 	public void processVertex(int v, int stripFlag) {
 	    Point3f p = positions[v] ;
 	    int r = meshBuffer.getMeshReference(p) ;
@@ -1263,6 +1273,7 @@ public class CompressionStream {
 	    getIndexArrays(ga, ia) ;
 	}
 
+	@Override
 	public void processVertex(int v, int stripFlag) {
 	    getVertexIndices(v, ia, vi) ;
 	    int r = meshBuffer.getMeshReference(vi.pi) ;
@@ -1402,6 +1413,7 @@ public class CompressionStream {
 
 	abstract void copyVertex(int pi, int ni, int ci, VertexCopy vc) ;
 
+	@Override
 	public void processVertex(int v, int stripFlag) {
 	    copyVertex(v, v, v, vc) ;
 	    processVertexCopy(vc, stripFlag) ;
@@ -1420,6 +1432,7 @@ public class CompressionStream {
 	    vdata = ga.getInterleavedVertices() ;
 	}
 
+	@Override
 	void copyVertex(int pi, int ni, int ci, VertexCopy vc) {
 	    int voffset ;
 	    voffset = pi * vstride ;
@@ -1466,6 +1479,7 @@ public class CompressionStream {
 	    getIndexArrays(ga, ia) ;
 	}
 
+	@Override
 	public void processVertex(int v, int stripFlag) {
 	    getVertexIndices(v, ia, vi) ;
 	    copyVertex(vi.pi, vi.ni, vi.ci, vc) ;
@@ -1493,6 +1507,7 @@ public class CompressionStream {
 	    }
 	}
 
+	@Override
 	void copyVertex(int pi, int ni, int ci, VertexCopy vc) {
 	    int voffset ;
 	    voffset = pi * vstride ;
@@ -1537,6 +1552,7 @@ public class CompressionStream {
 	    getIndexArrays(ga, ia) ;
 	}
 
+	@Override
 	public void processVertex(int v, int stripFlag) {
 	    getVertexIndices(v, ia, vi) ;
 	    copyVertex(vi.pi, vi.ni, vi.ci, vc) ;
@@ -1659,6 +1675,7 @@ public class CompressionStream {
 	    }
 	}
 
+	@Override
 	public void processVertex(int v, int stripFlag) {
 	    copyVertex(v + initialPositionIndex,
 		       v + initialNormalIndex,
@@ -1681,6 +1698,7 @@ public class CompressionStream {
 	    getIndexArrays(ga, ia) ;
 	}
 
+	@Override
 	public void processVertex(int v, int stripFlag) {
 	    getVertexIndices(v, ia, vi) ;
 	    copyVertex(vi.pi, vi.ni, vi.ci, vc) ;
@@ -1813,6 +1831,7 @@ public class CompressionStream {
 	    }
 	}
 
+	@Override
 	public void processVertex(int v, int stripFlag) {
 	    copyVertex(v + initialPositionIndex,
 		       v + initialNormalIndex,
@@ -1835,6 +1854,7 @@ public class CompressionStream {
 	    getIndexArrays(ga, ia) ;
 	}
 
+	@Override
 	public void processVertex(int v, int stripFlag) {
 	    getVertexIndices(v, ia, vi) ;
 	    copyVertex(vi.pi, vi.ni, vi.ci, vc) ;

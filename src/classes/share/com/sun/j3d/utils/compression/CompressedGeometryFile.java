@@ -1004,6 +1004,7 @@ public class CompressedGeometryFile {
     /**
      * Release file resources when this object is garbage collected.
      */
+    @Override
     protected void finalize() {
 	close() ;
     }

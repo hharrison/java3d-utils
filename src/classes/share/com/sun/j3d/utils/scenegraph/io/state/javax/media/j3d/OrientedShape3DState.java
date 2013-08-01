@@ -57,6 +57,7 @@ public class OrientedShape3DState extends Shape3DState {
 
     }
 
+    @Override
     public void writeObject( DataOutput out ) throws IOException {
         super.writeObject( out );
 
@@ -74,6 +75,7 @@ public class OrientedShape3DState extends Shape3DState {
 	out.writeDouble( ((OrientedShape3D)node).getScale() );
     }
 
+    @Override
     public void readObject( DataInput in ) throws IOException {
         super.readObject( in );
 
@@ -84,6 +86,7 @@ public class OrientedShape3DState extends Shape3DState {
         ((OrientedShape3D)node).setScale( in.readDouble() );
     }
 
+    @Override
     protected javax.media.j3d.SceneGraphObject createNode() {
         return new OrientedShape3D();
     }

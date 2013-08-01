@@ -200,6 +200,7 @@ public abstract class MouseBehavior extends Behavior
   /** Initializes the behavior.
    */
 
+  @Override
   public void initialize() {
     mouseEvents = new WakeupCriterion[4];
 
@@ -263,6 +264,7 @@ public abstract class MouseBehavior extends Behavior
   /**
    * All mouse manipulators must implement this.
    */
+  @Override
   public abstract void processStimulus (Enumeration criteria);
 
     /**
@@ -285,10 +287,14 @@ public abstract class MouseBehavior extends Behavior
 	c.addMouseWheelListener(this);
     }
 
+    @Override
     public void mouseClicked(MouseEvent e) {}
+    @Override
     public void mouseEntered(MouseEvent e) {}
+    @Override
     public void mouseExited(MouseEvent e) {}
 
+    @Override
     public void mousePressed(MouseEvent e) {
 // 	System.out.println("mousePressed");
 
@@ -304,6 +310,7 @@ public abstract class MouseBehavior extends Behavior
 	}
     }
 
+    @Override
     public void mouseReleased(MouseEvent e) {
 // 	System.out.println("mouseReleased");
 
@@ -319,6 +326,7 @@ public abstract class MouseBehavior extends Behavior
 	}
     }
 
+    @Override
     public void mouseDragged(MouseEvent e) {
 // 	System.out.println("mouseDragged");
 
@@ -334,8 +342,10 @@ public abstract class MouseBehavior extends Behavior
 	}
     }
 
+    @Override
     public void mouseMoved(MouseEvent e) {}
 
+    @Override
     public void setEnable(boolean state) {
 	super.setEnable(state);
         this.enable = state;
@@ -344,6 +354,7 @@ public abstract class MouseBehavior extends Behavior
 	}
     }
 
+    @Override
     public void mouseWheelMoved(MouseWheelEvent e){
 	System.out.println("MouseBehavior : mouseWheel enable = " + enable );
 

@@ -149,6 +149,7 @@ public class MouseRotate extends MouseBehavior {
 	super(c, flags);
     }
 
+    @Override
     public void initialize() {
 	super.initialize();
 	x_angle = 0;
@@ -191,6 +192,7 @@ public class MouseRotate extends MouseBehavior {
 	y_factor = yFactor;
     }
 
+    @Override
     public void processStimulus (Enumeration criteria) {
 	WakeupCriterion wakeup;
 	AWTEvent[] events;

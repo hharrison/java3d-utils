@@ -59,6 +59,7 @@ public class TextureAttributesState extends NodeComponentState {
         super(symbol, control);
     }
 
+    @Override
     public void writeObject( DataOutput out ) throws IOException {
         super.writeObject( out );
         TextureAttributes attr = (TextureAttributes)node;
@@ -96,6 +97,7 @@ public class TextureAttributesState extends NodeComponentState {
 	out.writeInt( attr.getCombineAlphaScale() );
     }
 
+    @Override
     public void readObject( DataInput in ) throws IOException {
         super.readObject( in );
         TextureAttributes attr = (TextureAttributes)node;
@@ -126,6 +128,7 @@ public class TextureAttributesState extends NodeComponentState {
 	attr.setCombineAlphaScale( in.readInt() );
     }
 
+    @Override
     protected javax.media.j3d.SceneGraphObject createNode() {
         return new TextureAttributes();
     }

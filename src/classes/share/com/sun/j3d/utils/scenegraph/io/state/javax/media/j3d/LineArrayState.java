@@ -51,6 +51,7 @@ public class LineArrayState extends GeometryArrayState {
         super( symbol, control );
     }
 
+    @Override
     public SceneGraphObject createNode( Class j3dClass ) {
         return createNode( j3dClass, new Class[] {
                                             Integer.TYPE,
@@ -65,6 +66,7 @@ public class LineArrayState extends GeometryArrayState {
     }
 
 
+    @Override
     protected javax.media.j3d.SceneGraphObject createNode() {
         return new LineArray( vertexCount, vertexFormat, texCoordSetCount, texCoordSetMap );
     }

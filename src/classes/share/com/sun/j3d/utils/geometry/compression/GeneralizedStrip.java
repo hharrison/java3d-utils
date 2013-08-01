@@ -144,6 +144,7 @@ class GeneralizedStrip {
 	    count = ints.length ;
 	}
 
+	@Override
 	public String toString() {
 	    String s = new String("[") ;
 	    for (int i = 0 ; i < count-1 ; i++)

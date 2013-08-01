@@ -62,6 +62,7 @@ public class ColorInterpolatorState extends InterpolatorState {
             target = control.getSymbolTable().addReference( ((ColorInterpolator)node).getTarget() );
     }
 
+    @Override
     public void writeObject( DataOutput out ) throws IOException {
         super.writeObject( out );
 
@@ -73,6 +74,7 @@ public class ColorInterpolatorState extends InterpolatorState {
         control.writeColor3f( out, clr );
     }
 
+    @Override
     public void readObject( DataInput in ) throws IOException {
         super.readObject( in );
 
@@ -86,15 +88,18 @@ public class ColorInterpolatorState extends InterpolatorState {
      * Allows this component to update the reference count of any components
      * that it references.
      */
+    @Override
     public void addSubReference() {
         control.getSymbolTable().incNodeComponentRefCount( target );
     }
 
+    @Override
     public void buildGraph() {
         ((ColorInterpolator)node).setTarget( (Material)control.getSymbolTable().getJ3dNode( target ));
         super.buildGraph(); // Must be last call in method
     }
 
+    @Override
     public SceneGraphObject createNode( Class j3dClass ) {
         return createNode( j3dClass, new Class[] { javax.media.j3d.Alpha.class,
                                                     javax.media.j3d.Material.class },
@@ -103,6 +108,7 @@ public class ColorInterpolatorState extends InterpolatorState {
 
     }
 
+    @Override
     protected SceneGraphObject createNode() {
         return new ColorInterpolator( null, null );
     }

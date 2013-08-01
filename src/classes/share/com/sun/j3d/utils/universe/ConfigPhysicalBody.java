@@ -65,9 +65,11 @@ class ConfigPhysicalBody extends ConfigObject {
     PhysicalBody j3dPhysicalBody;
 
     // Overridden to do nothing.
+    @Override
     protected void initialize(ConfigCommand command) {
     }
 
+    @Override
     protected void setProperty(ConfigCommand command) {
 	int argc = command.argc;
 	Object[] argv = command.argv;

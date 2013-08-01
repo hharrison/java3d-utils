@@ -67,6 +67,7 @@ public class Shape3DState extends LeafState {
         }
     }
 
+    @Override
     public void writeObject( DataOutput out ) throws IOException {
         super.writeObject( out );
 
@@ -79,6 +80,7 @@ public class Shape3DState extends LeafState {
            out.writeInt( geometry[i] );
     }
 
+    @Override
     public void readObject( DataInput in ) throws IOException {
         super.readObject( in );
         ((Shape3D)node).setCollisionBounds( control.readBounds( in ));
@@ -99,6 +101,7 @@ public class Shape3DState extends LeafState {
         control.getSymbolTable().incNodeComponentRefCount( appearance );
     }
 
+    @Override
     public void buildGraph() {
         ((Shape3D)node).setAppearance( (Appearance)control.getSymbolTable().getJ3dNode( appearance ) );
 
@@ -109,6 +112,7 @@ public class Shape3DState extends LeafState {
         super.buildGraph(); // Must be last call in method
     }
 
+    @Override
     protected javax.media.j3d.SceneGraphObject createNode() {
         return new Shape3D();
     }

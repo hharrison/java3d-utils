@@ -1566,6 +1566,7 @@ public class GeometryInfo {
     int size;
     private static final int HASHCONST = 0xBABEFACE;
 
+    @Override
     public int hashCode()
     {
       int bits = 0;
@@ -1575,6 +1576,7 @@ public class GeometryInfo {
       return bits;
     } // End of IndexRow.hashCode
 
+    @Override
     public boolean equals(Object obj)
     {
       for (int i = 0 ; i < size ; i++) {

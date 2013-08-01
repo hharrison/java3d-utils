@@ -73,6 +73,7 @@ public class TextureCubeMapState extends TextureState {
      * Allows this component to update the reference count of any components
      * that it references.
      */
+    @Override
     public void addSubReference() {
 	for ( int face=0; face<6; face++ ) {
 	  for( int i=0; i<ic[ face ].length; i++)
@@ -81,6 +82,7 @@ public class TextureCubeMapState extends TextureState {
     }
 
     // Set up references during load
+    @Override
     public void buildGraph() {
 	TextureCubeMap tcm = (TextureCubeMap)node;
 
@@ -93,6 +95,7 @@ public class TextureCubeMapState extends TextureState {
 	super.buildGraph();	// Must be last call in method
     }
 
+    @Override
     public SceneGraphObject createNode( Class j3dClass ) {
         return createNode( j3dClass, new Class[] { Integer.TYPE,
                                                    Integer.TYPE,
@@ -104,6 +107,7 @@ public class TextureCubeMapState extends TextureState {
                                                     new Integer( boundaryWidth ) } );
     }
 
+    @Override
     protected javax.media.j3d.SceneGraphObject createNode() {
         return new TextureCubeMap( mipMapMode, format, width, boundaryWidth );
     }

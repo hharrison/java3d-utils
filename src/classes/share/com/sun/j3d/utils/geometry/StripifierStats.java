@@ -177,6 +177,7 @@ public class StripifierStats {
      * @since Java 3D 1.2.1
      */
 
+    @Override
     public String toString() {
 	StringBuffer str = new StringBuffer(
 					    "num orig tris:        " + numFaces + "\n" +

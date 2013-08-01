@@ -49,18 +49,23 @@ package com.sun.j3d.utils.behaviors.sensor ;
 public class SensorInputAdaptor
     implements SensorButtonListener, SensorReadListener {
 
+    @Override
     public void pressed(SensorEvent e) {
     }
 
+    @Override
     public void released(SensorEvent e) {
     }
 
+    @Override
     public void dragged(SensorEvent e) {
     }
 
+    @Override
     public void clicked(SensorEvent e) {
     }
 
+    @Override
     public void read(SensorEvent e) {
     }
 }

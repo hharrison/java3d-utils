@@ -106,6 +106,7 @@ public abstract class AudioEngine3D extends AudioEngine implements AudioDevice3D
      * Save a reference to the current View object.
      * @param reference to current view object
      */
+    @Override
     public void  setView(View reference) {
         currentView = reference;
         return;
@@ -133,6 +134,7 @@ public abstract class AudioEngine3D extends AudioEngine implements AudioDevice3D
      * @param soundData descrition of sound source data
      * @return index into sample vector of Sample object for sound
      */
+    @Override
     public int   prepareSound(int soundType, MediaContainer soundData) {
         // This method must be overridden by device specific implementation
         return Sample.NULL_SAMPLE;
@@ -143,6 +145,7 @@ public abstract class AudioEngine3D extends AudioEngine implements AudioDevice3D
      * Removes/clears associated sound data with this sound source node
      * @param index device specific reference number to device driver sample
      */
+    @Override
     public abstract void clearSound(int index);
 
     /**
@@ -150,6 +153,7 @@ public abstract class AudioEngine3D extends AudioEngine implements AudioDevice3D
      * @param index device specific reference number to device driver sample
      * @param trans is a reference to virtual world composite transform
      */
+    @Override
     public void  setVworldXfrm(int index, Transform3D trans) {
          Sample sample = getSample(index);
          if (sample != null)
@@ -161,6 +165,7 @@ public abstract class AudioEngine3D extends AudioEngine implements AudioDevice3D
      * @param index device specific reference number to device driver sample
      * @return status: < 0 denotes an error
      */
+    @Override
     public abstract int startSample(int index);
 
     /**
@@ -168,6 +173,7 @@ public abstract class AudioEngine3D extends AudioEngine implements AudioDevice3D
      * @param index device specific reference number to device driver sample
      * @return status: < 0 denotes an error
      */
+    @Override
     public abstract int stopSample(int index);
 
     /**
@@ -176,30 +182,35 @@ public abstract class AudioEngine3D extends AudioEngine implements AudioDevice3D
      * @param index device specific reference number to device driver sample
      */
     // TODO: The update method exists on a TEMPORARY basis.
+    @Override
     public abstract void updateSample(int index);
 
     /**
      * Mute sample.
      * @param index device specific reference number to device driver sample
      */
+    @Override
     public abstract void muteSample(int index);
 
     /**
      * Unmute sample.
      * @param index device specific reference number to device driver sample
      */
+    @Override
     public abstract void unmuteSample(int index);
 
     /**
      * Pause sample.
      * @param index device specific reference number to device driver sample
      */
+    @Override
     public abstract void pauseSample(int index);
 
     /**
      * Unpause sample.
      * @param index device specific reference number to device driver sample
      */
+    @Override
     public abstract void unpauseSample(int index);
 
     /*
@@ -213,6 +224,7 @@ public abstract class AudioEngine3D extends AudioEngine implements AudioDevice3D
      * @param index device specific reference number to device driver sample
      * @param scaleFactor floating point multiplier applied to sample amplitude
      */
+    @Override
     public void  setSampleGain(int index, float scaleFactor) {
         Sample sample = getSample(index);
         if (sample != null)
@@ -225,6 +237,7 @@ public abstract class AudioEngine3D extends AudioEngine implements AudioDevice3D
      * @param index device specific reference number to device driver sample
      * @param count number of times sample is repeated
      */
+    @Override
     public void   setLoop(int index, int count) {
         Sample sample = getSample(index);
         if (sample != null)
@@ -237,6 +250,7 @@ public abstract class AudioEngine3D extends AudioEngine implements AudioDevice3D
      * @param index device specific reference number to device driver sample
      * @param position point location in virtual world coordinate of sample
      */
+    @Override
     public void  setPosition(int index, Point3d position) {
         Sample sample = getSample(index);
         if (sample != null)
@@ -253,6 +267,7 @@ public abstract class AudioEngine3D extends AudioEngine implements AudioDevice3D
      * thru which ellipses pass
      * @param backAttenuationScaleFactor gain scale factors
      */
+    @Override
     public void setDistanceGain(int index,
               double[] frontDistance, float[] frontAttenuationScaleFactor,
               double[] backDistance, float[] backAttenuationScaleFactor) {
@@ -268,6 +283,7 @@ public abstract class AudioEngine3D extends AudioEngine implements AudioDevice3D
      * @param index device specific reference number to device driver sample
      * @param direction vector in virtual world coordinate.
      */
+    @Override
     public void setDirection(int index, Vector3d direction) {
         Sample sample = getSample(index);
         if (sample != null)
@@ -286,6 +302,7 @@ public abstract class AudioEngine3D extends AudioEngine implements AudioDevice3D
      * @param filterCutoff array containing filter cutoff frequencies.
      * The filter values for each tuples can be set to Sound.NO_FILTER.
      */
+    @Override
     public void setAngularAttenuation(int index, int filterType,
           double[] angle, float[] attenuationScaleFactor, float[] filterCutoff) {
         Sample sample = getSample(index);
@@ -299,6 +316,7 @@ public abstract class AudioEngine3D extends AudioEngine implements AudioDevice3D
      * Set rolloff value for current aural attribute applied to all samples.
      * @param rolloff scale factor applied to standard speed of sound.
      */
+    @Override
     public void setRolloff(float rolloff) {
         attribs.rolloff = rolloff;
         return;
@@ -310,6 +328,7 @@ public abstract class AudioEngine3D extends AudioEngine implements AudioDevice3D
      * @param coefficient applied to amplitude of reverbation added at each
      * iteration of reverb processing.
      */
+    @Override
     public void setReflectionCoefficient(float coefficient) {
         attribs.reflectionCoefficient = coefficient;
         return;
@@ -321,6 +340,7 @@ public abstract class AudioEngine3D extends AudioEngine implements AudioDevice3D
      * @param reverbDelay amount of time in millisecond between each
      * iteration of reverb processing.
      */
+    @Override
     public void setReverbDelay(float reverbDelay) {
         attribs.reverbDelay = reverbDelay;
         return;
@@ -331,6 +351,7 @@ public abstract class AudioEngine3D extends AudioEngine implements AudioDevice3D
      * samples.
      * @param reverbOrder number of times reverb process loop is iterated.
      */
+    @Override
     public void setReverbOrder(int reverbOrder) {
         attribs.reverbOrder = reverbOrder;
         return;
@@ -342,6 +363,7 @@ public abstract class AudioEngine3D extends AudioEngine implements AudioDevice3D
      * to all sample based on distance between listener and sound.
      * @param dist is an attenuation array of distance and low-pass filter values.
      */
+    @Override
     public void setDistanceFilter(int filterType,
               double[] dist, float[]  filterCutoff) {
         attribs.setDistanceFilter(filterType, dist, filterCutoff);
@@ -354,6 +376,7 @@ public abstract class AudioEngine3D extends AudioEngine implements AudioDevice3D
      * @param scaleFactor frequency scale factor applied to samples normal
      * playback rate.
      */
+    @Override
     public void setFrequencyScaleFactor(float scaleFactor) {
         attribs.frequencyScaleFactor = scaleFactor;
         return;
@@ -365,6 +388,7 @@ public abstract class AudioEngine3D extends AudioEngine implements AudioDevice3D
      * listener-to-soundSource velocity.
      * playback rate.
      */
+    @Override
     public void setVelocityScaleFactor(float scaleFactor) {
         attribs.velocityScaleFactor = scaleFactor;
         return;
@@ -375,6 +399,7 @@ public abstract class AudioEngine3D extends AudioEngine implements AudioDevice3D
      * @param index device specific reference number to device driver sample
      * @return number of channels currently being used by this sample.
      */
+    @Override
     public int    getNumberOfChannelsUsed(int index) {
         // This method must be overridden by device specific implementation
         Sample sample = getSample(index);
@@ -394,6 +419,7 @@ public abstract class AudioEngine3D extends AudioEngine implements AudioDevice3D
      * @return number of channels that would be used by this sample if it
      * were playing.
      */
+    @Override
     public int    getNumberOfChannelsUsed(int index, boolean muteFlag) {
         // This method must be overridden by device specific implementation
         Sample sample = getSample(index);
@@ -408,6 +434,7 @@ public abstract class AudioEngine3D extends AudioEngine implements AudioDevice3D
      * @param index device specific reference number to device driver sample
      * @return length of sample in milliseconds
      */
+    @Override
     public long  getSampleDuration(int index) {
         Sample sample = getSample(index);
         if (sample != null)
@@ -421,6 +448,7 @@ public abstract class AudioEngine3D extends AudioEngine implements AudioDevice3D
      * @param index device specific reference number to device driver sample
      * @return system clock time sample started
      */
+    @Override
     public long  getStartTime(int index) {
         Sample sample = getSample(index);
         if (sample != null)

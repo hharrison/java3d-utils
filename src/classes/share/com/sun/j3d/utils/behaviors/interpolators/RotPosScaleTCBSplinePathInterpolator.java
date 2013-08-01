@@ -137,6 +137,7 @@ extends TCBSplinePathInterpolator {
      *
      * @since Java 3D 1.3
      */
+    @Override
     public void computeTransform(float alphaValue, Transform3D transform) {
 
 	// compute the current value of u from alpha and the
@@ -211,6 +212,7 @@ extends TCBSplinePathInterpolator {
      * @see Node#duplicateNode
      * @see NodeComponent#setDuplicateOnCloneTree
      */
+    @Override
     public Node cloneNode(boolean forceDuplicate) {
         RotPosScaleTCBSplinePathInterpolator spline =
 	    new RotPosScaleTCBSplinePathInterpolator();
@@ -239,6 +241,7 @@ extends TCBSplinePathInterpolator {
      * @see Node#cloneTree
      * @see NodeComponent#setDuplicateOnCloneTree
      */
+    @Override
     public void duplicateNode(Node originalNode, boolean forceDuplicate) {
         super.duplicateNode(originalNode, forceDuplicate);
 	RotPosScaleTCBSplinePathInterpolator interpolator =

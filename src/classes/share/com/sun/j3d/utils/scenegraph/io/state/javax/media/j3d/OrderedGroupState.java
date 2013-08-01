@@ -55,6 +55,7 @@ public class OrderedGroupState extends GroupState {
         super( symbol, control );
     }
 
+    @Override
     public void writeObject( DataOutput out ) throws IOException {
 	super.writeObject( out );
 
@@ -65,6 +66,7 @@ public class OrderedGroupState extends GroupState {
 	}
     }
 
+    @Override
     public void readObject( DataInput in ) throws IOException {
 	super.readObject( in );
 
@@ -75,6 +77,7 @@ public class OrderedGroupState extends GroupState {
 	((OrderedGroup)node).setChildIndexOrder( childIndexOrder );
     }
 
+    @Override
     protected javax.media.j3d.SceneGraphObject createNode() {
         return new OrderedGroup();
     }

@@ -60,6 +60,7 @@ public class SoundscapeState extends LeafState {
 
     }
 
+    @Override
     public void writeObject( DataOutput out ) throws IOException {
         super.writeObject( out );
 
@@ -68,6 +69,7 @@ public class SoundscapeState extends LeafState {
         out.writeInt( control.getSymbolTable().addReference( ((Soundscape)node).getAuralAttributes() ));
     }
 
+    @Override
     public void readObject( DataInput in ) throws IOException {
         super.readObject( in );
 
@@ -85,12 +87,14 @@ public class SoundscapeState extends LeafState {
         control.getSymbolTable().incNodeComponentRefCount( auralAttributes );
     }
 
+    @Override
     public void buildGraph() {
         ((Soundscape)node).setApplicationBoundingLeaf( (BoundingLeaf)control.getSymbolTable().getJ3dNode( boundingLeaf ));
         ((Soundscape)node).setAuralAttributes( (AuralAttributes)control.getSymbolTable().getJ3dNode( auralAttributes ));
         super.buildGraph();     // Must be last call in method
     }
 
+    @Override
     protected javax.media.j3d.SceneGraphObject createNode() {
         return new Soundscape();
     }

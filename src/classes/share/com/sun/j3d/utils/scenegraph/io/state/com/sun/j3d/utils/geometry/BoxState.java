@@ -75,6 +75,7 @@ public class BoxState extends PrimitiveState {
         }
     }
 
+    @Override
     public void writeObject( DataOutput out ) throws IOException {
 	super.writeObject( out );
 
@@ -86,6 +87,7 @@ public class BoxState extends PrimitiveState {
         out.writeInt( rightAppearance );
     }
 
+    @Override
     public void readObject( DataInput in ) throws IOException {
        super.readObject(in);
 
@@ -97,6 +99,7 @@ public class BoxState extends PrimitiveState {
        rightAppearance = in.readInt();
     }
 
+    @Override
     public void writeConstructorParams( DataOutput out ) throws IOException {
 	super.writeConstructorParams( out );
 
@@ -105,6 +108,7 @@ public class BoxState extends PrimitiveState {
         out.writeFloat( ((Box)node).getZdimension() );
     }
 
+    @Override
     public void readConstructorParams( DataInput in ) throws IOException {
        super.readConstructorParams(in);
 
@@ -113,6 +117,7 @@ public class BoxState extends PrimitiveState {
        zdim = in.readFloat();
     }
 
+    @Override
     public void buildGraph() {
         if (frontAppearance == backAppearance &&
             frontAppearance == topAppearance &&
@@ -132,6 +137,7 @@ public class BoxState extends PrimitiveState {
         super.buildGraph(); // This must be the last call in the method
     }
 
+    @Override
     public SceneGraphObject createNode( Class j3dClass ) {
         Box box = (Box)super.createNode( j3dClass, new Class[] { Float.TYPE,
                                                    Float.TYPE,
@@ -146,6 +152,7 @@ public class BoxState extends PrimitiveState {
         return box;
     }
 
+    @Override
     protected javax.media.j3d.SceneGraphObject createNode() {
         return new Box( xdim, ydim, zdim, primflags, null );
     }

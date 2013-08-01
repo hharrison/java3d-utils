@@ -62,6 +62,7 @@ public class KBRotPosScaleSplinePathInterpolatorState extends TransformInterpola
         super( symbol, control );
     }
 
+    @Override
     public void writeConstructorParams( DataOutput out ) throws IOException {
         super.writeConstructorParams( out );
 
@@ -85,6 +86,7 @@ public class KBRotPosScaleSplinePathInterpolatorState extends TransformInterpola
         }
     }
 
+    @Override
     public void readConstructorParams( DataInput in ) throws IOException {
         super.readConstructorParams( in );
 
@@ -105,6 +107,7 @@ public class KBRotPosScaleSplinePathInterpolatorState extends TransformInterpola
         }
     }
 
+    @Override
     public SceneGraphObject createNode( Class j3dClass ) {
         return createNode( j3dClass, new Class[] { javax.media.j3d.Alpha.class,
                                                     TransformGroup.class,
@@ -117,6 +120,7 @@ public class KBRotPosScaleSplinePathInterpolatorState extends TransformInterpola
 
     }
 
+    @Override
     protected javax.media.j3d.SceneGraphObject createNode() {
         return new KBRotPosScaleSplinePathInterpolator( null, null, axisOfTranslation, keyFrames );
     }

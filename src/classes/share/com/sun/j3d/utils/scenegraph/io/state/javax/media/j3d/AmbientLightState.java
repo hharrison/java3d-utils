@@ -49,6 +49,7 @@ public class AmbientLightState extends LightState {
     public AmbientLightState( SymbolTableData symbol, Controller control ) {
 	super( symbol, control );
     }
+    @Override
     protected javax.media.j3d.SceneGraphObject createNode() {
         return new AmbientLight();
     }

@@ -54,6 +54,7 @@ public class TransparencyAttributesState extends NodeComponentState {
         super(symbol, control);
     }
 
+    @Override
     public void writeObject( DataOutput out ) throws IOException {
         super.writeObject( out );
         TransparencyAttributes attr = (TransparencyAttributes)node;
@@ -63,6 +64,7 @@ public class TransparencyAttributesState extends NodeComponentState {
         out.writeInt( attr.getTransparencyMode() );
     }
 
+    @Override
     public void readObject( DataInput in ) throws IOException {
         super.readObject( in );
         TransparencyAttributes attr = (TransparencyAttributes)node;
@@ -72,6 +74,7 @@ public class TransparencyAttributesState extends NodeComponentState {
         attr.setTransparencyMode( in.readInt() );
     }
 
+    @Override
     protected javax.media.j3d.SceneGraphObject createNode() {
         return new TransparencyAttributes();
     }

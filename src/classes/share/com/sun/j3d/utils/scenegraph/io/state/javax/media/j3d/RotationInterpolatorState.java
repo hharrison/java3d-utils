@@ -58,6 +58,7 @@ public class RotationInterpolatorState extends TransformInterpolatorState {
 
     }
 
+    @Override
     public void writeObject( DataOutput out ) throws IOException {
         super.writeObject( out );
 
@@ -66,6 +67,7 @@ public class RotationInterpolatorState extends TransformInterpolatorState {
         out.writeFloat( interp.getMaximumAngle() );
     }
 
+    @Override
     public void readObject( DataInput in ) throws IOException {
         super.readObject( in );
 
@@ -74,11 +76,13 @@ public class RotationInterpolatorState extends TransformInterpolatorState {
         interp.setMaximumAngle( in.readFloat() );
     }
 
+    @Override
     public SceneGraphObject createNode( Class j3dClass ) {
         return createNode( j3dClass, new Class[] { Alpha.class, TransformGroup.class },
         new Object[] { null, null } );
     }
 
+    @Override
     protected javax.media.j3d.SceneGraphObject createNode() {
         return new RotationInterpolator( null, null );
     }

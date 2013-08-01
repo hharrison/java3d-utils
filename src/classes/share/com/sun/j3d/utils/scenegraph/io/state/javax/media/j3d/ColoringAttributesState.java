@@ -56,6 +56,7 @@ public class ColoringAttributesState extends NodeComponentState {
         super(symbol, control);
     }
 
+    @Override
     public void writeObject( DataOutput out ) throws IOException {
         super.writeObject( out );
         ColoringAttributes attr = (ColoringAttributes)node;
@@ -65,6 +66,7 @@ public class ColoringAttributesState extends NodeComponentState {
         out.writeInt( attr.getShadeModel() );
     }
 
+    @Override
     public void readObject( DataInput in ) throws IOException {
         super.readObject( in );
         ColoringAttributes attr = (ColoringAttributes)node;
@@ -72,6 +74,7 @@ public class ColoringAttributesState extends NodeComponentState {
         attr.setShadeModel( in.readInt() );
     }
 
+    @Override
     protected SceneGraphObject createNode() {
         return new ColoringAttributes();
     }

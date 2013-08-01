@@ -189,6 +189,7 @@ class HuffmanNode {
 	return unmergeable ;
     }
 
+    @Override
     public String toString() {
 	return
 	    "shift " + shift + " data length " + dataLength +
@@ -201,6 +202,7 @@ class HuffmanNode {
      * Sorts nodes in ascending order by frequency.
      */
     static class FrequencyComparator implements Comparator {
+	@Override
 	public final int compare(Object o1, Object o2) {
 	    return ((HuffmanNode)o1).frequency - ((HuffmanNode)o2).frequency ;
 	}
@@ -210,6 +212,7 @@ class HuffmanNode {
      * Sorts nodes in descending order by tag bit length.
      */
     static class TagLengthComparator implements Comparator {
+	@Override
 	public final int compare(Object o1, Object o2) {
 	    return ((HuffmanNode)o2).tagLength - ((HuffmanNode)o1).tagLength ;
 	}

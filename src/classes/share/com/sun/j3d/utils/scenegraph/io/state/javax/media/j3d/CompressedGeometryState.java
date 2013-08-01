@@ -62,6 +62,7 @@ public class CompressedGeometryState extends GeometryState {
 
     }
 
+    @Override
     public void writeConstructorParams( DataOutput out ) throws IOException {
         super.writeConstructorParams( out );
 
@@ -78,6 +79,7 @@ public class CompressedGeometryState extends GeometryState {
         writeCompressedGeometryHeader( out );
     }
 
+    @Override
     public void readConstructorParams( DataInput in ) throws IOException {
         super.readConstructorParams( in );
 
@@ -131,6 +133,7 @@ public class CompressedGeometryState extends GeometryState {
 	}
     }
 
+    @Override
     public SceneGraphObject createNode( Class j3dClass ) {
 
         return createNode( j3dClass, new Class[] { CompressedGeometryHeader.class,
@@ -141,6 +144,7 @@ public class CompressedGeometryState extends GeometryState {
                                                      new Boolean(isByReference) } );
     }
 
+    @Override
     protected SceneGraphObject createNode() {
         return new CompressedGeometry( header, bytes, isByReference );
     }

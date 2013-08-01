@@ -231,6 +231,7 @@ public class MainFrame extends Frame implements
 	final boolean _doExit = doExit;
 
 	addWindowListener(new WindowAdapter() {
+            @Override
             public void windowClosing(WindowEvent winEvent) {
 		if (MainFrame.this.applet != null) {
 		    MainFrame.this.applet.destroy();
@@ -272,6 +273,7 @@ public class MainFrame extends Frame implements
     // Methods from Runnable.
 
     /// Separate thread to call the applet's init() and start() methods.
+    @Override
     public void run() {
 	showStatus( name + " initializing..." );
 	applet.init();
@@ -284,10 +286,12 @@ public class MainFrame extends Frame implements
 
 
     // Methods from AppletStub.
+    @Override
     public boolean isActive() {
 	return true;
     }
 
+    @Override
     public URL getDocumentBase() {
 	// Returns the current directory.
 	String dir = System.getProperty( "user.dir" );
@@ -299,6 +303,7 @@ public class MainFrame extends Frame implements
 	}
     }
 
+    @Override
     public URL getCodeBase() {
 	// Hack: loop through each item in CLASSPATH, checking if
 	// the appropriately named .class file exists there.  But
@@ -321,11 +326,13 @@ public class MainFrame extends Frame implements
 	return null;
     }
 
+    @Override
     public String getParameter(String name) {
 	// Return a parameter via the munged names in the properties list.
 	return System.getProperty( PARAM_PROP_PREFIX + name.toLowerCase() );
     }
 
+    @Override
     public void appletResize(int width, int height) {
 	// Change the frame's size by the same amount that the applet's
 	// size is changing.
@@ -336,12 +343,14 @@ public class MainFrame extends Frame implements
 	appletSize = applet.getSize();
     }
 
+    @Override
     public AppletContext getAppletContext() {
 	return this;
     }
 
 
     // Methods from AppletContext.
+    @Override
     public AudioClip getAudioClip( URL url ) {
 	// This is an internal undocumented routine.  However, it
 	// also provides needed functionality not otherwise available.
@@ -351,6 +360,7 @@ public class MainFrame extends Frame implements
 	return new sun.applet.AppletAudioClip( url );
     }
 
+    @Override
     public Image getImage( URL url ) {
 	Toolkit tk = Toolkit.getDefaultToolkit();
 	try {
@@ -361,6 +371,7 @@ public class MainFrame extends Frame implements
 	}
     }
 
+    @Override
     public Applet getApplet(String name) {
 	// Returns this Applet or nothing.
 	if (name.equals( this.name )) {
@@ -369,6 +380,7 @@ public class MainFrame extends Frame implements
 	return null;
     }
 
+    @Override
     public Enumeration getApplets() {
 	// Just yields this applet.
 	Vector v = new Vector();
@@ -376,30 +388,36 @@ public class MainFrame extends Frame implements
 	return v.elements();
     }
 
+    @Override
     public void showDocument( URL url )	{
 	// Ignore.
     }
 
+    @Override
     public void showDocument( URL url, String target ) {
 	// Ignore.
     }
 
+    @Override
     public void showStatus( String status ) {
 	if (label != null) {
 	    label.setText(status);
 	}
     }
 
+    @Override
     public void setStream( String key, java.io.InputStream stream ) {
 	throw new RuntimeException("Not Implemented");
 	// TODO implement setStream method
     }
 
+    @Override
     public java.io.InputStream getStream( String key ) {
 	throw new RuntimeException("Not Implemented");
 	// TODO implement getStream method
     }
 
+    @Override
     public java.util.Iterator getStreamKeys() {
      		throw new RuntimeException("Not Implemented");
  	// TODO implement getStreamKeys method

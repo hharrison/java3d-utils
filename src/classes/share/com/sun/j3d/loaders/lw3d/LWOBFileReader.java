@@ -222,6 +222,7 @@ class LWOBFileReader extends BufferedInputStream {
 
 
 
+    @Override
     public int read() throws IOException {
       marker++;
       return super.read();
@@ -229,6 +230,7 @@ class LWOBFileReader extends BufferedInputStream {
 
 
 
+    @Override
     public int read(byte[] buffer, int offset, int count) throws IOException {
       int ret = super.read(buffer, offset, count);
       if (ret != -1) marker += ret;

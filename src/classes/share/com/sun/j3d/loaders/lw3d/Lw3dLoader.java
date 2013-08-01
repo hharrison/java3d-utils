@@ -133,6 +133,7 @@ public class Lw3dLoader extends TextfileParser implements Loader {
      * users should specify an alternate base path with the setBaseUrl(URL)
      * method.
      */
+    @Override
     public Scene load(URL url) throws FileNotFoundException,
                            IncorrectFormatException, ParsingErrorException {
 
@@ -158,6 +159,7 @@ public class Lw3dLoader extends TextfileParser implements Loader {
      * otherwise users should specify an alternate base path with
      * the setBasePath(String) method.
      */
+    @Override
     public Scene load(String fileName) throws FileNotFoundException,
                           IncorrectFormatException, ParsingErrorException {
 
@@ -174,6 +176,7 @@ public class Lw3dLoader extends TextfileParser implements Loader {
      * containing the scene.  Any data files referenced by the Reader should
      * be located in the user's current working directory.
      */
+    @Override
     public Scene load(Reader reader) throws FileNotFoundException,
                             IncorrectFormatException, ParsingErrorException {
 
@@ -455,6 +458,7 @@ public class Lw3dLoader extends TextfileParser implements Loader {
      * associated files starting from the same directory as the
      * file passed into the load(URL) method.
      */
+    @Override
     public void setBaseUrl(URL url) {
 	baseUrl = url;
     }
@@ -463,6 +467,7 @@ public class Lw3dLoader extends TextfileParser implements Loader {
      * This method sets the base path to be used when searching for all
      * data files within a Lightwave scene.
      */
+    @Override
     public void setBasePath(String pathName) {
 	// This routine standardizes path names so that all pathnames
 	// will have standard file separators, they'll end in a separator
@@ -481,6 +486,7 @@ public class Lw3dLoader extends TextfileParser implements Loader {
     /**
      * Returns the current base URL setting.
      */
+    @Override
     public URL getBaseUrl() {
 	return baseUrl;
     }
@@ -488,6 +494,7 @@ public class Lw3dLoader extends TextfileParser implements Loader {
     /**
      * Returns the current base path setting.
      */
+    @Override
     public String getBasePath() {
 	return basePath;
     }
@@ -496,6 +503,7 @@ public class Lw3dLoader extends TextfileParser implements Loader {
      * This method sets the load flags for the file.  The flags should
      * equal 0 by default (which tells the loader to only load geometry).
      */
+    @Override
     public void setFlags(int flags) {
 	loadFlags = flags;
     }
@@ -503,6 +511,7 @@ public class Lw3dLoader extends TextfileParser implements Loader {
     /**
      * Returns the current loading flags setting.
      */
+    @Override
     public int getFlags() {
 	return loadFlags;
     }

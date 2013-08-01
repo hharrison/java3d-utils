@@ -68,6 +68,7 @@ public class MorphState extends LeafState {
         }
     }
 
+    @Override
     public void writeObject( DataOutput out ) throws IOException {
         super.writeObject( out );
 
@@ -83,6 +84,7 @@ public class MorphState extends LeafState {
         }
     }
 
+    @Override
     public void readObject( DataInput in ) throws IOException {
         super.readObject( in );
         ((Morph)node).setCollisionBounds( control.readBounds( in ));
@@ -109,6 +111,7 @@ public class MorphState extends LeafState {
 	    control.getSymbolTable().incNodeComponentRefCount( geometry[ i ] );
     }
 
+    @Override
     public void buildGraph() {
         ((Morph)node).setAppearance( (Appearance)control.getSymbolTable().getJ3dNode( appearance ) );
 
@@ -122,6 +125,7 @@ public class MorphState extends LeafState {
         super.buildGraph(); // Must be last call in method
     }
 
+    @Override
     protected javax.media.j3d.SceneGraphObject createNode() {
         return new Morph( null );
     }

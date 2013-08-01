@@ -139,6 +139,7 @@ class JSSample extends com.sun.j3d.audioengines.Sample
      * correct values before JavaSoundMixer either start or updates the
      * sample thru calls to JSThread.
      */
+    @Override
     public void render(int dirtyFlags, View view, AuralParameters attribs) {
         if (debugFlag)
             debugPrint("JSSample.render ");
@@ -161,6 +162,7 @@ class JSSample extends com.sun.j3d.audioengines.Sample
      * this sound,
      * and frees any device specific data associated with this sample.
      */
+    @Override
     public void clear() {
         super.clear();
         if (debugFlag)

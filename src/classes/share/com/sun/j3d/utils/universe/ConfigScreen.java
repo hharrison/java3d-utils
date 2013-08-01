@@ -166,6 +166,7 @@ class ConfigScreen extends ConfigObject {
      *
      * @param command the command that invoked this method
      */
+    @Override
     protected void setProperty(ConfigCommand command) {
 
 	String attr = null ;
@@ -287,6 +288,7 @@ class ConfigScreen extends ConfigObject {
      *
      * @param command the command that invoked this method
      */
+    @Override
     protected void initialize(ConfigCommand command) {
 	if (command.argc != 3) {
 	    syntaxError("Incorrect number of arguments to " +

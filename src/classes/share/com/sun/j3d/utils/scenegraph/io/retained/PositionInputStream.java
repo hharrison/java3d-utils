@@ -50,23 +50,27 @@ class PositionInputStream extends java.io.InputStream {
         this.stream = stream;
     }
 
+    @Override
     public int read() throws IOException {
         pos++;
         return stream.read();
     }
 
+    @Override
     public int read( byte[] b ) throws IOException {
         int s = stream.read( b );
         pos += s;
         return s;
     }
 
+    @Override
     public int read( byte[] b, int off, int len ) throws IOException {
         int s = stream.read( b, off, len );
         pos += s;
         return s;
     }
 
+    @Override
     public long skip( long n ) throws IOException {
         long s = stream.skip( n );
         pos += s;

@@ -75,6 +75,7 @@ class JSClip extends JSChannel {
      * for a stream that is a sourceDataline
      * @return true is successful in initiallizing DataLine
      */
+    @Override
     DataLine initDataLine(AudioInputStream ais) {
          if (debugFlag)
              debugPrintln("JSClip: initDataLine(" + ais + ")");
@@ -163,6 +164,7 @@ class JSClip extends JSChannel {
       * actual Java Sound start methods called are as immediate (without
       * delay between as possible.
       */
+     @Override
      boolean startSamples(int loopCount, float leftGain, float rightGain,
                               int leftDelay, int rightDelay) {
          // loop count is ignored for Stream and MIDI
@@ -272,6 +274,7 @@ XXXX                 audioLeftStream.start(leftVolume, panLeft, reverbLeft);
       * Since the sound has no auralAttributes applied to it reverb
       * is not applied to the sample.
       */
+     @Override
      boolean  startSample(int loopCount, float gain, int delay) {
 	 /*
          if (debugFlag) {
@@ -297,6 +300,7 @@ XXXX                 audioLeftStream.start(leftVolume, panLeft, reverbLeft);
 	 return true;
      }  // end of start (single) Sample
 
+     @Override
      int   stopSample() {
          // This will tell thread to stop reading and writing
          // reload with old URL - reloadSample()???
@@ -309,6 +313,7 @@ XXXX                 audioLeftStream.start(leftVolume, panLeft, reverbLeft);
          return 0;
      }
 
+     @Override
      int   stopSamples() {
          // This will tell thread to stop reading and writing
          // TODO: For muting, stop sound but don't clear startTime...

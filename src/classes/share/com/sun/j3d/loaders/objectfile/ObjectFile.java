@@ -658,6 +658,7 @@ public class ObjectFile implements Loader {
      * BranchGroup to your scene graph.  For an example, see
      * j3d-examples/ObjLoad/ObjLoad.java.
      */
+    @Override
     public Scene load(String filename) throws FileNotFoundException,
 					      IncorrectFormatException,
 					      ParsingErrorException {
@@ -693,6 +694,7 @@ public class ObjectFile implements Loader {
      * BranchGroup to your scene graph.  For an example, see
      * j3d-examples/ObjLoad/ObjLoad.java.
      */
+    @Override
     public Scene load(URL url) throws FileNotFoundException,
 				      IncorrectFormatException,
 				      ParsingErrorException {
@@ -1211,6 +1213,7 @@ public class ObjectFile implements Loader {
      * BranchGroup to your scene graph.  For an example, see
      * j3d-examples/ObjLoad/ObjLoad.java.
      */
+    @Override
     public Scene load(Reader reader) throws FileNotFoundException,
 				            IncorrectFormatException,
                                             ParsingErrorException {
@@ -1257,6 +1260,7 @@ public class ObjectFile implements Loader {
      * Only needs to be called to set it to a different URL
      * from that containing the .obj file.
      */
+    @Override
     public void setBaseUrl(URL url) {
 	baseUrl = url;
     } // End of setBaseUrl
@@ -1266,6 +1270,7 @@ public class ObjectFile implements Loader {
      * Return the URL where files associated with this .obj file (like
      * material properties files) will be found.
      */
+    @Override
     public URL getBaseUrl() {
 	return baseUrl;
     } // End of getBaseUrl
@@ -1277,6 +1282,7 @@ public class ObjectFile implements Loader {
      * Only needs to be called to set it to a different directory
      * from that containing the .obj file.
      */
+    @Override
     public void setBasePath(String pathName) {
 	basePath = pathName;
 	if (basePath == null || basePath == "")
@@ -1292,6 +1298,7 @@ public class ObjectFile implements Loader {
      * Return the path where files associated with this .obj file (like material
      * files) are located.
      */
+    @Override
     public String getBasePath() {
 	return basePath;
     } // End of getBasePath
@@ -1304,6 +1311,7 @@ public class ObjectFile implements Loader {
      * behaviors, views, or sounds.  However, several flags are defined
      * specifically for use with the ObjectFile Loader (see above).
      */
+    @Override
     public void setFlags(int flags) {
 	this.flags = flags;
 	if ((DEBUG & 4) != 0) System.out.println("Flags = " + flags);
@@ -1317,6 +1325,7 @@ public class ObjectFile implements Loader {
      * behaviors, views, or sounds.  However, several flags are defined
      * specifically for use with the ObjectFile Loader (see above).
      */
+    @Override
     public int getFlags() {
 	return flags;
     } // End of getFlags

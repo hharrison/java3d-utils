@@ -58,6 +58,7 @@ public class DistanceLODState extends LODState {
         super(symbol, control);
     }
 
+    @Override
     public void writeObject( DataOutput out ) throws IOException {
         super.writeObject( out );
 
@@ -69,6 +70,7 @@ public class DistanceLODState extends LODState {
         control.writePoint3f( out, pos );
     }
 
+    @Override
     public void readObject( DataInput in ) throws IOException {
         super.readObject( in );
 
@@ -78,17 +80,20 @@ public class DistanceLODState extends LODState {
         ((DistanceLOD)node).setPosition( control.readPoint3f(in ));
     }
 
+    @Override
     public void writeConstructorParams( DataOutput out ) throws IOException {
         super.writeConstructorParams( out );
         numDistances = ((DistanceLOD)node).numDistances();
         out.writeInt( numDistances );
     }
 
+    @Override
     public void readConstructorParams( DataInput in ) throws IOException {
         super.readConstructorParams( in );
         numDistances = in.readInt();
     }
 
+    @Override
     public SceneGraphObject createNode( Class j3dClass ) {
         float[] distances = new float[ numDistances ];
 
@@ -96,6 +101,7 @@ public class DistanceLODState extends LODState {
         new Object[] { distances } );
     }
 
+    @Override
     protected javax.media.j3d.SceneGraphObject createNode() {
         return new DistanceLOD( new float[ numDistances ] );
     }

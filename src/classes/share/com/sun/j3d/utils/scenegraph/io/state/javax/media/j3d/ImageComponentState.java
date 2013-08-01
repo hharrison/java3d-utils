@@ -108,6 +108,7 @@ public abstract class ImageComponentState extends NodeComponentState {
     }
 
 
+    @Override
     protected void writeConstructorParams( DataOutput out ) throws
 							IOException {
         super.writeConstructorParams( out );
@@ -118,6 +119,7 @@ public abstract class ImageComponentState extends NodeComponentState {
         out.writeBoolean( ((ImageComponent)node).isYUp() );
     }
 
+    @Override
     protected void readConstructorParams( DataInput in ) throws
 							IOException {
         super.readConstructorParams( in );

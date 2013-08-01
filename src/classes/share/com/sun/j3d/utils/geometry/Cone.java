@@ -143,6 +143,7 @@ public class Cone extends Primitive {
    * @return The Shape3D object associated with the partId.  If an
    * invalid partId is passed in, null is returned.
    */
+  @Override
   public Shape3D getShape(int partId){
       if (partId > CAP || partId < BODY) return null;
       return (Shape3D)getChild(partId);
@@ -155,6 +156,7 @@ public class Cone extends Primitive {
    *  part's appearance separately, use getShape(partId) to get the
    *  individual shape and call shape.setAppearance(ap).
    */
+  @Override
   public void setAppearance(Appearance ap){
       ((Shape3D)getChild(BODY)).setAppearance(ap);
       ((Shape3D)getChild(CAP)).setAppearance(ap);
@@ -170,6 +172,7 @@ public class Cone extends Primitive {
      *
      * @since Java 3D 1.2.1
      */
+    @Override
     public Appearance getAppearance(int partId) {
 	if (partId > CAP || partId < BODY) return null;
 	return getShape(partId).getAppearance();
@@ -347,6 +350,7 @@ public class Cone extends Primitive {
      * @see Node#duplicateNode
      * @see NodeComponent#setDuplicateOnCloneTree
      */
+    @Override
     public Node cloneNode(boolean forceDuplicate) {
         Cone c = new Cone(radius, height, flags, xdivisions,
                           ydivisions, getAppearance());
@@ -380,6 +384,7 @@ public class Cone extends Primitive {
      * @see Node#cloneNode
      * @see NodeComponent#setDuplicateOnCloneTree
      */
+    @Override
     public void duplicateNode(Node originalNode, boolean forceDuplicate) {
         super.duplicateNode(originalNode, forceDuplicate);
     }

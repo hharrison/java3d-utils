@@ -77,6 +77,7 @@ public class BackgroundState extends LeafState {
         }
     }
 
+    @Override
     public void writeObject(DataOutput out) throws IOException {
         super.writeObject(out);
 
@@ -92,6 +93,7 @@ public class BackgroundState extends LeafState {
                 .getGeometry()));
     }
 
+    @Override
     public void readObject(DataInput in) throws IOException {
         super.readObject(in);
 
@@ -125,6 +127,7 @@ public class BackgroundState extends LeafState {
         control.getSymbolTable().incNodeComponentRefCount(image);
     }
 
+    @Override
     public void buildGraph() {
         ((Background) node).setApplicationBoundingLeaf((BoundingLeaf) control
                 .getSymbolTable().getJ3dNode(boundingLeaf));
@@ -138,6 +141,7 @@ public class BackgroundState extends LeafState {
 
     }
 
+    @Override
     protected SceneGraphObject createNode() {
         return new Background();
     }

@@ -57,11 +57,13 @@ public abstract class InterpolatorState extends BehaviorState {
         super( symbol, control );
     }
 
+    @Override
     public void writeObject( DataOutput out ) throws IOException {
         super.writeObject( out );
         out.writeInt( control.getSymbolTable().addReference( ((Interpolator)node).getAlpha() ));
     }
 
+    @Override
     public void readObject( DataInput in ) throws IOException {
         super.readObject( in );
         alpha = in.readInt();
@@ -76,6 +78,7 @@ public abstract class InterpolatorState extends BehaviorState {
         control.getSymbolTable().incNodeComponentRefCount( alpha );
     }
 
+    @Override
     public void buildGraph() {
         ((Interpolator)node).setAlpha( (Alpha)control.getSymbolTable().getJ3dNode( alpha ));
         super.buildGraph(); // Must be last call in method

@@ -55,15 +55,18 @@ public class TriangleFanArrayState extends GeometryStripArrayState {
         super( symbol, control );
     }
 
+    @Override
     public void writeObject( DataOutput out ) throws IOException {
         super.writeObject( out );
     }
 
 
+    @Override
     public void readObject( DataInput in ) throws IOException {
         super.readObject( in );
     }
 
+    @Override
     public SceneGraphObject createNode( Class j3dClass ) {
         return createNode( j3dClass, new Class[] {
                                             Integer.TYPE,
@@ -79,6 +82,7 @@ public class TriangleFanArrayState extends GeometryStripArrayState {
                                                      stripVertexCounts } );
     }
 
+    @Override
     protected javax.media.j3d.SceneGraphObject createNode() {
         return new TriangleFanArray( vertexCount, vertexFormat, texCoordSetCount, texCoordSetMap, stripVertexCounts );
     }

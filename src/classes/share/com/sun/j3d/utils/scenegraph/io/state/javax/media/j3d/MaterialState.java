@@ -55,6 +55,7 @@ public class MaterialState extends NodeComponentState {
         super(symbol, control);
     }
 
+    @Override
     public void writeObject( DataOutput out ) throws IOException {
         super.writeObject( out );
         Material attr = (Material)node;
@@ -72,6 +73,7 @@ public class MaterialState extends NodeComponentState {
 	out.writeInt( attr.getColorTarget() );
     }
 
+    @Override
     public void readObject( DataInput in ) throws IOException {
         super.readObject( in );
         Material attr = (Material)node;
@@ -83,6 +85,7 @@ public class MaterialState extends NodeComponentState {
 	attr.setColorTarget( in.readInt() );
     }
 
+    @Override
     protected javax.media.j3d.SceneGraphObject createNode() {
         return new Material();
     }

@@ -56,6 +56,7 @@ public class PointLightState extends LightState {
 
     }
 
+    @Override
     public void writeObject( DataOutput out ) throws IOException {
         super.writeObject( out );
 	Point3f point = new Point3f();
@@ -65,12 +66,14 @@ public class PointLightState extends LightState {
 	control.writePoint3f( out, point );
     }
 
+    @Override
     public void readObject( DataInput in ) throws IOException {
         super.readObject( in );
 	((PointLight)node).setAttenuation( control.readPoint3f(in) );
 	((PointLight)node).setPosition( control.readPoint3f(in) );
     }
 
+    @Override
     protected javax.media.j3d.SceneGraphObject createNode() {
         return new PointLight();
     }

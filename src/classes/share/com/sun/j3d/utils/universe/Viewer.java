@@ -791,6 +791,7 @@ public class Viewer {
 	    String audioDeviceClassName =
 		(String) java.security.AccessController.doPrivileged(
 		    new java.security.PrivilegedAction() {
+			@Override
 			public Object run() {
 			    return System.getProperty("j3d.audiodevice");
 			}
@@ -813,6 +814,7 @@ public class Viewer {
                 ClassLoader audioDeviceClassLoader =
                     (ClassLoader) java.security.AccessController.doPrivileged(
                         new java.security.PrivilegedAction() {
+                            @Override
                             public Object run() {
                                 return ClassLoader.getSystemClassLoader();
                             }
@@ -870,6 +872,7 @@ public class Viewer {
 	final boolean _doExit = doExit;
 
 	win.addWindowListener(new WindowAdapter() {
+            @Override
             public void windowClosing(WindowEvent winEvent) {
 		Window w = winEvent.getWindow();
 		w.setVisible(false);

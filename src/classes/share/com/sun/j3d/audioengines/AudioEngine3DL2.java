@@ -87,6 +87,7 @@ public abstract class AudioEngine3DL2 extends AudioEngine3D implements AudioDevi
      * Causes all cached sounds to be paused and all streaming sounds to be
      * stopped.
      */
+    @Override
     public abstract void  pause();
 
     /**
@@ -95,6 +96,7 @@ public abstract class AudioEngine3DL2 extends AudioEngine3D implements AudioDevi
      * Causes all paused cached sounds to be resumed and all streaming
      * sounds restarted.
      */
+    @Override
     public abstract void resume();
 
     /**
@@ -102,6 +104,7 @@ public abstract class AudioEngine3DL2 extends AudioEngine3D implements AudioDevi
      * @param scaleFactor scale factor applied to calculated amplitudes for
      * all sounds playing on this device
      */
+    @Override
     public abstract void setGain(float scaleFactor);
 
     /*
@@ -123,6 +126,7 @@ public abstract class AudioEngine3DL2 extends AudioEngine3D implements AudioDevi
      * amplitudes for all sounds playing on this device
      * @see Sound#setRateScaleFactor
      */
+    @Override
     public void  setRateScaleFactor(int index, float scaleFactor) {
         Sample sample = getSample(index);
         if (sample != null)
@@ -150,6 +154,7 @@ public abstract class AudioEngine3DL2 extends AudioEngine3D implements AudioDevi
      * @param coefficient late reflection attenuation factor
      * @see AuralAttributes#setReverbCoefficient
      */
+    @Override
     public void setReverbCoefficient(float coefficient) {
         attribs.reverbCoefficient = coefficient;
         return;
@@ -164,6 +169,7 @@ public abstract class AudioEngine3DL2 extends AudioEngine3D implements AudioDevi
      * @param reflectionDelay time between each order of early reflection
      * @see AuralAttributes#setReflectionDelay
      */
+    @Override
     public void  setReflectionDelay(float reflectionDelay) {
         attribs.reflectionDelay = reflectionDelay;
         return;
@@ -175,6 +181,7 @@ public abstract class AudioEngine3DL2 extends AudioEngine3D implements AudioDevi
      * @param time decay time in milliseconds
      * @see AuralAttributes#setDecayTime
      */
+    @Override
     public void  setDecayTime(float time) {
         attribs.decayTime = time;
         return;
@@ -190,6 +197,7 @@ public abstract class AudioEngine3DL2 extends AudioEngine3D implements AudioDevi
      * low-pass filter is applied.
      * @see AuralAttributes#setDecayFilter
      */
+    @Override
     public void  setDecayFilter(float frequencyCutoff) {
         attribs.decayFrequencyCutoff = frequencyCutoff;
         return;
@@ -203,6 +211,7 @@ public abstract class AudioEngine3DL2 extends AudioEngine3D implements AudioDevi
      * @param diffusion percentage expressed within the range of 0.0 and 1.0
      * @see AuralAttributes#setDiffusion
      */
+    @Override
     public void setDiffusion(float diffusion) {
         attribs.diffusion = diffusion;
         return;
@@ -218,6 +227,7 @@ public abstract class AudioEngine3DL2 extends AudioEngine3D implements AudioDevi
      * within the range of 0.0 and 1.0
      * @see AuralAttributes#setDensity
      */
+    @Override
     public void setDensity(float density)  {
         attribs.density = density;
         return;
@@ -233,6 +243,7 @@ public abstract class AudioEngine3DL2 extends AudioEngine3D implements AudioDevi
      * @param index device specific reference to device driver sample
      * @param scaleFactor non-negative factor applied to direct sound gain
      */
+    @Override
     public void setObstructionGain(int index, float scaleFactor) {
         Sample sample = getSample(index);
         if (sample != null)
@@ -252,6 +263,7 @@ public abstract class AudioEngine3DL2 extends AudioEngine3D implements AudioDevi
      * low-pass filter is applied.
      */
 
+    @Override
     public void setObstructionFilter(int index, float frequencyCutoff) {
         Sample sample = getSample(index);
         if (sample != null)
@@ -268,6 +280,7 @@ public abstract class AudioEngine3DL2 extends AudioEngine3D implements AudioDevi
      * @param index device specific reference to device driver sample
      * @param  scaleFactor non-negative factor applied to direct sound gain
      */
+    @Override
     public void setOcclusionGain(int index, float scaleFactor) {
         Sample sample = getSample(index);
         if (sample != null)
@@ -286,6 +299,7 @@ public abstract class AudioEngine3DL2 extends AudioEngine3D implements AudioDevi
      * @param frequencyCutoff value of frequencies in Hertz above which a
      * low-pass filter is applied.
      */
+    @Override
     public void  setOcclusionFilter(int index, float frequencyCutoff) {
         Sample sample = getSample(index);
         if (sample != null)

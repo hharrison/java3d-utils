@@ -68,62 +68,77 @@ public class J3fInputStream implements java.io.DataInput {
         return positionInputStream.getFilePointer();
     }
 
+    @Override
     public int readUnsignedShort() throws java.io.IOException {
         return dataInputStream.readUnsignedShort();
     }
 
+    @Override
     public void readFully(byte[] p1) throws java.io.IOException {
         dataInputStream.readFully(p1);
     }
 
+    @Override
     public char readChar() throws java.io.IOException {
         return dataInputStream.readChar();
     }
 
+    @Override
     public int readUnsignedByte() throws java.io.IOException {
         return dataInputStream.readUnsignedByte();
     }
 
+    @Override
     public int readInt() throws java.io.IOException {
         return dataInputStream.readInt();
     }
 
+    @Override
     public short readShort() throws java.io.IOException {
         return dataInputStream.readShort();
     }
 
+    @Override
     public float readFloat() throws java.io.IOException {
         return dataInputStream.readFloat();
     }
 
+    @Override
     public void readFully(byte[] p1,int p2,int p3) throws java.io.IOException {
         dataInputStream.readFully( p1, p2, p3 );
     }
 
+    @Override
     public boolean readBoolean() throws java.io.IOException {
         return dataInputStream.readBoolean();
     }
 
+    @Override
     public int skipBytes(int p1) throws java.io.IOException {
         return dataInputStream.skipBytes(p1);
     }
 
+    @Override
     public double readDouble() throws java.io.IOException {
         return dataInputStream.readDouble();
     }
 
+    @Override
     public long readLong() throws java.io.IOException {
         return dataInputStream.readLong();
     }
 
+    @Override
     public java.lang.String readLine() throws java.io.IOException {
         return dataInputStream.readLine();
     }
 
+    @Override
     public byte readByte() throws java.io.IOException {
         return dataInputStream.readByte();
     }
 
+    @Override
     public java.lang.String readUTF() throws java.io.IOException {
         return dataInputStream.readUTF();
     }

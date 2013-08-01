@@ -63,6 +63,7 @@ public abstract class LODState extends BehaviorState {
         }
     }
 
+    @Override
     public void writeObject( DataOutput out ) throws IOException {
         super.writeObject( out );
 
@@ -71,6 +72,7 @@ public abstract class LODState extends BehaviorState {
             out.writeInt( switches[i] );
     }
 
+    @Override
     public void readObject( DataInput in ) throws IOException {
         super.readObject( in );
         LOD attr = (LOD)node;
@@ -80,6 +82,7 @@ public abstract class LODState extends BehaviorState {
             switches[i] = in.readInt();
     }
 
+    @Override
     public void buildGraph() {
         LOD attr = (LOD)node;
         for(int i=0; i<switches.length; i++)

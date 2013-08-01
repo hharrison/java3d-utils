@@ -69,6 +69,7 @@ class LightIntensityPathInterpolator extends FloatValueInterpolator {
      * @param criteria enumeration of criteria that have triggered this wakeup
      */
 
+    @Override
     public void processStimulus(Enumeration criteria) {
         // Handle stimulus
 

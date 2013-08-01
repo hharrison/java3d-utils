@@ -47,11 +47,13 @@ class Edge {
   public int v2;
   private static final int HASHCONST = 0xEDCBA987;
 
+  @Override
   public int hashCode()
   {
     return ((v1 * HASHCONST) << 2) ^ (v2 * HASHCONST);
   } // end of Edge.hashCode
 
+  @Override
   public boolean equals(Object x)
   {
     if (!(x instanceof Edge)) return false;
@@ -59,6 +61,7 @@ class Edge {
     return (v1 == e.v1) && (v2 == e.v2);
   } // End of Edge.equals
 
+  @Override
   public String toString()
   {
     return "(" + v1 + ", " + v2 + ")";

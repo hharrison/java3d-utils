@@ -68,6 +68,7 @@ class ConfigSensor extends ConfigObject {
      *
      * @param command the command that invoked this method
      */
+    @Override
     protected void initialize(ConfigCommand command) {
 
 	int argc = command.argc ;
@@ -101,6 +102,7 @@ class ConfigSensor extends ConfigObject {
      *
      * @param command the command that invoked this method
      */
+    @Override
     protected void setProperty(ConfigCommand command) {
 
 	int argc = command.argc ;

@@ -268,6 +268,7 @@ public class Box extends Primitive {
    * invalid partId is passed in, null is returned.
    */
 
+  @Override
   public Shape3D getShape(int partId) {
     if ((partId >= FRONT) && (partId <= BOTTOM))
 // 	return (Shape3D)(((Group)getChild(0)).getChild(partId));
@@ -282,6 +283,7 @@ public class Box extends Primitive {
    *  individual shape and call shape.setAppearance(ap).
    */
 
+  @Override
   public void setAppearance(Appearance ap){
 //     ((Shape3D)((Group)getChild(0)).getChild(TOP)).setAppearance(ap);
 //     ((Shape3D)((Group)getChild(0)).getChild(LEFT)).setAppearance(ap);
@@ -307,6 +309,7 @@ public class Box extends Primitive {
      *
      * @since Java 3D 1.2.1
      */
+    @Override
     public Appearance getAppearance(int partId) {
 	if (partId > BOTTOM || partId < FRONT) return null;
 	return getShape(partId).getAppearance();
@@ -413,6 +416,7 @@ public class Box extends Primitive {
      * @see Node#duplicateNode
      * @see NodeComponent#setDuplicateOnCloneTree
      */
+    @Override
     public Node cloneNode(boolean forceDuplicate) {
         Box b = new Box(xDim, yDim, zDim, flags, getAppearance());
         b.duplicateNode(this, forceDuplicate);
@@ -445,6 +449,7 @@ public class Box extends Primitive {
      * @see Node#cloneNode
      * @see NodeComponent#setDuplicateOnCloneTree
      */
+    @Override
     public void duplicateNode(Node originalNode, boolean forceDuplicate) {
         super.duplicateNode(originalNode, forceDuplicate);
     }

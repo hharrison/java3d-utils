@@ -541,6 +541,7 @@ class LwsObject extends TextfileParser implements LwsPrimitive {
     /**
      * Return the TransformGroup that holds this object file
      */
+    @Override
     public TransformGroup getObjectNode() {
 	return objectTransform;
     }
@@ -550,6 +551,7 @@ class LwsObject extends TextfileParser implements LwsPrimitive {
      * are grouped separately from the geometry so that they can be handled
      * differently by the parent application.
      */
+    @Override
     public Vector getObjectBehaviors()
     {
 	debugOutputLn(TRACE, "getObjectBehaviors()");

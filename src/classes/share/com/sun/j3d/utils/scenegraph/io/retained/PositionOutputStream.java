@@ -50,16 +50,19 @@ class PositionOutputStream extends java.io.OutputStream {
         this.stream = stream;
     }
 
+    @Override
     public void write(int p1) throws IOException {
         pos++;
         stream.write(p1);
     }
 
+    @Override
     public void write( byte[] b ) throws IOException {
         pos+= b.length;
         stream.write( b );
     }
 
+    @Override
     public void write( byte[] b, int off, int len ) throws IOException {
         pos+= len;
         stream.write( b, off, len );

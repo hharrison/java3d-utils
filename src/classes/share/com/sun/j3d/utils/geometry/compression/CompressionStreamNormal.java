@@ -326,6 +326,7 @@ class CompressionStreamNormal extends CompressionStreamElement {
      * @param table HuffmanTable for collecting data about the quantized
      * representation of this element
      */
+    @Override
     void quantize(CompressionStream stream, HuffmanTable huffmanTable) {
 	double nx, ny, nz, t ;
 
@@ -571,6 +572,7 @@ class CompressionStreamNormal extends CompressionStreamElement {
      * compressed encodings
      * @param output CommandStream for collecting compressed output
      */
+    @Override
     void outputCommand(HuffmanTable table, CommandStream output) {
 	outputNormal(table, output, CommandStream.SET_NORM, 8) ;
     }
@@ -648,6 +650,7 @@ class CompressionStreamNormal extends CompressionStreamElement {
 			  normalSubcommand, subcommandLength)  ;
     }
 
+    @Override
     public String toString() {
 	String fixed ;
 

@@ -67,25 +67,31 @@ public class NullSceneGraphObjectState extends SceneGraphObjectState {
      *
      * All references should be created in the constructor
      */
+    @Override
     public void writeObject( DataOutput out ) throws IOException {
     }
 
+    @Override
     public void readObject( DataInput in ) throws IOException {
     }
 
+    @Override
     public SceneGraphObject getNode() {
         return null;
     }
 
+    @Override
     public int getNodeID() {
         return -1;
     }
 
+    @Override
     public SymbolTableData getSymbol() {
         return symbolTableData;
     }
 
 
+    @Override
     protected javax.media.j3d.SceneGraphObject createNode() {
         return null;
     }

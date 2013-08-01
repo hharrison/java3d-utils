@@ -64,6 +64,7 @@ public abstract class SoundState extends LeafState {
         }
     }
 
+    @Override
     public void writeObject( DataOutput out ) throws IOException {
         super.writeObject( out );
 
@@ -83,6 +84,7 @@ public abstract class SoundState extends LeafState {
 	out.writeFloat( sound.getRateScaleFactor() );
     }
 
+    @Override
     public void readObject( DataInput in ) throws IOException {
         super.readObject( in );
 
@@ -111,6 +113,7 @@ public abstract class SoundState extends LeafState {
         control.getSymbolTable().incNodeComponentRefCount( mediaContainer );
     }
 
+    @Override
     public void buildGraph() {
 
         ((Sound)node).setSchedulingBoundingLeaf( (BoundingLeaf)control.getSymbolTable().getJ3dNode( boundingLeaf ));

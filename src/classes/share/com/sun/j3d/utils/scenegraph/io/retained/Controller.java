@@ -954,6 +954,7 @@ public abstract class Controller extends java.lang.Object {
 	    super(in);
         }
 
+        @Override
         protected Class resolveClass( java.io.ObjectStreamClass desc ) throws
 				IOException, ClassNotFoundException {
             return getClass().forName( desc.getName(), true, classLoader );

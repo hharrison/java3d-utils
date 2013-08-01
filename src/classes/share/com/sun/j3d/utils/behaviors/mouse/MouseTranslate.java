@@ -137,6 +137,7 @@ public class MouseTranslate extends MouseBehavior {
 	super(c, flags);
     }
 
+    @Override
     public void initialize() {
 	super.initialize();
 	if ((flags & INVERT_INPUT) == INVERT_INPUT) {
@@ -176,6 +177,7 @@ public class MouseTranslate extends MouseBehavior {
 	y_factor = yFactor;
     }
 
+    @Override
     public void processStimulus (Enumeration criteria) {
 	WakeupCriterion wakeup;
 	AWTEvent[] events;

@@ -58,6 +58,7 @@ public class DepthComponentIntState extends NodeComponentState {
         super(symbol, control);
     }
 
+    @Override
     public void writeObject( DataOutput out ) throws IOException {
 	super.writeObject( out );
 
@@ -69,6 +70,7 @@ public class DepthComponentIntState extends NodeComponentState {
 	}
     }
 
+    @Override
     public void readObject( DataInput in ) throws IOException {
 	super.readObject( in );
 
@@ -80,12 +82,14 @@ public class DepthComponentIntState extends NodeComponentState {
 	((DepthComponentInt)node).setDepthData( buf );
     }
 
+    @Override
     public void writeConstructorParams( DataOutput out ) throws IOException {
 	super.writeConstructorParams( out );
 	out.writeInt( width );
 	out.writeInt( height );
     }
 
+    @Override
     public void readConstructorParams( DataInput in ) throws IOException {
 	super.readConstructorParams( in );
 
@@ -93,6 +97,7 @@ public class DepthComponentIntState extends NodeComponentState {
 	height = in.readInt();
     }
 
+    @Override
     public SceneGraphObject createNode( Class j3dClass ) {
         return createNode( j3dClass, new Class[] { Integer.TYPE,
 						   Integer.TYPE } ,
@@ -100,6 +105,7 @@ public class DepthComponentIntState extends NodeComponentState {
 						    new Integer( height ) } );
     }
 
+    @Override
     protected javax.media.j3d.SceneGraphObject createNode() {
         return new DepthComponentInt( width, height );
     }

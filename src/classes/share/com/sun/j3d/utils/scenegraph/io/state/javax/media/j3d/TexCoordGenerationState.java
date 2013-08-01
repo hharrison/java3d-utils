@@ -55,6 +55,7 @@ public class TexCoordGenerationState extends NodeComponentState {
         super(symbol, control);
     }
 
+    @Override
     public void writeObject( DataOutput out ) throws IOException {
         super.writeObject( out );
         TexCoordGeneration attr = (TexCoordGeneration)node;
@@ -72,6 +73,7 @@ public class TexCoordGenerationState extends NodeComponentState {
         control.writeVector4f( out, vec );
     }
 
+    @Override
     public void readObject( DataInput in ) throws IOException {
         super.readObject( in );
         TexCoordGeneration attr = (TexCoordGeneration)node;
@@ -84,6 +86,7 @@ public class TexCoordGenerationState extends NodeComponentState {
 	attr.setPlaneQ( control.readVector4f( in ));
     }
 
+    @Override
     protected javax.media.j3d.SceneGraphObject createNode() {
         return new TexCoordGeneration();
     }

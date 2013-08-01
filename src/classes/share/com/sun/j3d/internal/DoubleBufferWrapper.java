@@ -78,6 +78,7 @@ public class DoubleBufferWrapper extends BufferWrapper {
      * Returns the java.nio.Buffer contained within this
      * DoubleBufferWrapper.
      */
+    @Override
     public java.nio.Buffer getBuffer() {
 	return this.buffer;
     }

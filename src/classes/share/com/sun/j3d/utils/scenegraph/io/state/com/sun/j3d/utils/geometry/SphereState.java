@@ -64,18 +64,21 @@ public class SphereState extends PrimitiveState {
         }
     }
 
+    @Override
     public void writeObject( DataOutput out ) throws IOException {
 	super.writeObject( out );
 
         out.writeInt( bodyAppearance );
     }
 
+    @Override
     public void readObject( DataInput in ) throws IOException {
        super.readObject(in);
 
        bodyAppearance = in.readInt();
     }
 
+    @Override
     public void writeConstructorParams( DataOutput out ) throws IOException {
 	super.writeConstructorParams( out );
 
@@ -83,6 +86,7 @@ public class SphereState extends PrimitiveState {
         out.writeInt( ((Sphere)node).getDivisions() );
     }
 
+    @Override
     public void readConstructorParams( DataInput in ) throws IOException {
        super.readConstructorParams(in);
 
@@ -90,11 +94,13 @@ public class SphereState extends PrimitiveState {
        divisions = in.readInt();
     }
 
+    @Override
     public void buildGraph() {
         ((Sphere)node).setAppearance( (Appearance)control.getSymbolTable().getJ3dNode( bodyAppearance ));
         super.buildGraph(); // This must be the last call in the method
     }
 
+    @Override
     public SceneGraphObject createNode( Class j3dClass ) {
         // Create the node with a null appearance, we will add the appearance
         // during build graph
@@ -112,6 +118,7 @@ public class SphereState extends PrimitiveState {
         return sphere;
     }
 
+    @Override
     protected javax.media.j3d.SceneGraphObject createNode() {
         return new Sphere( radius, primflags, divisions, null );
     }

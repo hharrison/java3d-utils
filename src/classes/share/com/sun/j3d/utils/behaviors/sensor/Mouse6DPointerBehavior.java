@@ -157,6 +157,7 @@ public class Mouse6DPointerBehavior extends Behavior {
      * NOTE: Applications should not call this method. It is called by the
      * Java 3D behavior scheduler.
      */
+    @Override
     public void initialize() {
 	wakeupOn(conditions) ;
     }
@@ -166,6 +167,7 @@ public class Mouse6DPointerBehavior extends Behavior {
      * NOTE: Applications should not call this method. It is called by the
      * Java 3D behavior scheduler.
      */
+    @Override
     public void processStimulus(Enumeration criteria) {
 	eventAgent.dispatchEvents() ;
 	wakeupOn(conditions) ;
@@ -178,6 +180,7 @@ public class Mouse6DPointerBehavior extends Behavior {
     public class EchoReadListener implements SensorReadListener {
 	private Transform3D t3d = new Transform3D() ;
 
+	@Override
 	public void read(SensorEvent e) {
 	    // Get the Transform3D that transforms points from local sensor
 	    // coordinates to virtual world coordinates, based on the primary

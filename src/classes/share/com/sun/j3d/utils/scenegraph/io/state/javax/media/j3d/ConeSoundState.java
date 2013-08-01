@@ -57,6 +57,7 @@ public class ConeSoundState extends PointSoundState {
 
     }
 
+    @Override
     public void writeObject( DataOutput out ) throws IOException {
         super.writeObject( out );
 
@@ -88,6 +89,7 @@ public class ConeSoundState extends PointSoundState {
         control.writeVector3f( out, direction );
     }
 
+    @Override
     public void readObject( DataInput in ) throws IOException {
         super.readObject( in );
 
@@ -111,6 +113,7 @@ public class ConeSoundState extends PointSoundState {
         ((ConeSound)node).setDirection( control.readVector3f( in ));
     }
 
+    @Override
     protected SceneGraphObject createNode() {
         return new ConeSound();
     }

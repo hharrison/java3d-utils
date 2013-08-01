@@ -57,18 +57,21 @@ public class PrimitiveState extends GroupState {
 
     }
 
+    @Override
     public void writeConstructorParams( DataOutput out ) throws IOException {
 	super.writeConstructorParams( out );
 
         out.writeInt( ((Primitive)node).getPrimitiveFlags() );
     }
 
+    @Override
     public void readConstructorParams( DataInput in ) throws IOException {
        super.readConstructorParams(in);
 
        primflags = in.readInt();
     }
 
+    @Override
     public void buildGraph() {
         super.buildGraph(); // This must be the last call in the method
     }
@@ -78,6 +81,7 @@ public class PrimitiveState extends GroupState {
    *
    * This is overridden by 'black box' groups such a geometry primitives
    */
+  @Override
   protected boolean processChildren() {
       return false;
   }

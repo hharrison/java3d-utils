@@ -56,6 +56,7 @@ public class PointSoundState extends SoundState {
 
     }
 
+    @Override
     public void writeObject( DataOutput out ) throws IOException {
         super.writeObject( out );
 
@@ -75,6 +76,7 @@ public class PointSoundState extends SoundState {
         control.writePoint3f( out, pos );
     }
 
+    @Override
     public void readObject( DataInput in ) throws IOException {
         super.readObject( in );
 
@@ -89,6 +91,7 @@ public class PointSoundState extends SoundState {
         ((PointSound)node).setPosition( control.readPoint3f( in ));
     }
 
+    @Override
     protected javax.media.j3d.SceneGraphObject createNode() {
         return new PointSound();
     }

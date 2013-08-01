@@ -49,10 +49,12 @@ package com.sun.j3d.utils.scenegraph.io;
  */
 public class UnresolvedBehavior extends javax.media.j3d.Behavior {
 
+    @Override
     public void initialize() {
         setEnable(false);
     }
 
+    @Override
     public void processStimulus(java.util.Enumeration enumeration) {
     }
 

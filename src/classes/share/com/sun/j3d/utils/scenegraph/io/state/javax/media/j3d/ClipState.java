@@ -60,6 +60,7 @@ public abstract class ClipState extends LeafState {
             boundingLeaf = control.getSymbolTable().addReference( ((Clip)node).getApplicationBoundingLeaf() );
     }
 
+    @Override
     public void writeObject( DataOutput out ) throws IOException {
         super.writeObject( out );
         out.writeInt( boundingLeaf );
@@ -67,6 +68,7 @@ public abstract class ClipState extends LeafState {
         out.writeDouble( ((Clip)node).getBackDistance() );
     }
 
+    @Override
     public void readObject( DataInput in ) throws IOException {
         super.readObject( in );
         boundingLeaf = in.readInt();
@@ -74,6 +76,7 @@ public abstract class ClipState extends LeafState {
         ((Clip)node).setBackDistance( in.readDouble() );
     }
 
+    @Override
     public void buildGraph() {
         ((Clip)node).setApplicationBoundingLeaf( (BoundingLeaf)control.getSymbolTable().getJ3dNode( boundingLeaf ));
         super.buildGraph(); // Must be last call in method

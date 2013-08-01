@@ -504,6 +504,7 @@ public class CompressedGeometryData extends Object {
          *
          * @return a String describing contents of the compressed geometry header
          */
+        @Override
         public String toString() {
             String type = "UNKNOWN";
             switch (bufferType) {

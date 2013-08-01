@@ -57,6 +57,7 @@ public abstract class TransformInterpolatorState extends InterpolatorState {
         super( symbol, control );
     }
 
+    @Override
     public void writeObject( DataOutput out ) throws IOException {
         super.writeObject( out );
 
@@ -66,6 +67,7 @@ public abstract class TransformInterpolatorState extends InterpolatorState {
 	out.writeInt( control.getSymbolTable().addReference( ti.getTarget() ) );
     }
 
+    @Override
     public void readObject( DataInput in ) throws IOException {
         super.readObject( in );
 
@@ -74,6 +76,7 @@ public abstract class TransformInterpolatorState extends InterpolatorState {
 	target = in.readInt();
     }
 
+    @Override
     public void buildGraph() {
 	((TransformInterpolator)node).setTarget(
 	    (TransformGroup)control.getSymbolTable().getJ3dNode( target ) );

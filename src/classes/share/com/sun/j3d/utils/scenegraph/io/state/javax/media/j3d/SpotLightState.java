@@ -59,6 +59,7 @@ public class SpotLightState extends LightState {
 
 	}
 
+	@Override
 	public void writeObject(DataOutput out) throws IOException {
 		super.writeObject(out);
 
@@ -78,6 +79,7 @@ public class SpotLightState extends LightState {
 		out.writeFloat(((SpotLight) node).getConcentration());
 	}
 
+	@Override
 	public void readObject(DataInput in) throws IOException {
 
 		super.readObject(in);
@@ -94,6 +96,7 @@ public class SpotLightState extends LightState {
 		((SpotLight) node).setConcentration(in.readFloat());
 	}
 
+	@Override
 	protected javax.media.j3d.SceneGraphObject createNode() {
 		return new SpotLight();
 	}

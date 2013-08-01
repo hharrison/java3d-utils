@@ -67,6 +67,7 @@ class ConfigPhysicalEnvironment extends ConfigObject {
     /**
      * Overrides initialize() to do nothing.
      */
+    @Override
     protected void initialize(ConfigCommand command) {
     }
 
@@ -77,6 +78,7 @@ class ConfigPhysicalEnvironment extends ConfigObject {
      *
      * @param command the command that invoked this method
      */
+    @Override
     protected void setProperty(ConfigCommand command) {
 	Object val ;
 	Object[] argv = command.argv ;

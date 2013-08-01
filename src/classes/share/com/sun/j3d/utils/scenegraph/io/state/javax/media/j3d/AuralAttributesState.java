@@ -56,6 +56,7 @@ public class AuralAttributesState extends NodeComponentState {
 
     }
 
+    @Override
     public void writeObject( DataOutput out ) throws IOException {
         super.writeObject( out );
 
@@ -86,6 +87,7 @@ public class AuralAttributesState extends NodeComponentState {
 	out.writeFloat( ((AuralAttributes)node).getDensity() );
     }
 
+    @Override
     public void readObject( DataInput in ) throws IOException {
         super.readObject( in );
 
@@ -114,6 +116,7 @@ public class AuralAttributesState extends NodeComponentState {
 	((AuralAttributes)node).setDensity( in.readFloat() );
     }
 
+    @Override
     protected SceneGraphObject createNode() {
         return new AuralAttributes();
     }

@@ -581,6 +581,7 @@ public class WandViewBehavior extends ViewPlatformBehavior {
      * NOTE: Applications should <i>not</i> call this method. It is called by
      * the Java 3D behavior scheduler.
      */
+    @Override
     public void initialize() {
         // Don't configure the sensors and echo after the first time.
         if (!configured) {
@@ -616,6 +617,7 @@ public class WandViewBehavior extends ViewPlatformBehavior {
      * NOTE: Applications should <i>not</i> call this method. It is called by
      * the Java 3D behavior scheduler.
      */
+    @Override
     public void processStimulus(Enumeration criteria) {
         // Invoke the sensor event dispatcher.
         eventAgent.dispatchEvents() ;
@@ -628,6 +630,7 @@ public class WandViewBehavior extends ViewPlatformBehavior {
      * Enables or disables this behavior.  The default state is enabled.
      * @param enable true or false to enable or disable this behavior
      */
+    @Override
     public void setEnable(boolean enable) {
         if (enable == getEnable()) {
             return ;
@@ -648,6 +651,7 @@ public class WandViewBehavior extends ViewPlatformBehavior {
      * <i>not</i> call this method.  It is called by the
      * <code>ViewingPlatform</code>.
      */
+    @Override
     public void setViewingPlatform(ViewingPlatform vp) {
         super.setViewingPlatform(vp) ;
         if (vp == null) {
@@ -1014,10 +1018,12 @@ public class WandViewBehavior extends ViewPlatformBehavior {
             return active ;
         }
 
+        @Override
         public void pressed(SensorEvent e) {
             initAction(e.getSensor()) ;
         }
 
+        @Override
         public void released(SensorEvent e) {
             endAction(e.getSensor()) ;
         }
@@ -1148,6 +1154,7 @@ public class WandViewBehavior extends ViewPlatformBehavior {
         private Transform3D t3d = new Transform3D() ;
         private Transform3D initialVworldToSensor = new Transform3D() ;
 
+        @Override
         public void pressed(SensorEvent e) {
             initAction(e.getSensor()) ;
 
@@ -1155,6 +1162,7 @@ public class WandViewBehavior extends ViewPlatformBehavior {
             initialVworldToSensor.invert(sensorToVworld) ;
         }
 
+        @Override
         public void dragged(SensorEvent e) {
             // Get sensor read relative to the static view at the time of the
             // button-down.
@@ -1213,11 +1221,13 @@ public class WandViewBehavior extends ViewPlatformBehavior {
 	    }
         }
 
+        @Override
         public void pressed(SensorEvent e) {
             initAction(e.getSensor()) ;
             buttonDownTime = e.getTime() ;
         }
 
+        @Override
         public void dragged(SensorEvent e) {
             long time = e.getTime() ;
             long lastTime = e.getLastTime() ;
@@ -1295,6 +1305,7 @@ public class WandViewBehavior extends ViewPlatformBehavior {
         private Transform3D headToVworld = new Transform3D() ;
         private double speedScaled ;
 
+        @Override
         protected void initAction(Sensor s) {
             super.initAction(s) ;
             if (rotationCoords == HEAD) {
@@ -1302,6 +1313,7 @@ public class WandViewBehavior extends ViewPlatformBehavior {
             }
         }
 
+        @Override
         protected void endAction(Sensor s) {
             super.endAction(s) ;
             viewPlatformToVworld.normalize() ;
@@ -1325,11 +1337,13 @@ public class WandViewBehavior extends ViewPlatformBehavior {
                 speedScaled = rotationSpeed ;
         }
 
+        @Override
         public void pressed(SensorEvent e) {
             initAction(e.getSensor()) ;
             buttonDownTime = e.getTime() ;
         }
 
+        @Override
         public void dragged(SensorEvent e) {
             long time = e.getTime() ;
             long lastTime = e.getLastTime() ;
@@ -1421,6 +1435,7 @@ public class WandViewBehavior extends ViewPlatformBehavior {
         private Point3d center = new Point3d() ;
         private Transform3D t3d = new Transform3D() ;
 
+        @Override
         protected void endAction(Sensor s) {
             super.endAction(s) ;
             conditionViewScale(viewPlatformToVworld) ;
@@ -1439,11 +1454,13 @@ public class WandViewBehavior extends ViewPlatformBehavior {
 		direction =  1.0 ;
         }
 
+        @Override
         public void pressed(SensorEvent e) {
             initAction(e.getSensor()) ;
             buttonDownTime = e.getTime() ;
         }
 
+        @Override
         public void dragged(SensorEvent e) {
             long time = e.getTime() ;
             long lastTime = e.getLastTime() ;
@@ -1519,6 +1536,7 @@ public class WandViewBehavior extends ViewPlatformBehavior {
     public class EchoReadListener6D implements SensorReadListener {
         private Transform3D sensorToVworld = new Transform3D() ;
 
+        @Override
         public void read(SensorEvent e) {
             Sensor s = e.getSensor() ;
             view.getSensorToVworld(s, sensorToVworld) ;
@@ -1569,6 +1587,7 @@ public class WandViewBehavior extends ViewPlatformBehavior {
         private Transform3D headToVworld = new Transform3D() ;
         private double speedScaled ;
 
+        @Override
         protected void initAction(Sensor s) {
             super.initAction(s) ;
             if (rotationCoords == HEAD) {
@@ -1580,6 +1599,7 @@ public class WandViewBehavior extends ViewPlatformBehavior {
             }
         }
 
+        @Override
         protected void endAction(Sensor s) {
             super.endAction(s) ;
             viewPlatformToVworld.normalize() ;
@@ -1611,6 +1631,7 @@ public class WandViewBehavior extends ViewPlatformBehavior {
                 speedScaled = rotationSpeed ;
         }
 
+        @Override
         public void read(SensorEvent e) {
             sensor2D.getRead(sensor2DRead) ;
             sensor2DRead.get(m) ;
@@ -1688,14 +1709,17 @@ public class WandViewBehavior extends ViewPlatformBehavior {
             }
         }
 
+        @Override
         public void pressed(SensorEvent e) {
             initAction(sensor6D) ;
         }
 
+        @Override
         public void released(SensorEvent e) {
             if (isActive()) endAction(sensor6D) ;
         }
 
+        @Override
         public void dragged(SensorEvent e) {
             read(e) ;
         }
@@ -1733,6 +1757,7 @@ public class WandViewBehavior extends ViewPlatformBehavior {
         private Transform3D sensor2DRead = new Transform3D() ;
         private double speedScaled ;
 
+        @Override
         protected void initAction(Sensor s) {
             super.initAction(s) ;
             if (s != null && readAction6D == ECHO) {
@@ -1741,6 +1766,7 @@ public class WandViewBehavior extends ViewPlatformBehavior {
             }
         }
 
+        @Override
         protected void endAction(Sensor s) {
             super.endAction(s) ;
             if (s != null && readAction6D == ECHO) {
@@ -1772,6 +1798,7 @@ public class WandViewBehavior extends ViewPlatformBehavior {
                 speedScaled *= getPhysicalToViewPlatformScale() ;
         }
 
+        @Override
         public void read(SensorEvent e) {
             sensor2D.getRead(sensor2DRead) ;
             sensor2DRead.get(m) ;
@@ -1831,14 +1858,17 @@ public class WandViewBehavior extends ViewPlatformBehavior {
             }
         }
 
+        @Override
         public void pressed(SensorEvent e) {
             initAction(sensor6D) ;
         }
 
+        @Override
         public void released(SensorEvent e) {
             if (isActive()) endAction(sensor6D) ;
         }
 
+        @Override
         public void dragged(SensorEvent e) {
             read(e) ;
         }
@@ -1872,6 +1902,7 @@ public class WandViewBehavior extends ViewPlatformBehavior {
         private Transform3D t3d = new Transform3D() ;
         private Transform3D sensor2DRead = new Transform3D() ;
 
+        @Override
         protected void initAction(Sensor s) {
             super.initAction(s) ;
             if (s != null && readAction6D == ECHO) {
@@ -1880,6 +1911,7 @@ public class WandViewBehavior extends ViewPlatformBehavior {
             }
         }
 
+        @Override
         protected void endAction(Sensor s) {
             super.endAction(s) ;
             conditionViewScale(viewPlatformToVworld) ;
@@ -1901,6 +1933,7 @@ public class WandViewBehavior extends ViewPlatformBehavior {
             this.sensor6D = sensor6D ;
         }
 
+        @Override
         public void read(SensorEvent e) {
             sensor2D.getRead(sensor2DRead) ;
             sensor2DRead.get(m) ;
@@ -1970,14 +2003,17 @@ public class WandViewBehavior extends ViewPlatformBehavior {
             }
         }
 
+        @Override
         public void pressed(SensorEvent e) {
             initAction(sensor6D) ;
         }
 
+        @Override
         public void released(SensorEvent e) {
             if (isActive()) endAction(sensor6D) ;
         }
 
+        @Override
         public void dragged(SensorEvent e) {
             read(e) ;
         }
@@ -2008,6 +2044,7 @@ public class WandViewBehavior extends ViewPlatformBehavior {
             buttonState = new int[s.getSensorButtonCount()] ;
         }
 
+        @Override
         public void pressed(SensorEvent e) {
             int count = 0 ;
             e.getButtonState(buttonState) ;
@@ -2020,6 +2057,7 @@ public class WandViewBehavior extends ViewPlatformBehavior {
                 goHomeNextRead = true ;
         }
 
+        @Override
         public void read(SensorEvent e) {
             if (goHomeNextRead) {
                 goHome() ;

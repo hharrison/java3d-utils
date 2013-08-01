@@ -56,6 +56,7 @@ public class ScaleInterpolatorState extends TransformInterpolatorState {
         super( symbol, control );
     }
 
+    @Override
     public void writeObject( DataOutput out ) throws IOException {
         super.writeObject( out );
 
@@ -63,6 +64,7 @@ public class ScaleInterpolatorState extends TransformInterpolatorState {
         out.writeFloat( ((ScaleInterpolator)node).getMaximumScale() );
     }
 
+    @Override
     public void readObject( DataInput in ) throws IOException {
         super.readObject( in );
 
@@ -70,6 +72,7 @@ public class ScaleInterpolatorState extends TransformInterpolatorState {
         ((ScaleInterpolator)node).setMaximumScale( in.readFloat() );
     }
 
+    @Override
     public SceneGraphObject createNode( Class j3dClass ) {
         return createNode( j3dClass, new Class[] { javax.media.j3d.Alpha.class,
                                                     TransformGroup.class },
@@ -78,6 +81,7 @@ public class ScaleInterpolatorState extends TransformInterpolatorState {
 
     }
 
+    @Override
     protected javax.media.j3d.SceneGraphObject createNode() {
         return new ScaleInterpolator( null, null );
     }
