@@ -2638,13 +2638,13 @@ public class GeometryInfo {
    * BY_REFERENCE.
    * @param interleaved Use INTERLEAVED geometry.  Implies byRef is
    * true as well.
-   * @param nio Create GeometryArray using java.nio.Buffer for
-   * geometry arrays.  Only usable on JDK 1.4 or higher.  Implies
-   * byRef is true as well.
    * @param useCoordIndexOnly Create the IndexedGeometryArray using
    * USE_COORD_INDEX_ONLY.  Values from the coordinate index array
    * are used as a single set of indices into all vertex
    * component arrays (coord, color, normal, and texCoord).
+   * @param nio Create GeometryArray using java.nio.Buffer for
+   * geometry arrays.  Only usable on JDK 1.4 or higher.  Implies
+   * byRef is true as well.
    * @throws IllegalArgumentException if coordinate data is missing,
    * if the index lists aren't all the
    * same length, if an index list is set and the corresponding data
