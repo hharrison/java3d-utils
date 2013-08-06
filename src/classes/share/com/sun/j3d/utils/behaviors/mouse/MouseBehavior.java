@@ -356,7 +356,7 @@ public abstract class MouseBehavior extends Behavior
 
     @Override
     public void mouseWheelMoved(MouseWheelEvent e){
-	System.out.println("MouseBehavior : mouseWheel enable = " + enable );
+//	System.out.println("MouseBehavior : mouseWheel enable = " + enable );
 
 	// add new event to the to the queue
 	// must be MT safe.
