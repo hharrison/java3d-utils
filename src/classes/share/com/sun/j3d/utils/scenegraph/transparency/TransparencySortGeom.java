@@ -38,9 +38,6 @@
  */
 
 package com.sun.j3d.utils.scenegraph.transparency;
-import javax.media.j3d.Geometry;
-import javax.media.j3d.Shape3D;
-import javax.media.j3d.Transform3D;
 
 /**
  *
@@ -52,34 +49,4 @@ import javax.media.j3d.Transform3D;
  *
  * @since Java 3D 1.4
  */
-public interface TransparencySortGeom {
-
-    /**
-     * Returns the Geometry for this object.
-     *
-     * @return geometry for this object
-     */
-    public Geometry getGeometry();
-
-    /**
-     * Returns the distance squared of this object to the viewer.
-     *
-     * @return distancesquared to viewer
-     */
-    public double getDistanceSquared();
-
-    /**
-     * Returns the LocalToVWorld transform for this object
-     *
-     * @param localToVW variable in which transform will be returned
-     */
-    public void getLocalToVWorld(Transform3D localToVW);
-
-    /**
-     * Returns the Shape3D being rendered using this geometry.
-     *
-     * @return the Shape3D being rendered using this geometry
-     */
-    public Shape3D getShape3D();
-
-}
+public interface TransparencySortGeom extends javax.media.j3d.TransparencySortGeom {}

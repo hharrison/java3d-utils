@@ -40,8 +40,9 @@
 package com.sun.j3d.utils.scenegraph.transparency;
 
 import java.util.Comparator;
-import java.util.WeakHashMap;
 
+import javax.media.j3d.TransparencySortGeom;
+import javax.media.j3d.TransparencySortMap;
 import javax.media.j3d.View;
 
 /**
@@ -58,9 +59,6 @@ import javax.media.j3d.View;
  */
 public class TransparencySortController {
 
-    // Issue 478 - use a WeakHashMap to avoid holding a reference to a View unnecessarily.
-    private static WeakHashMap<View,Comparator> comparators = new WeakHashMap<View,Comparator>();
-
     /**
      * Set the comparator for the specified view.
      *
@@ -72,8 +70,8 @@ public class TransparencySortController {
      * @param view the view to which the comparator applies
      * @param comparator the comparator to call
      */
-    public static void setComparator(View view, Comparator comparator) {
-        comparators.put(view, comparator);
+    public static void setComparator(View view, Comparator<TransparencySortGeom> comparator) {
+        TransparencySortMap.setComparator(view, comparator);
     }
 
     /**
@@ -82,7 +80,7 @@ public class TransparencySortController {
      * @return the comparator for the specified view, or null if there
      * is no comparator for the view or the view is unknown.
      */
-    public static Comparator getComparator(View view) {
-        return comparators.get(view);
+    public static Comparator<TransparencySortGeom> getComparator(View view) {
+        return TransparencySortMap.getComparator(view);
     }
 }

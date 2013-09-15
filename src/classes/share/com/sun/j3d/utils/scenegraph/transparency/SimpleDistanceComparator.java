@@ -41,13 +41,15 @@ package com.sun.j3d.utils.scenegraph.transparency;
 
 import java.util.Comparator;
 
+import javax.media.j3d.TransparencySortGeom;
+
 /**
  * Sample TransparencySortComparator which has the same functionality as
  * the fixed default function in Java 3D.
  *
  * @since Java 3D 1.4
  */
-public class SimpleDistanceComparator implements Comparator {
+public class SimpleDistanceComparator implements Comparator<TransparencySortGeom> {
 
     /** Creates a new instance of SimpleDistanceComparator */
     public SimpleDistanceComparator() {
@@ -63,15 +65,12 @@ public class SimpleDistanceComparator implements Comparator {
      * closer to the viewer. Object1 < Object2 if it is to be considered closer
      * and rendered after.
      *
-     * @param o1 TransparencySortGeom object 1
-     * @param o2 TransparencySortGeom object 2
+     * @param t1 TransparencySortGeom object 1
+     * @param t2 TransparencySortGeom object 2
      *
      */
     @Override
-    public int compare(Object o1, Object o2) {
-        TransparencySortGeom t1 = (TransparencySortGeom)o1;
-        TransparencySortGeom t2 = (TransparencySortGeom)o2;
-
+    public int compare(TransparencySortGeom t1, TransparencySortGeom t2) {
         double f = t1.getDistanceSquared()-t2.getDistanceSquared();
         if (f<0)
             return -1;
