@@ -264,9 +264,9 @@ public class ObjectFile implements Loader {
     private float radians;
 
     // First, lists of points are read from the .obj file into these arrays. . .
-    private ArrayList coordList;	// Holds Point3f
-    private ArrayList texList;		// Holds TexCoord2f
-    private ArrayList normList;		// Holds Vector3f
+    private ArrayList<Point3f> coordList;
+    private ArrayList<TexCoord2f> texList;
+    private ArrayList<Vector3f> normList;
 
     // . . . and index lists are read into these arrays.
     private ArrayList coordIdxList;	// Holds Integer index into coordList
@@ -721,15 +721,12 @@ public class ObjectFile implements Loader {
      * See normalize() below for an example of how to use this method.
      */
     private Point3f[] getLimits() {
-	Point3f cur_vtx = new Point3f();
-
 	// Find the limits of the model
 	Point3f[] limit = new Point3f[2];
 	limit[0] = new Point3f(Float.MAX_VALUE, Float.MAX_VALUE, Float.MAX_VALUE);
 	limit[1] = new Point3f(Float.MIN_VALUE, Float.MIN_VALUE, Float.MIN_VALUE);
 	for (int i = 0 ; i < coordList.size() ; i++) {
-
-	    cur_vtx = (Point3f)coordList.get(i);
+		Point3f cur_vtx = coordList.get(i);
 
 	    // Keep track of limits for normalization
 	    if (cur_vtx.x < limit[0].x) limit[0].x = cur_vtx.x;
@@ -756,7 +753,6 @@ public class ObjectFile implements Loader {
      */
     private void resize() {
 	int i, j;
-	Point3f cur_vtx = new Point3f();
 	float biggest_dif;
 
 	Point3f[] limit = getLimits();
@@ -780,8 +776,7 @@ public class ObjectFile implements Loader {
 	biggest_dif /= 2.0f;
 
 	for (i = 0 ; i < coordList.size() ; i++) {
-
-	    cur_vtx = (Point3f)coordList.get(i);
+		Point3f cur_vtx = coordList.get(i);
 
 	    cur_vtx.add(cur_vtx, offset);
 
@@ -803,29 +798,29 @@ public class ObjectFile implements Loader {
     } // End of objectToIntArray
 
 
-    private Point3f[] objectToPoint3Array(ArrayList inList) {
+    private Point3f[] objectToPoint3Array(ArrayList<Point3f> inList) {
 	Point3f outList[] = new Point3f[inList.size()];
 	for (int i = 0 ; i < inList.size() ; i++) {
-	    outList[i] = (Point3f)inList.get(i);
+	    outList[i] = inList.get(i);
 	}
 	return outList;
     } // End of objectToPoint3Array
 
 
 
-    private TexCoord2f[] objectToTexCoord2Array(ArrayList inList) {
+    private TexCoord2f[] objectToTexCoord2Array(ArrayList<TexCoord2f> inList) {
 	TexCoord2f outList[] = new TexCoord2f[inList.size()];
 	for (int i = 0 ; i < inList.size() ; i++) {
-	    outList[i] = (TexCoord2f)inList.get(i);
+		outList[i] = inList.get(i);
 	}
 	return outList;
     } // End of objectToTexCoord2Array
 
 
-    private Vector3f[] objectToVectorArray(ArrayList inList) {
+    private Vector3f[] objectToVectorArray(ArrayList<Vector3f> inList) {
 	Vector3f outList[] = new Vector3f[inList.size()];
 	for (int i = 0 ; i < inList.size() ; i++) {
-	    outList[i] = (Vector3f)inList.get(i);
+		outList[i] = inList.get(i);
 	}
 	return outList;
     } // End of objectToVectorArray
@@ -1220,9 +1215,9 @@ public class ObjectFile implements Loader {
 	// ObjectFileParser does lexical analysis
 	ObjectFileParser st = new ObjectFileParser(reader);
 
-	coordList = new ArrayList();
-	texList = new ArrayList();
-	normList = new ArrayList();
+	coordList = new ArrayList<Point3f>();
+	texList = new ArrayList<TexCoord2f>();
+	normList = new ArrayList<Vector3f>();
 	coordIdxList = new ArrayList();
 	texIdxList = new ArrayList();
 	normIdxList = new ArrayList();
