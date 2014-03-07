@@ -68,7 +68,6 @@ import javax.vecmath.Vector3f;
 public class NormalGenerator {
 
   private double creaseAngle;
-  private Vector3f facetNorms[];
   private ArrayList<ArrayList<Integer>> tally;
   private int coordInds[];
   private int normalInds[];
@@ -95,10 +94,10 @@ public class NormalGenerator {
 
   // Calculate the normal of each triangle in the list by finding
   // the cross product
-  private void calculatefacetNorms(GeometryInfo gi)
+  private Vector3f[] calculatefacetNorms(GeometryInfo gi)
   {
     Point3f coordinates[] = gi.getCoordinates();
-    facetNorms = new Vector3f[coordInds.length / 3];
+    Vector3f[] facetNorms = new Vector3f[coordInds.length / 3];
     Vector3f a = new Vector3f();
     Vector3f b = new Vector3f();
     if ((DEBUG & 1) != 0) System.out.println("Facet normals:");
@@ -145,6 +144,7 @@ public class NormalGenerator {
 	}
       }
     }
+    return facetNorms;
   } // End of calculatefacetNorms
 
 
@@ -169,7 +169,7 @@ public class NormalGenerator {
   //
   // Returns the largest number of triangles that share a single normal.
   //
-  private int createHardEdges()
+  private int createHardEdges(Vector3f[] facetNorms)
   {
     EdgeTable et = new EdgeTable(coordInds);
     tally = new ArrayList<ArrayList<Integer>>();
@@ -333,7 +333,7 @@ public class NormalGenerator {
   // indexed, table.  That way, to tell if two triangles have the
   // same normal, we just need to compare indexes.  This would speed up
   // the process of checking for duplicates.
-  private void calculateVertexNormals(GeometryInfo gi, int maxShare)
+  private void calculateVertexNormals(GeometryInfo gi, Vector3f[] facetNorms, int maxShare)
   {
     Vector3f normals[];
     ArrayList<Integer> sharers;
@@ -806,21 +806,21 @@ public class NormalGenerator {
       time = System.currentTimeMillis();
     }
 
-    calculatefacetNorms(gi);
+	Vector3f[] facetNorms = calculatefacetNorms(gi);
     if ((DEBUG & 16) != 0) {
       t2 += System.currentTimeMillis() - time;
       System.out.println("Calculate Facet Normals: " + t2 + " ms");
       time = System.currentTimeMillis();
     }
 
-    int maxShare = createHardEdges();
+    int maxShare = createHardEdges(facetNorms);
     if ((DEBUG & 16) != 0) {
       t3 += System.currentTimeMillis() - time;
       System.out.println("Hard Edges: " + t3 + " ms");
       time = System.currentTimeMillis();
     }
 
-    calculateVertexNormals(gi, maxShare);
+    calculateVertexNormals(gi, facetNorms, maxShare);
     if ((DEBUG & 16) != 0) {
       t5 += System.currentTimeMillis() - time;
       System.out.println("Vertex Normals: " + t5 + " ms");
