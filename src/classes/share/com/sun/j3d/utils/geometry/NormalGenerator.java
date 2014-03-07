@@ -70,7 +70,6 @@ public class NormalGenerator {
   private double creaseAngle;
   private Vector3f facetNorms[];
   private ArrayList tally;
-  private GeometryInfo gi;
   private int coordInds[];
   private int normalInds[];
   private int colorInds[];
@@ -96,7 +95,7 @@ public class NormalGenerator {
 
   // Calculate the normal of each triangle in the list by finding
   // the cross product
-  private void calculatefacetNorms()
+  private void calculatefacetNorms(GeometryInfo gi)
   {
     Point3f coordinates[] = gi.getCoordinates();
     facetNorms = new Vector3f[coordInds.length / 3];
@@ -104,7 +103,7 @@ public class NormalGenerator {
     Vector3f b = new Vector3f();
     if ((DEBUG & 1) != 0) System.out.println("Facet normals:");
 
-    if (gi.getOldPrim() != gi.QUAD_ARRAY) {
+    if (gi.getOldPrim() != GeometryInfo.QUAD_ARRAY) {
       for (int t = 0 ; t < coordInds.length ; t += 3) {
 	a.sub(coordinates[coordInds[t + 2]], coordinates[coordInds[t + 1]]);
 	b.sub(coordinates[coordInds[t + 0]], coordinates[coordInds[t + 1]]);
@@ -334,7 +333,7 @@ public class NormalGenerator {
   // indexed, table.  That way, to tell if two triangles have the
   // same normal, we just need to compare indexes.  This would speed up
   // the process of checking for duplicates.
-  private void calculateVertexNormals(int maxShare)
+  private void calculateVertexNormals(GeometryInfo gi, int maxShare)
   {
     Vector3f normals[];
     ArrayList sharers;
@@ -462,7 +461,7 @@ public class NormalGenerator {
       geom.setTextureCoordinateIndices(i,
 	triToQuadIndices(geom.getTextureCoordinateIndices(i)));
     }
-    geom.setPrimitive(gi.QUAD_ARRAY);
+    geom.setPrimitive(GeometryInfo.QUAD_ARRAY);
   } // End of convertTriToQuad()
 
 
@@ -583,7 +582,7 @@ public class NormalGenerator {
     }
 
     geom.setStripCounts(sc);
-    geom.setPrimitive(gi.TRIANGLE_FAN_ARRAY);
+    geom.setPrimitive(GeometryInfo.TRIANGLE_FAN_ARRAY);
   } // End of convertTriToFan()
 
 
@@ -721,7 +720,7 @@ public class NormalGenerator {
     }
 
     geom.setStripCounts(sc);
-    geom.setPrimitive(gi.TRIANGLE_STRIP_ARRAY);
+    geom.setPrimitive(GeometryInfo.TRIANGLE_STRIP_ARRAY);
   }// End of convertTriToStrip()
 
 
@@ -770,9 +769,8 @@ public class NormalGenerator {
    * if GeometryInfo.getGeometryArray() (or getIndexedGeometryArray())
    * is called without stripifying first.
    */
-  public void generateNormals(GeometryInfo geom)
+  public void generateNormals(GeometryInfo gi)
   {
-    gi = geom;
     gi.setNormals((Vector3f[])null);
     gi.setNormalIndices(null);
 
@@ -808,7 +806,7 @@ public class NormalGenerator {
       time = System.currentTimeMillis();
     }
 
-    calculatefacetNorms();
+    calculatefacetNorms(gi);
     if ((DEBUG & 16) != 0) {
       t2 += System.currentTimeMillis() - time;
       System.out.println("Calculate Facet Normals: " + t2 + " ms");
@@ -822,7 +820,7 @@ public class NormalGenerator {
       time = System.currentTimeMillis();
     }
 
-    calculateVertexNormals(maxShare);
+    calculateVertexNormals(gi, maxShare);
     if ((DEBUG & 16) != 0) {
       t5 += System.currentTimeMillis() - time;
       System.out.println("Vertex Normals: " + t5 + " ms");
