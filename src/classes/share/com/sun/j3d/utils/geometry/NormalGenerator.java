@@ -69,7 +69,7 @@ public class NormalGenerator {
 
   private double creaseAngle;
   private Vector3f facetNorms[];
-  private ArrayList tally;
+  private ArrayList<ArrayList<Integer>> tally;
   private int coordInds[];
   private int normalInds[];
   private int colorInds[];
@@ -172,7 +172,7 @@ public class NormalGenerator {
   private int createHardEdges()
   {
     EdgeTable et = new EdgeTable(coordInds);
-    tally = new ArrayList();
+    tally = new ArrayList<ArrayList<Integer>>();
     int normalMap[] = new int[coordInds.length];
     int maxShare = 1;
     float cosine;
@@ -193,7 +193,7 @@ public class NormalGenerator {
 	    "Coordinate Index " + c + ": vertex " + coordInds[c]);
 	}
 	// Create a list of vertices used for calculating this normal
-	ArrayList sharers = new ArrayList();
+	ArrayList<Integer> sharers = new ArrayList<Integer>();
 	tally.add(sharers);
 	// Put this coordinate in the list
 	sharers.add(new Integer(c));
@@ -299,7 +299,7 @@ public class NormalGenerator {
       System.out.println("Tally:");
       for (int i = 0 ; i < tally.size() ; i++) {
 	System.out.print("  " + i + ": ");
-	ArrayList sharers = (ArrayList)(tally.get(i));
+	ArrayList<Integer> sharers = tally.get(i);
 	for (int j = 0 ; j < sharers.size() ; j++) {
 	  System.out.print(" " + sharers.get(j));
 	}
@@ -336,7 +336,7 @@ public class NormalGenerator {
   private void calculateVertexNormals(GeometryInfo gi, int maxShare)
   {
     Vector3f normals[];
-    ArrayList sharers;
+    ArrayList<Integer> sharers;
     int triangle;
     Vector3f fn[];	// Normals of facets joined by this vertex
     int fnsize;		// Number of elements currently ised in fn
@@ -346,7 +346,7 @@ public class NormalGenerator {
       normals = new Vector3f[tally.size()];
       normalInds = new int[coordInds.length];
       for (int n = 0 ; n < tally.size() ; n++) {
-	sharers = (ArrayList)(tally.get(n));
+	sharers = tally.get(n);
 	if ((DEBUG & 128) != 0) {
 	  System.out.println(n + ": " + sharers.size() +
 	    " triangles:");
@@ -354,7 +354,7 @@ public class NormalGenerator {
 	fnsize = 0;
 	normals[n] = new Vector3f();
 	for (int t = 0 ; t < sharers.size() ; t++) {
-	  int v = ((Integer)sharers.get(t)).intValue();
+	  int v = sharers.get(t).intValue();
 	  // See if index removed by hard edge process
 	  if (v != -1) {
 	    triangle = v / 3;
@@ -384,7 +384,7 @@ public class NormalGenerator {
 	}
 	if ((DEBUG & 128) != 0) {
 	  for (int t = 0 ; t < sharers.size() ; t++) {
-	    int v = ((Integer)sharers.get(t)).intValue();
+	    int v = sharers.get(t).intValue();
 	    if (v != -1) {
 	      triangle = v / 3;
 	      System.out.println("  " + facetNorms[triangle]);
@@ -513,8 +513,8 @@ public class NormalGenerator {
     // Calculate new stripCounts array
     //
     int tri = 0;	// Which triangle currently being converted
-    ArrayList newStripCounts;
-    newStripCounts = new ArrayList(oldStripCounts.length + 100);
+    ArrayList<Integer> newStripCounts;
+    newStripCounts = new ArrayList<Integer>(oldStripCounts.length + 100);
 
     // Use the original stripCounts array
     for (int f = 0 ; f < oldStripCounts.length ; f++) {
@@ -546,7 +546,7 @@ public class NormalGenerator {
     // Convert from ArrayList to int[]
     int sc[] = new int[newStripCounts.size()];
     for (int i = 0 ; i < sc.length ; i++)
-      sc[i] = ((Integer)newStripCounts.get(i)).intValue();
+      sc[i] = newStripCounts.get(i).intValue();
     newStripCounts = null;
 
     //
@@ -628,8 +628,8 @@ public class NormalGenerator {
     // Calculate new stripCounts array
     //
     int tri = 0;	// Which triangle currently being converted
-    ArrayList newStripCounts;
-    newStripCounts = new ArrayList(oldStripCounts.length + 100);
+    ArrayList<Integer> newStripCounts;
+    newStripCounts = new ArrayList<Integer>(oldStripCounts.length + 100);
 
     // Use the original stripCounts array
     for (int f = 0 ; f < oldStripCounts.length ; f++) {
@@ -684,7 +684,7 @@ public class NormalGenerator {
     // Convert from ArrayList to int[]
     int sc[] = new int[newStripCounts.size()];
     for (int i = 0 ; i < sc.length ; i++)
-      sc[i] = ((Integer)newStripCounts.get(i)).intValue();
+      sc[i] = newStripCounts.get(i).intValue();
     newStripCounts = null;
 
     //
@@ -735,7 +735,7 @@ public class NormalGenerator {
   void convertBackToOldPrim(GeometryInfo geom, int oldPrim,
 			    int oldStripCounts[])
   {
-    if (oldPrim == geom.TRIANGLE_ARRAY) return;
+    if (oldPrim == GeometryInfo.TRIANGLE_ARRAY) return;
 
     switch (oldPrim) {
     case GeometryInfo.QUAD_ARRAY:
@@ -779,7 +779,7 @@ public class NormalGenerator {
       time = System.currentTimeMillis();
     }
 
-    if (gi.getPrimitive() == gi.POLYGON_ARRAY) {
+    if (gi.getPrimitive() == GeometryInfo.POLYGON_ARRAY) {
       if (tr == null) tr = new Triangulator();
       tr.triangulate(gi);
     } else {
