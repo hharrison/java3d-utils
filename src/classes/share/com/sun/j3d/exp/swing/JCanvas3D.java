@@ -56,11 +56,6 @@ import javax.swing.event.AncestorListener;
 
 import com.sun.j3d.exp.swing.impl.AutoOffScreenCanvas3D;
 
-// EP
-import java.lang.reflect.Field;
-import java.util.Map;
-// EP
-
 
 /**
  * This class provides a lightweight capability to Java 3D. The component
@@ -613,7 +608,7 @@ public class JCanvas3D extends JPanel implements AncestorListener {
         // to wait for the readback of the off-screen buffer to complete.
         // The total time is MAX_WAIT_LOOPS * MAX_WAIT_TIME msec.
         private static final int MAX_WAIT_LOOPS = 5;
-        private static final long MAX_WAIT_TIME = 10; // EP: Used to be 100;
+        private static final long MAX_WAIT_TIME = 10;
 
         /**
          * the bufferedImage that will be displayed as the result
@@ -664,10 +659,6 @@ public class JCanvas3D extends JPanel implements AncestorListener {
          */
         boolean waitingForSwap;
 
-        // EP
-        Object mainThreadContext;
-        // EP
-        
         /**
          * Creates a new instance of JCanvas3D. Resize mode is set
          * to RESIZE_IMMEDIATELY and validation delay to 100ms.
@@ -683,15 +674,6 @@ public class JCanvas3D extends JPanel implements AncestorListener {
             imageReadyBis = false;
             waitingForSwap = false;
             addNotifyFlag = false;
-            
-            // EP
-            try {
-              // Retrieve main thread AppContext instance by reflection 
-              this.mainThreadContext = Class.forName("sun.awt.AppContext").getMethod("getAppContext").invoke(null);
-            } catch (Throwable ex) {
-              // Let's consider app context is not necessary for the program
-            }
-            // EP
         }
 
         /**
@@ -746,11 +728,6 @@ public class JCanvas3D extends JPanel implements AncestorListener {
 
                 if (false == waitingForSwap) {
                     //                    System.err.println("repaint " + System.currentTimeMillis());
-                    
-                    // EP
-                    checkAppContext();
-                    // EP
-                    
                     this.lwCanvas.repaint();
                 } else {
                     notify();
@@ -759,33 +736,6 @@ public class JCanvas3D extends JPanel implements AncestorListener {
                 //                System.err.println("SWAP WITHOUT RENDERER RUNNING");
             }
         }
-
-        // EP
-        /**
-         * Checks that app context is correct.
-         */
-        private void checkAppContext() {
-          if (this.mainThreadContext != null) {
-            try {
-              // Check by reflection that sun.awt.AppContext.getAppContext() doesn't return null 
-              // (required by ImageIO.write() and other JMF internal calls) to apply workaround proposed at 
-              // http://stackoverflow.com/questions/17223304/appcontext-is-null-from-rmi-thread-with-java-7-update-25
-              Class<?> appContextClass = Class.forName("sun.awt.AppContext");
-              if (appContextClass.getMethod("getAppContext").invoke(null) == null) {
-                Field field = appContextClass.getDeclaredField("threadGroup2appContext");
-                field.setAccessible(true);
-                Map threadGroup2appContext = (Map)field.get(null);
-                ThreadGroup currentThreadGroup = Thread.currentThread().getThreadGroup();
-                threadGroup2appContext.put(currentThreadGroup, this.mainThreadContext);        
-              }
-            } catch (Throwable ex) {
-              // Let's consider app context is not necessary for the program
-            }
-            // Don't need mainThreadContext anymore
-            this.mainThreadContext = null;
-          }
-        }
-        // EP
 
         /**
          * Overriden so that the JComponent can access it.
@@ -872,9 +822,7 @@ public class JCanvas3D extends JPanel implements AncestorListener {
 
                     if (!imageReadyBis && --counter <= 0) {
                         //if i've waited too long for the canvas to be there, let us declare it crashed.
-                        // EP
-                        // System.err.println("CANVAS CRASHED!!!");
-                        // EP
+                        //System.err.println("CANVAS CRASHED!!!");
                         canvasCrashed = true;
                         return;
                     }
