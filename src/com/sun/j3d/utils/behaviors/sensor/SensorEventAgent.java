@@ -46,8 +46,6 @@ import java.util.List;
 import javax.media.j3d.Sensor;
 import javax.media.j3d.Transform3D;
 
-import com.sun.j3d.utils.timer.J3DTimer;
-
 /**
  * This class works in conjunction with the <code>SensorButtonListener</code>
  * and <code>SensorReadListener</code> interfaces to support an event-driven
@@ -626,7 +624,7 @@ public class SensorEventAgent {
      */
     public void dispatchEvents() {
 	long t1 = t0 ;
-	t0 = J3DTimer.getValue() ;
+	t0 = System.nanoTime();
 
 	if (listsDirty) {
 	    updateArrays() ;
